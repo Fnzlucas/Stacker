@@ -245,9 +245,9 @@
   </nav>
 </header>
 
-<main class="max-w-[1400px] mx-auto px-6 py-8 page-enter" data-page>
+<main class="max-w-[1400px] mx-auto px-6 py-8 page-enter">
   <!-- HERO -->
-  <section class="reveal mb-8" style="animation-delay: 0.05s">
+  <section class="reveal mb-10" style="animation-delay: 0.05s">
     <div class="flex items-end justify-between flex-wrap gap-4 mb-2">
       <div>
         <p class="text-[10px] font-semibold tracking-[0.25em] text-on-surface-variant uppercase mb-2">Lundi 20 avril · Semaine 17</p>
@@ -268,228 +268,318 @@
     </div>
   </section>
 
-  <!-- KPI ROW -->
-  <section class="reveal grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10" style="animation-delay: 0.15s">
-    <a href="performance.html" class="bg-surface-container-lowest rounded-2xl p-6 soft-shadow hover-lift block">
-      <div class="flex items-center justify-between mb-5">
-        <p class="text-xs font-semibold tracking-[0.12em] text-on-surface-variant uppercase">Commissions ce mois</p>
-        <span class="material-symbols-outlined text-on-surface-variant" style="font-size:20px">payments</span>
-      </div>
-      <p class="font-headline font-extrabold text-4xl metric-num text-on-surface">4 827 <span class="text-2xl text-on-surface-variant font-bold">€</span></p>
-      <div class="flex items-center gap-1.5 mt-3">
-        <span class="material-symbols-outlined text-tertiary" style="font-size:16px">trending_up</span>
-        <span class="text-sm font-semibold text-tertiary">+28%</span>
-        <span class="text-sm text-on-surface-variant">vs mars</span>
-      </div>
+  <!-- KPI ROW · allégée -->
+  <section class="reveal grid grid-cols-2 lg:grid-cols-4 gap-4 mb-12" style="animation-delay: 0.15s">
+    <a href="performance.html" class="kpi-card">
+      <p class="kpi-label">Commissions ce mois</p>
+      <p class="kpi-value">4 827 <span class="kpi-unit">€</span></p>
+      <p class="kpi-delta text-tertiary">+28% vs mars</p>
     </a>
-    <a href="performance.html" class="bg-surface-container-lowest rounded-2xl p-6 soft-shadow hover-lift block">
-      <div class="flex items-center justify-between mb-5">
-        <p class="text-xs font-semibold tracking-[0.12em] text-on-surface-variant uppercase">Deals signés</p>
-        <span class="material-symbols-outlined text-on-surface-variant" style="font-size:20px">handshake</span>
-      </div>
-      <p class="font-headline font-extrabold text-4xl metric-num text-on-surface">12</p>
-      <div class="flex items-center gap-1.5 mt-3">
-        <span class="material-symbols-outlined text-tertiary" style="font-size:16px">trending_up</span>
-        <span class="text-sm font-semibold text-tertiary">+3</span>
-        <span class="text-sm text-on-surface-variant">cette semaine</span>
-      </div>
+    <a href="performance.html" class="kpi-card">
+      <p class="kpi-label">Deals signés</p>
+      <p class="kpi-value">12</p>
+      <p class="kpi-delta text-tertiary">+3 cette semaine</p>
     </a>
-    <a href="performance.html" class="bg-surface-container-lowest rounded-2xl p-6 soft-shadow hover-lift block">
-      <div class="flex items-center justify-between mb-5">
-        <p class="text-xs font-semibold tracking-[0.12em] text-on-surface-variant uppercase">Taux de closing</p>
-        <span class="material-symbols-outlined text-on-surface-variant" style="font-size:20px">track_changes</span>
-      </div>
-      <p class="font-headline font-extrabold text-4xl metric-num text-on-surface">34<span class="text-2xl text-on-surface-variant font-bold">%</span></p>
-      <div class="flex items-center gap-1.5 mt-3">
-        <span class="material-symbols-outlined text-on-surface-variant" style="font-size:16px">remove</span>
-        <span class="text-sm font-semibold text-on-surface-variant">Stable</span>
-      </div>
+    <a href="performance.html" class="kpi-card">
+      <p class="kpi-label">Taux de closing</p>
+      <p class="kpi-value">34<span class="kpi-unit">%</span></p>
+      <p class="kpi-delta text-on-surface-variant">Stable</p>
     </a>
-    <a href="classement.html" class="hero-dark rounded-2xl p-6 text-white relative overflow-hidden soft-shadow hover-lift block">
-      <div class="flex items-center justify-between mb-5">
-        <p class="text-xs font-semibold tracking-[0.12em] text-white/60 uppercase">Rang top closer</p>
-        <span class="material-symbols-outlined text-white/60" style="font-size:20px">military_tech</span>
-      </div>
-      <p class="font-headline font-extrabold text-4xl metric-num">#7<span class="text-xl text-white/50 font-bold ml-1">/ 482</span></p>
-      <div class="flex items-center gap-1.5 mt-3">
-        <span class="material-symbols-outlined text-tertiary-container" style="font-size:16px">trending_up</span>
-        <span class="text-sm font-semibold text-tertiary-container">+12 places</span>
-        <span class="text-sm text-white/50">en 7j</span>
-      </div>
+    <a href="classement.html" class="kpi-card kpi-card-dark">
+      <p class="kpi-label text-white/60">Rang top closer</p>
+      <p class="kpi-value text-white">#7<span class="kpi-unit text-white/50">/482</span></p>
+      <p class="kpi-delta text-tertiary-container">+12 places en 7j</p>
     </a>
   </section>
 
-  <!-- NOS MISSIONS · TEASER -->
-  <section class="reveal mb-10" style="animation-delay: 0.25s">
-    <div class="flex items-end justify-between mb-6">
+  <!-- MISSIONS · featured + liste -->
+  <section class="reveal mb-12" style="animation-delay: 0.25s">
+    <div class="flex items-end justify-between mb-4">
       <div>
-        <p class="text-xs font-semibold tracking-[0.25em] text-on-surface-variant uppercase mb-2">Sélection du jour</p>
-        <h2 class="font-headline font-extrabold text-2xl md:text-3xl display-tight text-on-surface">Nos missions</h2>
+        <p class="text-[10px] uppercase tracking-[0.25em] text-on-surface-variant font-bold mb-2">Mission du jour</p>
+        <h2 class="font-headline font-extrabold text-2xl md:text-3xl display-tight text-on-surface">Tes opportunités</h2>
       </div>
       <a href="missions.html" class="text-sm font-semibold text-on-surface border-b border-on-surface/30 pb-0.5 hover:border-on-surface transition whitespace-nowrap flex items-center gap-1">
-        Voir toutes
+        Voir les 47
         <span class="material-symbols-outlined" style="font-size:16px">arrow_forward</span>
       </a>
     </div>
 
     <!-- Featured -->
-    <a href="missions.html" class="block reveal hero-dark rounded-2xl overflow-hidden relative mb-4 hover-lift" style="animation-delay: 0.3s">
-      <div class="p-6 md:p-8 relative z-10">
+    <a href="missions.html" class="hero-dark rounded-2xl overflow-hidden relative block mb-4 hover-lift">
+      <div class="p-8 md:p-10 relative z-10">
         <div class="flex items-center gap-2 mb-4">
           <span class="tag bg-primary text-on-primary">Premium</span>
           <span class="tag bg-white/10 text-white/80">SaaS B2B</span>
         </div>
-        <h3 class="font-headline font-extrabold text-2xl md:text-3xl display-tight text-white mb-2 max-w-2xl">Logiciel RH pour PME françaises</h3>
-        <p class="text-white/70 text-sm mb-5 max-w-xl">Propale un CRM RH à 450 DRH de PME. Leads fournis, script validé, coach IA intégré.</p>
+        <h3 class="font-headline font-extrabold text-2xl md:text-4xl display-tight text-white mb-2 max-w-2xl">Logiciel RH pour PME françaises</h3>
+        <p class="text-white/60 text-sm md:text-base mb-6 max-w-xl">450 DRH à contacter, script validé, coach IA intégré.</p>
         <div class="flex items-center gap-6 flex-wrap">
           <div>
-            <p class="text-[10px] uppercase tracking-[0.15em] text-white/50 mb-0.5">Commission</p>
-            <p class="font-headline font-extrabold text-xl text-white metric-num">420 €</p>
+            <p class="font-headline font-extrabold text-2xl text-white metric-num">420 €</p>
+            <p class="text-xs text-white/50">par signature</p>
           </div>
+          <div class="h-8 w-px bg-white/20"></div>
           <div>
-            <p class="text-[10px] uppercase tracking-[0.15em] text-white/50 mb-0.5">Leads</p>
-            <p class="font-headline font-extrabold text-xl text-white metric-num">450</p>
+            <p class="font-headline font-extrabold text-2xl text-white metric-num">450</p>
+            <p class="text-xs text-white/50">leads fournis</p>
           </div>
+          <div class="h-8 w-px bg-white/20"></div>
           <div>
-            <p class="text-[10px] uppercase tracking-[0.15em] text-white/50 mb-0.5">Exclu</p>
-            <p class="font-headline font-extrabold text-xl text-white metric-num">30j</p>
+            <p class="font-headline font-extrabold text-2xl text-white metric-num">30j</p>
+            <p class="text-xs text-white/50">exclusivité</p>
           </div>
         </div>
       </div>
     </a>
 
-    <!-- 2 quick cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <a href="missions.html" class="bg-surface-container-lowest rounded-2xl p-6 soft-shadow hover-lift block group">
-        <div class="flex items-start justify-between mb-4">
-          <div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center font-headline font-black text-on-surface">Q</div>
-          <span class="tag bg-primary-fixed text-primary">Urgent</span>
+    <!-- Liste compacte -->
+    <div class="bg-surface-container-lowest rounded-2xl soft-shadow overflow-hidden">
+      <a href="missions.html" class="mission-row group">
+        <div class="row-content">
+          <p class="row-sector">Fintech · Lyon</p>
+          <h4 class="row-title">Cartes corporate pour startups</h4>
         </div>
-        <p class="text-xs uppercase tracking-[0.15em] text-on-surface-variant font-semibold mb-1">Fintech · Lyon</p>
-        <h4 class="font-headline font-bold text-lg text-on-surface mb-3 leading-tight">Cartes corporate pour startups</h4>
-        <div class="flex items-end justify-between">
-          <p class="font-headline font-extrabold text-xl metric-num text-on-surface">350 €</p>
-          <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary group-hover:translate-x-1 transition-all" style="font-size:20px">arrow_forward</span>
+        <span class="tag bg-primary-fixed text-primary">Urgent</span>
+        <div class="row-amount">
+          <p class="amount-main">350 €</p>
+          <p class="amount-unit">par deal</p>
         </div>
+        <span class="material-symbols-outlined row-arrow" style="font-size:18px">arrow_forward</span>
       </a>
-      <a href="missions.html" class="bg-surface-container-lowest rounded-2xl p-6 soft-shadow hover-lift block group">
-        <div class="flex items-start justify-between mb-4">
-          <div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center font-headline font-black text-on-surface">P</div>
-          <span class="tag bg-tertiary-fixed text-tertiary">Hot</span>
+      <a href="missions.html" class="mission-row group">
+        <div class="row-content">
+          <p class="row-sector">SaaS · Marseille</p>
+          <h4 class="row-title">CRM immobilier pour agences indépendantes</h4>
         </div>
-        <p class="text-xs uppercase tracking-[0.15em] text-on-surface-variant font-semibold mb-1">SaaS · Marseille</p>
-        <h4 class="font-headline font-bold text-lg text-on-surface mb-3 leading-tight">CRM immobilier pour agences</h4>
-        <div class="flex items-end justify-between">
-          <p class="font-headline font-extrabold text-xl metric-num text-on-surface">290 €</p>
-          <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary group-hover:translate-x-1 transition-all" style="font-size:20px">arrow_forward</span>
+        <span class="tag bg-tertiary-fixed text-tertiary">Hot</span>
+        <div class="row-amount">
+          <p class="amount-main">290 €</p>
+          <p class="amount-unit">par deal</p>
         </div>
+        <span class="material-symbols-outlined row-arrow" style="font-size:18px">arrow_forward</span>
+      </a>
+      <a href="missions.html" class="mission-row group">
+        <div class="row-content">
+          <p class="row-sector">Cybersécurité · Lille</p>
+          <h4 class="row-title">Audit sécurité pour PME de 50-200 pers.</h4>
+        </div>
+        <span class="tag bg-tertiary-fixed text-tertiary">Hot</span>
+        <div class="row-amount">
+          <p class="amount-main">480 €</p>
+          <p class="amount-unit">par audit</p>
+        </div>
+        <span class="material-symbols-outlined row-arrow" style="font-size:18px">arrow_forward</span>
       </a>
     </div>
   </section>
 
-  <!-- CLASSEMENT COMPACT + CTA GRID -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
-    <!-- Classement teaser -->
+  <!-- CLASSEMENT + ACTIVITÉ -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+    <!-- Classement compact -->
     <section class="reveal" style="animation-delay: 0.4s">
       <div class="flex items-end justify-between mb-4">
         <div>
-          <p class="text-xs font-semibold tracking-[0.25em] text-on-surface-variant uppercase mb-1">Ta niche</p>
-          <h2 class="font-headline font-extrabold text-xl display-tight text-on-surface">Classement SaaS B2B</h2>
+          <p class="text-[10px] uppercase tracking-[0.25em] text-on-surface-variant font-bold mb-2">Ta niche</p>
+          <h2 class="font-headline font-extrabold text-xl display-tight text-on-surface">SaaS B2B France</h2>
         </div>
         <a href="classement.html" class="text-xs font-semibold text-on-surface border-b border-on-surface/30 pb-0.5 hover:border-on-surface transition flex items-center gap-1">
           Tout voir
           <span class="material-symbols-outlined" style="font-size:14px">arrow_forward</span>
         </a>
       </div>
-      <div class="bg-surface-container-lowest rounded-2xl p-5 soft-shadow">
-        <div class="space-y-3">
-          <div class="flex items-center gap-3">
-            <span class="font-headline font-bold text-on-surface-variant w-6 num-tight">05</span>
-            <div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-[10px] font-bold">AD</div>
-            <div class="flex-1 min-w-0"><p class="text-sm font-semibold text-on-surface truncate">Aurélie D.</p></div>
-            <p class="font-headline font-bold text-sm metric-num">6 120 €</p>
-          </div>
-          <div class="flex items-center gap-3">
-            <span class="font-headline font-bold text-on-surface-variant w-6 num-tight">06</span>
-            <div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-[10px] font-bold">TK</div>
-            <div class="flex-1 min-w-0"><p class="text-sm font-semibold text-on-surface truncate">Thomas K.</p></div>
-            <p class="font-headline font-bold text-sm metric-num">5 340 €</p>
-          </div>
-          <div class="flex items-center gap-3 -mx-2 px-2 py-2 rounded-xl bg-primary-fixed">
-            <span class="font-headline font-extrabold text-primary w-6 num-tight">07</span>
-            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-[10px] font-bold text-white">LM</div>
-            <div class="flex-1 min-w-0"><p class="text-sm font-bold text-primary truncate">Toi</p></div>
-            <p class="font-headline font-extrabold text-sm metric-num text-primary">4 827 €</p>
-          </div>
-          <div class="flex items-center gap-3">
-            <span class="font-headline font-bold text-on-surface-variant w-6 num-tight">08</span>
-            <div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-[10px] font-bold">MR</div>
-            <div class="flex-1 min-w-0"><p class="text-sm font-semibold text-on-surface truncate">Maxime R.</p></div>
-            <p class="font-headline font-bold text-sm metric-num">4 510 €</p>
-          </div>
+      <div class="bg-surface-container-lowest rounded-2xl soft-shadow overflow-hidden">
+        <div class="rank-row">
+          <span class="rank-num">05</span>
+          <p class="rank-name">Aurélie D.</p>
+          <p class="rank-amount">6 120 €</p>
+        </div>
+        <div class="rank-row">
+          <span class="rank-num">06</span>
+          <p class="rank-name">Thomas K.</p>
+          <p class="rank-amount">5 340 €</p>
+        </div>
+        <div class="rank-row rank-row-me">
+          <span class="rank-num text-primary">07</span>
+          <p class="rank-name font-bold text-primary">Toi</p>
+          <p class="rank-amount text-primary">4 827 €</p>
+        </div>
+        <div class="rank-row">
+          <span class="rank-num">08</span>
+          <p class="rank-name">Maxime R.</p>
+          <p class="rank-amount">4 510 €</p>
+        </div>
+        <div class="rank-row">
+          <span class="rank-num">09</span>
+          <p class="rank-name">Sofia P.</p>
+          <p class="rank-amount">4 280 €</p>
         </div>
       </div>
     </section>
 
-    <!-- Activity teaser -->
+    <!-- Activité -->
     <section class="reveal" style="animation-delay: 0.5s">
       <div class="flex items-end justify-between mb-4">
         <div>
-          <p class="text-xs font-semibold tracking-[0.25em] text-on-surface-variant uppercase mb-1 flex items-center gap-2">
+          <p class="text-[10px] uppercase tracking-[0.25em] text-on-surface-variant font-bold mb-2 flex items-center gap-2">
             <span class="w-1.5 h-1.5 bg-tertiary rounded-full live-dot"></span>
             Live
           </p>
-          <h2 class="font-headline font-extrabold text-xl display-tight text-on-surface">Activité récente</h2>
+          <h2 class="font-headline font-extrabold text-xl display-tight text-on-surface">Activité</h2>
         </div>
         <a href="performance.html" class="text-xs font-semibold text-on-surface border-b border-on-surface/30 pb-0.5 hover:border-on-surface transition flex items-center gap-1">
           Historique
           <span class="material-symbols-outlined" style="font-size:14px">arrow_forward</span>
         </a>
       </div>
-      <div class="bg-surface-container-lowest rounded-2xl p-5 soft-shadow space-y-3">
-        <div class="flex gap-3">
-          <div class="w-8 h-8 rounded-full bg-tertiary/10 flex items-center justify-center flex-shrink-0 mt-0.5"><span class="material-symbols-outlined text-tertiary" style="font-size:16px">check_circle</span></div>
-          <div class="flex-1 min-w-0"><p class="text-sm text-on-surface"><span class="font-semibold">Deal signé</span> · Qonto Business</p><p class="text-xs text-on-surface-variant mt-0.5">+350 € · il y a 2h</p></div>
+      <div class="bg-surface-container-lowest rounded-2xl soft-shadow overflow-hidden">
+        <div class="activity-row">
+          <span class="activity-dot bg-tertiary"></span>
+          <div class="flex-1 min-w-0">
+            <p class="activity-title">Deal signé · Qonto Business</p>
+            <p class="activity-meta">+350 € · il y a 2h</p>
+          </div>
         </div>
-        <div class="flex gap-3">
-          <div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center flex-shrink-0 mt-0.5"><span class="material-symbols-outlined text-primary" style="font-size:16px">call</span></div>
-          <div class="flex-1 min-w-0"><p class="text-sm text-on-surface"><span class="font-semibold">Relance planifiée</span> · M. Bertrand</p><p class="text-xs text-on-surface-variant mt-0.5">Demain 14h · il y a 4h</p></div>
+        <div class="activity-row">
+          <span class="activity-dot bg-primary"></span>
+          <div class="flex-1 min-w-0">
+            <p class="activity-title">Relance planifiée · M. Bertrand</p>
+            <p class="activity-meta">Demain 14h · il y a 4h</p>
+          </div>
         </div>
-        <div class="flex gap-3">
-          <div class="w-8 h-8 rounded-full bg-tertiary/10 flex items-center justify-center flex-shrink-0 mt-0.5"><span class="material-symbols-outlined text-tertiary" style="font-size:16px">check_circle</span></div>
-          <div class="flex-1 min-w-0"><p class="text-sm text-on-surface"><span class="font-semibold">Deal signé</span> · Hublo RH</p><p class="text-xs text-on-surface-variant mt-0.5">+420 € · hier</p></div>
+        <div class="activity-row">
+          <span class="activity-dot bg-tertiary"></span>
+          <div class="flex-1 min-w-0">
+            <p class="activity-title">Deal signé · Hublo RH</p>
+            <p class="activity-meta">+420 € · hier</p>
+          </div>
+        </div>
+        <div class="activity-row">
+          <span class="activity-dot bg-on-surface-variant"></span>
+          <div class="flex-1 min-w-0">
+            <p class="activity-title">Cold call · Seoia</p>
+            <p class="activity-meta">À recontacter · hier</p>
+          </div>
         </div>
       </div>
     </section>
   </div>
 
-  <!-- CTA GRID · Explorer les autres sections -->
+  <!-- CTA GRID · allégée -->
   <section class="reveal" style="animation-delay: 0.6s">
-    <p class="text-xs font-semibold tracking-[0.25em] text-on-surface-variant uppercase mb-4">Explorer</p>
+    <p class="text-[10px] uppercase tracking-[0.25em] text-on-surface-variant font-bold mb-4">Explorer</p>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-      <a href="battle.html" class="bg-surface-container-lowest rounded-2xl p-5 soft-shadow hover-lift block group">
-        <div class="w-10 h-10 rounded-xl cta-gradient flex items-center justify-center mb-3"><span class="material-symbols-outlined text-white" style="font-size:20px">swords</span></div>
-        <p class="font-headline font-bold text-sm text-on-surface mb-1">Battle royale</p>
-        <p class="text-xs text-on-surface-variant">Course aux 2 deals · 07:42 restant</p>
+      <a href="battle.html" class="explore-card">
+        <p class="explore-label">Battle royale</p>
+        <p class="explore-meta">1/2 deals · 07:42 restant</p>
       </a>
-      <a href="mission-impossible.html" class="gold-card rounded-2xl p-5 soft-shadow hover-lift block group relative overflow-hidden">
-        <div class="w-10 h-10 rounded-xl gold-border bg-white/5 flex items-center justify-center mb-3 relative z-10"><span class="material-symbols-outlined gold-text" style="font-size:20px">crisis_alert</span></div>
-        <p class="font-headline font-bold text-sm text-white mb-1 relative z-10">Mission impossible</p>
-        <p class="text-xs text-white/60 relative z-10">1 500 € · Top 50 · 42h</p>
+      <a href="mission-impossible.html" class="explore-card explore-card-gold">
+        <p class="explore-label">Mission impossible</p>
+        <p class="explore-meta">1 500 € · Top 50 · 42h</p>
       </a>
-      <a href="pipeline.html" class="bg-surface-container-lowest rounded-2xl p-5 soft-shadow hover-lift block group">
-        <div class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center mb-3"><span class="material-symbols-outlined text-on-surface" style="font-size:20px">account_tree</span></div>
-        <p class="font-headline font-bold text-sm text-on-surface mb-1">Pipeline</p>
-        <p class="text-xs text-on-surface-variant">12 prospects · 1 hot à closer</p>
+      <a href="pipeline.html" class="explore-card">
+        <p class="explore-label">Pipeline</p>
+        <p class="explore-meta">12 prospects · 3 hot</p>
       </a>
-      <a href="voice.html" class="bg-surface-container-lowest rounded-2xl p-5 soft-shadow hover-lift block group">
-        <div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center mb-3"><span class="material-symbols-outlined text-white" style="font-size:20px">mic</span></div>
-        <p class="font-headline font-bold text-sm text-on-surface mb-1">Hey Stacker</p>
-        <p class="text-xs text-on-surface-variant">Commandes vocales · beta</p>
+      <a href="voice.html" class="explore-card">
+        <p class="explore-label">Hey Stacker</p>
+        <p class="explore-meta">Commandes vocales · beta</p>
       </a>
     </div>
   </section>
 </main>
+
+<style>
+  /* KPI cards allégées */
+  .kpi-card {
+    display: block; padding: 24px; border-radius: 16px;
+    background: #ffffff; transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 8px rgba(27,28,28,0.04);
+  }
+  .kpi-card:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(27,28,28,0.08); }
+  .kpi-card-dark { background: #1b1c1c; }
+  .kpi-label {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.15em;
+    color: #8e706f; font-weight: 600; margin-bottom: 16px;
+  }
+  .kpi-value {
+    font-family: 'Plus Jakarta Sans'; font-weight: 800; font-size: 36px;
+    color: #1b1c1c; letter-spacing: -0.045em; font-feature-settings: "tnum"; line-height: 1;
+  }
+  .kpi-unit { font-size: 20px; color: #8e706f; font-weight: 700; }
+  .kpi-delta { font-size: 13px; font-weight: 600; margin-top: 12px; }
+
+  /* Mission rows */
+  .mission-row {
+    display: grid; grid-template-columns: 1fr 100px 120px 24px; gap: 20px;
+    padding: 18px 24px; align-items: center;
+    border-bottom: 1px solid rgba(226, 190, 188, 0.15);
+    transition: background 0.15s ease; cursor: pointer; text-decoration: none; color: inherit;
+  }
+  .mission-row:last-child { border-bottom: none; }
+  .mission-row:hover { background: #f6f3f2; }
+  .row-sector { font-size: 10px; text-transform: uppercase; letter-spacing: 0.15em; color: #8e706f; font-weight: 600; margin-bottom: 4px; }
+  .row-title { font-size: 14px; font-weight: 600; color: #1b1c1c; }
+  .row-amount { text-align: right; }
+  .row-amount .amount-main { font-family: 'Plus Jakarta Sans'; font-weight: 800; font-size: 16px; color: #1b1c1c; letter-spacing: -0.04em; }
+  .row-amount .amount-unit { font-size: 10px; color: #8e706f; margin-top: 2px; }
+  .row-arrow { color: #8e706f; transition: all 0.2s; }
+  .mission-row:hover .row-arrow { color: #b52330; transform: translateX(4px); }
+  @media (max-width: 768px) {
+    .mission-row { grid-template-columns: 1fr auto; gap: 6px; padding: 16px 20px; }
+    .row-content { grid-column: 1; grid-row: 1; }
+    .tag { grid-column: 1; grid-row: 2; justify-self: start; margin-top: 4px; }
+    .row-amount { grid-column: 2; grid-row: 1 / 3; align-self: center; }
+    .row-arrow { display: none; }
+  }
+
+  /* Classement rows */
+  .rank-row {
+    display: grid; grid-template-columns: 32px 1fr auto; gap: 16px;
+    padding: 14px 20px; align-items: center;
+    border-bottom: 1px solid rgba(226, 190, 188, 0.15);
+    transition: background 0.15s ease;
+  }
+  .rank-row:last-child { border-bottom: none; }
+  .rank-row:hover { background: #f6f3f2; }
+  .rank-row-me { background: #ffdad8; }
+  .rank-row-me:hover { background: #ffcbc9; }
+  .rank-num { font-family: 'Plus Jakarta Sans'; font-weight: 700; color: #8e706f; font-size: 14px; letter-spacing: -0.04em; }
+  .rank-name { font-size: 14px; font-weight: 600; color: #1b1c1c; }
+  .rank-amount { font-family: 'Plus Jakarta Sans'; font-weight: 800; font-size: 14px; color: #1b1c1c; letter-spacing: -0.04em; font-feature-settings: "tnum"; }
+
+  /* Activity rows */
+  .activity-row {
+    display: grid; grid-template-columns: 16px 1fr; gap: 16px;
+    padding: 14px 20px; align-items: start;
+    border-bottom: 1px solid rgba(226, 190, 188, 0.15);
+  }
+  .activity-row:last-child { border-bottom: none; }
+  .activity-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 8px; }
+  .activity-title { font-size: 14px; font-weight: 600; color: #1b1c1c; }
+  .activity-meta { font-size: 12px; color: #8e706f; margin-top: 2px; }
+
+  /* Explore cards */
+  .explore-card {
+    display: block; padding: 20px; border-radius: 14px;
+    background: #ffffff; transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 8px rgba(27,28,28,0.04); cursor: pointer;
+  }
+  .explore-card:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(27,28,28,0.08); }
+  .explore-card-gold {
+    background: linear-gradient(135deg, #1f1d18 0%, #2a2620 100%);
+    color: white; position: relative; overflow: hidden;
+  }
+  .explore-card-gold::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, transparent 30%, rgba(255,197,0,0.08) 50%, transparent 70%);
+    background-size: 200% 200%; animation: goldShimmer 6s ease infinite;
+  }
+  .explore-card-gold .explore-label { color: #ffd700; position: relative; }
+  .explore-card-gold .explore-meta { color: rgba(255,255,255,0.5); position: relative; }
+  .explore-label { font-family: 'Plus Jakarta Sans'; font-weight: 700; font-size: 14px; color: #1b1c1c; margin-bottom: 4px; }
+  .explore-meta { font-size: 11px; color: #8e706f; }
+</style>
 
 <!-- FOOTER -->
 <footer class="max-w-[1400px] mx-auto px-6 mt-16 pt-8 pb-10">
