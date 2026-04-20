@@ -246,14 +246,12 @@
 </header>
 
 <main class="max-w-[1400px] mx-auto px-6 py-8 page-enter">
-  <!-- Breadcrumb -->
   <nav class="flex items-center gap-2 text-xs text-on-surface-variant mb-4">
     <a href="index.html" class="hover:text-on-surface transition">Tableau de bord</a>
     <span class="material-symbols-outlined" style="font-size:14px">chevron_right</span>
     <span class="font-semibold text-on-surface">Nos missions</span>
   </nav>
 
-  <!-- Page header -->
   <section class="reveal mb-8">
     <div class="flex items-end justify-between flex-wrap gap-4">
       <div>
@@ -264,37 +262,25 @@
       <div class="flex items-center gap-2">
         <div class="relative">
           <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" style="font-size:18px">search</span>
-          <input type="text" placeholder="Chercher une mission..." class="pl-10 pr-4 py-2.5 rounded-full bg-surface-container-high text-sm font-medium w-64 focus:outline-none focus:ring-2 focus:ring-primary/30">
+          <input type="text" placeholder="Chercher..." class="pl-10 pr-4 py-2.5 rounded-full bg-surface-container-high text-sm font-medium w-48 md:w-64 focus:outline-none focus:ring-2 focus:ring-primary/30">
         </div>
-        <button class="p-2.5 rounded-full bg-surface-container-high hover:bg-surface-container-highest transition">
-          <span class="material-symbols-outlined">tune</span>
-        </button>
       </div>
     </div>
   </section>
 
-  <!-- Stats bar -->
-  <section class="reveal grid grid-cols-2 md:grid-cols-4 gap-3 mb-8" style="animation-delay:0.1s">
-    <div class="bg-surface-container-lowest rounded-2xl p-4 soft-shadow">
-      <p class="text-[10px] uppercase tracking-[0.12em] text-on-surface-variant font-semibold mb-1">Total actives</p>
-      <p class="font-headline font-extrabold text-2xl metric-num text-on-surface">47</p>
-    </div>
-    <div class="bg-surface-container-lowest rounded-2xl p-4 soft-shadow">
-      <p class="text-[10px] uppercase tracking-[0.12em] text-on-surface-variant font-semibold mb-1">Nouvelles cette semaine</p>
-      <p class="font-headline font-extrabold text-2xl metric-num text-tertiary">+12</p>
-    </div>
-    <div class="bg-surface-container-lowest rounded-2xl p-4 soft-shadow">
-      <p class="text-[10px] uppercase tracking-[0.12em] text-on-surface-variant font-semibold mb-1">Commission moyenne</p>
-      <p class="font-headline font-extrabold text-2xl metric-num text-on-surface">312 €</p>
-    </div>
-    <div class="bg-surface-container-lowest rounded-2xl p-4 soft-shadow">
-      <p class="text-[10px] uppercase tracking-[0.12em] text-on-surface-variant font-semibold mb-1">Plus gros deal</p>
-      <p class="font-headline font-extrabold text-2xl metric-num text-primary">1 500 €</p>
-    </div>
+  <!-- Stats inline -->
+  <section class="reveal mb-8 flex items-center gap-8 flex-wrap text-sm" style="animation-delay:0.1s">
+    <div><span class="font-headline font-extrabold text-xl metric-num text-on-surface">47</span> <span class="text-on-surface-variant">actives</span></div>
+    <div class="h-4 w-px bg-outline-variant/40"></div>
+    <div><span class="font-headline font-extrabold text-xl metric-num text-tertiary">+12</span> <span class="text-on-surface-variant">cette semaine</span></div>
+    <div class="h-4 w-px bg-outline-variant/40"></div>
+    <div><span class="font-headline font-extrabold text-xl metric-num text-on-surface">312 €</span> <span class="text-on-surface-variant">commission moyenne</span></div>
+    <div class="h-4 w-px bg-outline-variant/40"></div>
+    <div><span class="font-headline font-extrabold text-xl metric-num text-primary">1 500 €</span> <span class="text-on-surface-variant">plus gros deal</span></div>
   </section>
 
-  <!-- Filters -->
-  <section class="reveal mb-6" style="animation-delay:0.2s">
+  <!-- Filter pills -->
+  <section class="reveal mb-6" style="animation-delay:0.15s">
     <div class="flex gap-2 overflow-x-auto scroll-hide pb-2">
       <button class="filter-pill active px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap bg-surface-container-high">Toutes · 47</button>
       <button class="filter-pill px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap bg-surface-container-high text-on-surface-variant">SaaS B2B · 18</button>
@@ -306,203 +292,187 @@
     </div>
   </section>
 
-  <!-- Featured -->
-  <section class="reveal mb-6" style="animation-delay:0.25s">
-    <div class="hero-dark rounded-2xl overflow-hidden relative">
-      <div class="p-8 md:p-10 relative z-10">
-        <div class="flex items-center gap-2 mb-6">
+  <!-- FEATURED -->
+  <section class="reveal mb-4" style="animation-delay:0.25s">
+    <p class="text-[10px] uppercase tracking-[0.25em] text-on-surface-variant font-bold mb-3">Mission du jour · exclusivité 30j</p>
+    <a href="#" onclick="startMission('Logiciel RH Hublo'); return false;" class="hero-dark rounded-2xl overflow-hidden relative block hover-lift">
+      <div class="p-8 md:p-12 relative z-10">
+        <div class="flex items-center gap-2 mb-5">
           <span class="tag bg-primary text-on-primary">Premium</span>
           <span class="tag bg-white/10 text-white/80">SaaS B2B</span>
           <span class="tag bg-white/10 text-white/80">Récurrent</span>
         </div>
         <h3 class="font-headline font-extrabold text-3xl md:text-5xl display-tight text-white mb-3 max-w-2xl">Logiciel RH pour PME françaises</h3>
-        <p class="text-white/70 text-base md:text-lg mb-8 max-w-xl">Propale un CRM RH à 450 DRH de PME de 20 à 100 salariés. Leads fournis, script validé, coach IA intégré.</p>
-        <div class="grid grid-cols-3 gap-4 mb-8 max-w-xl">
-          <div><p class="text-xs uppercase tracking-[0.15em] text-white/50 mb-1">Commission</p><p class="font-headline font-extrabold text-2xl text-white metric-num">420 €</p></div>
-          <div><p class="text-xs uppercase tracking-[0.15em] text-white/50 mb-1">Leads fournis</p><p class="font-headline font-extrabold text-2xl text-white metric-num">450</p></div>
-          <div><p class="text-xs uppercase tracking-[0.15em] text-white/50 mb-1">Exclusivité</p><p class="font-headline font-extrabold text-2xl text-white metric-num">30j</p></div>
-        </div>
-        <div class="flex items-center gap-3 flex-wrap">
-          <button onclick="startMission('Hublo RH')" class="px-6 py-3.5 rounded-full bg-white text-on-surface font-bold text-sm hover:bg-white/90 transition flex items-center gap-2">
-            <span class="material-symbols-outlined" style="font-size:18px">play_arrow</span>
-            Commencer la mission
-          </button>
-          <button class="px-6 py-3.5 rounded-full bg-white/10 text-white font-semibold text-sm hover:bg-white/20 transition border border-white/10">Voir le brief complet</button>
+        <p class="text-white/60 text-base md:text-lg mb-8 max-w-xl">Propale un CRM RH à 450 DRH de PME. Leads fournis, script validé, coach IA intégré.</p>
+        <div class="flex items-center gap-8 flex-wrap">
+          <div>
+            <p class="font-headline font-extrabold text-3xl text-white metric-num">420 €</p>
+            <p class="text-xs text-white/50">par signature</p>
+          </div>
+          <div class="h-10 w-px bg-white/20"></div>
+          <div>
+            <p class="font-headline font-extrabold text-3xl text-white metric-num">450</p>
+            <p class="text-xs text-white/50">leads fournis</p>
+          </div>
+          <div class="h-10 w-px bg-white/20"></div>
+          <div>
+            <p class="font-headline font-extrabold text-3xl text-white metric-num">30j</p>
+            <p class="text-xs text-white/50">exclusivité</p>
+          </div>
         </div>
       </div>
-      <div class="absolute top-8 right-8 z-10 text-center">
-        <div class="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center"><span class="font-headline font-black text-white text-xl">H</span></div>
-        <p class="text-white/60 text-xs text-center mt-2 font-semibold tracking-wider">Hublo</p>
+    </a>
+  </section>
+
+  <!-- Compact list -->
+  <section class="reveal" style="animation-delay:0.35s">
+    <div class="bg-surface-container-lowest rounded-2xl soft-shadow overflow-hidden">
+      
+    <a href="#" onclick="startMission('Solution transport pour e-commerçants'); return false;" class="hybrid-row group">
+      <div class="hybrid-row-content">
+        <p class="hybrid-row-sector">Logistique · Paris</p>
+        <h4 class="hybrid-row-title">Solution transport pour e-commerçants</h4>
       </div>
+      <span class="tag bg-tertiary-fixed text-tertiary">Nouveau</span>
+      <div class="hybrid-row-amount">
+        <p class="amount-main">180 €</p>
+        <p class="amount-unit">par deal signé</p>
+      </div>
+      <span class="material-symbols-outlined hybrid-row-arrow" style="font-size:18px">arrow_forward</span>
+    </a>
+  
+    <a href="#" onclick="startMission('Cartes corporate pour startups'); return false;" class="hybrid-row group">
+      <div class="hybrid-row-content">
+        <p class="hybrid-row-sector">Fintech · Lyon</p>
+        <h4 class="hybrid-row-title">Cartes corporate pour startups</h4>
+      </div>
+      <span class="tag bg-primary-fixed text-primary">Urgent</span>
+      <div class="hybrid-row-amount">
+        <p class="amount-main">350 €</p>
+        <p class="amount-unit">par deal signé</p>
+      </div>
+      <span class="material-symbols-outlined hybrid-row-arrow" style="font-size:18px">arrow_forward</span>
+    </a>
+  
+    <a href="#" onclick="startMission('Accompagnement SEO pour artisans'); return false;" class="hybrid-row group">
+      <div class="hybrid-row-content">
+        <p class="hybrid-row-sector">SEO · Remote</p>
+        <h4 class="hybrid-row-title">Accompagnement SEO pour artisans</h4>
+      </div>
+      <span class="tag bg-surface-container-high text-on-surface-variant">Récurrent</span>
+      <div class="hybrid-row-amount">
+        <p class="amount-main">15 %</p>
+        <p class="amount-unit">récurrent à vie</p>
+      </div>
+      <span class="material-symbols-outlined hybrid-row-arrow" style="font-size:18px">arrow_forward</span>
+    </a>
+  
+    <a href="#" onclick="startMission('CRM immobilier pour agences indépendantes'); return false;" class="hybrid-row group">
+      <div class="hybrid-row-content">
+        <p class="hybrid-row-sector">SaaS · Marseille</p>
+        <h4 class="hybrid-row-title">CRM immobilier pour agences indépendantes</h4>
+      </div>
+      <span class="tag bg-tertiary-fixed text-tertiary">Hot</span>
+      <div class="hybrid-row-amount">
+        <p class="amount-main">290 €</p>
+        <p class="amount-unit">par deal signé</p>
+      </div>
+      <span class="material-symbols-outlined hybrid-row-arrow" style="font-size:18px">arrow_forward</span>
+    </a>
+  
+    <a href="#" onclick="startMission('Mutuelle sur-mesure pour freelances'); return false;" class="hybrid-row group">
+      <div class="hybrid-row-content">
+        <p class="hybrid-row-sector">Assurance · Remote</p>
+        <h4 class="hybrid-row-title">Mutuelle sur-mesure pour freelances</h4>
+      </div>
+      <span class="tag bg-tertiary-fixed text-tertiary">Nouveau</span>
+      <div class="hybrid-row-amount">
+        <p class="amount-main">220 €</p>
+        <p class="amount-unit">par signature</p>
+      </div>
+      <span class="material-symbols-outlined hybrid-row-arrow" style="font-size:18px">arrow_forward</span>
+    </a>
+  
+    <a href="#" onclick="startMission('Audit sécurité pour PME de 50-200 pers.'); return false;" class="hybrid-row group">
+      <div class="hybrid-row-content">
+        <p class="hybrid-row-sector">Cybersécurité · Lille</p>
+        <h4 class="hybrid-row-title">Audit sécurité pour PME de 50-200 pers.</h4>
+      </div>
+      <span class="tag bg-tertiary-fixed text-tertiary">Hot</span>
+      <div class="hybrid-row-amount">
+        <p class="amount-main">480 €</p>
+        <p class="amount-unit">par audit vendu</p>
+      </div>
+      <span class="material-symbols-outlined hybrid-row-arrow" style="font-size:18px">arrow_forward</span>
+    </a>
+  
+    <a href="#" onclick="startMission('Panneaux solaires pour collectivités'); return false;" class="hybrid-row group">
+      <div class="hybrid-row-content">
+        <p class="hybrid-row-sector">Energie · Toulouse</p>
+        <h4 class="hybrid-row-title">Panneaux solaires pour collectivités</h4>
+      </div>
+      <span class="tag bg-surface-container-high text-on-surface-variant">Long cycle</span>
+      <div class="hybrid-row-amount">
+        <p class="amount-main">1 200 €</p>
+        <p class="amount-unit">par contrat</p>
+      </div>
+      <span class="material-symbols-outlined hybrid-row-arrow" style="font-size:18px">arrow_forward</span>
+    </a>
+  
+    <a href="#" onclick="startMission('Coaching nutrition pour sportifs'); return false;" class="hybrid-row group">
+      <div class="hybrid-row-content">
+        <p class="hybrid-row-sector">Nutrition · Remote</p>
+        <h4 class="hybrid-row-title">Coaching nutrition pour sportifs</h4>
+      </div>
+      <span class="tag bg-tertiary-fixed text-tertiary">Nouveau</span>
+      <div class="hybrid-row-amount">
+        <p class="amount-main">120 €</p>
+        <p class="amount-unit">par abonnement</p>
+      </div>
+      <span class="material-symbols-outlined hybrid-row-arrow" style="font-size:18px">arrow_forward</span>
+    </a>
+  
     </div>
   </section>
 
-  <!-- Missions grid -->
-  <section class="reveal grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" style="animation-delay:0.3s">
-    
-    <a href="#" onclick="startMission('Solution transport pour e-commerçants'); return false;" class="bg-surface-container-lowest rounded-2xl p-6 soft-shadow hover-lift cursor-pointer group block">
-      <div class="flex items-start justify-between mb-5">
-        <div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center font-headline font-black text-on-surface">L</div>
-        <span class="tag bg-tertiary-fixed text-tertiary">Nouveau</span>
-      </div>
-      <p class="text-xs uppercase tracking-[0.15em] text-on-surface-variant font-semibold mb-2">Logistique · Paris</p>
-      <h4 class="font-headline font-bold text-lg text-on-surface mb-2 leading-tight">Solution transport pour e-commerçants</h4>
-      <p class="text-sm text-on-surface-variant mb-5 line-clamp-2">Contacter des responsables e-commerce pour présenter une offre dropshipping premium.</p>
-      <div class="flex items-end justify-between pt-4 border-t border-outline-variant/30">
-        <div>
-          <p class="font-headline font-extrabold text-xl metric-num text-on-surface">180 €</p>
-          <p class="text-xs text-on-surface-variant">par deal signé</p>
-        </div>
-        <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary group-hover:translate-x-1 transition-all">arrow_forward</span>
-      </div>
-    </a>
-  
-    <a href="#" onclick="startMission('Cartes corporate pour startups'); return false;" class="bg-surface-container-lowest rounded-2xl p-6 soft-shadow hover-lift cursor-pointer group block">
-      <div class="flex items-start justify-between mb-5">
-        <div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center font-headline font-black text-on-surface">Q</div>
-        <span class="tag bg-primary-fixed text-primary">Urgent</span>
-      </div>
-      <p class="text-xs uppercase tracking-[0.15em] text-on-surface-variant font-semibold mb-2">Fintech · Lyon</p>
-      <h4 class="font-headline font-bold text-lg text-on-surface mb-2 leading-tight">Cartes corporate pour startups</h4>
-      <p class="text-sm text-on-surface-variant mb-5 line-clamp-2">Démarche 200 CFO de scale-ups série A et B pour vendre Qonto Business.</p>
-      <div class="flex items-end justify-between pt-4 border-t border-outline-variant/30">
-        <div>
-          <p class="font-headline font-extrabold text-xl metric-num text-on-surface">350 €</p>
-          <p class="text-xs text-on-surface-variant">par deal signé</p>
-        </div>
-        <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary group-hover:translate-x-1 transition-all">arrow_forward</span>
-      </div>
-    </a>
-  
-    <a href="#" onclick="startMission('Accompagnement SEO pour artisans'); return false;" class="bg-surface-container-lowest rounded-2xl p-6 soft-shadow hover-lift cursor-pointer group block">
-      <div class="flex items-start justify-between mb-5">
-        <div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center font-headline font-black text-on-surface">S</div>
-        <span class="tag bg-surface-container-high text-on-surface-variant">Récurrent</span>
-      </div>
-      <p class="text-xs uppercase tracking-[0.15em] text-on-surface-variant font-semibold mb-2">SEO · Remote</p>
-      <h4 class="font-headline font-bold text-lg text-on-surface mb-2 leading-tight">Accompagnement SEO pour artisans</h4>
-      <p class="text-sm text-on-surface-variant mb-5 line-clamp-2">Vente d'un abonnement SEO local à 199€/mois. Cible : artisans BTP du Sud-Est.</p>
-      <div class="flex items-end justify-between pt-4 border-t border-outline-variant/30">
-        <div>
-          <p class="font-headline font-extrabold text-xl metric-num text-on-surface">15 %</p>
-          <p class="text-xs text-on-surface-variant">récurrent à vie</p>
-        </div>
-        <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary group-hover:translate-x-1 transition-all">arrow_forward</span>
-      </div>
-    </a>
-  
-    <a href="#" onclick="startMission('CRM immobilier pour agences indépendantes'); return false;" class="bg-surface-container-lowest rounded-2xl p-6 soft-shadow hover-lift cursor-pointer group block">
-      <div class="flex items-start justify-between mb-5">
-        <div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center font-headline font-black text-on-surface">P</div>
-        <span class="tag bg-tertiary-fixed text-tertiary">Hot</span>
-      </div>
-      <p class="text-xs uppercase tracking-[0.15em] text-on-surface-variant font-semibold mb-2">SaaS · Marseille</p>
-      <h4 class="font-headline font-bold text-lg text-on-surface mb-2 leading-tight">CRM immobilier pour agences indépendantes</h4>
-      <p class="text-sm text-on-surface-variant mb-5 line-clamp-2">Démarche 320 agents immobiliers pour un CRM taillé spécifique métier.</p>
-      <div class="flex items-end justify-between pt-4 border-t border-outline-variant/30">
-        <div>
-          <p class="font-headline font-extrabold text-xl metric-num text-on-surface">290 €</p>
-          <p class="text-xs text-on-surface-variant">par deal signé</p>
-        </div>
-        <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary group-hover:translate-x-1 transition-all">arrow_forward</span>
-      </div>
-    </a>
-  
-    <a href="#" onclick="startMission('Mutuelle sur-mesure pour freelances'); return false;" class="bg-surface-container-lowest rounded-2xl p-6 soft-shadow hover-lift cursor-pointer group block">
-      <div class="flex items-start justify-between mb-5">
-        <div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center font-headline font-black text-on-surface">A</div>
-        <span class="tag bg-tertiary-fixed text-tertiary">Nouveau</span>
-      </div>
-      <p class="text-xs uppercase tracking-[0.15em] text-on-surface-variant font-semibold mb-2">Assurance · Remote</p>
-      <h4 class="font-headline font-bold text-lg text-on-surface mb-2 leading-tight">Mutuelle sur-mesure pour freelances</h4>
-      <p class="text-sm text-on-surface-variant mb-5 line-clamp-2">Vendre une mutuelle santé adaptée aux indépendants en portage et auto-entrepreneurs.</p>
-      <div class="flex items-end justify-between pt-4 border-t border-outline-variant/30">
-        <div>
-          <p class="font-headline font-extrabold text-xl metric-num text-on-surface">220 €</p>
-          <p class="text-xs text-on-surface-variant">par signature</p>
-        </div>
-        <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary group-hover:translate-x-1 transition-all">arrow_forward</span>
-      </div>
-    </a>
-  
-    <a href="#" onclick="startMission('Bootcamp commercial B2B 10 semaines'); return false;" class="bg-surface-container-lowest rounded-2xl p-6 soft-shadow hover-lift cursor-pointer group block">
-      <div class="flex items-start justify-between mb-5">
-        <div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center font-headline font-black text-on-surface">F</div>
-        <span class="tag bg-primary text-white">Premium</span>
-      </div>
-      <p class="text-xs uppercase tracking-[0.15em] text-on-surface-variant font-semibold mb-2">Formation · Paris</p>
-      <h4 class="font-headline font-bold text-lg text-on-surface mb-2 leading-tight">Bootcamp commercial B2B 10 semaines</h4>
-      <p class="text-sm text-on-surface-variant mb-5 line-clamp-2">Cibler les jeunes diplômés en reconversion cherchant à devenir SDR/BDR.</p>
-      <div class="flex items-end justify-between pt-4 border-t border-outline-variant/30">
-        <div>
-          <p class="font-headline font-extrabold text-xl metric-num text-on-surface">650 €</p>
-          <p class="text-xs text-on-surface-variant">par inscription</p>
-        </div>
-        <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary group-hover:translate-x-1 transition-all">arrow_forward</span>
-      </div>
-    </a>
-  
-    <a href="#" onclick="startMission('Audit sécurité pour PME de 50-200 pers.'); return false;" class="bg-surface-container-lowest rounded-2xl p-6 soft-shadow hover-lift cursor-pointer group block">
-      <div class="flex items-start justify-between mb-5">
-        <div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center font-headline font-black text-on-surface">C</div>
-        <span class="tag bg-tertiary-fixed text-tertiary">Hot</span>
-      </div>
-      <p class="text-xs uppercase tracking-[0.15em] text-on-surface-variant font-semibold mb-2">Cybersécurité · Lille</p>
-      <h4 class="font-headline font-bold text-lg text-on-surface mb-2 leading-tight">Audit sécurité pour PME de 50-200 pers.</h4>
-      <p class="text-sm text-on-surface-variant mb-5 line-clamp-2">Vendre un audit de sécurité informatique complet à des DSI de PME industrielles.</p>
-      <div class="flex items-end justify-between pt-4 border-t border-outline-variant/30">
-        <div>
-          <p class="font-headline font-extrabold text-xl metric-num text-on-surface">480 €</p>
-          <p class="text-xs text-on-surface-variant">par audit vendu</p>
-        </div>
-        <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary group-hover:translate-x-1 transition-all">arrow_forward</span>
-      </div>
-    </a>
-  
-    <a href="#" onclick="startMission('Panneaux solaires pour collectivités'); return false;" class="bg-surface-container-lowest rounded-2xl p-6 soft-shadow hover-lift cursor-pointer group block">
-      <div class="flex items-start justify-between mb-5">
-        <div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center font-headline font-black text-on-surface">E</div>
-        <span class="tag bg-surface-container-high text-on-surface-variant">Long cycle</span>
-      </div>
-      <p class="text-xs uppercase tracking-[0.15em] text-on-surface-variant font-semibold mb-2">Energie · Toulouse</p>
-      <h4 class="font-headline font-bold text-lg text-on-surface mb-2 leading-tight">Panneaux solaires pour collectivités</h4>
-      <p class="text-sm text-on-surface-variant mb-5 line-clamp-2">Présenter une solution clé-en-main aux mairies et syndicats intercommunaux.</p>
-      <div class="flex items-end justify-between pt-4 border-t border-outline-variant/30">
-        <div>
-          <p class="font-headline font-extrabold text-xl metric-num text-on-surface">1 200 €</p>
-          <p class="text-xs text-on-surface-variant">par contrat</p>
-        </div>
-        <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary group-hover:translate-x-1 transition-all">arrow_forward</span>
-      </div>
-    </a>
-  
-    <a href="#" onclick="startMission('Coaching nutrition pour sportifs'); return false;" class="bg-surface-container-lowest rounded-2xl p-6 soft-shadow hover-lift cursor-pointer group block">
-      <div class="flex items-start justify-between mb-5">
-        <div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center font-headline font-black text-on-surface">N</div>
-        <span class="tag bg-tertiary-fixed text-tertiary">Nouveau</span>
-      </div>
-      <p class="text-xs uppercase tracking-[0.15em] text-on-surface-variant font-semibold mb-2">Nutrition · Remote</p>
-      <h4 class="font-headline font-bold text-lg text-on-surface mb-2 leading-tight">Coaching nutrition pour sportifs</h4>
-      <p class="text-sm text-on-surface-variant mb-5 line-clamp-2">Vendre un programme de coaching personnalisé à des athlètes amateurs.</p>
-      <div class="flex items-end justify-between pt-4 border-t border-outline-variant/30">
-        <div>
-          <p class="font-headline font-extrabold text-xl metric-num text-on-surface">120 €</p>
-          <p class="text-xs text-on-surface-variant">par abonnement</p>
-        </div>
-        <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary group-hover:translate-x-1 transition-all">arrow_forward</span>
-      </div>
-    </a>
-  
-  </section>
-
-  <!-- Load more -->
-  <div class="flex justify-center mt-10">
+  <div class="flex justify-center mt-6">
     <button class="px-6 py-3 rounded-full bg-surface-container-high text-on-surface font-semibold text-sm hover:bg-surface-container-highest transition flex items-center gap-2">
       <span class="material-symbols-outlined" style="font-size:18px">expand_more</span>
-      Charger 24 missions de plus
+      38 missions de plus
     </button>
   </div>
 </main>
+
+<style>
+  .hybrid-row {
+    display: grid; grid-template-columns: 1fr 100px 120px 24px; gap: 20px;
+    padding: 18px 24px; align-items: center;
+    border-bottom: 1px solid rgba(226, 190, 188, 0.15);
+    transition: background 0.15s ease; cursor: pointer; text-decoration: none; color: inherit;
+  }
+  .hybrid-row:last-child { border-bottom: none; }
+  .hybrid-row:hover { background: #f6f3f2; }
+  .hybrid-row-sector {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.15em;
+    color: #8e706f; font-weight: 600; margin-bottom: 4px;
+  }
+  .hybrid-row-title { font-size: 14px; font-weight: 600; color: #1b1c1c; }
+  .hybrid-row-amount { text-align: right; }
+  .hybrid-row-amount .amount-main {
+    font-family: 'Plus Jakarta Sans'; font-weight: 800; font-size: 16px;
+    color: #1b1c1c; letter-spacing: -0.04em; font-feature-settings: "tnum";
+  }
+  .hybrid-row-amount .amount-unit { font-size: 10px; color: #8e706f; margin-top: 2px; }
+  .hybrid-row-arrow { color: #8e706f; transition: transform 0.2s, color 0.2s; }
+  .hybrid-row:hover .hybrid-row-arrow { color: #b52330; transform: translateX(4px); }
+  @media (max-width: 768px) {
+    .hybrid-row { grid-template-columns: 1fr auto; gap: 6px; padding: 16px 20px; }
+    .hybrid-row-content { grid-column: 1; grid-row: 1; }
+    .tag { grid-column: 1; grid-row: 2; justify-self: start; margin-top: 4px; }
+    .hybrid-row-amount { grid-column: 2; grid-row: 1 / 3; align-self: center; }
+    .hybrid-row-arrow { display: none; }
+  }
+</style>
 
 <!-- FOOTER -->
 <footer class="max-w-[1400px] mx-auto px-6 mt-16 pt-8 pb-10">
@@ -560,7 +530,6 @@ window.startMission = function(name) {
     iconColor: 'text-primary'
   });
 };
-// Filter pills behavior
 document.querySelectorAll('.filter-pill').forEach(b => b.addEventListener('click', () => {
   document.querySelectorAll('.filter-pill').forEach(p => { p.classList.remove('active'); p.classList.add('text-on-surface-variant'); });
   b.classList.add('active'); b.classList.remove('text-on-surface-variant');
