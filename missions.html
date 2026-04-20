@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nos missions · Stacker</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#b52330",
+          "primary-container": "#ff5a5f",
+          "primary-fixed": "#ffdad8",
+          "on-primary": "#ffffff",
+          "tertiary": "#006c4c",
+          "tertiary-container": "#00a879",
+          "tertiary-fixed": "#78fac4",
+          "background": "#fcf9f8",
+          "surface-container-lowest": "#ffffff",
+          "surface-container-low": "#f6f3f2",
+          "surface-container": "#f0eded",
+          "surface-container-high": "#eae7e7",
+          "surface-container-highest": "#e5e2e1",
+          "on-surface": "#1b1c1c",
+          "on-surface-variant": "#5a403f",
+          "outline-variant": "#e2bebc"
+        },
+        fontFamily: {
+          "headline": ["Plus Jakarta Sans"],
+          "body": ["Inter"],
+          "mono": ["JetBrains Mono"]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  body { font-family: 'Inter', sans-serif; }
+  .font-headline { font-family: 'Plus Jakarta Sans', sans-serif; }
+  .font-mono { font-family: 'JetBrains Mono', monospace; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  .material-symbols-outlined.filled { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  .glass-nav { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); background: rgba(252, 249, 248, 0.75); border-bottom: 1px solid rgba(226, 190, 188, 0.2); }
+  .cta-gradient { background: linear-gradient(135deg, #b52330 0%, #ff5a5f 100%); }
+  .float-shadow { box-shadow: 0 20px 40px -12px rgba(27, 28, 28, 0.08); }
+  .soft-shadow { box-shadow: 0 8px 24px -8px rgba(27, 28, 28, 0.06); }
+  .display-tight { letter-spacing: -0.03em; }
+  .num-tight { letter-spacing: -0.04em; font-feature-settings: "tnum"; }
+  .metric-num { letter-spacing: -0.045em; font-feature-settings: "tnum"; }
+  .hero-dark {
+    background:
+      radial-gradient(ellipse at top right, rgba(181, 35, 48, 0.18), transparent 60%),
+      radial-gradient(ellipse at bottom left, rgba(255, 90, 95, 0.08), transparent 50%),
+      #1b1c1c;
+  }
+  .gold-card {
+    background:
+      radial-gradient(ellipse at top right, rgba(255, 197, 0, 0.25), transparent 60%),
+      radial-gradient(ellipse at bottom left, rgba(184, 134, 11, 0.2), transparent 50%),
+      linear-gradient(135deg, #1f1d18 0%, #2a2620 50%, #1f1d18 100%);
+    position: relative; overflow: hidden;
+  }
+  .gold-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, transparent 30%, rgba(255, 197, 0, 0.06) 50%, transparent 70%);
+    background-size: 200% 200%; animation: goldShimmer 6s ease infinite; pointer-events: none;
+  }
+  @keyframes goldShimmer { 0%, 100% { background-position: 0% 0%; } 50% { background-position: 100% 100%; } }
+  .gold-text { background: linear-gradient(135deg, #ffd700 0%, #ffed4a 50%, #b8860b 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
+  .gold-border { border: 1px solid rgba(255, 197, 0, 0.3); }
+  .gold-btn { background: linear-gradient(135deg, #ffd700 0%, #ffb700 100%); color: #1b1c1c; }
+  @keyframes pulse-dot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.4); } }
+  .live-dot { animation: pulse-dot 2s ease-in-out infinite; }
+  @keyframes grow { from { width: 0; } }
+  .progress-fill { animation: grow 1.2s cubic-bezier(0.22, 1, 0.36, 1); }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  .reveal { animation: slideUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #e5e2e1; border-radius: 9999px; }
+  ::-webkit-scrollbar-thumb:hover { background: #8e706f; }
+  .divider-soft { background: linear-gradient(90deg, transparent, rgba(226, 190, 188, 0.3) 50%, transparent); height: 1px; }
+  .tag { display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.25rem 0.625rem; border-radius: 9999px; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+  .hover-lift { transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease; }
+  .hover-lift:hover { transform: translateY(-2px); box-shadow: 0 16px 32px -12px rgba(27, 28, 28, 0.12); }
+  @keyframes flame { 0%, 100% { transform: translateY(0) scale(1); opacity: 1; } 50% { transform: translateY(-2px) scale(1.05); opacity: 0.85; } }
+  .flame-pulse { animation: flame 1.6s ease-in-out infinite; }
+  @keyframes toastSlide { from { opacity: 0; transform: translateY(-12px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+  @keyframes toastOut { to { opacity: 0; transform: translateX(120%); } }
+  .toast { animation: toastSlide 0.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .toast.leaving { animation: toastOut 0.4s ease-in forwards; }
+  .scroll-hide::-webkit-scrollbar { display: none; } .scroll-hide { scrollbar-width: none; }
+  .filter-pill { transition: all 0.2s ease; }
+  .filter-pill.active { background: #1b1c1c; color: #ffffff; }
+  /* Hamburger */
+  .hamburger-panel {
+    position: fixed; top: 0; left: 0; width: 360px; max-width: 100vw; height: 100vh;
+    background: #fcf9f8; z-index: 75; transform: translateX(-100%);
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    display: flex; flex-direction: column; box-shadow: 20px 0 60px -10px rgba(0,0,0,0.15);
+  }
+  .hamburger-panel.open { transform: translateX(0); }
+  .hamburger-backdrop { position: fixed; inset: 0; background: rgba(27, 28, 28, 0.4); backdrop-filter: blur(4px); z-index: 72; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+  .hamburger-backdrop.open { opacity: 1; pointer-events: auto; }
+  .nav-item {
+    display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 12px;
+    transition: background 0.2s ease; cursor: pointer; text-decoration: none; color: inherit;
+  }
+  .nav-item:hover { background: #f6f3f2; }
+  .nav-item.active { background: #ffdad8; }
+  .nav-item.active .nav-item-label { color: #b52330; font-weight: 700; }
+  /* Page transitions */
+  .page-enter { animation: pageEnter 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  @keyframes pageEnter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body class="bg-background text-on-surface font-body antialiased" data-page="missions">
+
+<!-- Toast container -->
+<div id="toastContainer" class="fixed top-24 right-6 z-[60] flex flex-col gap-3 pointer-events-none w-[340px] max-w-[calc(100vw-3rem)]"></div>
+
+<!-- Hamburger backdrop + panel -->
+<div id="hamburgerBackdrop" class="hamburger-backdrop" onclick="closeHamburger()"></div>
+<aside id="hamburgerPanel" class="hamburger-panel">
+  <div class="px-6 pt-6 pb-4 border-b border-outline-variant/30 flex items-center justify-between">
+    <div>
+      <p class="text-[10px] uppercase tracking-[0.25em] font-bold text-on-surface-variant">Stacker · Navigation</p>
+      <h2 class="font-headline font-extrabold text-xl text-on-surface mt-0.5">Toutes les sections</h2>
+    </div>
+    <button onclick="closeHamburger()" class="p-2 rounded-full hover:bg-surface-container-high transition">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+  </div>
+  <div class="flex-1 overflow-y-auto px-4 py-4">
+    <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-on-surface-variant px-3 mb-2">Principal</p>
+    <a href="index.html" class="nav-item" data-page="home">
+      <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface" style="font-size:18px">space_dashboard</span></div>
+      <span class="nav-item-label text-sm font-semibold flex-1">Tableau de bord</span>
+    </a>
+
+    <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-on-surface-variant px-3 mt-4 mb-2">Vendre</p>
+    <a href="missions.html" class="nav-item" data-page="missions">
+      <div class="w-9 h-9 rounded-lg bg-primary-fixed flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-primary" style="font-size:18px">work</span></div>
+      <div class="flex-1 min-w-0">
+        <p class="nav-item-label text-sm font-semibold">Nos missions</p>
+        <p class="text-[11px] text-on-surface-variant truncate">47 missions actives</p>
+      </div>
+    </a>
+    <a href="pipeline.html" class="nav-item" data-page="pipeline">
+      <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface" style="font-size:18px">account_tree</span></div>
+      <div class="flex-1 min-w-0">
+        <p class="nav-item-label text-sm font-semibold">Pipeline</p>
+        <p class="text-[11px] text-on-surface-variant truncate">12 prospects en cours</p>
+      </div>
+    </a>
+
+    <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-on-surface-variant px-3 mt-4 mb-2">Performance</p>
+    <a href="classement.html" class="nav-item" data-page="classement">
+      <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface" style="font-size:18px">leaderboard</span></div>
+      <div class="flex-1 min-w-0">
+        <p class="nav-item-label text-sm font-semibold">Classement</p>
+        <p class="text-[11px] text-on-surface-variant truncate">Rang #7 / 482</p>
+      </div>
+    </a>
+    <a href="performance.html" class="nav-item" data-page="performance">
+      <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface" style="font-size:18px">trending_up</span></div>
+      <div class="flex-1 min-w-0">
+        <p class="nav-item-label text-sm font-semibold">Performance</p>
+        <p class="text-[11px] text-on-surface-variant truncate">4 827 € ce mois · +28%</p>
+      </div>
+    </a>
+
+    <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-on-surface-variant px-3 mt-4 mb-2">Compétition</p>
+    <a href="battle.html" class="nav-item" data-page="battle">
+      <div class="w-9 h-9 rounded-lg cta-gradient flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-white" style="font-size:18px">swords</span></div>
+      <div class="flex-1 min-w-0">
+        <p class="nav-item-label text-sm font-semibold">Battle royale</p>
+        <p class="text-[11px] text-on-surface-variant truncate">Course aux 2 deals avant 18h</p>
+      </div>
+    </a>
+    <a href="mission-impossible.html" class="nav-item" data-page="mi">
+      <div class="w-9 h-9 rounded-lg gold-card gold-border flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined gold-text" style="font-size:18px">crisis_alert</span></div>
+      <div class="flex-1 min-w-0">
+        <p class="nav-item-label text-sm font-semibold">Mission impossible</p>
+        <p class="text-[11px] text-on-surface-variant truncate">Réservée Top 50 · 1 500 €</p>
+      </div>
+    </a>
+
+    <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-on-surface-variant px-3 mt-4 mb-2">Outils</p>
+    <a href="coach.html" class="nav-item" data-page="coach">
+      <div class="w-9 h-9 rounded-lg bg-on-surface flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-white" style="font-size:18px">headset_mic</span></div>
+      <div class="flex-1 min-w-0">
+        <p class="nav-item-label text-sm font-semibold">Coach IA en call</p>
+        <p class="text-[11px] text-on-surface-variant truncate">Transcription et suggestions live</p>
+      </div>
+    </a>
+    <a href="voice.html" class="nav-item" data-page="voice">
+      <div class="w-9 h-9 rounded-lg bg-primary flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-white" style="font-size:18px">mic</span></div>
+      <div class="flex-1 min-w-0">
+        <p class="nav-item-label text-sm font-semibold">Hey Stacker</p>
+        <p class="text-[11px] text-on-surface-variant truncate">Commandes vocales en français</p>
+      </div>
+    </a>
+  </div>
+  <div class="px-6 py-4 border-t border-outline-variant/30 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-white text-[10px] font-bold">LM</div>
+      <div>
+        <p class="text-xs font-bold text-on-surface">Lucas Moreau</p>
+        <p class="text-[10px] text-on-surface-variant">Rang #7</p>
+      </div>
+    </div>
+    <button class="p-2 rounded-full hover:bg-surface-container-high transition">
+      <span class="material-symbols-outlined text-on-surface-variant" style="font-size:18px">settings</span>
+    </button>
+  </div>
+</aside>
+
+<!-- NAV -->
+<header class="sticky top-0 w-full z-50 px-6 py-4 glass-nav">
+  <nav class="flex justify-between items-center max-w-[1400px] mx-auto">
+    <div class="flex items-center gap-4">
+      <button onclick="openHamburger()" class="p-2 rounded-full hover:bg-surface-container-high transition" title="Menu">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+      <a href="index.html" class="flex items-baseline gap-0.5">
+        <span class="text-2xl font-black text-primary tracking-tighter font-headline leading-none">Stacker</span>
+        <span class="w-1 h-1 bg-on-surface"></span>
+      </a>
+    </div>
+    <div class="flex items-center gap-2">
+      <button class="hidden sm:flex items-center gap-2 bg-surface-container-high px-4 py-2.5 rounded-full text-sm font-semibold hover:bg-surface-container-highest transition">
+        <span class="w-1.5 h-1.5 bg-tertiary rounded-full live-dot"></span>
+        Disponible
+      </button>
+      <button class="p-2.5 rounded-full hover:bg-surface-container-high transition relative">
+        <span class="material-symbols-outlined">notifications</span>
+        <span class="absolute top-2 right-2.5 w-2 h-2 bg-primary rounded-full"></span>
+      </button>
+      <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-on-primary font-bold text-sm">LM</div>
+    </div>
+  </nav>
+</header>
+
+<main class="max-w-[1400px] mx-auto px-6 py-8 page-enter">
+  <!-- Breadcrumb -->
+  <nav class="flex items-center gap-2 text-xs text-on-surface-variant mb-4">
+    <a href="index.html" class="hover:text-on-surface transition">Tableau de bord</a>
+    <span class="material-symbols-outlined" style="font-size:14px">chevron_right</span>
+    <span class="font-semibold text-on-surface">Nos missions</span>
+  </nav>
+
+  <!-- Page header -->
+  <section class="reveal mb-8">
+    <div class="flex items-end justify-between flex-wrap gap-4">
+      <div>
+        <p class="text-[10px] font-semibold tracking-[0.25em] text-on-surface-variant uppercase mb-2">Catalogue</p>
+        <h1 class="font-headline font-extrabold text-3xl md:text-4xl display-tight text-on-surface">Nos missions</h1>
+        <p class="text-sm md:text-base text-on-surface-variant mt-2">47 missions actives · 12 nouvelles cette semaine</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" style="font-size:18px">search</span>
+          <input type="text" placeholder="Chercher une mission..." class="pl-10 pr-4 py-2.5 rounded-full bg-surface-container-high text-sm font-medium w-64 focus:outline-none focus:ring-2 focus:ring-primary/30">
+        </div>
+        <button class="p-2.5 rounded-full bg-surface-container-high hover:bg-surface-container-highest transition">
+          <span class="material-symbols-outlined">tune</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats bar -->
+  <section class="reveal grid grid-cols-2 md:grid-cols-4 gap-3 mb-8" style="animation-delay:0.1s">
+    <div class="bg-surface-container-lowest rounded-2xl p-4 soft-shadow">
+      <p class="text-[10px] uppercase tracking-[0.12em] text-on-surface-variant font-semibold mb-1">Total actives</p>
+      <p class="font-headline font-extrabold text-2xl metric-num text-on-surface">47</p>
+    </div>
+    <div class="bg-surface-container-lowest rounded-2xl p-4 soft-shadow">
+      <p class="text-[10px] uppercase tracking-[0.12em] text-on-surface-variant font-semibold mb-1">Nouvelles cette semaine</p>
+      <p class="font-headline font-extrabold text-2xl metric-num text-tertiary">+12</p>
+    </div>
+    <div class="bg-surface-container-lowest rounded-2xl p-4 soft-shadow">
+      <p class="text-[10px] uppercase tracking-[0.12em] text-on-surface-variant font-semibold mb-1">Commission moyenne</p>
+      <p class="font-headline font-extrabold text-2xl metric-num text-on-surface">312 €</p>
+    </div>
+    <div class="bg-surface-container-lowest rounded-2xl p-4 soft-shadow">
+      <p class="text-[10px] uppercase tracking-[0.12em] text-on-surface-variant font-semibold mb-1">Plus gros deal</p>
+      <p class="font-headline font-extrabold text-2xl metric-num text-primary">1 500 €</p>
+    </div>
+  </section>
+
+  <!-- Filters -->
+  <section class="reveal mb-6" style="animation-delay:0.2s">
+    <div class="flex gap-2 overflow-x-auto scroll-hide pb-2">
+      <button class="filter-pill active px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap bg-surface-container-high">Toutes · 47</button>
+      <button class="filter-pill px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap bg-surface-container-high text-on-surface-variant">SaaS B2B · 18</button>
+      <button class="filter-pill px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap bg-surface-container-high text-on-surface-variant">Fintech · 9</button>
+      <button class="filter-pill px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap bg-surface-container-high text-on-surface-variant">Services · 8</button>
+      <button class="filter-pill px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap bg-surface-container-high text-on-surface-variant">Logistique · 5</button>
+      <button class="filter-pill px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap bg-surface-container-high text-on-surface-variant">Immobilier · 4</button>
+      <button class="filter-pill px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap bg-surface-container-high text-on-surface-variant">Autre · 3</button>
+    </div>
+  </section>
+
+  <!-- Featured -->
+  <section class="reveal mb-6" style="animation-delay:0.25s">
+    <div class="hero-dark rounded-2xl overflow-hidden relative">
+      <div class="p-8 md:p-10 relative z-10">
+        <div class="flex items-center gap-2 mb-6">
+          <span class="tag bg-primary text-on-primary">Premium</span>
+          <span class="tag bg-white/10 text-white/80">SaaS B2B</span>
+          <span class="tag bg-white/10 text-white/80">Récurrent</span>
+        </div>
+        <h3 class="font-headline font-extrabold text-3xl md:text-5xl display-tight text-white mb-3 max-w-2xl">Logiciel RH pour PME françaises</h3>
+        <p class="text-white/70 text-base md:text-lg mb-8 max-w-xl">Propale un CRM RH à 450 DRH de PME de 20 à 100 salariés. Leads fournis, script validé, coach IA intégré.</p>
+        <div class="grid grid-cols-3 gap-4 mb-8 max-w-xl">
+          <div><p class="text-xs uppercase tracking-[0.15em] text-white/50 mb-1">Commission</p><p class="font-headline font-extrabold text-2xl text-white metric-num">420 €</p></div>
+          <div><p class="text-xs uppercase tracking-[0.15em] text-white/50 mb-1">Leads fournis</p><p class="font-headline font-extrabold text-2xl text-white metric-num">450</p></div>
+          <div><p class="text-xs uppercase tracking-[0.15em] text-white/50 mb-1">Exclusivité</p><p class="font-headline font-extrabold text-2xl text-white metric-num">30j</p></div>
+        </div>
+        <div class="flex items-center gap-3 flex-wrap">
+          <button onclick="startMission('Hublo RH')" class="px-6 py-3.5 rounded-full bg-white text-on-surface font-bold text-sm hover:bg-white/90 transition flex items-center gap-2">
+            <span class="material-symbols-outlined" style="font-size:18px">play_arrow</span>
+            Commencer la mission
+          </button>
+          <button class="px-6 py-3.5 rounded-full bg-white/10 text-white font-semibold text-sm hover:bg-white/20 transition border border-white/10">Voir le brief complet</button>
+        </div>
+      </div>
+      <div class="absolute top-8 right-8 z-10 text-center">
+        <div class="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center"><span class="font-headline font-black text-white text-xl">H</span></div>
+        <p class="text-white/60 text-xs text-center mt-2 font-semibold tracking-wider">Hublo</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Missions grid -->
+  <section class="reveal grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" style="animation-delay:0.3s">
+    
+    <a href="#" onclick="startMission('Solution transport pour e-commerçants'); return false;" class="bg-surface-container-lowest rounded-2xl p-6 soft-shadow hover-lift cursor-pointer group block">
+      <div class="flex items-start justify-between mb-5">
+        <div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center font-headline font-black text-on-surface">L</div>
+        <span class="tag bg-tertiary-fixed text-tertiary">Nouveau</span>
+      </div>
+      <p class="text-xs uppercase tracking-[0.15em] text-on-surface-variant font-semibold mb-2">Logistique · Paris</p>
+      <h4 class="font-headline font-bold text-lg text-on-surface mb-2 leading-tight">Solution transport pour e-commerçants</h4>
+      <p class="text-sm text-on-surface-variant mb-5 line-clamp-2">Contacter des responsables e-commerce pour présenter une offre dropshipping premium.</p>
+      <div class="flex items-end justify-between pt-4 border-t border-outline-variant/30">
+        <div>
+          <p class="font-headline font-extrabold text-xl metric-num text-on-surface">180 €</p>
+          <p class="text-xs text-on-surface-variant">par deal signé</p>
+        </div>
+        <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary group-hover:translate-x-1 transition-all">arrow_forward</span>
+      </div>
+    </a>
+  
+    <a href="#" onclick="startMission('Cartes corporate pour startups'); return false;" class="bg-surface-container-lowest rounded-2xl p-6 soft-shadow hover-lift cursor-pointer group block">
+      <div class="flex items-start justify-between mb-5">
+        <div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center font-headline font-black text-on-surface">Q</div>
+        <span class="tag bg-primary-fixed text-primary">Urgent</span>
+      </div>
+      <p class="text-xs uppercase tracking-[0.15em] text-on-surface-variant font-semibold mb-2">Fintech · Lyon</p>
+      <h4 class="font-headline font-bold text-lg text-on-surface mb-2 leading-tight">Cartes corporate pour startups</h4>
+      <p class="text-sm text-on-surface-variant mb-5 line-clamp-2">Démarche 200 CFO de scale-ups série A et B pour vendre Qonto Business.</p>
+      <div class="flex items-end justify-between pt-4 border-t border-outline-variant/30">
+        <div>
+          <p class="font-headline font-extrabold text-xl metric-num text-on-surface">350 €</p>
+          <p class="text-xs text-on-surface-variant">par deal signé</p>
+        </div>
+        <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary group-hover:translate-x-1 transition-all">arrow_forward</span>
+      </div>
+    </a>
+  
+    <a href="#" onclick="startMission('Accompagnement SEO pour artisans'); return false;" class="bg-surface-container-lowest rounded-2xl p-6 soft-shadow hover-lift cursor-pointer group block">
+      <div class="flex items-start justify-between mb-5">
+        <div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center font-headline font-black text-on-surface">S</div>
+        <span class="tag bg-surface-container-high text-on-surface-variant">Récurrent</span>
+      </div>
+      <p class="text-xs uppercase tracking-[0.15em] text-on-surface-variant font-semibold mb-2">SEO · Remote</p>
+      <h4 class="font-headline font-bold text-lg text-on-surface mb-2 leading-tight">Accompagnement SEO pour artisans</h4>
+      <p class="text-sm text-on-surface-variant mb-5 line-clamp-2">Vente d'un abonnement SEO local à 199€/mois. Cible : artisans BTP du Sud-Est.</p>
+      <div class="flex items-end justify-between pt-4 border-t border-outline-variant/30">
+        <div>
+          <p class="font-headline font-extrabold text-xl metric-num text-on-surface">15 %</p>
+          <p class="text-xs text-on-surface-variant">récurrent à vie</p>
+        </div>
+        <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary group-hover:translate-x-1 transition-all">arrow_forward</span>
+      </div>
+    </a>
+  
+    <a href="#" onclick="startMission('CRM immobilier pour agences indépendantes'); return false;" class="bg-surface-container-lowest rounded-2xl p-6 soft-shadow hover-lift cursor-pointer group block">
+      <div class="flex items-start justify-between mb-5">
+        <div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center font-headline font-black text-on-surface">P</div>
+        <span class="tag bg-tertiary-fixed text-tertiary">Hot</span>
+      </div>
+      <p class="text-xs uppercase tracking-[0.15em] text-on-surface-variant font-semibold mb-2">SaaS · Marseille</p>
+      <h4 class="font-headline font-bold text-lg text-on-surface mb-2 leading-tight">CRM immobilier pour agences indépendantes</h4>
+      <p class="text-sm text-on-surface-variant mb-5 line-clamp-2">Démarche 320 agents immobiliers pour un CRM taillé spécifique métier.</p>
+      <div class="flex items-end justify-between pt-4 border-t border-outline-variant/30">
+        <div>
+          <p class="font-headline font-extrabold text-xl metric-num text-on-surface">290 €</p>
+          <p class="text-xs text-on-surface-variant">par deal signé</p>
+        </div>
+        <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary group-hover:translate-x-1 transition-all">arrow_forward</span>
+      </div>
+    </a>
+  
+    <a href="#" onclick="startMission('Mutuelle sur-mesure pour freelances'); return false;" class="bg-surface-container-lowest rounded-2xl p-6 soft-shadow hover-lift cursor-pointer group block">
+      <div class="flex items-start justify-between mb-5">
+        <div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center font-headline font-black text-on-surface">A</div>
+        <span class="tag bg-tertiary-fixed text-tertiary">Nouveau</span>
+      </div>
+      <p class="text-xs uppercase tracking-[0.15em] text-on-surface-variant font-semibold mb-2">Assurance · Remote</p>
+      <h4 class="font-headline font-bold text-lg text-on-surface mb-2 leading-tight">Mutuelle sur-mesure pour freelances</h4>
+      <p class="text-sm text-on-surface-variant mb-5 line-clamp-2">Vendre une mutuelle santé adaptée aux indépendants en portage et auto-entrepreneurs.</p>
+      <div class="flex items-end justify-between pt-4 border-t border-outline-variant/30">
+        <div>
+          <p class="font-headline font-extrabold text-xl metric-num text-on-surface">220 €</p>
+          <p class="text-xs text-on-surface-variant">par signature</p>
+        </div>
+        <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary group-hover:translate-x-1 transition-all">arrow_forward</span>
+      </div>
+    </a>
+  
+    <a href="#" onclick="startMission('Bootcamp commercial B2B 10 semaines'); return false;" class="bg-surface-container-lowest rounded-2xl p-6 soft-shadow hover-lift cursor-pointer group block">
+      <div class="flex items-start justify-between mb-5">
+        <div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center font-headline font-black text-on-surface">F</div>
+        <span class="tag bg-primary text-white">Premium</span>
+      </div>
+      <p class="text-xs uppercase tracking-[0.15em] text-on-surface-variant font-semibold mb-2">Formation · Paris</p>
+      <h4 class="font-headline font-bold text-lg text-on-surface mb-2 leading-tight">Bootcamp commercial B2B 10 semaines</h4>
+      <p class="text-sm text-on-surface-variant mb-5 line-clamp-2">Cibler les jeunes diplômés en reconversion cherchant à devenir SDR/BDR.</p>
+      <div class="flex items-end justify-between pt-4 border-t border-outline-variant/30">
+        <div>
+          <p class="font-headline font-extrabold text-xl metric-num text-on-surface">650 €</p>
+          <p class="text-xs text-on-surface-variant">par inscription</p>
+        </div>
+        <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary group-hover:translate-x-1 transition-all">arrow_forward</span>
+      </div>
+    </a>
+  
+    <a href="#" onclick="startMission('Audit sécurité pour PME de 50-200 pers.'); return false;" class="bg-surface-container-lowest rounded-2xl p-6 soft-shadow hover-lift cursor-pointer group block">
+      <div class="flex items-start justify-between mb-5">
+        <div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center font-headline font-black text-on-surface">C</div>
+        <span class="tag bg-tertiary-fixed text-tertiary">Hot</span>
+      </div>
+      <p class="text-xs uppercase tracking-[0.15em] text-on-surface-variant font-semibold mb-2">Cybersécurité · Lille</p>
+      <h4 class="font-headline font-bold text-lg text-on-surface mb-2 leading-tight">Audit sécurité pour PME de 50-200 pers.</h4>
+      <p class="text-sm text-on-surface-variant mb-5 line-clamp-2">Vendre un audit de sécurité informatique complet à des DSI de PME industrielles.</p>
+      <div class="flex items-end justify-between pt-4 border-t border-outline-variant/30">
+        <div>
+          <p class="font-headline font-extrabold text-xl metric-num text-on-surface">480 €</p>
+          <p class="text-xs text-on-surface-variant">par audit vendu</p>
+        </div>
+        <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary group-hover:translate-x-1 transition-all">arrow_forward</span>
+      </div>
+    </a>
+  
+    <a href="#" onclick="startMission('Panneaux solaires pour collectivités'); return false;" class="bg-surface-container-lowest rounded-2xl p-6 soft-shadow hover-lift cursor-pointer group block">
+      <div class="flex items-start justify-between mb-5">
+        <div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center font-headline font-black text-on-surface">E</div>
+        <span class="tag bg-surface-container-high text-on-surface-variant">Long cycle</span>
+      </div>
+      <p class="text-xs uppercase tracking-[0.15em] text-on-surface-variant font-semibold mb-2">Energie · Toulouse</p>
+      <h4 class="font-headline font-bold text-lg text-on-surface mb-2 leading-tight">Panneaux solaires pour collectivités</h4>
+      <p class="text-sm text-on-surface-variant mb-5 line-clamp-2">Présenter une solution clé-en-main aux mairies et syndicats intercommunaux.</p>
+      <div class="flex items-end justify-between pt-4 border-t border-outline-variant/30">
+        <div>
+          <p class="font-headline font-extrabold text-xl metric-num text-on-surface">1 200 €</p>
+          <p class="text-xs text-on-surface-variant">par contrat</p>
+        </div>
+        <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary group-hover:translate-x-1 transition-all">arrow_forward</span>
+      </div>
+    </a>
+  
+    <a href="#" onclick="startMission('Coaching nutrition pour sportifs'); return false;" class="bg-surface-container-lowest rounded-2xl p-6 soft-shadow hover-lift cursor-pointer group block">
+      <div class="flex items-start justify-between mb-5">
+        <div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center font-headline font-black text-on-surface">N</div>
+        <span class="tag bg-tertiary-fixed text-tertiary">Nouveau</span>
+      </div>
+      <p class="text-xs uppercase tracking-[0.15em] text-on-surface-variant font-semibold mb-2">Nutrition · Remote</p>
+      <h4 class="font-headline font-bold text-lg text-on-surface mb-2 leading-tight">Coaching nutrition pour sportifs</h4>
+      <p class="text-sm text-on-surface-variant mb-5 line-clamp-2">Vendre un programme de coaching personnalisé à des athlètes amateurs.</p>
+      <div class="flex items-end justify-between pt-4 border-t border-outline-variant/30">
+        <div>
+          <p class="font-headline font-extrabold text-xl metric-num text-on-surface">120 €</p>
+          <p class="text-xs text-on-surface-variant">par abonnement</p>
+        </div>
+        <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary group-hover:translate-x-1 transition-all">arrow_forward</span>
+      </div>
+    </a>
+  
+  </section>
+
+  <!-- Load more -->
+  <div class="flex justify-center mt-10">
+    <button class="px-6 py-3 rounded-full bg-surface-container-high text-on-surface font-semibold text-sm hover:bg-surface-container-highest transition flex items-center gap-2">
+      <span class="material-symbols-outlined" style="font-size:18px">expand_more</span>
+      Charger 24 missions de plus
+    </button>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="max-w-[1400px] mx-auto px-6 mt-16 pt-8 pb-10">
+  <div class="divider-soft mb-6"></div>
+  <div class="flex justify-between items-center flex-wrap gap-4">
+    <p class="text-xs text-on-surface-variant">Stacker · Plateforme de commissionnement commercial</p>
+    <p class="text-xs text-on-surface-variant font-semibold tracking-[0.25em] uppercase">Defined by editorial precision</p>
+  </div>
+</footer>
+
+<script>
+(function() {
+  'use strict';
+
+  window.showToast = function(opts) {
+    const c = document.getElementById('toastContainer');
+    const el = document.createElement('div');
+    el.className = 'toast pointer-events-auto bg-surface-container-lowest rounded-2xl p-4 float-shadow flex items-start gap-3 border border-outline-variant/30';
+    el.innerHTML = '<div class="w-9 h-9 rounded-full ' + (opts.iconBg || 'bg-tertiary/10') + ' flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined ' + (opts.iconColor || 'text-tertiary') + '" style="font-size:20px">' + (opts.icon || 'check_circle') + '</span></div>' +
+      '<div class="flex-1 min-w-0"><p class="font-bold text-sm text-on-surface">' + opts.title + '</p><p class="text-xs text-on-surface-variant mt-0.5">' + opts.body + '</p></div>' +
+      '<button class="text-on-surface-variant hover:text-on-surface" onclick="this.parentElement.remove()"><span class="material-symbols-outlined" style="font-size:16px">close</span></button>';
+    c.appendChild(el);
+    setTimeout(function() { el.classList.add('leaving'); setTimeout(function() { el.remove(); }, 400); }, 4500);
+  };
+
+  window.openHamburger = function() {
+    document.getElementById('hamburgerPanel').classList.add('open');
+    document.getElementById('hamburgerBackdrop').classList.add('open');
+  };
+  window.closeHamburger = function() {
+    document.getElementById('hamburgerPanel').classList.remove('open');
+    document.getElementById('hamburgerBackdrop').classList.remove('open');
+  };
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeHamburger();
+  });
+
+  // Mark active page in hamburger
+  const currentPage = document.body.getAttribute('data-page');
+  if (currentPage) {
+    const activeItem = document.querySelector('[data-page="' + currentPage + '"]');
+    if (activeItem) activeItem.classList.add('active');
+  }
+})();
+</script>
+
+<script>
+window.startMission = function(name) {
+  showToast({
+    title: 'Mission démarrée',
+    body: name + ' · Brief envoyé sur ton mail avec le script validé.',
+    icon: 'play_arrow',
+    iconBg: 'bg-primary-fixed',
+    iconColor: 'text-primary'
+  });
+};
+// Filter pills behavior
+document.querySelectorAll('.filter-pill').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.filter-pill').forEach(p => { p.classList.remove('active'); p.classList.add('text-on-surface-variant'); });
+  b.classList.add('active'); b.classList.remove('text-on-surface-variant');
+}));
+</script>
+
+</body>
+</html>
