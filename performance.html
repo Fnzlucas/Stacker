@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Performance · Stacker</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#b52330",
+          "primary-container": "#ff5a5f",
+          "primary-fixed": "#ffdad8",
+          "on-primary": "#ffffff",
+          "tertiary": "#006c4c",
+          "tertiary-container": "#00a879",
+          "tertiary-fixed": "#78fac4",
+          "background": "#fcf9f8",
+          "surface-container-lowest": "#ffffff",
+          "surface-container-low": "#f6f3f2",
+          "surface-container": "#f0eded",
+          "surface-container-high": "#eae7e7",
+          "surface-container-highest": "#e5e2e1",
+          "on-surface": "#1b1c1c",
+          "on-surface-variant": "#5a403f",
+          "outline-variant": "#e2bebc"
+        },
+        fontFamily: {
+          "headline": ["Plus Jakarta Sans"],
+          "body": ["Inter"],
+          "mono": ["JetBrains Mono"]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  body { font-family: 'Inter', sans-serif; }
+  .font-headline { font-family: 'Plus Jakarta Sans', sans-serif; }
+  .font-mono { font-family: 'JetBrains Mono', monospace; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  .material-symbols-outlined.filled { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  .glass-nav { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); background: rgba(252, 249, 248, 0.75); border-bottom: 1px solid rgba(226, 190, 188, 0.2); }
+  .cta-gradient { background: linear-gradient(135deg, #b52330 0%, #ff5a5f 100%); }
+  .float-shadow { box-shadow: 0 20px 40px -12px rgba(27, 28, 28, 0.08); }
+  .soft-shadow { box-shadow: 0 8px 24px -8px rgba(27, 28, 28, 0.06); }
+  .display-tight { letter-spacing: -0.03em; }
+  .num-tight { letter-spacing: -0.04em; font-feature-settings: "tnum"; }
+  .metric-num { letter-spacing: -0.045em; font-feature-settings: "tnum"; }
+  .hero-dark {
+    background:
+      radial-gradient(ellipse at top right, rgba(181, 35, 48, 0.18), transparent 60%),
+      radial-gradient(ellipse at bottom left, rgba(255, 90, 95, 0.08), transparent 50%),
+      #1b1c1c;
+  }
+  .gold-card {
+    background:
+      radial-gradient(ellipse at top right, rgba(255, 197, 0, 0.25), transparent 60%),
+      radial-gradient(ellipse at bottom left, rgba(184, 134, 11, 0.2), transparent 50%),
+      linear-gradient(135deg, #1f1d18 0%, #2a2620 50%, #1f1d18 100%);
+    position: relative; overflow: hidden;
+  }
+  .gold-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, transparent 30%, rgba(255, 197, 0, 0.06) 50%, transparent 70%);
+    background-size: 200% 200%; animation: goldShimmer 6s ease infinite; pointer-events: none;
+  }
+  @keyframes goldShimmer { 0%, 100% { background-position: 0% 0%; } 50% { background-position: 100% 100%; } }
+  .gold-text { background: linear-gradient(135deg, #ffd700 0%, #ffed4a 50%, #b8860b 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
+  .gold-border { border: 1px solid rgba(255, 197, 0, 0.3); }
+  .gold-btn { background: linear-gradient(135deg, #ffd700 0%, #ffb700 100%); color: #1b1c1c; }
+  @keyframes pulse-dot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.4); } }
+  .live-dot { animation: pulse-dot 2s ease-in-out infinite; }
+  @keyframes grow { from { width: 0; } }
+  .progress-fill { animation: grow 1.2s cubic-bezier(0.22, 1, 0.36, 1); }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  .reveal { animation: slideUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #e5e2e1; border-radius: 9999px; }
+  ::-webkit-scrollbar-thumb:hover { background: #8e706f; }
+  .divider-soft { background: linear-gradient(90deg, transparent, rgba(226, 190, 188, 0.3) 50%, transparent); height: 1px; }
+  .tag { display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.25rem 0.625rem; border-radius: 9999px; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+  .hover-lift { transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease; }
+  .hover-lift:hover { transform: translateY(-2px); box-shadow: 0 16px 32px -12px rgba(27, 28, 28, 0.12); }
+  @keyframes flame { 0%, 100% { transform: translateY(0) scale(1); opacity: 1; } 50% { transform: translateY(-2px) scale(1.05); opacity: 0.85; } }
+  .flame-pulse { animation: flame 1.6s ease-in-out infinite; }
+  @keyframes toastSlide { from { opacity: 0; transform: translateY(-12px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+  @keyframes toastOut { to { opacity: 0; transform: translateX(120%); } }
+  .toast { animation: toastSlide 0.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .toast.leaving { animation: toastOut 0.4s ease-in forwards; }
+  .scroll-hide::-webkit-scrollbar { display: none; } .scroll-hide { scrollbar-width: none; }
+  .filter-pill { transition: all 0.2s ease; }
+  .filter-pill.active { background: #1b1c1c; color: #ffffff; }
+  /* Hamburger */
+  .hamburger-panel {
+    position: fixed; top: 0; left: 0; width: 360px; max-width: 100vw; height: 100vh;
+    background: #fcf9f8; z-index: 75; transform: translateX(-100%);
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    display: flex; flex-direction: column; box-shadow: 20px 0 60px -10px rgba(0,0,0,0.15);
+  }
+  .hamburger-panel.open { transform: translateX(0); }
+  .hamburger-backdrop { position: fixed; inset: 0; background: rgba(27, 28, 28, 0.4); backdrop-filter: blur(4px); z-index: 72; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+  .hamburger-backdrop.open { opacity: 1; pointer-events: auto; }
+  .nav-item {
+    display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 12px;
+    transition: background 0.2s ease; cursor: pointer; text-decoration: none; color: inherit;
+  }
+  .nav-item:hover { background: #f6f3f2; }
+  .nav-item.active { background: #ffdad8; }
+  .nav-item.active .nav-item-label { color: #b52330; font-weight: 700; }
+  /* Page transitions */
+  .page-enter { animation: pageEnter 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  @keyframes pageEnter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body class="bg-background text-on-surface font-body antialiased" data-page="performance">
+
+<!-- Toast container -->
+<div id="toastContainer" class="fixed top-24 right-6 z-[60] flex flex-col gap-3 pointer-events-none w-[340px] max-w-[calc(100vw-3rem)]"></div>
+
+<!-- Hamburger backdrop + panel -->
+<div id="hamburgerBackdrop" class="hamburger-backdrop" onclick="closeHamburger()"></div>
+<aside id="hamburgerPanel" class="hamburger-panel">
+  <div class="px-6 pt-6 pb-4 border-b border-outline-variant/30 flex items-center justify-between">
+    <div>
+      <p class="text-[10px] uppercase tracking-[0.25em] font-bold text-on-surface-variant">Stacker · Navigation</p>
+      <h2 class="font-headline font-extrabold text-xl text-on-surface mt-0.5">Toutes les sections</h2>
+    </div>
+    <button onclick="closeHamburger()" class="p-2 rounded-full hover:bg-surface-container-high transition">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+  </div>
+  <div class="flex-1 overflow-y-auto px-4 py-4">
+    <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-on-surface-variant px-3 mb-2">Principal</p>
+    <a href="index.html" class="nav-item" data-page="home">
+      <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface" style="font-size:18px">space_dashboard</span></div>
+      <span class="nav-item-label text-sm font-semibold flex-1">Tableau de bord</span>
+    </a>
+
+    <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-on-surface-variant px-3 mt-4 mb-2">Vendre</p>
+    <a href="missions.html" class="nav-item" data-page="missions">
+      <div class="w-9 h-9 rounded-lg bg-primary-fixed flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-primary" style="font-size:18px">work</span></div>
+      <div class="flex-1 min-w-0">
+        <p class="nav-item-label text-sm font-semibold">Nos missions</p>
+        <p class="text-[11px] text-on-surface-variant truncate">47 missions actives</p>
+      </div>
+    </a>
+    <a href="pipeline.html" class="nav-item" data-page="pipeline">
+      <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface" style="font-size:18px">account_tree</span></div>
+      <div class="flex-1 min-w-0">
+        <p class="nav-item-label text-sm font-semibold">Pipeline</p>
+        <p class="text-[11px] text-on-surface-variant truncate">12 prospects en cours</p>
+      </div>
+    </a>
+
+    <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-on-surface-variant px-3 mt-4 mb-2">Performance</p>
+    <a href="classement.html" class="nav-item" data-page="classement">
+      <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface" style="font-size:18px">leaderboard</span></div>
+      <div class="flex-1 min-w-0">
+        <p class="nav-item-label text-sm font-semibold">Classement</p>
+        <p class="text-[11px] text-on-surface-variant truncate">Rang #7 / 482</p>
+      </div>
+    </a>
+    <a href="performance.html" class="nav-item" data-page="performance">
+      <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface" style="font-size:18px">trending_up</span></div>
+      <div class="flex-1 min-w-0">
+        <p class="nav-item-label text-sm font-semibold">Performance</p>
+        <p class="text-[11px] text-on-surface-variant truncate">4 827 € ce mois · +28%</p>
+      </div>
+    </a>
+
+    <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-on-surface-variant px-3 mt-4 mb-2">Compétition</p>
+    <a href="battle.html" class="nav-item" data-page="battle">
+      <div class="w-9 h-9 rounded-lg cta-gradient flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-white" style="font-size:18px">swords</span></div>
+      <div class="flex-1 min-w-0">
+        <p class="nav-item-label text-sm font-semibold">Battle royale</p>
+        <p class="text-[11px] text-on-surface-variant truncate">Course aux 2 deals avant 18h</p>
+      </div>
+    </a>
+    <a href="mission-impossible.html" class="nav-item" data-page="mi">
+      <div class="w-9 h-9 rounded-lg gold-card gold-border flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined gold-text" style="font-size:18px">crisis_alert</span></div>
+      <div class="flex-1 min-w-0">
+        <p class="nav-item-label text-sm font-semibold">Mission impossible</p>
+        <p class="text-[11px] text-on-surface-variant truncate">Réservée Top 50 · 1 500 €</p>
+      </div>
+    </a>
+
+    <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-on-surface-variant px-3 mt-4 mb-2">Outils</p>
+    <a href="coach.html" class="nav-item" data-page="coach">
+      <div class="w-9 h-9 rounded-lg bg-on-surface flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-white" style="font-size:18px">headset_mic</span></div>
+      <div class="flex-1 min-w-0">
+        <p class="nav-item-label text-sm font-semibold">Coach IA en call</p>
+        <p class="text-[11px] text-on-surface-variant truncate">Transcription et suggestions live</p>
+      </div>
+    </a>
+    <a href="voice.html" class="nav-item" data-page="voice">
+      <div class="w-9 h-9 rounded-lg bg-primary flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-white" style="font-size:18px">mic</span></div>
+      <div class="flex-1 min-w-0">
+        <p class="nav-item-label text-sm font-semibold">Hey Stacker</p>
+        <p class="text-[11px] text-on-surface-variant truncate">Commandes vocales en français</p>
+      </div>
+    </a>
+  </div>
+  <div class="px-6 py-4 border-t border-outline-variant/30 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-white text-[10px] font-bold">LM</div>
+      <div>
+        <p class="text-xs font-bold text-on-surface">Lucas Moreau</p>
+        <p class="text-[10px] text-on-surface-variant">Rang #7</p>
+      </div>
+    </div>
+    <button class="p-2 rounded-full hover:bg-surface-container-high transition">
+      <span class="material-symbols-outlined text-on-surface-variant" style="font-size:18px">settings</span>
+    </button>
+  </div>
+</aside>
+
+<!-- NAV -->
+<header class="sticky top-0 w-full z-50 px-6 py-4 glass-nav">
+  <nav class="flex justify-between items-center max-w-[1400px] mx-auto">
+    <div class="flex items-center gap-4">
+      <button onclick="openHamburger()" class="p-2 rounded-full hover:bg-surface-container-high transition" title="Menu">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+      <a href="index.html" class="flex items-baseline gap-0.5">
+        <span class="text-2xl font-black text-primary tracking-tighter font-headline leading-none">Stacker</span>
+        <span class="w-1 h-1 bg-on-surface"></span>
+      </a>
+    </div>
+    <div class="flex items-center gap-2">
+      <button class="hidden sm:flex items-center gap-2 bg-surface-container-high px-4 py-2.5 rounded-full text-sm font-semibold hover:bg-surface-container-highest transition">
+        <span class="w-1.5 h-1.5 bg-tertiary rounded-full live-dot"></span>
+        Disponible
+      </button>
+      <button class="p-2.5 rounded-full hover:bg-surface-container-high transition relative">
+        <span class="material-symbols-outlined">notifications</span>
+        <span class="absolute top-2 right-2.5 w-2 h-2 bg-primary rounded-full"></span>
+      </button>
+      <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-on-primary font-bold text-sm">LM</div>
+    </div>
+  </nav>
+</header>
+
+<main class="max-w-[1400px] mx-auto px-6 py-8 page-enter">
+  <nav class="flex items-center gap-2 text-xs text-on-surface-variant mb-4">
+    <a href="index.html" class="hover:text-on-surface transition">Tableau de bord</a>
+    <span class="material-symbols-outlined" style="font-size:14px">chevron_right</span>
+    <span class="font-semibold text-on-surface">Performance</span>
+  </nav>
+
+  <section class="reveal mb-8">
+    <div class="flex items-end justify-between flex-wrap gap-4">
+      <div>
+        <p class="text-[10px] font-semibold tracking-[0.25em] text-on-surface-variant uppercase mb-2">Avril 2026 · mois en cours</p>
+        <h1 class="font-headline font-extrabold text-3xl md:text-4xl display-tight text-on-surface">Performance</h1>
+        <p class="text-sm md:text-base text-on-surface-variant mt-2">11 jours restants · projection IA : <span class="font-bold text-tertiary">8 240 €</span></p>
+      </div>
+      <div class="flex items-center gap-2">
+        <div class="flex bg-surface-container-low rounded-full p-1">
+          <button class="px-3 py-1.5 rounded-full text-xs font-semibold text-on-surface-variant">7j</button>
+          <button class="px-3 py-1.5 rounded-full bg-white text-on-surface text-xs font-semibold soft-shadow">30j</button>
+          <button class="px-3 py-1.5 rounded-full text-xs font-semibold text-on-surface-variant">90j</button>
+          <button class="px-3 py-1.5 rounded-full text-xs font-semibold text-on-surface-variant">1 an</button>
+        </div>
+        <button class="p-2.5 rounded-full bg-surface-container-high hover:bg-surface-container-highest transition">
+          <span class="material-symbols-outlined" style="font-size:18px">download</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main KPIs -->
+  <section class="reveal grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6" style="animation-delay:0.1s">
+    <div class="bg-surface-container-lowest rounded-2xl p-6 soft-shadow">
+      <p class="text-xs uppercase tracking-[0.12em] text-on-surface-variant font-semibold mb-3">Commissions</p>
+      <p class="font-headline font-extrabold text-3xl metric-num text-on-surface">4 827 €</p>
+      <p class="text-xs text-tertiary font-semibold mt-2">+28% vs mars</p>
+    </div>
+    <div class="bg-surface-container-lowest rounded-2xl p-6 soft-shadow">
+      <p class="text-xs uppercase tracking-[0.12em] text-on-surface-variant font-semibold mb-3">Deals signés</p>
+      <p class="font-headline font-extrabold text-3xl metric-num text-on-surface">12</p>
+      <p class="text-xs text-tertiary font-semibold mt-2">+3 vs semaine passée</p>
+    </div>
+    <div class="bg-surface-container-lowest rounded-2xl p-6 soft-shadow">
+      <p class="text-xs uppercase tracking-[0.12em] text-on-surface-variant font-semibold mb-3">Taux de closing</p>
+      <p class="font-headline font-extrabold text-3xl metric-num text-on-surface">34%</p>
+      <p class="text-xs text-on-surface-variant font-semibold mt-2">Stable sur 30j</p>
+    </div>
+    <div class="bg-surface-container-lowest rounded-2xl p-6 soft-shadow">
+      <p class="text-xs uppercase tracking-[0.12em] text-on-surface-variant font-semibold mb-3">Panier moyen</p>
+      <p class="font-headline font-extrabold text-3xl metric-num text-on-surface">402 €</p>
+      <p class="text-xs text-tertiary font-semibold mt-2">+45 € vs mars</p>
+    </div>
+  </section>
+
+  <!-- Main chart -->
+  <section class="reveal bg-surface-container-lowest rounded-2xl p-6 md:p-8 soft-shadow mb-6" style="animation-delay:0.2s">
+    <div class="flex items-start justify-between mb-6 flex-wrap gap-3">
+      <div>
+        <p class="text-xs uppercase tracking-[0.25em] text-on-surface-variant font-semibold mb-2">30 derniers jours</p>
+        <h3 class="font-headline font-extrabold text-xl display-tight text-on-surface">Courbe de commissions</h3>
+      </div>
+      <div class="flex items-center gap-4 text-xs">
+        <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-primary"></span><span class="text-on-surface-variant">Commissions</span></div>
+        <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-tertiary"></span><span class="text-on-surface-variant">Moyenne équipe</span></div>
+      </div>
+    </div>
+    <svg viewBox="0 0 800 280" class="w-full h-auto">
+      <defs>
+        <linearGradient id="fillGrad" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stop-color="#b52330" stop-opacity="0.25"/>
+          <stop offset="100%" stop-color="#b52330" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <line x1="0" y1="50" x2="800" y2="50" stroke="#eae7e7" stroke-width="1" stroke-dasharray="2 4"/>
+      <line x1="0" y1="120" x2="800" y2="120" stroke="#eae7e7" stroke-width="1" stroke-dasharray="2 4"/>
+      <line x1="0" y1="190" x2="800" y2="190" stroke="#eae7e7" stroke-width="1" stroke-dasharray="2 4"/>
+      <text x="0" y="45" font-size="10" fill="#5a403f" font-family="JetBrains Mono">5 000 €</text>
+      <text x="0" y="115" font-size="10" fill="#5a403f" font-family="JetBrains Mono">3 000 €</text>
+      <text x="0" y="185" font-size="10" fill="#5a403f" font-family="JetBrains Mono">1 000 €</text>
+      <!-- Team avg -->
+      <path d="M0,180 L50,175 L100,170 L150,165 L200,160 L250,155 L300,150 L350,145 L400,140 L450,138 L500,135 L550,130 L600,125 L650,120 L700,115 L750,110 L800,105" fill="none" stroke="#00a879" stroke-width="2" stroke-dasharray="4 4" stroke-linecap="round"/>
+      <!-- You -->
+      <path d="M0,200 L50,180 L100,185 L150,145 L200,160 L250,115 L300,125 L350,85 L400,100 L450,70 L500,95 L550,50 L600,75 L650,35 L700,60 L750,25 L800,40 L800,280 L0,280 Z" fill="url(#fillGrad)"/>
+      <path d="M0,200 L50,180 L100,185 L150,145 L200,160 L250,115 L300,125 L350,85 L400,100 L450,70 L500,95 L550,50 L600,75 L650,35 L700,60 L750,25 L800,40" fill="none" stroke="#b52330" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="800" cy="40" r="6" fill="#b52330"/>
+      <circle cx="800" cy="40" r="10" fill="#b52330" fill-opacity="0.2"/>
+    </svg>
+    <div class="flex justify-between mt-4 text-xs text-on-surface-variant font-medium">
+      <span>20 mars</span><span>27 mars</span><span>3 avril</span><span>10 avril</span><span class="text-primary font-bold">20 avril</span>
+    </div>
+  </section>
+
+  <!-- Breakdown grid -->
+  <section class="reveal grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6" style="animation-delay:0.3s">
+    <!-- By sector -->
+    <div class="bg-surface-container-lowest rounded-2xl p-6 md:p-8 soft-shadow">
+      <p class="text-xs uppercase tracking-[0.25em] text-on-surface-variant font-semibold mb-2">Répartition</p>
+      <h3 class="font-headline font-extrabold text-xl display-tight text-on-surface mb-6">Par secteur</h3>
+      <div class="space-y-4">
+        
+    <div>
+      <div class="flex items-center justify-between mb-1.5">
+        <span class="text-sm font-semibold text-on-surface">SaaS B2B</span>
+        <span class="text-xs font-mono font-bold text-on-surface-variant">7 deals · 58%</span>
+      </div>
+      <div class="h-3 bg-surface-container rounded-full overflow-hidden">
+        <div class="h-full rounded-full progress-fill" style="width:58%;background:#b52330"></div>
+      </div>
+    </div>
+  
+        
+    <div>
+      <div class="flex items-center justify-between mb-1.5">
+        <span class="text-sm font-semibold text-on-surface">Fintech</span>
+        <span class="text-xs font-mono font-bold text-on-surface-variant">3 deals · 25%</span>
+      </div>
+      <div class="h-3 bg-surface-container rounded-full overflow-hidden">
+        <div class="h-full rounded-full progress-fill" style="width:25%;background:#ff5a5f"></div>
+      </div>
+    </div>
+  
+        
+    <div>
+      <div class="flex items-center justify-between mb-1.5">
+        <span class="text-sm font-semibold text-on-surface">Services</span>
+        <span class="text-xs font-mono font-bold text-on-surface-variant">2 deals · 17%</span>
+      </div>
+      <div class="h-3 bg-surface-container rounded-full overflow-hidden">
+        <div class="h-full rounded-full progress-fill" style="width:17%;background:#5a403f"></div>
+      </div>
+    </div>
+  
+      </div>
+    </div>
+
+    <!-- Funnel -->
+    <div class="bg-surface-container-lowest rounded-2xl p-6 md:p-8 soft-shadow">
+      <p class="text-xs uppercase tracking-[0.25em] text-on-surface-variant font-semibold mb-2">Conversion</p>
+      <h3 class="font-headline font-extrabold text-xl display-tight text-on-surface mb-6">Funnel mensuel</h3>
+      <div class="space-y-3">
+        <div>
+          <div class="flex items-center justify-between mb-1"><span class="text-sm font-semibold">Contactés</span><span class="font-mono font-bold">142</span></div>
+          <div class="h-3 bg-surface-container rounded-full overflow-hidden"><div class="h-full bg-on-surface-variant/60 rounded-full" style="width:100%"></div></div>
+        </div>
+        <div>
+          <div class="flex items-center justify-between mb-1"><span class="text-sm font-semibold">Répondus</span><span class="font-mono font-bold">89 <span class="text-on-surface-variant font-normal">· 63%</span></span></div>
+          <div class="h-3 bg-surface-container rounded-full overflow-hidden"><div class="h-full bg-primary-container rounded-full" style="width:63%"></div></div>
+        </div>
+        <div>
+          <div class="flex items-center justify-between mb-1"><span class="text-sm font-semibold">Qualifiés</span><span class="font-mono font-bold">68 <span class="text-on-surface-variant font-normal">· 48%</span></span></div>
+          <div class="h-3 bg-surface-container rounded-full overflow-hidden"><div class="h-full bg-primary/70 rounded-full" style="width:48%"></div></div>
+        </div>
+        <div>
+          <div class="flex items-center justify-between mb-1"><span class="text-sm font-semibold">Propales</span><span class="font-mono font-bold">34 <span class="text-on-surface-variant font-normal">· 24%</span></span></div>
+          <div class="h-3 bg-surface-container rounded-full overflow-hidden"><div class="h-full bg-primary rounded-full" style="width:24%"></div></div>
+        </div>
+        <div>
+          <div class="flex items-center justify-between mb-1"><span class="text-sm font-semibold text-primary">Signés</span><span class="font-mono font-bold text-primary">12 <span class="text-on-surface-variant font-normal">· 8%</span></span></div>
+          <div class="h-3 bg-surface-container rounded-full overflow-hidden"><div class="h-full cta-gradient rounded-full" style="width:8%"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Streak heatmap -->
+  <section class="reveal bg-surface-container-lowest rounded-2xl p-6 md:p-8 soft-shadow mb-6" style="animation-delay:0.4s">
+    <div class="flex items-center justify-between mb-5 flex-wrap gap-3">
+      <div>
+        <p class="text-xs uppercase tracking-[0.25em] text-on-surface-variant font-semibold mb-2">Consistance</p>
+        <h3 class="font-headline font-extrabold text-xl display-tight text-on-surface">Activité quotidienne · 90 jours</h3>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined filled text-primary flame-pulse" style="font-size:20px">local_fire_department</span>
+        <span class="text-sm font-bold text-primary">12 jours de streak</span>
+      </div>
+    </div>
+    <div class="grid grid-cols-[repeat(30,1fr)] gap-1" id="perfHeatmap"></div>
+    <div class="flex items-center justify-between mt-4 text-[10px] text-on-surface-variant">
+      <span>Moins</span>
+      <div class="flex gap-1">
+        <span class="w-3 h-3 rounded-sm" style="background:#f0eded"></span>
+        <span class="w-3 h-3 rounded-sm" style="background:#ffdad8"></span>
+        <span class="w-3 h-3 rounded-sm" style="background:#ff9a9d"></span>
+        <span class="w-3 h-3 rounded-sm" style="background:#ff5a5f"></span>
+        <span class="w-3 h-3 rounded-sm" style="background:#b52330"></span>
+      </div>
+      <span>Plus</span>
+    </div>
+  </section>
+
+  <!-- Records & best performances -->
+  <section class="reveal grid grid-cols-1 md:grid-cols-3 gap-4" style="animation-delay:0.5s">
+    <div class="bg-surface-container-lowest rounded-2xl p-6 soft-shadow">
+      <span class="material-symbols-outlined filled gold-text mb-3" style="font-size:28px">emoji_events</span>
+      <p class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold mb-1">Meilleur mois</p>
+      <p class="font-headline font-extrabold text-2xl metric-num text-on-surface">5 420 €</p>
+      <p class="text-xs text-on-surface-variant mt-2">Février 2026 · 14 deals</p>
+    </div>
+    <div class="bg-surface-container-lowest rounded-2xl p-6 soft-shadow">
+      <span class="material-symbols-outlined filled text-primary mb-3" style="font-size:28px">bolt</span>
+      <p class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold mb-1">Meilleure journée</p>
+      <p class="font-headline font-extrabold text-2xl metric-num text-on-surface">1 240 €</p>
+      <p class="text-xs text-on-surface-variant mt-2">7 mars · 3 deals signés</p>
+    </div>
+    <div class="bg-surface-container-lowest rounded-2xl p-6 soft-shadow">
+      <span class="material-symbols-outlined filled text-tertiary mb-3" style="font-size:28px">local_fire_department</span>
+      <p class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold mb-1">Plus long streak</p>
+      <p class="font-headline font-extrabold text-2xl metric-num text-on-surface">18 jours</p>
+      <p class="text-xs text-on-surface-variant mt-2">Février-mars 2026</p>
+    </div>
+  </section>
+</main>
+
+<!-- FOOTER -->
+<footer class="max-w-[1400px] mx-auto px-6 mt-16 pt-8 pb-10">
+  <div class="divider-soft mb-6"></div>
+  <div class="flex justify-between items-center flex-wrap gap-4">
+    <p class="text-xs text-on-surface-variant">Stacker · Plateforme de commissionnement commercial</p>
+    <p class="text-xs text-on-surface-variant font-semibold tracking-[0.25em] uppercase">Defined by editorial precision</p>
+  </div>
+</footer>
+
+<script>
+(function() {
+  'use strict';
+
+  window.showToast = function(opts) {
+    const c = document.getElementById('toastContainer');
+    const el = document.createElement('div');
+    el.className = 'toast pointer-events-auto bg-surface-container-lowest rounded-2xl p-4 float-shadow flex items-start gap-3 border border-outline-variant/30';
+    el.innerHTML = '<div class="w-9 h-9 rounded-full ' + (opts.iconBg || 'bg-tertiary/10') + ' flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined ' + (opts.iconColor || 'text-tertiary') + '" style="font-size:20px">' + (opts.icon || 'check_circle') + '</span></div>' +
+      '<div class="flex-1 min-w-0"><p class="font-bold text-sm text-on-surface">' + opts.title + '</p><p class="text-xs text-on-surface-variant mt-0.5">' + opts.body + '</p></div>' +
+      '<button class="text-on-surface-variant hover:text-on-surface" onclick="this.parentElement.remove()"><span class="material-symbols-outlined" style="font-size:16px">close</span></button>';
+    c.appendChild(el);
+    setTimeout(function() { el.classList.add('leaving'); setTimeout(function() { el.remove(); }, 400); }, 4500);
+  };
+
+  window.openHamburger = function() {
+    document.getElementById('hamburgerPanel').classList.add('open');
+    document.getElementById('hamburgerBackdrop').classList.add('open');
+  };
+  window.closeHamburger = function() {
+    document.getElementById('hamburgerPanel').classList.remove('open');
+    document.getElementById('hamburgerBackdrop').classList.remove('open');
+  };
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeHamburger();
+  });
+
+  // Mark active page in hamburger
+  const currentPage = document.body.getAttribute('data-page');
+  if (currentPage) {
+    const activeItem = document.querySelector('[data-page="' + currentPage + '"]');
+    if (activeItem) activeItem.classList.add('active');
+  }
+})();
+</script>
+
+<script>
+(function() {
+  // Generate heatmap 90 cells
+  const grid = document.getElementById('perfHeatmap');
+  if (!grid) return;
+  const intensities = [];
+  for (let i = 0; i < 90; i++) {
+    // Recent days higher intensity
+    const bias = i / 90;
+    const rand = Math.random();
+    const v = rand < 0.15 ? 0 : rand < 0.35 ? 1 : rand < 0.6 ? 2 : rand < 0.85 ? 3 : 4;
+    intensities.push(Math.min(4, Math.floor(v + bias * 1.5)));
+  }
+  const colors = ['#f0eded', '#ffdad8', '#ff9a9d', '#ff5a5f', '#b52330'];
+  intensities.forEach((lvl, i) => {
+    const cell = document.createElement('div');
+    cell.style.aspectRatio = '1';
+    cell.style.borderRadius = '3px';
+    cell.style.background = colors[lvl];
+    cell.style.cursor = 'pointer';
+    cell.style.transition = 'transform 0.15s ease';
+    cell.title = 'J-' + (89 - i) + ' · ' + (lvl === 0 ? 'aucun deal' : lvl + ' deal' + (lvl > 1 ? 's' : ''));
+    cell.onmouseover = () => cell.style.transform = 'scale(1.2)';
+    cell.onmouseout = () => cell.style.transform = 'scale(1)';
+    grid.appendChild(cell);
+  });
+})();
+</script>
+
+</body>
+</html>
