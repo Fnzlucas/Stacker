@@ -55,6 +55,32 @@
       radial-gradient(ellipse at bottom left, rgba(255,90,95,0.08), transparent 50%),
       #1b1c1c;
   }
+  .scroll-hide::-webkit-scrollbar { display: none; } .scroll-hide { scrollbar-width: none; }
+  .filter-pill { transition: all 0.2s ease; }
+  .filter-pill.active { background: #1b1c1c; color: #ffffff; }
+  .hybrid-row {
+    display: grid; grid-template-columns: 1fr 100px 130px 24px; gap: 20px;
+    padding: 18px 24px; align-items: center;
+    border-bottom: 1px solid rgba(226,190,188,0.15);
+    transition: background 0.15s ease; cursor: pointer; text-decoration: none; color: inherit;
+  }
+  .hybrid-row:last-child { border-bottom: none; }
+  .hybrid-row:hover { background: #f6f3f2; }
+  .hybrid-row-sector { font-size: 10px; text-transform: uppercase; letter-spacing: 0.15em; color: #8e706f; font-weight: 600; margin-bottom: 4px; }
+  .hybrid-row-title { font-size: 14px; font-weight: 600; color: #1b1c1c; }
+  .hybrid-row-amount { text-align: right; }
+  .hybrid-row-amount .amount-main { font-family: 'Plus Jakarta Sans'; font-weight: 800; font-size: 16px; color: #1b1c1c; letter-spacing: -0.04em; font-feature-settings: "tnum"; }
+  .hybrid-row-amount .amount-unit { font-size: 10px; color: #8e706f; margin-top: 2px; }
+  .hybrid-row-arrow { color: #8e706f; transition: transform 0.2s, color 0.2s; }
+  .hybrid-row:hover .hybrid-row-arrow { color: #b52330; transform: translateX(4px); }
+  @media (max-width: 768px) {
+    .hybrid-row { grid-template-columns: 1fr auto; gap: 6px; padding: 16px 20px; }
+    .hybrid-row-content { grid-column: 1; grid-row: 1; }
+    .tag { grid-column: 1; grid-row: 2; justify-self: start; margin-top: 4px; }
+    .hybrid-row-amount { grid-column: 2; grid-row: 1 / 3; align-self: center; }
+    .hybrid-row-arrow { display: none; }
+  }
+  .tag { display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.25rem 0.625rem; border-radius: 9999px; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
   .hover-lift { transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s ease; }
   .hover-lift:hover { transform: translateY(-2px); box-shadow: 0 16px 32px -12px rgba(27,28,28,0.12); }
   @keyframes slideUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
@@ -231,15 +257,91 @@
 
   <!-- LIST PAGE -->
   <div id="listPage">
+
+    <!-- Header -->
     <section class="reveal mb-8" style="animation-delay:0.05s">
-      <p class="text-[10px] font-bold tracking-[0.25em] text-on-surface-variant uppercase mb-2">Catalogue commercial</p>
-      <h1 class="font-headline font-extrabold text-3xl md:text-4xl display-tight text-on-surface mb-2">Nos offres</h1>
-      <p class="text-sm text-on-surface-variant max-w-lg">Sélectionne un produit pour accéder au kit complet — pitch, scripts, tarifs et contrat.</p>
+      <nav class="flex items-center gap-2 text-xs text-on-surface-variant mb-4">
+        <a href="index.html" class="hover:text-on-surface transition">Tableau de bord</a>
+        <span class="material-symbols-outlined" style="font-size:14px">chevron_right</span>
+        <span class="font-semibold text-on-surface">Nos offres</span>
+      </nav>
+      <div class="flex items-end justify-between flex-wrap gap-4">
+        <div>
+          <p class="text-[10px] font-semibold tracking-[0.25em] text-on-surface-variant uppercase mb-2">Catalogue commercial</p>
+          <h1 class="font-headline font-extrabold text-3xl md:text-4xl display-tight text-on-surface">Nos offres</h1>
+          <p class="text-sm text-on-surface-variant mt-2">8 produits · scripts, tarifs et contrats inclus</p>
+        </div>
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" style="font-size:18px">search</span>
+          <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Chercher..." class="pl-10 pr-4 py-2.5 rounded-full bg-surface-container-high text-sm font-medium w-48 md:w-64 focus:outline-none focus:ring-2 focus:ring-primary/30">
+        </div>
+      </div>
     </section>
 
-    <section class="reveal" style="animation-delay:0.15s">
-      <div class="grid grid-cols-2 md:grid-cols-2 gap-3" id="productGrid"></div>
+    <!-- Stats inline -->
+    <section class="reveal mb-8 flex items-center gap-6 flex-wrap text-sm" style="animation-delay:0.1s">
+      <div><span class="font-headline font-extrabold text-xl text-on-surface" style="letter-spacing:-0.04em">8</span> <span class="text-on-surface-variant">produits actifs</span></div>
+      <div class="h-4 w-px bg-outline-variant/40"></div>
+      <div><span class="font-headline font-extrabold text-xl text-tertiary" style="letter-spacing:-0.04em">20–50%</span> <span class="text-on-surface-variant">commission</span></div>
+      <div class="h-4 w-px bg-outline-variant/40"></div>
+      <div><span class="font-headline font-extrabold text-xl text-on-surface" style="letter-spacing:-0.04em">29–499€</span> <span class="text-on-surface-variant">abonnements clients</span></div>
+      <div class="h-4 w-px bg-outline-variant/40"></div>
+      <div><span class="font-headline font-extrabold text-xl text-primary" style="letter-spacing:-0.04em">Récurrent</span> <span class="text-on-surface-variant">à vie</span></div>
     </section>
+
+    <!-- Filter pills -->
+    <section class="reveal mb-6" style="animation-delay:0.15s">
+      <div class="flex gap-2 overflow-x-auto scroll-hide pb-2">
+        <button class="filter-pill active px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap bg-surface-container-high" onclick="filterByTag('all')">Tous · 8</button>
+        <button class="filter-pill px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap bg-surface-container-high text-on-surface-variant" onclick="filterByTag('Commerce')">Commerce local</button>
+        <button class="filter-pill px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap bg-surface-container-high text-on-surface-variant" onclick="filterByTag('B2B')">B2B</button>
+        <button class="filter-pill px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap bg-surface-container-high text-on-surface-variant" onclick="filterByTag('Restauration')">Restauration</button>
+        <button class="filter-pill px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap bg-surface-container-high text-on-surface-variant" onclick="filterByTag('Hôtellerie')">Hôtellerie</button>
+        <button class="filter-pill px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap bg-surface-container-high text-on-surface-variant" onclick="filterByTag('Crypto')">Crypto</button>
+      </div>
+    </section>
+
+    <!-- Featured -->
+    <section class="reveal mb-4" style="animation-delay:0.2s">
+      <p class="text-[10px] uppercase tracking-[0.25em] text-on-surface-variant font-bold mb-3">Produit vedette · commission 20%</p>
+      <div class="hero-dark rounded-2xl overflow-hidden relative block hover-lift cursor-pointer" onclick="openProduct('seoia')">
+        <div class="p-8 md:p-12 relative z-10">
+          <div class="flex items-center gap-2 mb-5">
+            <span class="tag bg-primary text-on-primary">Top vente</span>
+            <span class="tag bg-white/10 text-white/80">SEO · IA</span>
+            <span class="tag bg-white/10 text-white/80">Récurrent</span>
+          </div>
+          <h3 class="font-headline font-extrabold text-3xl md:text-5xl display-tight text-white mb-3 max-w-2xl">Visibilité Google pour commerçants locaux</h3>
+          <p class="text-white/60 text-base md:text-lg mb-8 max-w-xl">SEO + IA pour propulser n'importe quel commerce en tête de Google. Script validé, audit gratuit comme accroche.</p>
+          <div class="flex items-center gap-8 flex-wrap">
+            <div>
+              <p class="font-headline font-extrabold text-3xl text-white" style="letter-spacing:-0.045em">98 €</p>
+              <p class="text-xs text-white/50">com. mensuelle · Pack Pro</p>
+            </div>
+            <div class="h-10 w-px bg-white/20"></div>
+            <div>
+              <p class="font-headline font-extrabold text-3xl text-white" style="letter-spacing:-0.045em">349 €</p>
+              <p class="text-xs text-white/50">abonnement client</p>
+            </div>
+            <div class="h-10 w-px bg-white/20"></div>
+            <div>
+              <p class="font-headline font-extrabold text-3xl text-white" style="letter-spacing:-0.045em">20%</p>
+              <p class="text-xs text-white/50">commission récurrente</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Liste compacte -->
+    <section class="reveal" style="animation-delay:0.3s">
+      <div class="bg-surface-container-lowest rounded-2xl soft-shadow overflow-hidden" id="productGrid"></div>
+    </section>
+
+    <div class="flex justify-center mt-6" id="noResults" style="display:none">
+      <p class="text-sm text-on-surface-variant">Aucun produit ne correspond à ta recherche.</p>
+    </div>
+
   </div>
 
   <!-- DETAIL PAGE -->
@@ -713,32 +815,98 @@ let current = null;
 let activePane = 'pitch';
 let activeChannel = 'tel';
 
+let activeTag = 'all';
+
+const TAG_MAP = {
+  seoia: ['Commerce','SEO'],
+  fastfood: ['Commerce','Restauration'],
+  huntlist: ['B2B'],
+  rhpme: ['B2B'],
+  fidelite: ['Commerce'],
+  alma: ['Commerce','B2B'],
+  inroom: ['Hôtellerie'],
+  tradebot: ['Crypto']
+};
+
 function renderGrid() {
-  var grid = document.getElementById('productGrid');
-  var html = '';
-  for (var i = 0; i < PRODUCTS.length; i++) {
-    var p = PRODUCTS[i];
-    var isVariable = p.plans.some(function(pl) { return pl.variable; });
-    var validPrices = p.plans.filter(function(pl) { return pl.price !== null; }).map(function(pl) { return pl.price; });
-    var minPrice = isVariable ? 'Dès 5€/chambre' : ('Dès ' + Math.min.apply(null, validPrices) + '€/mois');
-    var comRate = p.id === 'tradebot' ? '2% + 8% + 25%' : (Math.round(p.plans[0].comRate * 100) + '% com.');
-    html += '<div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5 cursor-pointer hover-lift border border-transparent hover:border-outline-variant/50 card-anim" onclick="openProduct(\'' + p.id + '\')" style="animation-delay:' + (i * 45) + 'ms">';
-    html += '<div class="flex items-start justify-between mb-3.5">';
-    html += '<div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:' + p.color + '14">';
-    html += '<span class="material-symbols-outlined filled" style="font-size:20px;color:' + p.color + ';font-variation-settings:\'FILL\' 1">' + p.icon + '</span>';
-    html += '</div>';
-    html += '<span class="text-[10px] font-bold px-2.5 py-1 rounded-full" style="background:rgba(0,108,76,0.1);color:#006c4c;letter-spacing:0.01em">' + comRate + '</span>';
-    html += '</div>';
-    html += '<p class="font-headline font-bold text-sm text-on-surface mb-1" style="letter-spacing:-0.02em">' + p.name + '</p>';
-    html += '<p class="text-[11.5px] text-on-surface-variant leading-snug mb-4">' + p.tagline + '</p>';
-    html += '<div class="flex items-center justify-between pt-3.5 border-t border-outline-variant/40">';
-    html += '<span class="font-headline font-bold text-[12px] text-primary">' + minPrice + '</span>';
-    html += '<div class="w-6 h-6 rounded-full flex items-center justify-center transition-colors" style="background:rgba(181,35,48,0.08)">';
-    html += '<span class="material-symbols-outlined" style="font-size:14px;color:#b52330">arrow_forward</span>';
-    html += '</div></div></div>';
-  }
-  grid.innerHTML = html;
+  buildRows(PRODUCTS);
 }
+
+function buildRows(products) {
+  const grid = document.getElementById('productGrid');
+  if (!products.length) {
+    grid.innerHTML = '';
+    document.getElementById('noResults').style.display = 'flex';
+    return;
+  }
+  document.getElementById('noResults').style.display = 'none';
+  // Skip seoia in list (it's the featured)
+  const listed = products.filter(p => p.id !== 'seoia');
+  grid.innerHTML = listed.map((p, i) => {
+    const isVariable = p.plans.some(pl => pl.variable);
+    const isTradebot = p.id === 'tradebot';
+    const validPrices = p.plans.filter(pl => pl.price !== null).map(pl => pl.price);
+    const minPrice = isVariable ? '5 €/chambre' : ('Dès ' + Math.min(...validPrices) + ' €/mois');
+    const comRate = isTradebot ? '2%+8%+25%' : (Math.round(p.plans[0].comRate * 100) + '%');
+    const comLabel = isTradebot ? 'commission mixte' : 'commission récurrente';
+    // Tag badge
+    const tagColors = {
+      'Commerce': 'bg-tertiary-fixed text-tertiary',
+      'B2B': 'bg-primary-fixed text-primary',
+      'Restauration': 'bg-surface-container-high text-on-surface-variant',
+      'Hôtellerie': 'bg-surface-container-high text-on-surface-variant',
+      'Crypto': 'bg-surface-container-high text-on-surface-variant',
+      'SEO': 'bg-tertiary-fixed text-tertiary',
+    };
+    const tags = TAG_MAP[p.id] || [];
+    const mainTag = tags[0] || '';
+    const tagClass = tagColors[mainTag] || 'bg-surface-container-high text-on-surface-variant';
+    return `<a href="#" onclick="openProduct('${p.id}'); return false;" class="hybrid-row group" style="animation-delay:${i*40}ms">
+      <div class="hybrid-row-content">
+        <p class="hybrid-row-sector">${p.category}</p>
+        <h4 class="hybrid-row-title">${p.name} <span class="text-on-surface-variant font-normal text-[13px]">— ${p.tagline}</span></h4>
+      </div>
+      <span class="tag ${tagClass}">${mainTag}</span>
+      <div class="hybrid-row-amount">
+        <p class="amount-main">${comRate}</p>
+        <p class="amount-unit">${comLabel}</p>
+      </div>
+      <span class="material-symbols-outlined hybrid-row-arrow" style="font-size:18px">arrow_forward</span>
+    </a>`;
+  }).join('');
+}
+
+function filterByTag(tag) {
+  activeTag = tag;
+  document.querySelectorAll('.filter-pill').forEach(p => {
+    p.classList.remove('active');
+    p.classList.add('text-on-surface-variant');
+  });
+  event.target.classList.add('active');
+  event.target.classList.remove('text-on-surface-variant');
+  applyFilters();
+}
+
+function filterProducts() {
+  applyFilters();
+}
+
+function applyFilters() {
+  const q = (document.getElementById('searchInput')?.value || '').toLowerCase();
+  let filtered = PRODUCTS;
+  if (activeTag !== 'all') {
+    filtered = filtered.filter(p => (TAG_MAP[p.id] || []).includes(activeTag));
+  }
+  if (q) {
+    filtered = filtered.filter(p =>
+      p.name.toLowerCase().includes(q) ||
+      p.tagline.toLowerCase().includes(q) ||
+      p.category.toLowerCase().includes(q)
+    );
+  }
+  buildRows(filtered);
+}
+
 
 function openProduct(id) {
   current = PRODUCTS.find(p => p.id === id);
