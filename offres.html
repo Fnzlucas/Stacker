@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nos Offres · Stacker</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#b52330",
+          "primary-container": "#ff5a5f",
+          "primary-fixed": "#ffdad8",
+          "on-primary": "#ffffff",
+          "tertiary": "#006c4c",
+          "tertiary-container": "#00a879",
+          "tertiary-fixed": "#78fac4",
+          "background": "#fcf9f8",
+          "surface-container-lowest": "#ffffff",
+          "surface-container-low": "#f6f3f2",
+          "surface-container": "#f0eded",
+          "surface-container-high": "#eae7e7",
+          "surface-container-highest": "#e5e2e1",
+          "on-surface": "#1b1c1c",
+          "on-surface-variant": "#5a403f",
+          "outline-variant": "#e2bebc"
+        },
+        fontFamily: {
+          "headline": ["Plus Jakarta Sans"],
+          "body": ["Inter"],
+          "mono": ["JetBrains Mono"]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  body { font-family: 'Inter', sans-serif; }
+  .font-headline { font-family: 'Plus Jakarta Sans', sans-serif; }
+  .font-mono { font-family: 'JetBrains Mono', monospace; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  .material-symbols-outlined.filled { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  .glass-nav { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); background: rgba(252,249,248,0.75); border-bottom: 1px solid rgba(226,190,188,0.2); }
+  .cta-gradient { background: linear-gradient(135deg, #b52330 0%, #ff5a5f 100%); }
+  .float-shadow { box-shadow: 0 20px 40px -12px rgba(27,28,28,0.08); }
+  .soft-shadow { box-shadow: 0 8px 24px -8px rgba(27,28,28,0.06); }
+  .display-tight { letter-spacing: -0.03em; }
+  .hero-dark {
+    background:
+      radial-gradient(ellipse at top right, rgba(181,35,48,0.22), transparent 60%),
+      radial-gradient(ellipse at bottom left, rgba(255,90,95,0.08), transparent 50%),
+      #1b1c1c;
+  }
+  .hover-lift { transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s ease; }
+  .hover-lift:hover { transform: translateY(-2px); box-shadow: 0 16px 32px -12px rgba(27,28,28,0.12); }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  .reveal { animation: slideUp 0.5s cubic-bezier(0.22,1,0.36,1) both; }
+  @keyframes fadePane { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .pane { display: none; }
+  .pane.active { display: block; animation: fadePane 0.25s ease both; }
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #e5e2e1; border-radius: 9999px; }
+  .divider-soft { background: linear-gradient(90deg, transparent, rgba(226,190,188,0.3) 50%, transparent); height: 1px; }
+  /* Hamburger */
+  .hamburger-panel {
+    position: fixed; top: 0; left: 0; width: 360px; max-width: 100vw; height: 100vh;
+    background: #fcf9f8; z-index: 75; transform: translateX(-100%);
+    transition: transform 0.4s cubic-bezier(0.22,1,0.36,1);
+    display: flex; flex-direction: column; box-shadow: 20px 0 60px -10px rgba(0,0,0,0.15);
+  }
+  .hamburger-panel.open { transform: translateX(0); }
+  .hamburger-backdrop { position: fixed; inset: 0; background: rgba(27,28,28,0.4); backdrop-filter: blur(4px); z-index: 72; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+  .hamburger-backdrop.open { opacity: 1; pointer-events: auto; }
+  .nav-item {
+    display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 12px;
+    transition: background 0.2s ease; cursor: pointer; text-decoration: none; color: inherit;
+  }
+  .nav-item:hover { background: #f6f3f2; }
+  .nav-item.active { background: #ffdad8; }
+  .nav-item.active .nav-item-label { color: #b52330; font-weight: 700; }
+  /* Tab pills */
+  .tabs-wrap { display: flex; gap: 3px; background: #f0eded; border-radius: 12px; padding: 4px; overflow-x: auto; }
+  .tab-btn {
+    flex: 1; min-width: max-content; padding: 8px 14px;
+    border-radius: 9px; border: none; background: transparent;
+    font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500;
+    color: #5a403f; cursor: pointer; transition: all 0.18s; white-space: nowrap;
+  }
+  .tab-btn.active { background: #ffffff; color: #1b1c1c; font-weight: 600; box-shadow: 0 1px 3px rgba(27,28,28,0.06); }
+  /* Channel pills */
+  .ch-pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 7px 14px; border-radius: 9999px;
+    font-size: 12px; font-weight: 500; cursor: pointer;
+    border: 1px solid #e2bebc; background: #ffffff;
+    color: #5a403f; transition: all 0.18s;
+  }
+  .ch-pill .material-symbols-outlined { font-size: 13px; }
+  .ch-pill.active { background: #1b1c1c; color: #fff; border-color: #1b1c1c; }
+  .ch-pill:hover:not(.active) { border-color: #5a403f; color: #1b1c1c; }
+  /* Info label */
+  .info-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 9.5px; font-weight: 500;
+    color: #8e706f; letter-spacing: 0.12em; text-transform: uppercase;
+    margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+  }
+  .info-label::after { content: ''; flex: 1; height: 1px; background: rgba(226,190,188,0.5); }
+  /* Check list */
+  .check-list { list-style: none; }
+  .check-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: #2a2626; padding: 7px 0; border-bottom: 1px solid rgba(226,190,188,0.4); line-height: 1.55; }
+  .check-list li:last-child { border-bottom: none; padding-bottom: 0; }
+  .check-list li:first-child { padding-top: 0; }
+  .check-list li .material-symbols-outlined { font-size: 15px; margin-top: 1px; flex-shrink: 0; font-variation-settings: 'FILL' 1; }
+  .check-list.pro li .material-symbols-outlined { color: #006c4c; }
+  .check-list.con li .material-symbols-outlined { color: #b52330; }
+  /* Script */
+  .step-num { width: 22px; height: 22px; border-radius: 50%; background: rgba(181,35,48,0.08); display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono'; font-size: 10px; font-weight: 600; color: #b52330; flex-shrink: 0; }
+  /* Plan card rec */
+  .plan-rec { border-color: #b52330 !important; }
+  .plan-rec::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, #b52330, #ff5a5f); border-radius: 18px 18px 0 0; }
+  /* Page transition */
+  .page-enter { animation: slideUp 0.4s cubic-bezier(0.22,1,0.36,1) both; }
+  @keyframes cardIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .card-anim { animation: cardIn 0.38s cubic-bezier(0.22,1,0.36,1) both; }
+</style>
+</head>
+<body class="bg-background text-on-surface font-body antialiased" data-page="offres">
+
+<!-- Hamburger backdrop + panel -->
+<div id="hamburgerBackdrop" class="hamburger-backdrop" onclick="closeHamburger()"></div>
+<aside id="hamburgerPanel" class="hamburger-panel">
+  <div class="px-6 pt-6 pb-4 border-b border-outline-variant/30 flex items-center justify-between">
+    <div>
+      <p class="text-[10px] uppercase tracking-[0.25em] font-bold text-on-surface-variant">Stacker · Navigation</p>
+      <h2 class="font-headline font-extrabold text-xl text-on-surface mt-0.5">Toutes les sections</h2>
+    </div>
+    <button onclick="closeHamburger()" class="p-2 rounded-full hover:bg-surface-container-high transition">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+  </div>
+  <div class="flex-1 overflow-y-auto px-4 py-4">
+    <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-on-surface-variant px-3 mb-2">Principal</p>
+    <a href="index.html" class="nav-item" data-page="home">
+      <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface" style="font-size:18px">space_dashboard</span></div>
+      <span class="nav-item-label text-sm font-semibold flex-1">Tableau de bord</span>
+    </a>
+    <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-on-surface-variant px-3 mt-4 mb-2">Vendre</p>
+    <a href="missions.html" class="nav-item" data-page="missions">
+      <div class="w-9 h-9 rounded-lg bg-primary-fixed flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-primary" style="font-size:18px">work</span></div>
+      <div class="flex-1 min-w-0">
+        <p class="nav-item-label text-sm font-semibold">Nos missions</p>
+        <p class="text-[11px] text-on-surface-variant truncate">47 missions actives</p>
+      </div>
+    </a>
+    <a href="offres.html" class="nav-item active" data-page="offres">
+      <div class="w-9 h-9 rounded-lg bg-primary-fixed flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-primary filled" style="font-size:18px">inventory_2</span></div>
+      <div class="flex-1 min-w-0">
+        <p class="nav-item-label text-sm font-semibold">Nos offres</p>
+        <p class="text-[11px] text-on-surface-variant truncate">8 produits · scripts + contrats</p>
+      </div>
+    </a>
+    <a href="pipeline.html" class="nav-item" data-page="pipeline">
+      <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface" style="font-size:18px">account_tree</span></div>
+      <div class="flex-1 min-w-0">
+        <p class="nav-item-label text-sm font-semibold">Pipeline</p>
+        <p class="text-[11px] text-on-surface-variant truncate">12 prospects en cours</p>
+      </div>
+    </a>
+    <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-on-surface-variant px-3 mt-4 mb-2">Performance</p>
+    <a href="classement.html" class="nav-item" data-page="classement">
+      <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface" style="font-size:18px">leaderboard</span></div>
+      <div class="flex-1 min-w-0">
+        <p class="nav-item-label text-sm font-semibold">Classement</p>
+        <p class="text-[11px] text-on-surface-variant truncate">Rang #7 / 482</p>
+      </div>
+    </a>
+    <a href="performance.html" class="nav-item" data-page="performance">
+      <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface" style="font-size:18px">trending_up</span></div>
+      <div class="flex-1 min-w-0">
+        <p class="nav-item-label text-sm font-semibold">Performance</p>
+        <p class="text-[11px] text-on-surface-variant truncate">4 827 € ce mois · +28%</p>
+      </div>
+    </a>
+    <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-on-surface-variant px-3 mt-4 mb-2">Outils</p>
+    <a href="coach.html" class="nav-item" data-page="coach">
+      <div class="w-9 h-9 rounded-lg bg-on-surface flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-white" style="font-size:18px">headset_mic</span></div>
+      <div class="flex-1 min-w-0">
+        <p class="nav-item-label text-sm font-semibold">Coach IA en call</p>
+        <p class="text-[11px] text-on-surface-variant truncate">Transcription et suggestions live</p>
+      </div>
+    </a>
+  </div>
+  <div class="px-6 py-4 border-t border-outline-variant/30 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-white text-[10px] font-bold">LM</div>
+      <div>
+        <p class="text-xs font-bold text-on-surface">Lucas Moreau</p>
+        <p class="text-[10px] text-on-surface-variant">Rang #7</p>
+      </div>
+    </div>
+    <button class="p-2 rounded-full hover:bg-surface-container-high transition">
+      <span class="material-symbols-outlined text-on-surface-variant" style="font-size:18px">settings</span>
+    </button>
+  </div>
+</aside>
+
+<!-- NAV -->
+<header class="sticky top-0 w-full z-50 px-6 py-4 glass-nav">
+  <nav class="flex justify-between items-center max-w-[860px] mx-auto">
+    <div class="flex items-center gap-4">
+      <button onclick="openHamburger()" class="p-2 rounded-full hover:bg-surface-container-high transition" title="Menu">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+      <a href="index.html" class="flex items-baseline gap-0.5">
+        <span class="text-2xl font-black text-primary tracking-tighter font-headline leading-none">Stacker</span>
+        <span class="w-1 h-1 bg-on-surface"></span>
+      </a>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-on-primary font-bold text-sm">LM</div>
+    </div>
+  </nav>
+</header>
+
+<main class="max-w-[860px] mx-auto px-6 py-8 page-enter">
+
+  <!-- LIST PAGE -->
+  <div id="listPage">
+    <section class="reveal mb-8" style="animation-delay:0.05s">
+      <p class="text-[10px] font-bold tracking-[0.25em] text-on-surface-variant uppercase mb-2">Catalogue commercial</p>
+      <h1 class="font-headline font-extrabold text-3xl md:text-4xl display-tight text-on-surface mb-2">Nos offres</h1>
+      <p class="text-sm text-on-surface-variant max-w-lg">Sélectionne un produit pour accéder au kit complet — pitch, scripts, tarifs et contrat.</p>
+    </section>
+
+    <section class="reveal" style="animation-delay:0.15s">
+      <div class="grid grid-cols-2 md:grid-cols-2 gap-3" id="productGrid"></div>
+    </section>
+  </div>
+
+  <!-- DETAIL PAGE -->
+  <div id="detailPage" style="display:none">
+
+    <!-- Hero dark -->
+    <div class="hero-dark rounded-2xl overflow-hidden relative mb-1 reveal" style="animation-delay:0.05s" id="detailHero">
+      <div class="p-7 relative z-10">
+        <div class="flex items-start justify-between gap-4 mb-4">
+          <div class="flex-1 min-w-0">
+            <p class="font-mono text-[9px] tracking-[0.16em] uppercase text-white/40 mb-2" id="heroCategory"></p>
+            <h2 class="font-headline font-extrabold text-2xl md:text-3xl display-tight text-white mb-2 leading-tight" id="heroName"></h2>
+            <p class="text-sm text-white/55 leading-relaxed" id="heroTagline"></p>
+          </div>
+          <div class="w-12 h-12 rounded-2xl bg-primary/20 border border-primary/25 flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-white filled" id="heroIcon" style="font-size:24px;font-variation-settings:'FILL' 1"></span>
+          </div>
+        </div>
+        <div class="flex gap-1.5 flex-wrap" id="heroTags"></div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs-wrap mb-5 mt-3">
+      <button class="tab-btn active" onclick="showPane('pitch')" id="tbtn-pitch">Pitch produit</button>
+      <button class="tab-btn" onclick="showPane('scripts')" id="tbtn-scripts">Scripts vente</button>
+      <button class="tab-btn" onclick="showPane('tarifs')" id="tbtn-tarifs">Tarifs & com.</button>
+      <button class="tab-btn" onclick="showPane('fidelisation')" id="tbtn-fidelisation">Fidélisation</button>
+      <button class="tab-btn" onclick="showPane('contrat')" id="tbtn-contrat">Contrat</button>
+    </div>
+
+    <!-- Pane: Pitch -->
+    <div class="pane active" id="pane-pitch">
+      <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5 mb-2">
+        <div class="info-label">Le produit en 30 secondes</div>
+        <p class="text-[13.5px] text-on-surface leading-relaxed" id="pitchDesc"></p>
+      </div>
+      <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5 mb-2">
+        <div class="info-label">Problèmes résolus</div>
+        <ul class="check-list con" id="pitchProblems"></ul>
+      </div>
+      <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5 mb-2">
+        <div class="info-label">Arguments clés</div>
+        <ul class="check-list pro" id="pitchArgs"></ul>
+      </div>
+      <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5">
+        <div class="info-label">Cible idéale</div>
+        <p class="text-[13.5px] text-on-surface leading-relaxed" id="pitchTarget"></p>
+      </div>
+    </div>
+
+    <!-- Pane: Scripts -->
+    <div class="pane" id="pane-scripts">
+      <div class="flex gap-2 flex-wrap mb-4">
+        <button class="ch-pill active" onclick="showChannel('tel')" id="ch-tel"><span class="material-symbols-outlined">call</span>Téléphone</button>
+        <button class="ch-pill" onclick="showChannel('pap')" id="ch-pap"><span class="material-symbols-outlined">directions_walk</span>PAP</button>
+        <button class="ch-pill" onclick="showChannel('rdv')" id="ch-rdv"><span class="material-symbols-outlined">handshake</span>RDV</button>
+        <button class="ch-pill" onclick="showChannel('social')" id="ch-social"><span class="material-symbols-outlined">thumb_up</span>Réseaux</button>
+      </div>
+      <div id="scriptContent"></div>
+      <p class="font-mono text-[9.5px] tracking-[0.12em] uppercase text-on-surface-variant flex items-center gap-2 mt-5 mb-3">
+        Gestion des objections <span class="flex-1 h-px bg-outline-variant/50"></span>
+      </p>
+      <div id="objectionsList"></div>
+    </div>
+
+    <!-- Pane: Tarifs -->
+    <div class="pane" id="pane-tarifs">
+      <div class="grid grid-cols-1 gap-2 mb-3" id="planCards"></div>
+      <!-- Com banner -->
+      <div class="rounded-2xl p-5 flex items-center justify-between" style="background:linear-gradient(135deg,#006c4c 0%,#00a879 100%);box-shadow:0 8px 28px rgba(0,108,76,0.22)" id="comBanner">
+        <div>
+          <p class="text-[11.5px] text-white/65 font-medium mb-1">Ta com. mensuelle récurrente</p>
+          <p class="font-headline font-extrabold text-2xl text-white" style="letter-spacing:-0.035em" id="comVal">–</p>
+          <p class="text-[10.5px] text-white/50 mt-1">Commission versée chaque mois tant que le client est abonné</p>
+        </div>
+        <div class="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 ml-4" style="background:rgba(255,255,255,0.13)">
+          <span class="material-symbols-outlined text-white filled" style="font-size:22px;font-variation-settings:'FILL' 1">payments</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pane: Fidélisation -->
+    <div class="pane" id="pane-fidelisation">
+
+      <!-- Intro -->
+      <div class="hero-dark rounded-2xl p-6 mb-2">
+        <p class="font-mono text-[9px] tracking-[0.16em] uppercase text-white/40 mb-2">Programme de rétention</p>
+        <h3 class="font-headline font-extrabold text-xl text-white mb-2" style="letter-spacing:-0.03em">Tu gagnes plus si ton client reste.</h3>
+        <p class="text-[13px] text-white/55 leading-relaxed">Ta commission de base continue tant que le client est abonné. En plus, des primes progressives récompensent chaque palier de fidélisation atteint.</p>
+      </div>
+
+      <!-- Paliers -->
+      <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5 mb-2">
+        <div class="info-label">Primes de fidélisation</div>
+
+        <!-- 3 mois -->
+        <div class="flex items-start gap-4 py-4 border-b border-outline-variant/30">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(0,108,76,0.1)">
+            <span class="material-symbols-outlined filled" style="font-size:22px;color:#006c4c;font-variation-settings:'FILL' 1">verified</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between gap-2 mb-1">
+              <p class="font-headline font-bold text-sm text-on-surface" style="letter-spacing:-0.02em">Client actif à 3 mois</p>
+              <span class="font-headline font-extrabold text-sm text-tertiary whitespace-nowrap">+1 mois offert</span>
+            </div>
+            <p class="text-[12px] text-on-surface-variant leading-snug">Bonus équivalent à un mois de commission versé en une fois. Récompense la qualité du closing initial.</p>
+          </div>
+        </div>
+
+        <!-- 6 mois -->
+        <div class="flex items-start gap-4 py-4 border-b border-outline-variant/30">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(0,108,76,0.15)">
+            <span class="material-symbols-outlined filled" style="font-size:22px;color:#006c4c;font-variation-settings:'FILL' 1">trending_up</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between gap-2 mb-1">
+              <p class="font-headline font-bold text-sm text-on-surface" style="letter-spacing:-0.02em">Client actif à 6 mois</p>
+              <span class="font-headline font-extrabold text-sm text-tertiary whitespace-nowrap">+5% de commission</span>
+            </div>
+            <p class="text-[12px] text-on-surface-variant leading-snug">Ton taux de commission mensuel sur ce client augmente de 5 points et reste à ce niveau tant qu'il est abonné.</p>
+          </div>
+        </div>
+
+        <!-- 12 mois -->
+        <div class="flex items-start gap-4 pt-4">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(255,197,0,0.12);border:1px solid rgba(255,197,0,0.25)">
+            <span class="material-symbols-outlined filled" style="font-size:22px;color:#b8860b;font-variation-settings:'FILL' 1">workspace_premium</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between gap-2 mb-1">
+              <p class="font-headline font-bold text-sm text-on-surface" style="letter-spacing:-0.02em">Client actif à 12 mois</p>
+              <span class="font-headline font-extrabold text-sm whitespace-nowrap" style="color:#b8860b">Prime + statut Elite</span>
+            </div>
+            <p class="text-[12px] text-on-surface-variant leading-snug">Prime exceptionnelle versée en une fois + accès au statut Closer Elite : leads prioritaires, badge profil, classement dédié.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Simulateur -->
+      <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5 mb-2">
+        <div class="info-label">Simulateur de gains sur 12 mois</div>
+        <div class="flex items-center gap-3 mb-4">
+          <label class="text-sm text-on-surface flex-shrink-0">Abonnement client :</label>
+          <select id="fidSimPlan" onchange="calcFidelisation()" class="flex-1 px-3 py-2 rounded-xl border border-outline-variant bg-surface-container-low text-sm font-semibold text-on-surface outline-none focus:border-primary transition"></select>
+        </div>
+        <div class="grid grid-cols-3 gap-2 mb-4">
+          <div class="text-center p-3 rounded-xl border border-outline-variant/40">
+            <p class="font-mono text-[9px] uppercase tracking-[0.1em] text-on-surface-variant mb-2">Mois 1–3</p>
+            <p class="font-headline font-extrabold text-lg text-on-surface" id="fidM3">–</p>
+            <p class="text-[10px] text-on-surface-variant mt-1">commission de base</p>
+          </div>
+          <div class="text-center p-3 rounded-xl border border-tertiary/30" style="background:rgba(0,108,76,0.04)">
+            <p class="font-mono text-[9px] uppercase tracking-[0.1em] text-tertiary mb-2">Mois 4–6</p>
+            <p class="font-headline font-extrabold text-lg text-tertiary" id="fidM6">–</p>
+            <p class="text-[10px] text-on-surface-variant mt-1">+ prime 3 mois</p>
+          </div>
+          <div class="text-center p-3 rounded-xl" style="background:rgba(255,197,0,0.08);border:1px solid rgba(255,197,0,0.25)">
+            <p class="font-mono text-[9px] uppercase tracking-[0.1em] mb-2" style="color:#b8860b">Mois 7–12</p>
+            <p class="font-headline font-extrabold text-lg" style="color:#b8860b" id="fidM12">–</p>
+            <p class="text-[10px] text-on-surface-variant mt-1">taux augmenté</p>
+          </div>
+        </div>
+        <div class="flex items-center justify-between p-4 rounded-xl" style="background:linear-gradient(135deg,#006c4c,#00a879)">
+          <div>
+            <p class="text-[11px] text-white/65 mb-1">Total généré sur 12 mois — 1 client</p>
+            <p class="font-headline font-extrabold text-2xl text-white" style="letter-spacing:-0.035em" id="fidTotal">–</p>
+          </div>
+          <div class="text-right">
+            <p class="text-[11px] text-white/65 mb-1">Dont prime Elite</p>
+            <p class="font-headline font-extrabold text-lg text-white" id="fidPrime">–</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Closer Elite -->
+      <div class="rounded-2xl p-5" style="background:linear-gradient(135deg,#1f1d18,#2a2620);border:1px solid rgba(255,197,0,0.2)">
+        <div class="flex items-start gap-3 mb-4">
+          <span class="material-symbols-outlined filled" style="font-size:22px;color:#ffd700;font-variation-settings:'FILL' 1">crisis_alert</span>
+          <div>
+            <p class="font-headline font-bold text-base" style="color:#ffd700;letter-spacing:-0.02em">Statut Closer Elite</p>
+            <p class="text-[12px] mt-0.5" style="color:rgba(255,255,255,0.5)">Débloqué au premier client fidélisé 12 mois</p>
+          </div>
+        </div>
+        <div class="space-y-2">
+          <div class="flex items-center gap-2.5"><span class="material-symbols-outlined filled" style="font-size:14px;color:#ffd700;font-variation-settings:'FILL' 1">check</span><span class="text-[12.5px]" style="color:rgba(255,255,255,0.75)">Accès prioritaire aux meilleurs leads Stacker</span></div>
+          <div class="flex items-center gap-2.5"><span class="material-symbols-outlined filled" style="font-size:14px;color:#ffd700;font-variation-settings:'FILL' 1">check</span><span class="text-[12.5px]" style="color:rgba(255,255,255,0.75)">Badge Elite visible sur ton profil Stacker</span></div>
+          <div class="flex items-center gap-2.5"><span class="material-symbols-outlined filled" style="font-size:14px;color:#ffd700;font-variation-settings:'FILL' 1">check</span><span class="text-[12.5px]" style="color:rgba(255,255,255,0.75)">Classement dédié Closer Elite — top 50 national</span></div>
+          <div class="flex items-center gap-2.5"><span class="material-symbols-outlined filled" style="font-size:14px;color:#ffd700;font-variation-settings:'FILL' 1">check</span><span class="text-[12.5px]" style="color:rgba(255,255,255,0.75)">Commission parrainage majorée à +10%</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Pane: Contrat -->
+    <div class="pane" id="pane-contrat">
+      <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-6 mb-2">
+        <div class="info-label">Informations client</div>
+        <div class="grid grid-cols-2 gap-3 mb-3">
+          <div>
+            <label class="block text-[10.5px] font-semibold text-on-surface-variant uppercase tracking-[0.05em] mb-1.5">Prénom</label>
+            <input type="text" id="cPrenom" placeholder="Marie" class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm text-on-surface outline-none focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/10 transition">
+          </div>
+          <div>
+            <label class="block text-[10.5px] font-semibold text-on-surface-variant uppercase tracking-[0.05em] mb-1.5">Nom</label>
+            <input type="text" id="cNom" placeholder="Dupont" class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm text-on-surface outline-none focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/10 transition">
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="block text-[10.5px] font-semibold text-on-surface-variant uppercase tracking-[0.05em] mb-1.5">Email</label>
+          <input type="email" id="cEmail" placeholder="marie@exemple.fr" class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm text-on-surface outline-none focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/10 transition">
+        </div>
+        <div class="grid grid-cols-2 gap-3 mb-3">
+          <div>
+            <label class="block text-[10.5px] font-semibold text-on-surface-variant uppercase tracking-[0.05em] mb-1.5">Téléphone</label>
+            <input type="tel" id="cTel" placeholder="06 00 00 00 00" class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm text-on-surface outline-none focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/10 transition">
+          </div>
+          <div>
+            <label class="block text-[10.5px] font-semibold text-on-surface-variant uppercase tracking-[0.05em] mb-1.5">Ville</label>
+            <input type="text" id="cVille" placeholder="Paris" class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm text-on-surface outline-none focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/10 transition">
+          </div>
+        </div>
+        <div>
+          <label class="block text-[10.5px] font-semibold text-on-surface-variant uppercase tracking-[0.05em] mb-1.5">Société (optionnel)</label>
+          <input type="text" id="cSociete" placeholder="Nom de l'entreprise" class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm text-on-surface outline-none focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/10 transition">
+        </div>
+      </div>
+      <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-6 mb-3">
+        <div class="info-label">Offre sélectionnée</div>
+        <div>
+          <label class="block text-[10.5px] font-semibold text-on-surface-variant uppercase tracking-[0.05em] mb-1.5">Pack</label>
+          <select id="cPlan" class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm text-on-surface outline-none focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/10 transition">
+            <option value="">Choisir un pack...</option>
+          </select>
+        </div>
+      </div>
+      <button onclick="generatePDF()" class="w-full py-4 rounded-2xl cta-gradient text-white font-headline font-bold text-base flex items-center justify-center gap-2 hover:opacity-95 transition active:scale-[0.99]" style="box-shadow:0 8px 28px rgba(181,35,48,0.22)">
+        <span class="material-symbols-outlined filled" style="font-size:18px;font-variation-settings:'FILL' 1">picture_as_pdf</span>
+        Générer le contrat PDF
+      </button>
+      <div class="flex items-start gap-2.5 px-4 py-3 rounded-xl mt-2.5" style="background:rgba(0,108,76,0.08)">
+        <span class="material-symbols-outlined filled flex-shrink-0 mt-0.5" style="font-size:15px;color:#006c4c;font-variation-settings:'FILL' 1">verified</span>
+        <span class="text-[12px] font-medium leading-snug" style="color:#006c4c">Contrat généré instantanément avec toutes les infos client · Prêt à envoyer via YouSign pour signature légale</span>
+      </div>
+    </div>
+
+  </div><!-- /detailPage -->
+</main>
+
+<footer class="max-w-[860px] mx-auto px-6 mt-12 pt-6 pb-10">
+  <div class="divider-soft mb-5"></div>
+  <div class="flex justify-between items-center flex-wrap gap-4">
+    <p class="text-xs text-on-surface-variant">Stacker · Catalogue commercial</p>
+    <p class="text-xs text-on-surface-variant font-semibold tracking-[0.25em] uppercase">Defined by editorial precision</p>
+  </div>
+</footer>
+
+<script>
+const PRODUCTS = [
+ {
+ id:'seoia', name:'Seoia Partners', category:'SEO & Marketing Digital',
+ tagline:'Visibilité Google garantie pour les commerçants locaux',
+ icon:'travel_explore', color:'#b52330',
+ tags:['SEO','Intelligence Artificielle','Commerçants'],
+ desc:"Seoia Partners propulse les commerçants en tête de Google grâce au SEO traditionnel combiné à l'intelligence artificielle. Audit complet, optimisation continue, génération de contenu IA et reporting mensuel clair et actionnable.",
+ problems:["Le commerçant est invisible sur Google face à ses concurrents directs","Il perd des clients chaque jour qui cherchent en ligne sans le trouver","Il n'a ni le temps ni les compétences pour gérer son référencement"],
+ args:["Résultats de positionnement visibles dès le 1er mois","IA qui optimise le contenu 24h/24 sans intervention","Reporting simplifié et compréhensible chaque mois","Spécialisé exclusivement pour les commerçants locaux"],
+ target:"Commerçants locaux (restaurant, boutique, salon, artisan, cabinet) possédant un site internet et voulant être trouvés en priorité sur Google dans leur zone géographique.",
+ plans:[
+ {name:'Starter',price:199,engagement:'6 mois',comRate:0.20,features:['Audit SEO complet du site','Optimisation on-page complète','Rapport mensuel détaillé','Support email sous 48h'],rec:false},
+ {name:'Pro',price:349,engagement:'9 mois',comRate:0.20,features:['Tout Starter inclus','Contenu IA publié chaque semaine','SEO local Google My Business','Support prioritaire sous 24h'],rec:true},
+ {name:'Premium',price:490,engagement:'12 mois',comRate:0.20,features:['Tout Pro inclus','Stratégie IA sur mesure','Session stratégique mensuelle 1h','Manager SEO dédié'],rec:false},
+ ],
+ scripts:{
+ tel:{intro:"Bonjour, je suis [Prénom] de Seoia Partners. Je vous appelle car j'ai analysé votre présence Google et j'ai remarqué que vous n'apparaissez pas dans les premiers résultats quand un client cherche [métier] à [ville]. Concrètement, ça représente des clients qui vont chez vos concurrents chaque semaine.",arg:"On accompagne des commerçants comme vous avec une stratégie SEO + IA qui fait remonter dans Google en moins de 30 jours. Le résultat ? Plus de visites en boutique, plus d'appels entrants, plus de clients. Et vous n'avez rien à faire — on gère tout.",close:"Je vous propose un audit gratuit cette semaine pour vous montrer exactement ce qui bloque votre visibilité. On se fait ça quand ?"},
+ pap:{intro:"Bonjour ! Je m'appelle [Prénom], je travaille avec Seoia Partners. On accompagne les commerces locaux à être mieux trouvés sur Google. J'ai remarqué votre boutique en passant et j'aimerais vous montrer quelque chose rapidement — ça ne prend que 2 minutes.",arg:"Regardez — si je tape '[métier] [ville]' sur Google maintenant, vos concurrents apparaissent en premier. Ça, c'est des clients perdus chaque jour. Notre solution SEO IA règle ça durablement.",close:"Je peux vous faire l'analyse gratuitement maintenant, sur place. Vous avez un instant ?"},
+ rdv:{intro:"Merci de me recevoir. J'ai préparé une analyse rapide et personnalisée de votre présence en ligne actuelle — vous allez voir, c'est assez parlant.",arg:"Voici votre position Google actuelle comparée à vos 3 concurrents directs. Avec Seoia Partners, on comble cet écart en 30 jours grâce à notre combinaison SEO + contenu généré par IA. Nos clients voient en moyenne +40% de visites organiques dès le 2ème mois.",close:"Je vous propose de démarrer sur le Pack Pro aujourd'hui. Je prépare le contrat maintenant et vous êtes opérationnel dès lundi. Ça vous convient ?"},
+ social:{intro:"Tu gères un commerce et tu te demandes pourquoi tes concurrents sont en haut de Google et pas toi ? On a exactement la solution.",arg:"Seoia Partners combine SEO classique + IA pour booster ta visibilité Google durablement. Nos clients voient les premiers résultats dès le 1er mois. Audit gratuit disponible cette semaine — places limitées.",close:"Envoie-moi l'URL de ton site en DM et je te dis exactement ce qui bloque ta visibilité. C'est offert."}
+ },
+ objections:[
+ {q:"J'ai déjà quelqu'un pour mon site",a:"Parfait — notre service est 100% complémentaire. On s'occupe uniquement du référencement et de la visibilité Google, pas du site lui-même. Votre prestataire actuel continue son travail normalement."},
+ {q:"C'est trop cher",a:"Un seul client supplémentaire par semaine rembourse largement l'abonnement. L'audit gratuit vous montrera exactement combien de clients vous perdez actuellement — c'est souvent une vraie surprise."},
+ {q:"J'ai pas le temps de m'en occuper",a:"C'est exactement pour ça qu'on existe. Vous n'avez absolument rien à faire — on gère tout de A à Z. Vous recevez un rapport mensuel et vous voyez les résultats."},
+ ]
+ },
+ {
+ id:'fastfood', name:'Fast Food OS', category:'Logiciel Restauration Rapide',
+ tagline:'CRM, stocks et facturation électronique pour restaurateurs',
+ icon:'restaurant', color:'#c45e00',
+ tags:['Restauration','CRM','Facturation 2026'],
+ desc:"Fast Food OS est le logiciel tout-en-un conçu spécifiquement pour la restauration rapide. Gestion des commandes, suivi des stocks en temps réel, CRM clients, facturation électronique conforme aux obligations 2026 et analytics de performance.",
+ problems:["Des heures perdues sur la gestion manuelle des stocks et des commandes","Facturation non conforme aux nouvelles obligations légales 2026","Aucune visibilité sur les clients fidèles ni sur les performances"],
+ args:["Conforme facturation électronique obligatoire 2026","Alertes de stock automatiques en temps réel","CRM intégré pour identifier et fidéliser les meilleurs clients","Rapports de performance journaliers automatiques"],
+ target:"Gérants de fast-food, kebabs, pizzerias, food trucks et restaurants rapides cherchant à digitaliser leur gestion et se conformer aux obligations légales 2026.",
+ plans:[
+ {name:'Starter',price:79,engagement:'12 mois',comRate:0.25,features:['Caisse digitale tactile','Gestion stocks basique','Facturation électronique conforme','Support email'],rec:false},
+ {name:'Pro',price:129,engagement:'12 mois',comRate:0.25,features:['Tout Starter inclus','CRM clients complet','Alertes stocks automatiques','Dashboard analytics','Support prioritaire 7j/7'],rec:true},
+ {name:'Premium',price:199,engagement:'12 mois',comRate:0.25,features:['Tout Pro inclus','Multi-établissements','API UberEats & Deliveroo','Manager compte dédié'],rec:false},
+ ],
+ scripts:{
+ tel:{intro:"Bonjour, je suis [Prénom] de Fast Food OS. On a développé un logiciel spécialement conçu pour les restaurants rapides. Je vous contacte car la facturation électronique devient obligatoire pour tous les professionnels en 2026 — êtes-vous déjà équipé ?",arg:"Notre solution gère tout en un seul outil : votre caisse, vos stocks avec alertes automatiques, votre CRM clients et la facturation électronique 100% conforme. Fini les tableurs Excel, fini les erreurs, fini le risque juridique.",close:"Je vous propose une démonstration de 15 minutes cette semaine pour vous montrer concrètement sur votre type d'établissement. Quand êtes-vous disponible ?"},
+ pap:{intro:"Bonjour ! Je passe vous voir de la part de Fast Food OS — un logiciel fait spécialement pour les restaurateurs comme vous. Je peux vous montrer quelque chose en 2 minutes ?",arg:"Sur votre téléphone ou tablette, vous voyez vos stocks en temps réel avec alertes automatiques, toutes vos commandes, et vos factures conformes à la loi 2026. Ça remplace tous vos papiers et tableurs.",close:"Offre de lancement à 79€/mois, engagement 12 mois. Je peux vous faire signer aujourd'hui et vous êtes opérationnel lundi."},
+ rdv:{intro:"Merci pour ce RDV. J'ai préparé une démonstration live de Fast Food OS configurée spécifiquement pour votre type de restaurant.",arg:"Voici comment vos stocks sont gérés en temps réel avec alertes automatiques, comment vos factures sont générées et envoyées automatiquement, et comment vous suivez vos clients. ROI moyen de nos clients : 3 heures économisées par jour.",close:"On part sur quelle formule ? Je prépare le contrat maintenant."},
+ social:{intro:"Tu gères un fast-food, kebab ou pizzeria ? La facturation électronique est obligatoire en 2026 — t'es prêt ?",arg:"Fast Food OS gère tout : caisse tactile, stocks avec alertes, CRM clients, factures conformes. Dès 79€/mois. Nos clients économisent 3h par jour.",close:"DM pour une démo gratuite cette semaine."}
+ },
+ objections:[
+ {q:"J'ai déjà une caisse enregistreuse",a:"Notre logiciel s'y intègre ou la remplace avantageusement — et il ajoute le CRM, les stocks intelligents et la facturation électronique que votre caisse n'a probablement pas. On regarde ensemble ?"},
+ {q:"C'est compliqué à mettre en place ?",a:"Formation incluse, prise en main en 2h maximum. Interface conçue pour des non-techniciens. Nos clients sont opérationnels le jour même. Et le support répond 7j/7."},
+ {q:"Pourquoi maintenant ?",a:"La facturation électronique devient obligatoire pour tous les professionnels en 2026. Mieux vaut s'équiper maintenant avec une solution complète plutôt qu'en urgence avec ce qui reste disponible."},
+ ]
+ },
+ {
+ id:'huntlist', name:'Huntlist', category:'Prospection B2B Automatisée',
+ tagline:'Scraping B2B automatisé pour trouver des milliers de prospects',
+ icon:'manage_search', color:'#1a237e',
+ tags:['B2B','Scraping','Automation','Sales'],
+ desc:"Huntlist automatise entièrement la prospection B2B. Il scrape les données de prospects qualifiés sur LinkedIn, Google Maps et les annuaires professionnels, puis les exporte directement vers votre CRM. Fini les recherches manuelles chronophages.",
+ problems:["Des heures et des jours perdus à chercher des prospects manuellement","Bases de données froides, non qualifiées et vite obsolètes","Impossible de scaler la prospection sans recruter une équipe entière"],
+ args:["Scraping automatisé et continu 24h/24 sur toutes les sources","Export direct vers HubSpot, Salesforce, Notion et tous les CRM","Filtres ultra-précis par secteur, ville, taille d'entreprise, poste","Emails et téléphones vérifiés avec 94% de validité garantie"],
+ target:"Commerciaux indépendants, agences marketing, startups B2B et équipes sales cherchant à multiplier leur volume de prospection sans multiplier les ressources humaines.",
+ plans:[
+ {name:'Starter',price:99,engagement:'6 mois',comRate:0.25,features:['500 contacts qualifiés/mois','LinkedIn + Google Maps','Export CSV illimité','Support email'],rec:false},
+ {name:'Pro',price:199,engagement:'6 mois',comRate:0.25,features:['2 000 contacts/mois','Toutes les sources disponibles','Export CRM direct (HubSpot, etc.)','Enrichissement email + téléphone','Support prioritaire'],rec:true},
+ {name:'Premium',price:349,engagement:'12 mois',comRate:0.25,features:['Contacts illimités','IA de qualification des prospects','Séquences email automatiques intégrées','Manager dédié'],rec:false},
+ ],
+ scripts:{
+ tel:{intro:"Bonjour, je suis [Prénom] de Huntlist. On a développé un outil qui automatise complètement la prospection B2B. Question directe : combien d'heures par semaine passez-vous à chercher des prospects manuellement ?",arg:"Huntlist scrape automatiquement LinkedIn, Google Maps et les annuaires professionnels pour vous livrer des listes de prospects qualifiés avec emails vérifiés et numéros de téléphone — chaque matin, sans que vous ayez à faire quoi que ce soit.",close:"Je vous propose un accès démo gratuit pendant 7 jours pour tester directement sur votre marché. C'est sans engagement, sans CB. On tente ?"},
+ pap:{intro:"Je passe vous voir de la part de Huntlist — un outil qui génère automatiquement des listes de prospects B2B qualifiés. Vous faites de la prospection actuellement ?",arg:"Imaginez recevoir chaque matin une liste de 50 prospects parfaitement qualifiés dans votre secteur, avec leurs emails et téléphones vérifiés, prêts à être contactés. C'est exactement ce que fait Huntlist, automatiquement.",close:"Essai 7 jours gratuit, sans CB requise. Vous avez 2 minutes pour voir la démo en direct ?"},
+ rdv:{intro:"Merci de me recevoir. J'ai préparé une démonstration live de Huntlist directement sur votre secteur d'activité — vous allez voir concrètement ce qu'on peut trouver.",arg:"Regardez — en 30 secondes, voilà 200 prospects dans votre secteur avec emails vérifiés et téléphones. Ce travail vous aurait pris 2 semaines en manuel. Nos clients signent en moyenne 3 fois plus de deals depuis qu'ils utilisent Huntlist.",close:"On part sur quelle formule ? Je vous recommande le Pro pour commencer — meilleur rapport qualité/volume."},
+ social:{intro:"Tu passes des heures à chercher des prospects B2B ? Il y a une façon bien plus efficace.",arg:"Huntlist scrape automatiquement LinkedIn, Google Maps et les annuaires. Tu reçois chaque jour des listes de prospects qualifiés avec emails et téléphones. Dès 99€/mois.",close:"7 jours d'essai gratuit, sans CB. Lien en bio."}
+ },
+ objections:[
+ {q:"C'est légal le scraping ?",a:"Oui — nous scrapons exclusivement des données publiques et sommes 100% conformes au RGPD. Un certificat de conformité est inclus dans chaque abonnement."},
+ {q:"J'ai déjà une base de données",a:"Huntlist actualise et enrichit votre base existante automatiquement. Importez votre liste existante et on la complète avec toutes les données manquantes."},
+ {q:"La qualité des données ?",a:"Taux de validité email de 94% garanti contractuellement. En dessous de ce seuil, on rembourse la différence en crédits. C'est inscrit dans notre SLA."},
+ ]
+ },
+ {
+ id:'rhpme', name:'RH PME', category:'Ressources Humaines',
+ tagline:'Le logiciel RH 100% pensé pour les PME françaises',
+ icon:'groups', color:'#4a148c',
+ tags:['RH','PME France','Conformité','URSSAF'],
+ desc:"RH PME centralise toute la gestion des ressources humaines pour les PME françaises. Fiches de paie automatisées, gestion des congés, suivi des entretiens et formations, conformité URSSAF garantie — le tout en un seul outil, 100% conforme au droit du travail français.",
+ problems:["Gestion RH éparpillée entre Excel, emails, papier et outils disparates","Risques permanents de non-conformité avec le droit du travail français","Trop de temps administratif RH perdu au détriment du développement business"],
+ args:["100% conforme au droit du travail français et aux obligations URSSAF","Automatisation complète des fiches de paie et des déclarations","Gestion des congés et absences en temps réel, visible par tous","Alertes automatiques de conformité avant les échéances légales"],
+ target:"Dirigeants et responsables RH de PME françaises de 5 à 100 salariés souhaitant structurer, digitaliser et sécuriser leur gestion des ressources humaines.",
+ plans:[
+ {name:'Starter',price:149,engagement:'12 mois',comRate:0.25,features:['Max 10 salariés','Gestion congés & absences','Fiches de paie automatisées','Support email'],rec:false},
+ {name:'Pro',price:299,engagement:'12 mois',comRate:0.25,features:['Max 50 salariés','Entretiens & plans de formation','Alertes conformité automatiques','Export URSSAF direct','Support prioritaire'],rec:true},
+ {name:'Premium',price:499,engagement:'12 mois',comRate:0.25,features:['Salariés illimités','Module recrutement intégré','IA analyse et prédiction RH','CSE & BDES inclus','Manager RH dédié'],rec:false},
+ ],
+ scripts:{
+ tel:{intro:"Bonjour, je suis [Prénom] de RH PME. On a développé un logiciel RH fait spécialement pour les PME françaises. Question rapide : combien de salariés avez-vous actuellement ?",arg:"Aujourd'hui, combien de temps votre équipe consacre-t-elle à l'administratif RH — congés, fiches de paie, conformité URSSAF ? RH PME automatise l'intégralité de ces tâches et élimine le risque de redressement.",close:"Je vous propose une démonstration de 20 minutes cette semaine — sans engagement d'aucune sorte. Quand êtes-vous disponible ?"},
+ pap:{intro:"Bonjour ! Je représente RH PME, un logiciel conçu pour simplifier toute la gestion RH des PME comme la vôtre. Vous avez des salariés en ce moment ?",arg:"On gère tout : congés, fiches de paie, conformité URSSAF. Nos clients économisent en moyenne 8 heures par semaine sur l'administratif RH — du temps réinvesti dans le business.",close:"Une démonstration rapide de 10 minutes pour vous montrer concrètement ?"},
+ rdv:{intro:"Merci de me recevoir. J'ai préparé une analyse de vos besoins RH spécifiques basée sur votre profil et taille de PME.",arg:"Voici comment RH PME automatise vos fiches de paie, centralise vos congés et vous alerte proactivement sur les risques de non-conformité. Zéro risque URSSAF, 8h économisées par semaine. ROI moyen de nos clients : 2 mois.",close:"On démarre sur quelle formule ? Le Pro est le plus adapté à votre taille d'entreprise."},
+ social:{intro:"Tu gères une PME et la gestion RH te prend trop de temps et te fait peur ? On a exactement la solution.",arg:"RH PME : congés, fiches de paie, conformité URSSAF — tout automatisé et 100% conforme au droit français. Dès 149€/mois pour 10 salariés.",close:"Démo gratuite cette semaine — places limitées. Lien en bio."}
+ },
+ objections:[
+ {q:"On a déjà un comptable qui gère la paie",a:"RH PME complète parfaitement votre comptable — il garde la partie fiscale et sociale, vous gagnez sur le quotidien opérationnel. Et toutes les données sont exportables directement vers votre comptable en un clic."},
+ {q:"C'est trop compliqué pour notre équipe",a:"Formation complète incluse, prise en main en moins de 2 heures. Interface conçue spécifiquement pour des non-techniciens. Et le support répond en moins de 4h ouvrées."},
+ {q:"On est trop petits pour un logiciel RH",a:"Le Pack Starter est conçu précisément pour les PME dès 5 salariés. Et plus vous structurez tôt votre RH, moins vous avez de problèmes et de coûts quand vous grandissez."},
+ ]
+ },
+ {
+ id:'fidelite', name:'Carte Fidélité', category:'Marketing & Fidélisation',
+ tagline:'Wallet digital + notifications push pour vos clients',
+ icon:'loyalty', color:'#006c4c',
+ tags:['Fidélité','Wallet Apple & Google','Push','Commerçants'],
+ desc:"Une carte de fidélité digitale directement dans le wallet Apple ou Google du client, avec notifications push gratuites et illimitées. Zéro application à télécharger pour le client, zéro commission sur les transactions pour le commerçant.",
+ problems:["Les cartes papier sont systématiquement perdues ou oubliées à la maison","Aucun moyen de recontacter activement les clients entre deux visites","Les solutions de fidélité existantes prennent des commissions sur chaque transaction"],
+ args:["Intégration native dans le wallet Apple & Google — toujours dans la poche","Notifications push gratuites et illimitées directement sur l'écran de veille","Zéro commission sur les transactions, zéro surcoût","Mise en place complète en moins de 24 heures"],
+ target:"Commerçants locaux (café, restaurant, boutique, salon, librairie, boulangerie) voulant fidéliser activement leur clientèle sans contrainte technique ni commission.",
+ plans:[
+ {name:'Starter',price:29,engagement:'Sans engagement',comRate:0.40,features:['Max 200 clients','2 notifications push/mois','Wallet Apple & Google','Support email'],rec:false},
+ {name:'Pro',price:59,engagement:'Sans engagement',comRate:0.40,features:['Clients illimités','Notifications push illimitées','Statistiques clients détaillées','QR Code personnalisé','Support prioritaire'],rec:true},
+ {name:'Premium',price:99,engagement:'Sans engagement',comRate:0.40,features:['Tout Pro inclus','Multi-établissements','Segmentation clients avancée','Campagnes ciblées par profil','Manager dédié'],rec:false},
+ ],
+ scripts:{
+ tel:{intro:"Bonjour, je suis [Prénom]. Je vous appelle au sujet d'une solution de carte de fidélité digitale pour votre commerce. Avez-vous actuellement un programme de fidélité pour vos clients ?",arg:"Notre solution place une carte de fidélité directement dans le wallet du téléphone de vos clients — exactement comme leur carte bancaire. Et vous pouvez leur envoyer des notifications push gratuitement pour les faire revenir quand vous le souhaitez.",close:"Mise en place en 24 heures, sans engagement. Je vous propose une démonstration rapide cette semaine ?"},
+ pap:{intro:"Bonjour ! Je passe vous présenter une solution de carte de fidélité digitale pour votre commerce. C'est très simple à comprendre, ça prend 30 secondes.",arg:"Vos clients ont la carte directement dans leur wallet téléphone — comme leur carte bleue. Vous les notifiez gratuitement quand vous voulez depuis votre tableau de bord. Fini les cartes papier perdues. Dès 29€/mois, sans aucun engagement.",close:"Je peux vous créer votre carte maintenant même, vous l'avez dans votre téléphone demain. On essaie ?"},
+ rdv:{intro:"Merci de me recevoir. Je vais vous montrer concrètement comment vos clients reçoivent et utilisent la carte de fidélité au quotidien.",arg:"Regardez — le client scanne ce QR code, la carte apparaît dans son wallet en 5 secondes. Depuis votre dashboard, vous lui envoyez une notification qui apparaît sur son écran de veille. Nos clients constatent +35% de visites récurrentes en moyenne.",close:"On démarre sur quelle formule ? Je vous conseille le Pro — c'est de loin le plus populaire et le mieux adapté."},
+ social:{intro:"Tu perds des clients qui ne reviennent plus ? Voilà comment les faire revenir activement.",arg:"Carte de fidélité digitale dans le wallet Apple & Google de tes clients. Tu les notifies gratuitement quand tu veux. Dès 29€/mois, sans engagement, opérationnel en 24h.",close:"DM pour une démo. Ou lien en bio pour démarrer directement."}
+ },
+ objections:[
+ {q:"Mes clients ne sont pas à l'aise avec le téléphone",a:"Aucune application à télécharger. Le client reçoit un simple lien par SMS, il clique, la carte est instantanément dans son wallet. Ça prend 10 secondes. On a des clients de 70 ans qui l'utilisent quotidiennement."},
+ {q:"J'ai déjà une carte papier qui fonctionne bien",a:"Parfait — on la digitalise. Le taux de rétention avec le wallet est 3x supérieur aux cartes papier car les clients ne la perdent jamais et vous pouvez les recontacter activement. C'est incomparable."},
+ {q:"Les notifications ne vont pas les énerver ?",a:"Vous contrôlez totalement la fréquence et le contenu. Nos clients envoient 1 à 2 notifications par mois — promotions, événements, nouveautés. Le taux d'ouverture est de 85% contre 20% pour l'email."},
+ ]
+ },
+ {
+ id:'alma', name:'Alma Company', category:'Création de Sites Web',
+ tagline:'Site web professionnel clé en main dès 49€/mois',
+ icon:'web', color:'#0d47a1',
+ tags:['Site web','Design','SEO','Clé en main'],
+ desc:"Alma Company crée des sites web professionnels, modernes et optimisés pour le référencement naturel. Design sur mesure adapté au secteur, hébergement inclus, maintenance assurée et modifications incluses. Livraison garantie en 7 jours.",
+ problems:["Un site web vieillissant ou amateur fait fuir les clients avant même le contact","Les agences web traditionnelles coûtent entre 3 000 et 10 000€ en one shot","Pas de temps ni de compétences pour gérer et maintenir son site soi-même"],
+ args:["Design professionnel sur mesure livré en 7 jours chrono","SEO de base intégré dès la création pour être trouvé sur Google","Hébergement, maintenance et mises à jour inclus sans surcoût","Modifications incluses — vous n'êtes jamais bloqué"],
+ target:"Entrepreneurs, artisans, commerçants et PME sans site internet ou avec un site obsolète, voulant une présence professionnelle en ligne sans investissement initial massif.",
+ plans:[
+ {name:'Starter',price:49,engagement:'12 mois',comRate:0.24,features:['Site vitrine 5 pages','Design professionnel','Hébergement inclus','SEO de base intégré','Support email'],rec:false},
+ {name:'Pro',price:99,engagement:'12 mois',comRate:0.24,features:['Max 15 pages','Blog intégré','Formulaires avancés','3 modifications/mois','Support prioritaire'],rec:true},
+ {name:'Premium',price:199,engagement:'12 mois',comRate:0.24,features:['Pages illimitées','E-commerce complet','Modifications illimitées','SEO avancé mensuel','Manager dédié'],rec:false},
+ ],
+ scripts:{
+ tel:{intro:"Bonjour, je suis [Prénom] d'Alma Company. On crée des sites web professionnels pour les entrepreneurs et commerçants. Est-ce que vous avez un site internet actuellement ?",arg:"On livre un site professionnel, moderne et optimisé Google en 7 jours chrono, avec hébergement et maintenance inclus, dès 49€/mois. Fini les 5 000€ en one shot chez une agence. Tout est inclus, aucune mauvaise surprise.",close:"Je peux vous montrer des exemples de réalisations récentes maintenant. Vous avez 5 minutes ?"},
+ pap:{intro:"Bonjour ! Je passe vous voir de la part d'Alma Company — on crée des sites web professionnels pour les commerçants et entrepreneurs locaux. Vous avez un site internet actuellement ?",arg:"Site professionnel livré en 7 jours, dès 49€/mois tout inclus. On s'occupe de A à Z — design, hébergement, maintenance, mises à jour. Vous n'avez rien à faire.",close:"Je vous montre des exemples de réalisations sur mon téléphone ?"},
+ rdv:{intro:"Merci de me recevoir. J'ai préparé quelques maquettes dans votre secteur d'activité pour vous donner une idée très concrète du rendu final.",arg:"Voici des sites qu'on a livrés en 7 jours pour des professionnels dans votre domaine. Design professionnel, rapide, optimisé Google. Nos clients reçoivent leurs premiers contacts web dès la première semaine de mise en ligne.",close:"On commence quand vous voulez — je prends vos informations aujourd'hui et l'équipe design vous contacte dès demain matin."},
+ social:{intro:"Ton site web fait fuir tes clients ? Ou tu n'en as toujours pas ?",arg:"Alma Company te livre un site professionnel en 7 jours. Design moderne, SEO inclus, hébergement inclus, modifications incluses. Dès 49€/mois — sans les 5 000€ d'une agence traditionnelle.",close:"DM pour voir nos réalisations. Ou lien en bio pour démarrer directement."}
+ },
+ objections:[
+ {q:"J'ai déjà un site",a:"Très bien — quand a-t-il été refait pour la dernière fois ? Un site de plus de 3 ans perd des clients car il n'est pas adapté au mobile et n'est plus optimisé pour Google. On peut faire une analyse gratuite en 5 minutes."},
+ {q:"Je préfère posséder mon site en propre",a:"Avec le Pack Premium, vous êtes propriétaire complet et intégral du site. L'abonnement couvre uniquement l'hébergement et la maintenance. C'est significativement moins cher qu'une agence sur la durée."},
+ {q:"7 jours c'est vraiment possible ?",a:"Oui, systématiquement. Nos templates professionnels par secteur sont prêts à personnaliser. On a livré plus de 200 sites en moins de 7 jours. On vous donne une date de livraison garantie inscrite dans le contrat."},
+ ]
+ },
+ {
+ id:'inroom', name:'InRoom', category:'Conciergerie Hôtelière',
+ tagline:'Conciergerie en ligne pour hôtels — 5€ par chambre',
+ icon:'hotel', color:'#0d6e8a',
+ tags:['Hôtellerie','Conciergerie','Digital','SaaS'],
+ desc:"InRoom est une marketplace de services de conciergerie à la demande pour les hôtels. Sans avoir besoin d'un concierge interne, l'hôtel offre à ses clients des services premium directement en chambre : massage, coiffeur, chasseur, pressing, baby-sitter, cours particuliers et bien plus. Le client commande depuis son téléphone via QR code, InRoom coordonne les prestataires.",
+ problems:["80% des hôtels indépendants n'ont pas de conciergerie — leurs clients partent chercher les services ailleurs","L'hôtel rate des revenus additionnels importants faute de pouvoir proposer des services premium","Les clients veulent des services personnalisés en chambre mais ne savent pas où les trouver"],
+ args:["Marketplace de services premium : massage, coiffeur, chasseur, pressing, baby-sitter et plus","L'hôtel offre des services 5 étoiles sans recruter un seul concierge","Le client commande depuis son téléphone via QR code en chambre — livraison coordonnée par InRoom","Revenue sharing : l'hôtel touche une commission sur chaque service commandé"],
+ target:"Hôtels 2, 3 et 4 étoiles sans service de conciergerie interne — indépendants, boutique-hôtels, résidences de tourisme — voulant enrichir leur offre de services et générer des revenus additionnels sans embaucher.",
+ plans:[
+ {name:'Petite structure',price:null,priceLabel:'5€ × chambres',engagement:'Sans engagement',comRate:0.50,features:['Max 20 chambres','Marketplace services premium','QR Code par chambre','Coordination prestataires incluse','Support email'],rec:false,variable:true},
+ {name:'Hotel moyen',price:null,priceLabel:'5€ × chambres',engagement:'12 mois',comRate:0.50,features:['21 à 80 chambres','Tout Petite structure inclus','Intégration PMS hôtelier','Statistiques satisfaction','Support prioritaire'],rec:true,variable:true},
+ {name:'Grand hotel',price:null,priceLabel:'5€ × chambres',engagement:'12 mois',comRate:0.50,features:['80+ chambres','Tout Hôtel moyen inclus','Multi-établissements','API sur mesure','Manager dédié'],rec:false,variable:true},
+ ],
+ scripts:{
+ tel:{intro:"Bonjour, je suis [Prénom] de InRoom. On propose aux hôtels un service de conciergerie externe clé en main. Est-ce que votre établissement dispose d'un concierge en interne actuellement ?",arg:"InRoom c'est simple : vos clients scannent un QR code dans leur chambre et accèdent à une marketplace de services premium — massage en chambre, coiffeur, chasseur, pressing, baby-sitter. Vous n'avez rien à gérer, on coordonne tout. Et vous touchez une commission sur chaque service commandé. Vous payez juste 5€ par chambre par mois.",close:"Je vous propose de passer vous montrer concrètement cette semaine — ça prend 15 minutes et vos clients pourraient en bénéficier dès la semaine prochaine. Quand êtes-vous disponible ?"},
+ pap:{intro:"Bonjour ! Je représente InRoom — on offre aux hôtels un service de conciergerie externe sans embauche. Vous gérez cet établissement ?",arg:"Vos clients scannent un QR code dans leur chambre et commandent des services premium directement : massage, coiffeur, chasseur, pressing. InRoom gère tout — vous n'avez rien à faire. Vous payez 5€ par chambre par mois et vous touchez une commission sur chaque commande.",close:"Je vous montre sur mon téléphone en 2 minutes — vous verrez exactement ce que voit votre client ?"},
+ rdv:{intro:"Merci de me recevoir. Je vais vous montrer concrètement ce que vit votre client avec InRoom — et ce que vous y gagnez.",arg:"Votre client est dans sa chambre, il scanne le QR, il voit la liste des services disponibles : massage en chambre dans 30 min, coiffeur, pressing 24h, baby-sitter, chasseur. Il commande, InRoom coordonne le prestataire, vous touchez une commission. Aucun concierge à embaucher, aucune gestion opérationnelle. Nos hôtels partenaires génèrent en moyenne 800 à 2 000€ de revenus additionnels par mois.",close:"Pour votre établissement, 5€ par chambre par mois. Je prépare le contrat maintenant ?"},
+ social:{intro:"Tu gères un hôtel et ta conciergerie te coûte trop cher en personnel ? On a la solution.",arg:"InRoom digitalise ta conciergerie en 48h. Tes clients scannent un QR dans leur chambre et commandent tout depuis leur téléphone. Ton équipe gère tout depuis un seul dashboard. 5€/chambre/mois — c'est tout.",close:"DM pour une démo gratuite. Ou lien en bio."}
+ },
+ objections:[
+ {q:"On a déjà une liste de prestataires qu'on recommande",a:"InRoom ne remplace pas vos recommandations — il les rend disponibles 24h/24 directement en chambre, sans que votre équipe doive gérer les appels et les réservations. Et vous touchez une commission sur chaque commande."},
+ {q:"Nos clients ne commanderont pas via QR code",a:"Aucune app à télécharger — juste l'appareil photo du téléphone. Interface ultra simple, multilingue. Nos hôtels voient des clients de 20 à 80 ans l'utiliser naturellement. Et ceux qui ne l'utilisent pas ne vous coûtent rien."},
+ {q:"5€ par chambre c'est trop cher",a:"Un hôtel de 30 chambres paie 150€ par mois. Si InRoom génère 2 massages en chambre par semaine à 80€, vous récupérez déjà une commission de plus de 150€. Le service est autofinancé dès la première semaine."},
+ ]
+ },
+ {
+   id:'tradebot', name:'TradeBot AI', category:'Trading Crypto Automatisé',
+   tagline:'Bot de trading crypto autonome propulsé par IA',
+   icon:'candlestick_chart', color:'#1565c0',
+   tags:['Trading','Crypto','IA','Binance'],
+   desc:"TradeBot AI est un bot de trading crypto entièrement automatisé. Modèle de rémunération transparent : 2% prélevé sur chaque dépôt + 8% sur les profits nets générés. Le capital reste toujours sur le compte personnel du client. Il analyse les marchés en temps réel via RSI, MACD et Bollinger Bands pour calculer un score de probabilité et entrer ou sortir des positions au bon moment. Compatible Binance et Coinbase.",
+   problems:["Le trading manuel demande du temps et de l'expertise que la plupart des gens n'ont pas","Les émotions ruinent les décisions de trading — peur, avidité, panique","Impossible de surveiller les marchés crypto 24h/24 sans outil automatisé"],
+   args:["Score de probabilité IA calculé en temps réel sur 3 indicateurs combinés","Stop loss et take profit automatiques pour protéger le capital","Compatible Binance et Coinbase — le capital reste sur le compte du client","Commission uniquement sur les profits — zéro frais si le bot perd"],
+   target:"Particuliers intéressés par la crypto mais sans le temps ni les compétences pour trader manuellement. Profil 25-45 ans, déjà sur Binance ou Coinbase.",
+   plans:[
+     {name:'Starter',price:29,engagement:'Sans engagement',comRate:0.25,features:['1 paire tradée (BTC/USDT)','Stratégie RSI + MACD','Stop loss automatique','2% dépôt + 8% profits + 25% abonnement','Support email'],rec:false},
+     {name:'Pro',price:59,engagement:'Sans engagement',comRate:0.25,features:['5 paires simultanées','Stratégie complète RSI + MACD + Bollinger','Take profit dynamique','2% dépôt + 8% profits + 25% abonnement','Support prioritaire'],rec:true},
+     {name:'Premium',price:99,engagement:'Sans engagement',comRate:0.25,features:['Paires illimitées','IA auto-optimisation de stratégie','Backtesting 90 jours inclus','2% dépôt + 8% profits + 25% abonnement','Manager dédié'],rec:false},
+   ],
+   scripts:{
+     tel:{intro:"Bonjour, je suis [Prénom] de TradeBot AI. On a développé un bot de trading crypto entièrement automatisé. Est-ce que vous avez déjà un compte Binance ou Coinbase ?",arg:"Notre bot analyse les marchés en continu et trade à votre place 24h/24. Vous connectez vos clés API, le bot fait le reste. Notre rémunération est simple et transparente : 2% au moment du dépôt initial, puis 8% uniquement sur les profits générés. Si le bot ne gagne rien, vous ne nous devez rien de plus.",close:"Je vous propose un accès démo gratuit 7 jours pour voir le bot en action sur votre compte. Sans engagement, sans CB. On essaie ?"},
+     pap:{intro:"Bonjour ! Je représente TradeBot AI — un bot qui trade la crypto automatiquement à votre place. Vous êtes sur Binance ou Coinbase ?",arg:"Le bot analyse les marchés 24h/24 et prend les meilleures positions automatiquement. Vous ne touchez à rien. Et vous ne payez que si vous gagnez.",close:"Démo gratuite 7 jours, sans engagement. Je vous montre comment ça marche ?"},
+     rdv:{intro:"Merci de me recevoir. Je vais vous montrer TradeBot AI en action — vous allez voir exactement comment le bot prend ses décisions de trading.",arg:"Regardez ce score de probabilité — quand il dépasse 72 sur 100, le bot achète. Quand le signal de vente atteint le même seuil, il vend. Tout est automatique, discipliné, sans émotion. Nos utilisateurs voient en moyenne +8 à +15% de rendement mensuel sur les périodes favorables.",close:"On démarre sur quelle formule ? Le Pro est le plus populaire — 5 paires simultanées pour maximiser les opportunités."},
+     social:{intro:"Tu perds du temps à regarder les charts crypto sans savoir quand acheter ou vendre ? TradeBot AI le fait pour toi.",arg:"Bot de trading crypto 100% automatique — RSI, MACD, Bollinger Bands combinés en un score IA. Il entre et sort des positions au bon moment, 24h/24. Dès 29€/mois, sans engagement.",close:"7 jours d'essai gratuit sans CB. Lien en bio."}
+   },
+   objections:[
+     {q:"C'est risqué le trading automatique",a:"Tout trading comporte un risque — c'est pourquoi le bot intègre un stop loss automatique qui protège le capital à chaque position. Et le capital reste sur votre propre compte Binance ou Coinbase, jamais entre nos mains."},
+     {q:"Comment je sais que ça marche vraiment",a:"On vous fournit un backtest complet sur 90 jours de données historiques avant de démarrer. Vous voyez exactement les performances passées de la stratégie sur votre paire. Essai gratuit 7 jours ensuite pour le voir en live."},
+     {q:"Et si le bot perd de l'argent",a:"Les 2% sont prélevés une seule fois à l'entrée. Ensuite, on ne touche que 8% sur vos profits nets — rien d'autre. Si le bot ne génère pas de gains ce mois-là, vous ne nous devez rien de plus. Nos intérêts sont directement alignés avec les vôtres : on ne gagne que si vous gagnez."},
+   ]
+ }
+];
+
+let current = null;
+let activePane = 'pitch';
+let activeChannel = 'tel';
+
+function renderGrid() {
+  var grid = document.getElementById('productGrid');
+  var html = '';
+  for (var i = 0; i < PRODUCTS.length; i++) {
+    var p = PRODUCTS[i];
+    var isVariable = p.plans.some(function(pl) { return pl.variable; });
+    var validPrices = p.plans.filter(function(pl) { return pl.price !== null; }).map(function(pl) { return pl.price; });
+    var minPrice = isVariable ? 'Dès 5€/chambre' : ('Dès ' + Math.min.apply(null, validPrices) + '€/mois');
+    var comRate = p.id === 'tradebot' ? '2% + 8% + 25%' : (Math.round(p.plans[0].comRate * 100) + '% com.');
+    html += '<div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5 cursor-pointer hover-lift border border-transparent hover:border-outline-variant/50 card-anim" onclick="openProduct(\'' + p.id + '\')" style="animation-delay:' + (i * 45) + 'ms">';
+    html += '<div class="flex items-start justify-between mb-3.5">';
+    html += '<div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:' + p.color + '14">';
+    html += '<span class="material-symbols-outlined filled" style="font-size:20px;color:' + p.color + ';font-variation-settings:\'FILL\' 1">' + p.icon + '</span>';
+    html += '</div>';
+    html += '<span class="text-[10px] font-bold px-2.5 py-1 rounded-full" style="background:rgba(0,108,76,0.1);color:#006c4c;letter-spacing:0.01em">' + comRate + '</span>';
+    html += '</div>';
+    html += '<p class="font-headline font-bold text-sm text-on-surface mb-1" style="letter-spacing:-0.02em">' + p.name + '</p>';
+    html += '<p class="text-[11.5px] text-on-surface-variant leading-snug mb-4">' + p.tagline + '</p>';
+    html += '<div class="flex items-center justify-between pt-3.5 border-t border-outline-variant/40">';
+    html += '<span class="font-headline font-bold text-[12px] text-primary">' + minPrice + '</span>';
+    html += '<div class="w-6 h-6 rounded-full flex items-center justify-center transition-colors" style="background:rgba(181,35,48,0.08)">';
+    html += '<span class="material-symbols-outlined" style="font-size:14px;color:#b52330">arrow_forward</span>';
+    html += '</div></div></div>';
+  }
+  grid.innerHTML = html;
+}
+
+function openProduct(id) {
+  current = PRODUCTS.find(p => p.id === id);
+  if (!current) return;
+  document.getElementById('listPage').style.display = 'none';
+  document.getElementById('detailPage').style.display = 'block';
+  document.getElementById('heroCategory').textContent = current.category;
+  document.getElementById('heroName').textContent = current.name;
+  document.getElementById('heroTagline').textContent = current.tagline;
+  document.getElementById('heroIcon').textContent = current.icon;
+  document.getElementById('heroTags').innerHTML = current.tags.map(t =>
+    `<span class="text-[10.5px] font-medium px-2.5 py-1 rounded-full" style="background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.1)">${t}</span>`
+  ).join('');
+  showPane('pitch');
+  renderPitch();
+  renderTarifs();
+  renderContrat();
+  showChannel('tel');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function goBack() {
+  document.getElementById('listPage').style.display = 'block';
+  document.getElementById('detailPage').style.display = 'none';
+  current = null;
+}
+
+function showPane(name) {
+  activePane = name;
+  ['pitch','scripts','tarifs','fidelisation','contrat'].forEach(p => {
+    document.getElementById('pane-'+p).classList.toggle('active', p === name);
+    document.getElementById('tbtn-'+p).classList.toggle('active', p === name);
+  });
+  if (name === 'fidelisation') renderFidelisation();
+}
+
+function renderPitch() {
+  const p = current;
+  document.getElementById('pitchDesc').textContent = p.desc;
+  document.getElementById('pitchProblems').innerHTML = p.problems.map(pb =>
+    `<li><span class="material-symbols-outlined">cancel</span>${pb}</li>`).join('');
+  document.getElementById('pitchArgs').innerHTML = p.args.map(a =>
+    `<li><span class="material-symbols-outlined">check_circle</span>${a}</li>`).join('');
+  document.getElementById('pitchTarget').textContent = p.target;
+}
+
+function showChannel(ch) {
+  activeChannel = ch;
+  ['tel','pap','rdv','social'].forEach(c => document.getElementById('ch-'+c).classList.toggle('active', c === ch));
+  const s = current.scripts[ch];
+  const labels  = {tel:'Accroche téléphonique', pap:'Accroche porte-à-porte', rdv:'Ouverture du rendez-vous', social:'Message / caption réseaux'};
+  const labels2 = {tel:'Argumentation', pap:'Démonstration', rdv:'Présentation', social:'Pitch contenu'};
+  const labels3 = {tel:'Closing téléphone', pap:'Closing sur place', rdv:'Closing RDV', social:'Call to action'};
+  document.getElementById('scriptContent').innerHTML = `
+    <div class="bg-surface-container-lowest rounded-2xl soft-shadow overflow-hidden mb-2">
+      <div class="px-5 py-4 border-b border-outline-variant/25">
+        <div class="flex items-center gap-2.5 mb-3"><div class="step-num">1</div><span class="text-[10.5px] font-bold text-primary uppercase tracking-[0.09em]">${labels[ch]}</span></div>
+        <p class="text-[13.5px] text-on-surface leading-[1.78] italic pl-8">${s.intro}</p>
+      </div>
+      <div class="px-5 py-4 border-b border-outline-variant/25">
+        <div class="flex items-center gap-2.5 mb-3"><div class="step-num">2</div><span class="text-[10.5px] font-bold text-primary uppercase tracking-[0.09em]">${labels2[ch]}</span></div>
+        <p class="text-[13.5px] text-on-surface leading-[1.78] italic pl-8">${s.arg}</p>
+      </div>
+      <div class="px-5 py-4">
+        <div class="flex items-center gap-2.5 mb-3"><div class="step-num">3</div><span class="text-[10.5px] font-bold text-primary uppercase tracking-[0.09em]">${labels3[ch]}</span></div>
+        <p class="text-[13.5px] text-on-surface leading-[1.78] italic pl-8">${s.close}</p>
+      </div>
+    </div>
+  `;
+  document.getElementById('objectionsList').innerHTML = current.objections.map(o => `
+    <div class="bg-surface-container-lowest rounded-xl p-4 mb-1.5 soft-shadow">
+      <div class="flex items-start gap-2 mb-2">
+        <span class="material-symbols-outlined flex-shrink-0 mt-0.5" style="font-size:13px;color:#b52330">help</span>
+        <span class="text-[12px] font-semibold text-on-surface-variant">"${o.q}"</span>
+      </div>
+      <p class="text-[13px] text-on-surface leading-relaxed pl-5">${o.a}</p>
+    </div>
+  `).join('');
+}
+
+function renderTarifs() {
+  var plans = current.plans;
+  var isVariable = plans.some(function(pl) { return pl.variable; });
+  var isTradebot = current.id === 'tradebot';
+
+  if (isTradebot) {
+    var plansHtml = '';
+    for (var i = 0; i < plans.length; i++) {
+      var pl = plans[i];
+      var featHtml = plans[i].features.map(f =>
+        '<li class="flex items-center gap-2 text-[12.5px] text-on-surface py-1"><span class="material-symbols-outlined filled flex-shrink-0" style="font-size:14px;color:#006c4c;font-variation-settings:\'FILL\' 1">check</span>' + f + '</li>'
+      ).join('');
+      plansHtml += '<div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5 relative overflow-hidden' + (pl.rec ? ' plan-rec border-2' : ' border border-outline-variant/40') + '">'
+        + (pl.rec ? '<div class="font-mono text-[9.5px] font-medium text-primary uppercase tracking-[0.09em] mb-2">Recommandé</div>' : '')
+        + '<div class="flex items-start justify-between mb-4"><div><p class="font-headline font-bold text-base text-on-surface" style="letter-spacing:-0.025em">' + pl.name + '</p><p class="text-[11px] text-on-surface-variant mt-0.5">' + pl.engagement + '</p></div>'
+        + '<div class="text-right"><span class="font-headline font-extrabold text-2xl text-on-surface" style="letter-spacing:-0.045em">' + pl.price + '</span><span class="text-[11px] text-on-surface-variant font-normal block mt-0.5">/mois</span></div></div>'
+        + '<ul class="border-t border-outline-variant/30 pt-3.5 space-y-0">' + featHtml + '</ul>'
+        + '<div class="flex items-center justify-between mt-4 pt-3.5 border-t border-outline-variant/30"><span class="text-[11px] text-on-surface-variant">Abonnement mensuel (25%)</span><span class="font-headline font-bold text-sm text-tertiary">' + (pl.price * 0.25).toFixed(2) + ' €/mois</span></div>'
+        + '</div>';
+    }
+
+    document.getElementById('planCards').innerHTML = plansHtml
+      + '<div class="rounded-2xl p-5" style="background:#1b1c1c">'
+      + '<p class="text-[11px] font-semibold uppercase tracking-[0.05em] mb-4" style="color:rgba(255,255,255,0.4)">Simulateur de gains — en plus de l\'abonnement</p>'
+      + '<div class="grid grid-cols-2 gap-3 mb-4">'
+      + '<div><label class="block text-[11px] font-semibold uppercase tracking-[0.06em] mb-1.5" style="color:rgba(255,255,255,0.5)">Capital déposé</label>'
+      + '<div class="flex items-center gap-2 rounded-xl px-3 py-2.5" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12)">'
+      + '<input type="number" id="tbDeposit" value="5000" min="100" oninput="calcTradebot()" style="background:transparent;border:none;outline:none;font-family:\'Plus Jakarta Sans\';font-size:18px;font-weight:700;color:#fff;width:100%">'
+      + '<span style="font-size:12px;color:rgba(255,255,255,0.4);flex-shrink:0">EUR</span></div></div>'
+      + '<div><label class="block text-[11px] font-semibold uppercase tracking-[0.06em] mb-1.5" style="color:rgba(255,255,255,0.5)">Profits ce mois</label>'
+      + '<div class="flex items-center gap-2 rounded-xl px-3 py-2.5" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12)">'
+      + '<input type="number" id="tbProfits" value="400" min="0" oninput="calcTradebot()" style="background:transparent;border:none;outline:none;font-family:\'Plus Jakarta Sans\';font-size:18px;font-weight:700;color:#fff;width:100%">'
+      + '<span style="font-size:12px;color:rgba(255,255,255,0.4);flex-shrink:0">EUR</span></div></div></div>'
+      + '<div class="grid grid-cols-3 gap-2 mb-3">'
+      + '<div class="text-center py-3 px-2 rounded-xl" style="background:rgba(181,35,48,0.2);border:1px solid rgba(181,35,48,0.3)"><p class="text-[9.5px] font-semibold uppercase tracking-[0.06em] mb-1.5" style="color:rgba(255,255,255,0.5)">2% dépôt</p><p class="font-headline font-extrabold text-lg" style="color:#ff5a5f" id="tbComDeposit">100 EUR</p><p class="text-[9px] mt-1" style="color:rgba(255,255,255,0.35)">À l\'entrée</p></div>'
+      + '<div class="text-center py-3 px-2 rounded-xl" style="background:rgba(0,108,76,0.2);border:1px solid rgba(0,108,76,0.3)"><p class="text-[9.5px] font-semibold uppercase tracking-[0.06em] mb-1.5" style="color:rgba(255,255,255,0.5)">8% profits</p><p class="font-headline font-extrabold text-lg" style="color:#78fac4" id="tbComProfit">32 EUR</p><p class="text-[9px] mt-1" style="color:rgba(255,255,255,0.35)">Ce mois</p></div>'
+      + '<div class="text-center py-3 px-2 rounded-xl" style="background:rgba(255,197,0,0.1);border:1px solid rgba(255,197,0,0.2)"><p class="text-[9.5px] font-semibold uppercase tracking-[0.06em] mb-1.5" style="color:rgba(255,255,255,0.5)">Total mois 1</p><p class="font-headline font-extrabold text-lg" style="color:#ffd700" id="tbComTotal">132 EUR</p><p class="text-[9px] mt-1" style="color:rgba(255,255,255,0.35)">+ abonnement</p></div>'
+      + '</div>'
+      + '<p class="text-center text-[11px]" style="color:rgba(255,255,255,0.3)">Les 2% de dépôt sont prélevés une seule fois à l\'entrée · Les 8% profits sont mensuels</p>'
+      + '</div>';
+    calcTradebot();
+    document.getElementById('comVal').textContent = '2% dépôt + 8% profits + 25% abonnement';
+    return;
+  }
+
+  if (isVariable) {
+    document.getElementById('planCards').innerHTML = '<div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5 relative overflow-hidden plan-rec border-2">'
+      + '<div class="font-mono text-[9.5px] font-medium text-primary uppercase tracking-[0.09em] mb-2">Tarification à la chambre</div>'
+      + '<div class="flex items-start justify-between mb-4"><div><p class="font-headline font-bold text-base text-on-surface" style="letter-spacing:-0.025em">InRoom</p><p class="text-[11px] text-on-surface-variant mt-0.5">5 € par chambre par mois</p></div>'
+      + '<div class="text-right"><span class="font-headline font-extrabold text-2xl text-on-surface" style="letter-spacing:-0.045em">5</span><span class="text-[11px] text-on-surface-variant font-normal block mt-0.5">€/chambre</span></div></div>'
+      + '<div class="rounded-xl p-4 mb-4" style="background:#f0eded">'
+      + '<p class="text-[11px] font-semibold uppercase tracking-[0.08em] text-on-surface-variant mb-3">Calculateur de commission</p>'
+      + '<div class="flex items-center gap-3 mb-3">'
+      + '<label class="text-sm text-on-surface flex-shrink-0">Nombre de chambres :</label>'
+      + '<input type="number" id="nbChambres" min="1" value="30" oninput="calcInroomCom()" class="w-20 px-3 py-2 rounded-xl border border-outline-variant text-sm font-bold text-center bg-white outline-none focus:border-primary">'
+      + '</div>'
+      + '<div class="flex justify-between items-center p-3 bg-white rounded-xl border border-outline-variant/50">'
+      + '<div><p class="text-[11px] text-on-surface-variant mb-0.5">Mensualité client</p><p class="font-headline font-bold text-lg text-on-surface" id="inroomTotal">150 €/mois</p></div>'
+      + '<div class="w-px h-9" style="background:rgba(226,190,188,0.5)"></div>'
+      + '<div class="text-right"><p class="text-[11px] text-on-surface-variant mb-0.5">Ta commission mensuelle</p><p class="font-headline font-bold text-lg text-tertiary" id="inroomCom">75 €/mois</p></div>'
+      + '</div></div>'
+      + '<ul class="border-t border-outline-variant/30 pt-3.5 space-y-0">'
+      + '<li class="flex items-center gap-2 text-[12.5px] text-on-surface py-1"><span class="material-symbols-outlined filled flex-shrink-0" style="font-size:14px;color:#006c4c;font-variation-settings:\'FILL\' 1">check</span>Conciergerie digitale complète</li>'
+      + '<li class="flex items-center gap-2 text-[12.5px] text-on-surface py-1"><span class="material-symbols-outlined filled flex-shrink-0" style="font-size:14px;color:#006c4c;font-variation-settings:\'FILL\' 1">check</span>QR Code unique par chambre</li>'
+      + '<li class="flex items-center gap-2 text-[12.5px] text-on-surface py-1"><span class="material-symbols-outlined filled flex-shrink-0" style="font-size:14px;color:#006c4c;font-variation-settings:\'FILL\' 1">check</span>Dashboard temps réel réception</li>'
+      + '<li class="flex items-center gap-2 text-[12.5px] text-on-surface py-1"><span class="material-symbols-outlined filled flex-shrink-0" style="font-size:14px;color:#006c4c;font-variation-settings:\'FILL\' 1">check</span>Multilingue — FR, EN, ES, AR</li>'
+      + '<li class="flex items-center gap-2 text-[12.5px] text-on-surface py-1"><span class="material-symbols-outlined filled flex-shrink-0" style="font-size:14px;color:#006c4c;font-variation-settings:\'FILL\' 1">check</span>Statistiques satisfaction clients</li>'
+      + '</ul>'
+      + '<div class="flex items-center justify-between mt-4 pt-3.5 border-t border-outline-variant/30"><span class="text-[11px] text-on-surface-variant">Taux de commission</span><span class="font-headline font-bold text-sm text-tertiary">50% mensuel récurrent</span></div>'
+      + '</div>';
+    calcInroomCom();
+    document.getElementById('comVal').textContent = 'Calculé selon le nb de chambres';
+    return;
+  }
+
+  var html = '';
+  for (var i = 0; i < plans.length; i++) {
+    var pl = plans[i];
+    var featHtml = pl.features.map(f =>
+      '<li class="flex items-center gap-2 text-[12.5px] text-on-surface py-1"><span class="material-symbols-outlined filled flex-shrink-0" style="font-size:14px;color:#006c4c;font-variation-settings:\'FILL\' 1">check</span>' + f + '</li>'
+    ).join('');
+    html += '<div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5 relative overflow-hidden' + (pl.rec ? ' plan-rec border-2' : ' border border-outline-variant/40') + '">'
+      + (pl.rec ? '<div class="font-mono text-[9.5px] font-medium text-primary uppercase tracking-[0.09em] mb-2">Recommandé</div>' : '')
+      + '<div class="flex items-start justify-between mb-4"><div><p class="font-headline font-bold text-base text-on-surface" style="letter-spacing:-0.025em">' + pl.name + '</p><p class="text-[11px] text-on-surface-variant mt-0.5">' + pl.engagement + '</p></div>'
+      + '<div class="text-right"><span class="font-headline font-extrabold text-2xl text-on-surface" style="letter-spacing:-0.045em">' + pl.price + '</span><span class="text-[11px] text-on-surface-variant font-normal block mt-0.5">/mois</span></div></div>'
+      + '<ul class="border-t border-outline-variant/30 pt-3.5 space-y-0">' + featHtml + '</ul>'
+      + '<div class="flex items-center justify-between mt-4 pt-3.5 border-t border-outline-variant/30"><span class="text-[11px] text-on-surface-variant">Ta commission mensuelle récurrente</span><span class="font-headline font-bold text-sm text-tertiary">' + (pl.price * pl.comRate).toFixed(2) + ' €/mois</span></div>'
+      + '</div>';
+  }
+  document.getElementById('planCards').innerHTML = html;
+  var min = Math.min.apply(null, plans.map(function(p) { return p.price * p.comRate; })).toFixed(2);
+  var max = Math.max.apply(null, plans.map(function(p) { return p.price * p.comRate; })).toFixed(2);
+  document.getElementById('comVal').textContent = min + ' € → ' + max + ' € / mois';
+}
+
+function calcTradebot() {
+  var deposit = parseFloat(document.getElementById('tbDeposit').value) || 0;
+  var profits = parseFloat(document.getElementById('tbProfits').value) || 0;
+  var comDeposit = deposit * 0.02;
+  var comProfit = profits * 0.08;
+  var total = comDeposit + comProfit;
+  document.getElementById('tbComDeposit').textContent = comDeposit.toFixed(2) + ' EUR';
+  document.getElementById('tbComProfit').textContent = comProfit.toFixed(2) + ' EUR';
+  document.getElementById('tbComTotal').textContent = total.toFixed(2) + ' EUR';
+  document.getElementById('comVal').textContent = '2% dépôt + 8% profits + 25% abonnement';
+}
+
+function calcInroomCom() {
+  const nb = parseInt(document.getElementById('nbChambres')?.value) || 0;
+  const total = nb * 5;
+  const com = total * 0.50;
+  document.getElementById('inroomTotal').textContent = total + ' €/mois';
+  document.getElementById('inroomCom').textContent = com.toFixed(2) + ' €/mois';
+  document.getElementById('comVal').textContent = com.toFixed(2) + ' €/mois (50%)';
+}
+
+function renderFidelisation() {
+  const sel = document.getElementById('fidSimPlan');
+  const isVariable = current.plans.some(p => p.variable);
+  const isTradebot = current.id === 'tradebot';
+  if (isVariable) {
+    sel.innerHTML = '<option value="150|0.50">30 chambres — 150€/mois (50% com.)</option><option value="250|0.50">50 chambres — 250€/mois (50% com.)</option><option value="400|0.50">80 chambres — 400€/mois (50% com.)</option>';
+  } else if (isTradebot) {
+    sel.innerHTML = current.plans.map(pl => `<option value="${pl.price}|0.25">${pl.name} — ${pl.price}€/mois (25% com.)</option>`).join('');
+  } else {
+    sel.innerHTML = current.plans.map(pl => `<option value="${pl.price}|${pl.comRate}">${pl.name} — ${pl.price}€/mois (${Math.round(pl.comRate*100)}% com.)</option>`).join('');
+  }
+  calcFidelisation();
+}
+
+function calcFidelisation() {
+  const sel = document.getElementById('fidSimPlan');
+  const [price, rate] = sel.value.split('|').map(Number);
+  const baseMonthly = price * rate;
+  const boostedMonthly = price * (rate + 0.05);
+  const bonusM3 = baseMonthly; // 1 mois offert
+  const elitePrime = baseMonthly * 2; // prime 12 mois = 2 mois
+
+  // M1-3: 3 mois de base
+  const totalM3 = baseMonthly * 3;
+  // M4-6: 3 mois base + prime 3 mois
+  const totalM6 = baseMonthly * 3 + bonusM3;
+  // M7-12: 6 mois taux augmenté
+  const totalM12boost = boostedMonthly * 6;
+  // Total 12 mois
+  const grandTotal = totalM3 + totalM6 + totalM12boost + elitePrime;
+
+  const fmt = v => Math.round(v) + ' €';
+  document.getElementById('fidM3').textContent = fmt(totalM3);
+  document.getElementById('fidM6').textContent = fmt(totalM6);
+  document.getElementById('fidM12').textContent = fmt(totalM12boost);
+  document.getElementById('fidTotal').textContent = fmt(grandTotal);
+  document.getElementById('fidPrime').textContent = fmt(elitePrime);
+}
+
+function renderContrat() {
+  const sel = document.getElementById('cPlan');
+  if (current.id === 'inroom') {
+    sel.innerHTML = '<option value="variable|InRoom|Sans engagement">InRoom — 5€ par chambre / mois</option>';
+  } else {
+    sel.innerHTML = '<option value="">Choisir un pack...</option>' +
+      current.plans.map(pl => `<option value="${pl.price}|${pl.name}|${pl.engagement}">${pl.name} — ${pl.price}€/mois (${pl.engagement})</option>`).join('');
+  }
+  ['cPrenom','cNom','cEmail','cTel','cVille','cSociete'].forEach(id => document.getElementById(id).value = '');
+}
+
+function generatePDF() {
+  const prenom = document.getElementById('cPrenom').value.trim();
+  const nom = document.getElementById('cNom').value.trim();
+  const email = document.getElementById('cEmail').value.trim();
+  const tel = document.getElementById('cTel').value.trim();
+  const ville = document.getElementById('cVille').value.trim();
+  const societe = document.getElementById('cSociete').value.trim();
+  const planRaw = document.getElementById('cPlan').value;
+  if (!prenom || !nom || !email || !planRaw) { alert('Merci de remplir : Prénom, Nom, Email et le Pack choisi.'); return; }
+  const [planPrice, planName, planEngagement] = planRaw.split('|');
+  const today = new Date().toLocaleDateString('fr-FR');
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+  const W = 210, M = 20;
+  let y = 0;
+  const red = [181,35,48], dark = [15,13,13], gray = [90,64,63], light = [243,239,238];
+  doc.setFillColor(...red);
+  doc.rect(0, 0, W, 18, 'F');
+  doc.setFont('helvetica','bold'); doc.setFontSize(16); doc.setTextColor(255,255,255);
+  doc.text('Seoia Partners', M, 11.5);
+  doc.setFont('helvetica','normal'); doc.setFontSize(8);
+  doc.text('Auto-entrepreneur · contact@seoia-partners.fr', W-M, 11.5, {align:'right'});
+  doc.setFontSize(7); doc.setTextColor(255,255,255,160);
+  doc.text('SIRET : [À compléter] · [Adresse]', M, 15.5);
+  y = 30;
+  doc.setFont('helvetica','bold'); doc.setFontSize(20); doc.setTextColor(...dark);
+  doc.text('Contrat de prestation de services', W/2, y, {align:'center'});
+  y += 4;
+  doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(...gray);
+  doc.text(`Référence : ${current.id.toUpperCase()}-${Date.now().toString().slice(-6)}`, W/2, y+5, {align:'center'});
+  y += 14;
+  doc.setFillColor(...light);
+  doc.roundedRect(M, y, W-2*M, 26, 5, 5, 'F');
+  doc.setFillColor(...red);
+  doc.roundedRect(M, y, 4, 26, 2, 2, 'F');
+  doc.setFont('helvetica','bold'); doc.setFontSize(14); doc.setTextColor(...red);
+  doc.text(`${current.name} · Pack ${planName}`, M+10, y+9);
+  doc.setFontSize(20); doc.text(`${planPrice} € / mois`, M+10, y+20);
+  doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(...gray);
+  doc.text(`Engagement : ${planEngagement} · Renouvellement automatique`, W-M-4, y+20, {align:'right'});
+  y += 34;
+  const section = (num, title) => {
+    doc.setFillColor(...red); doc.circle(M+2.5, y+2.5, 2.5, 'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(...red);
+    doc.text(title, M+8, y+4.5); y += 10;
+  };
+  const body = (text, indent=0) => {
+    doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(...dark);
+    const lines = doc.splitTextToSize(text, W-2*M-indent);
+    doc.text(lines, M+indent, y); y += lines.length * 5 + 3;
+  };
+  section(1, '1. Parties au contrat');
+  body(`Prestataire : Seoia Partners, auto-entrepreneur, SIRET : [À compléter], domicilié(e) à [adresse complète], ci-après dénommé "le Prestataire".`);
+  body(`Client : ${prenom} ${nom}${societe?' ('+societe+')':''}, domicilié(e) à ${ville||'[ville]'}, email : ${email}${tel?', tél : '+tel:''}, ci-après dénommé "le Client".`);
+  section(2, '2. Objet du contrat');
+  body(`Le présent contrat a pour objet la fourniture de la prestation « ${current.name} · Pack ${planName} ». ${current.desc}`);
+  section(3, '3. Conditions financières');
+  const months = planEngagement.match(/\d+/)?.[0];
+  const total = months ? parseInt(planPrice)*parseInt(months) : '—';
+  body(`Montant : ${planPrice} \u20ac TTC par mois (auto-entrepreneur non assujetti \u00e0 la TVA \u2014 article 293B du CGI). Dur\u00e9e d\u2019engagement : ${planEngagement}. Montant total sur la période : ${total !== '—' ? total+' €' : 'variable'} TTC. Paiement dû le 1er de chaque mois. Renouvellement automatique par tacite reconduction, sauf résiliation notifiée par LRAR 30 jours avant l'échéance.`);
+  section(4, '4. Absence de droit de rétractation');
+  body(`Conformément à l'article L221-28 du Code de la consommation, le Client renonce expressément à son droit de rétractation, la prestation débutant immédiatement à compter de la signature. Aucun remboursement ne pourra être exigé une fois la prestation commencée.`);
+  section(5, '5. Résiliation');
+  body(`Engagement ferme et irrévocable de ${planEngagement}. Aucune résiliation ne sera acceptée avant le terme de cette période. Passé ce délai, résiliation par lettre recommandée avec accusé de réception, 30 jours avant la date d'échéance.`);
+  section(6, '6. Confidentialité & protection des données');
+  body(`Données traitées conformément au Règlement Général sur la Protection des Données (RGPD — UE 2016/679). Droit d'accès, de rectification et de suppression sur simple demande adressée à contact@seoia-partners.fr.`);
+  section(7, '7. Droit applicable et litiges');
+  body(`Contrat soumis exclusivement au droit français. En cas de litige, les parties s'engagent à rechercher une solution amiable préalablement à tout recours judiciaire. Tribunal compétent : siège du Prestataire.`);
+  y += 4;
+  doc.setDrawColor(...[226,190,188]); doc.setLineWidth(0.5);
+  doc.line(M, y, W-M, y); y += 10;
+  doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(...dark);
+  doc.text('8. Signatures', M, y); y += 7;
+  doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(...gray);
+  doc.text(`Fait à ${ville||'[Ville]'}, le ${today} — En deux exemplaires originaux.`, M, y); y += 12;
+  [[M, 'Le Prestataire', 'Seoia Partners'], [M+85, 'Le Client', `${prenom} ${nom}`]].forEach(([x, role, name]) => {
+    doc.setFillColor(...light); doc.roundedRect(x, y, 75, 30, 4, 4, 'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(...dark);
+    doc.text(role, x+6, y+8);
+    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(...gray);
+    doc.text(name, x+6, y+14);
+    doc.text('Lu et approuvé :', x+6, y+20);
+    doc.setDrawColor(...gray); doc.line(x+6, y+27, x+68, y+27);
+  });
+  doc.setFillColor(...dark); doc.rect(0, 285, W, 12, 'F');
+  doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(255,255,255,180);
+  doc.text(`Seoia Partners · SIRET : [À compléter] · contact@seoia-partners.fr · Document confidentiel — usage exclusif des parties`, W/2, 292, {align:'center'});
+  doc.save(`contrat_${current.id}_${nom.toLowerCase().replace(/\s/g,'_')}_${planName.toLowerCase()}.pdf`);
+}
+
+// Nav functions
+window.openHamburger = function() {
+  document.getElementById('hamburgerPanel').classList.add('open');
+  document.getElementById('hamburgerBackdrop').classList.add('open');
+};
+window.closeHamburger = function() {
+  document.getElementById('hamburgerPanel').classList.remove('open');
+  document.getElementById('hamburgerBackdrop').classList.remove('open');
+};
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeHamburger(); });
+
+// Back button — intercept browser back + history state
+window.addEventListener('popstate', function(e) {
+  if (current) { e.preventDefault(); goBack(); }
+});
+document.addEventListener('click', function(e) {
+  const back = e.target.closest('[data-back]');
+  if (back) { e.preventDefault(); goBack(); }
+});
+
+renderGrid();
+</script>
+</body>
+</html>
