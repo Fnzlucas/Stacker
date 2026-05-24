@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nos Offres · Stacker</title>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhK-hKjLuDvi-xH3hqgY-9L1w0WxQF4_A&libraries=places&language=fr&loading=async" async defer></script>
 <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
@@ -1143,49 +1144,86 @@ function generateLeads() {
   document.getElementById('leadsLoading').style.display = 'flex';
   document.getElementById('leadsResults').style.display = 'none';
   document.getElementById('leadsBtn').disabled = true;
+  leadsData = [];
 
-  // Simulation — en prod connecter à l'API Huntlist
-  setTimeout(() => {
-    leadsData = generateMockLeads(ville, profession);
-    document.getElementById('leadsLoading').style.display = 'none';
-    document.getElementById('leadsResults').style.display = 'block';
-    document.getElementById('leadsBtn').disabled = false;
-    document.getElementById('leadsCount').textContent = leadsData.length + ' prospects';
-    document.getElementById('leadsList').innerHTML = leadsData.map((l, i) => `
-      <div class="flex items-center justify-between px-5 py-3.5 hover:bg-surface-container-low transition">
-        <div class="flex items-center gap-3 min-w-0">
-          <div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center flex-shrink-0 font-headline font-bold text-xs text-on-surface-variant">${l.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
-          <div class="min-w-0">
-            <p class="font-semibold text-sm text-on-surface truncate">${l.name}</p>
-            <p class="text-[11px] text-on-surface-variant truncate">${l.type} · ${l.ville}</p>
-          </div>
-        </div>
-        <div class="flex items-center gap-2 flex-shrink-0 ml-3">
-          ${l.tel ? `<a href="tel:${l.tel}" class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-surface-container text-on-surface text-[11px] font-semibold hover:bg-primary-fixed hover:text-primary transition"><span class="material-symbols-outlined" style="font-size:13px">call</span>${l.tel}</a>` : ''}
+  const query = [profession, ville].filter(Boolean).join(' ');
+
+  if (typeof google === 'undefined' || !google.maps || !google.maps.places) {
+    // Google Maps pas encore chargé — retry
+    setTimeout(generateLeads, 800);
+    return;
+  }
+
+  const service = new google.maps.places.PlacesService(document.createElement('div'));
+  let allResults = [];
+
+  service.textSearch({ query, language: 'fr', region: 'fr' }, function(results, status, pagination) {
+    if (status === google.maps.places.PlacesServiceStatus.OK && results) {
+      allResults = allResults.concat(results);
+      if (allResults.length < 20 && pagination && pagination.hasNextPage) {
+        setTimeout(() => pagination.nextPage(), 300);
+      } else {
+        enrichResults(service, allResults.slice(0, 20));
+      }
+    } else {
+      document.getElementById('leadsLoading').style.display = 'none';
+      document.getElementById('leadsBtn').disabled = false;
+      alert('Aucun résultat trouvé. Essaie une autre ville ou un autre secteur.');
+    }
+  });
+}
+
+async function enrichResults(service, places) {
+  const enriched = [];
+  for (const p of places) {
+    const details = await new Promise(resolve => {
+      service.getDetails(
+        { placeId: p.place_id, fields: ['formatted_phone_number','website','international_phone_number','formatted_address'] },
+        (place, status) => resolve(status === google.maps.places.PlacesServiceStatus.OK ? place : null)
+      );
+    });
+    enriched.push({
+      name: p.name,
+      address: p.formatted_address || p.vicinity || '',
+      phone: details?.formatted_phone_number || details?.international_phone_number || null,
+      website: details?.website || null,
+      rating: p.rating || null,
+    });
+  }
+  leadsData = enriched;
+  renderLeadsResults();
+}
+
+function renderLeadsResults() {
+  document.getElementById('leadsLoading').style.display = 'none';
+  document.getElementById('leadsResults').style.display = 'block';
+  document.getElementById('leadsBtn').disabled = false;
+  document.getElementById('leadsCount').textContent = leadsData.length + ' prospects';
+  document.getElementById('leadsList').innerHTML = leadsData.map((l, i) => `
+    <div class="flex items-center justify-between px-5 py-3.5 hover:bg-surface-container-low transition">
+      <div class="flex items-center gap-3 min-w-0">
+        <div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center flex-shrink-0 font-headline font-bold text-xs text-on-surface-variant">${l.name.slice(0,2).toUpperCase()}</div>
+        <div class="min-w-0">
+          <p class="font-semibold text-sm text-on-surface truncate">${l.name}</p>
+          <p class="text-[11px] text-on-surface-variant truncate">${l.address}</p>
         </div>
       </div>
-    `).join('');
-  }, 1800);
+      <div class="flex items-center gap-2 flex-shrink-0 ml-3">
+        ${l.phone ? `<a href="tel:${l.phone}" class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-tertiary-fixed text-tertiary text-[11px] font-semibold hover:bg-tertiary hover:text-white transition"><span class="material-symbols-outlined" style="font-size:13px">call</span>${l.phone}</a>` : ''}
+        ${l.website ? `<a href="${l.website}" target="_blank" class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-surface-container text-on-surface-variant text-[11px] font-semibold hover:bg-surface-container-high transition"><span class="material-symbols-outlined" style="font-size:13px">language</span>Site</a>` : ''}
+      </div>
+    </div>
+  `).join('');
 }
 
-function generateMockLeads(ville, profession) {
-  const firstNames = ['Marie','Pierre','Sophie','Thomas','Julie','Nicolas','Laura','Antoine','Emma','Paul'];
-  const lastNames = ['Martin','Dupont','Bernard','Petit','Durand','Moreau','Simon','Laurent','Michel','Robert'];
-  const types = profession ? [profession] : ['Commerce','Restaurant','Artisan','PME','Cabinet'];
-  const villes = ville ? [ville, ville + ' centre', ville + ' nord'] : ['Paris','Lyon','Marseille','Bordeaux','Toulouse'];
-  const count = Math.floor(Math.random() * 8) + 7;
-  return Array.from({length: count}, (_, i) => ({
-    name: firstNames[i % firstNames.length] + ' ' + lastNames[(i+3) % lastNames.length],
-    type: types[i % types.length],
-    ville: villes[i % villes.length],
-    tel: '0' + (6 + Math.floor(Math.random()*2)) + ' ' + Array.from({length:4},()=>String(Math.floor(Math.random()*100)).padStart(2,'0')).join(' '),
-  }));
-}
+function generateMockLeads() {} // kept for compatibility
 
 function exportLeads() {
   if (!leadsData.length) return;
-  const csv = 'Nom,Type,Ville,Téléphone\n' + leadsData.map(l => `"${l.name}","${l.type}","${l.ville}","${l.tel||''}"`).join('\n');
-  const blob = new Blob([csv], {type:'text/csv'});
+  const csv = 'Nom,Adresse,Téléphone,Site web\n' + leadsData.map(l =>
+    `"${l.name}","${l.address}","${l.phone||''}","${l.website||''}"`
+  ).join('\n');
+  const blob = new Blob(['\uFEFF' + csv], {type:'text/csv;charset=utf-8'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url; a.download = 'prospects_stacker.csv'; a.click();
