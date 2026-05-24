@@ -245,6 +245,17 @@
   </nav>
 </header>
 
+<!-- IBAN Banner -->
+<div id="ibanBanner" class="hidden max-w-[1400px] mx-auto px-6 pt-4">
+  <div class="flex items-center justify-between gap-4 px-5 py-3.5 rounded-2xl bg-primary-fixed border border-primary/20">
+    <div class="flex items-center gap-3">
+      <span class="material-symbols-outlined filled text-primary flex-shrink-0" style="font-size:18px;font-variation-settings:'FILL' 1">warning</span>
+      <p class="text-sm font-semibold text-primary">IBAN manquant — tu ne peux pas encore recevoir tes commissions.</p>
+    </div>
+    <a href="parametres.html" class="flex-shrink-0 px-4 py-2 rounded-full bg-primary text-white text-xs font-bold hover:opacity-90 transition whitespace-nowrap">Ajouter mon IBAN</a>
+  </div>
+</div>
+
 <main class="max-w-[1400px] mx-auto px-6 py-8 page-enter">
   <!-- HERO -->
   <section class="reveal mb-10" style="animation-delay: 0.05s">
@@ -580,7 +591,17 @@
     if (e.key === 'Escape') closeHamburger();
   });
 
-  // Date dynamique
+  // IBAN banner
+  if (localStorage.getItem('stacker_onboarded') === '1' && localStorage.getItem('stacker_iban_set') === '0') {
+    document.getElementById('ibanBanner').classList.remove('hidden');
+  }
+
+  // Redirect to onboarding if not onboarded
+  if (!localStorage.getItem('stacker_onboarded')) {
+    window.location.href = 'onboarding.html';
+  }
+
+  // Dynamic date
   const days = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
   const months = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
   const now = new Date();
