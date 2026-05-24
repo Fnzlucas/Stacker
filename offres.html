@@ -153,6 +153,7 @@
   .page-enter { animation: slideUp 0.4s cubic-bezier(0.22,1,0.36,1) both; }
   @keyframes cardIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   .card-anim { animation: cardIn 0.38s cubic-bezier(0.22,1,0.36,1) both; }
+  @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body class="bg-background text-on-surface font-body antialiased" data-page="offres">
@@ -341,7 +342,7 @@
 
     <!-- Liste compacte -->
     <section class="reveal" style="animation-delay:0.3s">
-      <div class="bg-surface-container-lowest rounded-2xl soft-shadow overflow-hidden" id="productGrid"></div>
+      <div class="grid grid-cols-2 gap-3" id="productGrid"></div>
     </section>
 
     <div class="flex justify-center mt-6" id="noResults" style="display:none">
@@ -429,44 +430,10 @@
       <div class="grid grid-cols-2 gap-2" id="quickChannels"></div>
     </div>
 
-    <!-- 4. Ce que tu dis — script rapide -->
-    <div class="bg-surface-container-lowest rounded-2xl soft-shadow overflow-hidden mb-3 reveal" style="animation-delay:0.2s">
-      <div class="flex items-center gap-2 px-5 pt-5 pb-3 border-b border-outline-variant/30">
-        <div class="w-6 h-6 rounded-full bg-on-surface flex items-center justify-center flex-shrink-0">
-          <span class="font-mono font-bold text-white" style="font-size:10px">4</span>
-        </div>
-        <p class="font-headline font-bold text-sm text-on-surface">Ce que tu dis — script rapide</p>
-      </div>
-      <div id="quickScript" class="divide-y divide-outline-variant/20"></div>
-    </div>
-
-    <!-- 5. Les 3 objections -->
-    <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5 mb-3 reveal" style="animation-delay:0.22s">
-      <div class="flex items-center gap-2 mb-4">
-        <div class="w-6 h-6 rounded-full bg-on-surface flex items-center justify-center flex-shrink-0">
-          <span class="font-mono font-bold text-white" style="font-size:10px">5</span>
-        </div>
-        <p class="font-headline font-bold text-sm text-on-surface">Quand ça résiste</p>
-      </div>
-      <div class="flex flex-col gap-2" id="quickObjections"></div>
-    </div>
-
-    <!-- 6. Ce que tu gagnes -->
-    <div class="rounded-2xl p-5 mb-6 reveal" style="animation-delay:0.25s;background:linear-gradient(135deg,#006c4c 0%,#00a879 100%);box-shadow:0 8px 28px rgba(0,108,76,0.22)">
-      <div class="flex items-center gap-2 mb-4">
-        <div class="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style="background:rgba(255,255,255,0.15)">
-          <span class="font-mono font-bold text-white" style="font-size:10px">6</span>
-        </div>
-        <p class="font-headline font-bold text-sm text-white">Ce que tu gagnes</p>
-      </div>
-      <div class="grid grid-cols-3 gap-3" id="quickEarnings"></div>
-      <p class="text-[11px] text-white/50 mt-3 text-center">Commission versée sous 7 jours · Récurrente tant que le client est abonné</p>
-    </div>
-
     <!-- ═══════════════════════════════════════════
          PARTIE 2 — ONGLETS AVANCÉS
     ════════════════════════════════════════════ -->
-    <div class="mb-3 reveal" style="animation-delay:0.28s">
+    <div class="mb-3 reveal" style="animation-delay:0.22s">
       <div class="flex items-center gap-3 mb-4">
         <div class="flex-1 h-px bg-outline-variant/40"></div>
         <p class="font-mono text-[9px] tracking-[0.2em] uppercase text-on-surface-variant font-medium whitespace-nowrap">Pour aller plus loin</p>
@@ -474,12 +441,105 @@
       </div>
     </div>
 
-    <div class="tabs-wrap mb-5 reveal" style="animation-delay:0.3s">
-      <button class="tab-btn active" onclick="showPane('pitch')" id="tbtn-pitch">Pitch complet</button>
-      <button class="tab-btn" onclick="showPane('scripts')" id="tbtn-scripts">Scripts par canal</button>
+    <div class="tabs-wrap mb-5 reveal" style="animation-delay:0.25s">
+      <button class="tab-btn active" onclick="showPane('kit')" id="tbtn-kit">Kit de vente</button>
+      <button class="tab-btn" onclick="showPane('pitch')" id="tbtn-pitch">Pitch complet</button>
+      <button class="tab-btn" onclick="showPane('scripts')" id="tbtn-scripts">Scripts canal</button>
       <button class="tab-btn" onclick="showPane('tarifs')" id="tbtn-tarifs">Tarifs & com.</button>
       <button class="tab-btn" onclick="showPane('fidelisation')" id="tbtn-fidelisation">Fidélisation</button>
       <button class="tab-btn" onclick="showPane('contrat')" id="tbtn-contrat">Contrat</button>
+    </div>
+
+    <!-- Pane: Kit de vente -->
+    <div class="pane active" id="pane-kit">
+
+      <!-- Script rapide -->
+      <div class="bg-surface-container-lowest rounded-2xl soft-shadow overflow-hidden mb-3">
+        <div class="flex items-center gap-2 px-5 pt-5 pb-3 border-b border-outline-variant/20">
+          <div class="w-6 h-6 rounded-full bg-on-surface flex items-center justify-center flex-shrink-0">
+            <span class="font-mono font-bold text-white" style="font-size:10px">4</span>
+          </div>
+          <p class="font-headline font-bold text-sm text-on-surface">Ce que tu dis — script rapide</p>
+        </div>
+        <div id="quickScript" class="divide-y divide-outline-variant/20"></div>
+      </div>
+
+      <!-- Objections -->
+      <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5 mb-3">
+        <div class="flex items-center gap-2 mb-4">
+          <div class="w-6 h-6 rounded-full bg-on-surface flex items-center justify-center flex-shrink-0">
+            <span class="font-mono font-bold text-white" style="font-size:10px">5</span>
+          </div>
+          <p class="font-headline font-bold text-sm text-on-surface">Quand ça résiste</p>
+        </div>
+        <div class="flex flex-col gap-2" id="quickObjections"></div>
+      </div>
+
+      <!-- Ce que tu gagnes -->
+      <div class="rounded-2xl p-5 mb-3" style="background:linear-gradient(135deg,#006c4c 0%,#00a879 100%);box-shadow:0 8px 28px rgba(0,108,76,0.22)">
+        <div class="flex items-center gap-2 mb-4">
+          <div class="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style="background:rgba(255,255,255,0.15)">
+            <span class="font-mono font-bold text-white" style="font-size:10px">6</span>
+          </div>
+          <p class="font-headline font-bold text-sm text-white">Ce que tu gagnes</p>
+        </div>
+        <div class="grid grid-cols-3 gap-3" id="quickEarnings"></div>
+        <p class="text-[11px] text-white/50 mt-3 text-center">Commission versée sous 7 jours · Récurrente tant que le client est abonné</p>
+      </div>
+
+      <!-- Leads B2B -->
+      <div id="leadsSection" style="display:none">
+        <div class="bg-surface-container-lowest rounded-2xl soft-shadow overflow-hidden">
+          <div class="flex items-center gap-3 px-5 pt-5 pb-4 border-b border-outline-variant/20">
+            <div class="w-6 h-6 rounded-full bg-on-surface flex items-center justify-center flex-shrink-0">
+              <span class="font-mono font-bold text-white" style="font-size:10px">7</span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="font-headline font-bold text-sm text-on-surface">Trouve tes prospects</p>
+              <p class="text-[11px] text-on-surface-variant">Génère une liste de contacts qualifiés pour cette offre.</p>
+            </div>
+            <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container">
+              <span class="material-symbols-outlined text-on-surface-variant" style="font-size:13px">hub</span>
+              <span class="text-[10px] font-semibold text-on-surface-variant">Stacker Leads</span>
+            </div>
+          </div>
+          <div class="px-5 py-4">
+            <div class="grid grid-cols-2 gap-3 mb-3">
+              <div>
+                <label class="block text-[10.5px] font-semibold text-on-surface-variant uppercase tracking-[0.06em] mb-1.5">Ville ou département</label>
+                <input type="text" id="leadsVille" placeholder="Paris, Lyon, 13..." class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm text-on-surface outline-none focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/10 transition" oninput="resetLeads()">
+              </div>
+              <div>
+                <label class="block text-[10.5px] font-semibold text-on-surface-variant uppercase tracking-[0.06em] mb-1.5">Secteur / Profession</label>
+                <input type="text" id="leadsProfession" placeholder="Restaurant, Hôtel..." class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm text-on-surface outline-none focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/10 transition" oninput="resetLeads()">
+              </div>
+            </div>
+            <div class="flex gap-2 flex-wrap mb-4" id="leadsSuggestions"></div>
+            <button onclick="generateLeads()" id="leadsBtn" class="w-full py-3.5 rounded-xl bg-on-surface text-white font-headline font-bold text-sm flex items-center justify-center gap-2 hover:opacity-90 transition active:scale-[0.99]">
+              <span class="material-symbols-outlined" style="font-size:18px">search</span>
+              Générer la liste de prospects
+            </button>
+          </div>
+          <div id="leadsLoading" style="display:none" class="px-5 py-6 flex flex-col items-center gap-3 border-t border-outline-variant/20">
+            <div class="w-7 h-7 border-2 border-outline-variant border-t-primary rounded-full" style="animation:spin 0.8s linear infinite"></div>
+            <p class="text-sm text-on-surface-variant">Recherche en cours...</p>
+          </div>
+          <div id="leadsResults" style="display:none" class="border-t border-outline-variant/20">
+            <div class="px-5 pt-4 pb-2 flex items-center justify-between">
+              <p class="font-mono text-[9.5px] tracking-[0.12em] uppercase text-on-surface-variant">Prospects trouvés</p>
+              <span class="font-headline font-bold text-sm text-primary" id="leadsCount">0</span>
+            </div>
+            <div id="leadsList" class="divide-y divide-outline-variant/15 pb-2"></div>
+            <div class="px-5 pb-4 pt-2">
+              <button onclick="exportLeads()" class="w-full py-3 rounded-xl border border-outline-variant text-sm font-semibold text-on-surface flex items-center justify-center gap-2 hover:bg-surface-container transition">
+                <span class="material-symbols-outlined" style="font-size:16px">download</span>
+                Exporter en CSV
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <!-- Pane: Pitch -->
@@ -1016,6 +1076,8 @@ let activeChannel = 'tel';
 let activeTag = 'all';
 let activeLevel = 'all';
 
+function renderGrid() { buildRows(PRODUCTS); }
+
 const TAG_MAP = {
   seoia: ['Commerce','SEO'], fastfood: ['Commerce','Restauration'],
   huntlist: ['B2B'], rhpme: ['B2B'], fidelite: ['Commerce'],
@@ -1031,51 +1093,144 @@ const LEVEL_MAP = {
   energie: 'debutant', rachat: 'experimente'
 };
 
-function renderGrid() { buildRows(PRODUCTS); }
+const B2B_IDS = ['seoia','fastfood','huntlist','rhpme','alma','inroom'];
+
+const LEADS_SUGGESTIONS = {
+  seoia: ['Restaurant','Boulangerie','Salon de coiffure','Plombier','Dentiste'],
+  fastfood: ['Fast-food','Kebab','Pizzeria','Food truck','Restauration rapide'],
+  huntlist: ['Directeur commercial','Responsable RH','CEO startup','Gérant PME'],
+  rhpme: ['Dirigeant PME','DRH','Responsable paie','Gérant entreprise'],
+  alma: ['Artisan','Commerçant','Profession libérale','Startup','TPE'],
+  inroom: ['Hôtel','Résidence tourisme','Chambre hôtes','Appart-hôtel'],
+};
+
+let leadsData = [];
+
+function showLeadsSection() {
+  const isB2B = current && B2B_IDS.includes(current.id);
+  const section = document.getElementById('leadsSection');
+  if (!section) return;
+  section.style.display = isB2B ? 'block' : 'none';
+  if (isB2B) {
+    // Suggestions
+    const suggs = LEADS_SUGGESTIONS[current.id] || [];
+    document.getElementById('leadsSuggestions').innerHTML = suggs.map(s =>
+      `<button onclick="setSuggestion('${s}')" class="px-3 py-1.5 rounded-full text-[11px] font-semibold bg-surface-container-high text-on-surface-variant hover:bg-primary-fixed hover:text-primary transition">${s}</button>`
+    ).join('');
+    // Reset fields
+    document.getElementById('leadsVille').value = '';
+    document.getElementById('leadsProfession').value = '';
+    document.getElementById('leadsResults').style.display = 'none';
+    document.getElementById('leadsLoading').style.display = 'none';
+    leadsData = [];
+  }
+}
+
+function setSuggestion(val) {
+  document.getElementById('leadsProfession').value = val;
+}
+
+function resetLeads() {
+  document.getElementById('leadsResults').style.display = 'none';
+  leadsData = [];
+}
+
+function generateLeads() {
+  const ville = document.getElementById('leadsVille').value.trim();
+  const profession = document.getElementById('leadsProfession').value.trim();
+  if (!ville && !profession) { alert('Remplis au moins la ville ou le secteur.'); return; }
+
+  document.getElementById('leadsLoading').style.display = 'flex';
+  document.getElementById('leadsResults').style.display = 'none';
+  document.getElementById('leadsBtn').disabled = true;
+
+  // Simulation — en prod connecter à l'API Huntlist
+  setTimeout(() => {
+    leadsData = generateMockLeads(ville, profession);
+    document.getElementById('leadsLoading').style.display = 'none';
+    document.getElementById('leadsResults').style.display = 'block';
+    document.getElementById('leadsBtn').disabled = false;
+    document.getElementById('leadsCount').textContent = leadsData.length + ' prospects';
+    document.getElementById('leadsList').innerHTML = leadsData.map((l, i) => `
+      <div class="flex items-center justify-between px-5 py-3.5 hover:bg-surface-container-low transition">
+        <div class="flex items-center gap-3 min-w-0">
+          <div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center flex-shrink-0 font-headline font-bold text-xs text-on-surface-variant">${l.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
+          <div class="min-w-0">
+            <p class="font-semibold text-sm text-on-surface truncate">${l.name}</p>
+            <p class="text-[11px] text-on-surface-variant truncate">${l.type} · ${l.ville}</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 flex-shrink-0 ml-3">
+          ${l.tel ? `<a href="tel:${l.tel}" class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-surface-container text-on-surface text-[11px] font-semibold hover:bg-primary-fixed hover:text-primary transition"><span class="material-symbols-outlined" style="font-size:13px">call</span>${l.tel}</a>` : ''}
+        </div>
+      </div>
+    `).join('');
+  }, 1800);
+}
+
+function generateMockLeads(ville, profession) {
+  const firstNames = ['Marie','Pierre','Sophie','Thomas','Julie','Nicolas','Laura','Antoine','Emma','Paul'];
+  const lastNames = ['Martin','Dupont','Bernard','Petit','Durand','Moreau','Simon','Laurent','Michel','Robert'];
+  const types = profession ? [profession] : ['Commerce','Restaurant','Artisan','PME','Cabinet'];
+  const villes = ville ? [ville, ville + ' centre', ville + ' nord'] : ['Paris','Lyon','Marseille','Bordeaux','Toulouse'];
+  const count = Math.floor(Math.random() * 8) + 7;
+  return Array.from({length: count}, (_, i) => ({
+    name: firstNames[i % firstNames.length] + ' ' + lastNames[(i+3) % lastNames.length],
+    type: types[i % types.length],
+    ville: villes[i % villes.length],
+    tel: '0' + (6 + Math.floor(Math.random()*2)) + ' ' + Array.from({length:4},()=>String(Math.floor(Math.random()*100)).padStart(2,'0')).join(' '),
+  }));
+}
+
+function exportLeads() {
+  if (!leadsData.length) return;
+  const csv = 'Nom,Type,Ville,Téléphone\n' + leadsData.map(l => `"${l.name}","${l.type}","${l.ville}","${l.tel||''}"`).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'prospects_stacker.csv'; a.click();
+  URL.revokeObjectURL(url);
+}
+
+
 
 function buildRows(products) {
   const grid = document.getElementById('productGrid');
   if (!products.length) { grid.innerHTML = ''; document.getElementById('noResults').style.display = 'flex'; return; }
   document.getElementById('noResults').style.display = 'none';
-  const listed = products.filter(p => p.id !== 'seoia');
-  const tagColors = {
-    'Commerce':'bg-tertiary-fixed text-tertiary','B2B':'bg-primary-fixed text-primary',
-    'Restauration':'bg-surface-container-high text-on-surface-variant',
-    'Hôtellerie':'bg-surface-container-high text-on-surface-variant',
-    'Crypto':'bg-surface-container-high text-on-surface-variant',
-    'SEO':'bg-tertiary-fixed text-tertiary',
-    'Particuliers':'bg-yellow-100 text-yellow-800',
-    'Finance':'bg-primary-fixed text-primary',
-  };
+  const listed = products;
   grid.innerHTML = listed.map((p, i) => {
     const isTradebot = p.id === 'tradebot';
-    const comRate = isTradebot ? '2%+8%+25%' : (Math.round(p.plans[0].comRate * 100) + '%');
+    const isVariable = p.plans.some(pl => pl.variable);
     const level = LEVEL_MAP[p.id] || 'debutant';
-    const levelBadge = level === 'debutant'
-      ? '<span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-tertiary-fixed text-tertiary uppercase tracking-[0.1em]">Débutant</span>'
-      : '<span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant uppercase tracking-[0.1em]">Expérimenté</span>';
-    const tags = TAG_MAP[p.id] || [];
-    const mainTag = tags[0] || '';
-    const tagClass = tagColors[mainTag] || 'bg-surface-container-high text-on-surface-variant';
-    let comDisplay, comUnit;
-    if (p.plans[0]?.priceLabel2) { comDisplay = p.plans[0].priceLabel2; comUnit = 'par dossier'; }
-    else if (isTradebot) { comDisplay = '2%+8%+25%'; comUnit = 'commission mixte'; }
+    let comDisplay;
+    if (p.plans[0]?.priceLabel2) comDisplay = p.plans[0].priceLabel2;
+    else if (isTradebot) comDisplay = '2%+8%+25%';
     else {
       const prices = p.plans.filter(pl => pl.price).map(pl => pl.price);
       const minC = Math.round(Math.min(...prices) * p.plans[0].comRate);
       const maxC = Math.round(Math.max(...prices) * p.plans[0].comRate);
       comDisplay = minC === maxC ? minC + ' €/mois' : minC + '–' + maxC + ' €/mois';
-      comUnit = 'commission récurrente';
     }
-    return `<a href="#" onclick="openProduct('${p.id}'); return false;" class="hybrid-row group" style="animation-delay:${i*40}ms">
-      <div class="hybrid-row-content">
-        <div class="flex items-center gap-1.5 mb-1">${levelBadge}</div>
-        <p class="hybrid-row-sector">${p.category}</p>
-        <h4 class="hybrid-row-title">${p.name} <span class="text-on-surface-variant font-normal text-[13px]">— ${p.tagline}</span></h4>
+    const levelBadge = level === 'debutant'
+      ? `<span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-tertiary-fixed text-tertiary uppercase tracking-[0.08em]">Débutant</span>`
+      : `<span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant uppercase tracking-[0.08em]">Expérimenté</span>`;
+    const minPrice = isVariable ? '5 €/ch.' : ('Dès ' + Math.min(...p.plans.filter(pl=>pl.price).map(pl=>pl.price)) + ' €');
+    return `<a href="#" onclick="openProduct('${p.id}'); return false;"
+      class="bg-surface-container-lowest rounded-2xl p-4 soft-shadow border border-transparent hover:border-outline-variant/50 hover-lift cursor-pointer block card-anim"
+      style="animation-delay:${i*35}ms;text-decoration:none">
+      <div class="flex items-start justify-between mb-3">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:${p.color}14">
+          <span class="material-symbols-outlined filled" style="font-size:20px;color:${p.color};font-variation-settings:'FILL' 1">${p.icon}</span>
+        </div>
+        ${levelBadge}
       </div>
-      <span class="tag ${tagClass}">${mainTag}</span>
-      <div class="hybrid-row-amount"><p class="amount-main">${comDisplay}</p><p class="amount-unit">${comUnit}</p></div>
-      <span class="material-symbols-outlined hybrid-row-arrow" style="font-size:18px">arrow_forward</span>
+      <p class="font-headline font-bold text-sm text-on-surface mb-1" style="letter-spacing:-0.02em">${p.name}</p>
+      <p class="text-[11.5px] text-on-surface-variant leading-snug mb-3">${p.tagline}</p>
+      <div class="flex items-center justify-between pt-3 border-t border-outline-variant/30">
+        <span class="font-headline font-bold text-[12px] text-primary">${minPrice}</span>
+        <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full" style="background:rgba(0,108,76,0.1);color:#006c4c">${comDisplay}</span>
+      </div>
     </a>`;
   }).join('');
 }
@@ -1141,6 +1296,7 @@ function openProduct(id) {
   }
 
   renderQuickKit();
+  showLeadsSection();
   showPane('pitch');
   renderPitch();
   renderTarifs();
@@ -1174,10 +1330,10 @@ function renderQuickKit() {
   const recommended = level === 'debutant' ? ['tel', 'pap', 'social'] : ['rdv', 'tel'];
   document.getElementById('quickChannels').innerHTML = channels.map(c => {
     const isRec = recommended.includes(c.id);
-    return `<div class="flex items-center gap-3 p-3 rounded-xl ${isRec ? 'bg-primary-fixed border border-primary/20' : 'bg-surface-container border border-outline-variant/30'}">
-      <span class="material-symbols-outlined ${isRec ? 'text-primary' : 'text-on-surface-variant'}" style="font-size:18px">${c.icon}</span>
+    return `<div class="flex items-center gap-3 p-3 rounded-xl ${isRec ? 'bg-tertiary-fixed border border-tertiary/20' : 'bg-surface-container border border-outline-variant/30'}">
+      <span class="material-symbols-outlined ${isRec ? 'text-tertiary' : 'text-on-surface-variant'}" style="font-size:18px">${c.icon}</span>
       <div class="min-w-0">
-        <p class="font-semibold text-xs ${isRec ? 'text-primary' : 'text-on-surface'}">${c.label} ${isRec ? '· Recommandé' : ''}</p>
+        <p class="font-semibold text-xs ${isRec ? 'text-tertiary' : 'text-on-surface'}">${c.label} ${isRec ? '· Recommandé' : ''}</p>
         <p class="text-[11px] text-on-surface-variant">${c.desc}</p>
       </div>
     </div>`;
@@ -1279,9 +1435,11 @@ function goBack() {
 
 function showPane(name) {
   activePane = name;
-  ['pitch','scripts','tarifs','fidelisation','contrat'].forEach(p => {
-    document.getElementById('pane-'+p).classList.toggle('active', p === name);
-    document.getElementById('tbtn-'+p).classList.toggle('active', p === name);
+  ['kit','pitch','scripts','tarifs','fidelisation','contrat'].forEach(p => {
+    const pane = document.getElementById('pane-'+p);
+    const btn = document.getElementById('tbtn-'+p);
+    if (pane) pane.classList.toggle('active', p === name);
+    if (btn) btn.classList.toggle('active', p === name);
   });
   if (name === 'fidelisation') renderFidelisation();
 }
