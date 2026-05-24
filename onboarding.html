@@ -280,7 +280,10 @@ tailwind.config = {
 
     <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/40 overflow-hidden mb-4 flex-shrink-0" style="box-shadow:0 2px 8px rgba(27,28,28,0.04)">
       <div class="flex items-center justify-between px-4 py-3 border-b border-outline-variant/30">
-        <p class="font-headline font-bold text-sm text-on-surface">Convention d'apporteur d'affaires</p>
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined filled text-tertiary" style="font-size:16px;font-variation-settings:'FILL' 1">handshake</span>
+          <p class="font-headline font-bold text-sm text-on-surface">Accord de partenariat Stacker</p>
+        </div>
         <div class="scroll-indicator">
           <span class="material-symbols-outlined" style="font-size:14px">expand_more</span>
           Scroll pour lire
@@ -289,81 +292,50 @@ tailwind.config = {
       <div class="convention-body px-4 py-4" id="convBody" onscroll="checkConvScroll()">
 
         <div class="conv-article">
-          <div class="conv-h1">Préambule</div>
-          <p class="conv-p">La présente convention est conclue entre la plateforme STACKER et toute personne qui s'inscrit et accepte les présentes conditions (l'Apporteur d'affaires). L'Apporteur d'affaires agit en qualité de mandataire non exclusif et indépendant. Il n'existe aucun lien de subordination. Cette convention ne constitue en aucun cas un contrat de travail.</p>
-          <div class="conv-highlight">En acceptant, tu reconnais avoir lu et compris l'intégralité de la présente convention.</div>
+          <p class="conv-p" style="font-size:13px;color:#1b1c1c;line-height:1.7">Cet accord définit comment on travaille ensemble. En résumé : tu es totalement libre, tu ne travailles pas pour Stacker, et tu touches des commissions chaque fois qu'un client signe. C'est simple, transparent, et sans piège.</p>
         </div>
 
         <div class="conv-article">
-          <div class="conv-h1">Article 1 — Objet</div>
-          <p class="conv-p">Tu peux, de façon libre et indépendante, présenter et recommander les produits Stacker à des tiers. Tu t'engages à :</p>
-          <p class="conv-li">Présenter les produits de façon honnête et conforme aux scripts fournis</p>
-          <p class="conv-li">Ne pas faire de promesses au-delà des fonctionnalités réelles</p>
-          <p class="conv-li">Respecter les règles légales dans tes activités de prospection</p>
+          <div class="conv-h1" style="color:#1b1c1c;font-size:11px">Tu es libre et indépendant</div>
+          <p class="conv-p">Tu organises ton activité comme tu le souhaites — aucun horaire imposé, aucun quota, aucune exclusivité. Tu peux vendre pour d'autres entreprises en parallèle. Stacker n'est pas ton employeur.</p>
         </div>
 
         <div class="conv-article">
-          <div class="conv-h1">Article 2 — Indépendance</div>
-          <p class="conv-p">Tu exerces ton activité en toute indépendance. Stacker ne t'impose aucun horaire, aucun lieu, aucun quota, aucune exclusivité. Tu es libre de travailler pour d'autres entreprises en parallèle.</p>
-          <div class="conv-highlight">Cette convention ne peut être requalifiée en contrat de travail, les critères de subordination étant expressément absents.</div>
+          <div class="conv-h1" style="color:#1b1c1c;font-size:11px">Comment tu es payé</div>
+          <p class="conv-p">Tu touches une commission sur chaque client que tu apportes, tant qu'il reste abonné. Plus le client reste longtemps, plus tu gagnes grâce aux paliers de fidélisation. Tes commissions sont versées sous 7 jours après confirmation du deal.</p>
+          <p class="conv-li">Client actif à 3 mois → bonus d'un mois de commission</p>
+          <p class="conv-li">Client actif à 6 mois → +5% sur ton taux de commission</p>
+          <p class="conv-li">Client actif à 12 mois → prime + statut Closer Elite</p>
         </div>
 
         <div class="conv-article">
-          <div class="conv-h1">Article 3 — Commissions</div>
-          <div class="conv-h2">3.1 Principe</div>
-          <p class="conv-p">Tu es rémunéré exclusivement à la performance, sur les montants effectivement encaissés. Aucune rémunération fixe ni garantie de revenus.</p>
-          <div class="conv-h2">3.2 Paliers de fidélisation</div>
-          <p class="conv-li">Client actif à 3 mois : bonus équivalent à 1 mois de commission</p>
-          <p class="conv-li">Client actif à 6 mois : +5 points sur le taux de commission</p>
-          <p class="conv-li">Client actif à 12 mois : prime exceptionnelle + statut Closer Elite</p>
-          <div class="conv-h2">3.3 Versement</div>
-          <p class="conv-p">Les commissions sont versées le 15 de chaque mois suivant sur l'IBAN renseigné dans ton profil, sur les montants effectivement encaissés ce mois-là.</p>
-          <div class="conv-h2">3.4 Fiscalité</div>
-          <p class="conv-p">Les commissions constituent des revenus imposables que tu dois déclarer. Stacker effectuera une déclaration DAS2 pour tout apporteur percevant plus de 1 200 € sur l'année civile.</p>
+          <div class="conv-h1" style="color:#1b1c1c;font-size:11px">Ce qu'on te demande</div>
+          <p class="conv-p">Présente les produits honnêtement, n'invente pas de fonctionnalités qui n'existent pas, et respecte les prospects. C'est tout.</p>
+          <p class="conv-li">Utilise les scripts et tarifs fournis par Stacker</p>
+          <p class="conv-li">Ne te présente pas comme salarié ou représentant légal de Stacker</p>
+          <p class="conv-li">Respecte la vie privée des prospects (RGPD)</p>
         </div>
 
         <div class="conv-article">
-          <div class="conv-h1">Article 4 — Déclaration d'âge</div>
-          <p class="conv-p">Tu déclares sur l'honneur avoir 18 ans ou plus, ou avoir obtenu l'autorisation préalable de ton représentant légal. Toute fausse déclaration engage ta seule responsabilité.</p>
-          <div class="conv-highlight">Ta déclaration est horodatée et conservée avec ton adresse IP. Elle constitue une preuve opposable.</div>
+          <div class="conv-h1" style="color:#1b1c1c;font-size:11px">Ce que Stacker s'engage à faire</div>
+          <p class="conv-li">Te fournir tous les outils, scripts et supports pour vendre</p>
+          <p class="conv-li">Te payer tes commissions sous 7 jours après confirmation</p>
+          <p class="conv-li">Te prévenir 30 jours à l'avance de tout changement de taux</p>
+          <p class="conv-li">Protéger tes données personnelles</p>
         </div>
 
         <div class="conv-article">
-          <div class="conv-h1">Article 5 — Tes obligations</div>
-          <p class="conv-li">Ne pas modifier les tarifs ou conditions des produits Stacker</p>
-          <p class="conv-li">Ne pas te présenter comme salarié ou représentant légal de Stacker</p>
-          <p class="conv-li">Ne pas utiliser des pratiques commerciales déloyales ou trompeuses</p>
-          <p class="conv-li">Respecter le système de lock prospect (15 jours)</p>
-          <p class="conv-li">Respecter le RGPD dans la collecte de données prospects</p>
+          <div class="conv-h1" style="color:#1b1c1c;font-size:11px">Ton âge et tes revenus</div>
+          <p class="conv-p">Tu déclares avoir 18 ans ou plus, ou avoir l'autorisation de ton parent. Les commissions que tu touches sont des revenus à déclarer aux impôts — comme n'importe quel revenu.</p>
         </div>
 
         <div class="conv-article">
-          <div class="conv-h1">Article 6 — Obligations de Stacker</div>
-          <p class="conv-li">Mettre à disposition les outils, scripts et supports commerciaux</p>
-          <p class="conv-li">Verser les commissions dues dans les délais prévus</p>
-          <p class="conv-li">Informer de toute modification de taux avec 30 jours de préavis</p>
-          <p class="conv-li">Protéger tes données personnelles conformément au RGPD</p>
+          <div class="conv-h1" style="color:#1b1c1c;font-size:11px">Quitter Stacker</div>
+          <p class="conv-p">Tu peux partir à tout moment avec 15 jours de préavis. Les commissions déjà gagnées te sont versées normalement.</p>
         </div>
 
-        <div class="conv-article">
-          <div class="conv-h1">Article 7 — Résiliation</div>
-          <p class="conv-p">Convention à durée indéterminée. Chaque partie peut résilier à tout moment avec 15 jours de préavis. Les commissions acquises restent dues après résiliation.</p>
-        </div>
-
-        <div class="conv-article">
-          <div class="conv-h1">Article 8 — Confidentialité</div>
-          <p class="conv-p">Tu t'engages à garder confidentiels les scripts, tarifs, données clients et informations stratégiques — pendant la durée de la convention et 3 ans après résiliation.</p>
-        </div>
-
-        <div class="conv-article">
-          <div class="conv-h1">Article 9 — RGPD</div>
-          <p class="conv-p">Tes données personnelles sont traitées uniquement pour la gestion de cette convention. Tu disposes d'un droit d'accès, de rectification et de suppression via ton espace personnel.</p>
-        </div>
-
-        <div class="conv-article">
-          <div class="conv-h1">Article 10 — Droit applicable</div>
-          <p class="conv-p">Convention soumise au droit français. En cas de litige, recherche d'une solution amiable dans les 30 jours avant tout recours judiciaire.</p>
-          <div class="conv-highlight">En cochant la case ci-dessous, tu acceptes sans réserve l'intégralité de cette convention. Cette acceptation électronique a la même valeur qu'une signature manuscrite (articles 1366 et 1367 du Code civil).</div>
+        <div class="bg-surface-container rounded-xl p-3 mt-2">
+          <p class="text-[12px] text-on-surface-variant leading-snug text-center">En cochant les cases ci-dessous, tu confirmes avoir compris et accepté cet accord. Cette acceptation a la même valeur qu'une signature (articles 1366 et 1367 du Code civil).</p>
         </div>
 
       </div>
@@ -373,21 +345,21 @@ tailwind.config = {
     <div class="flex flex-col gap-3 mb-5" id="convChecks">
       <label class="custom-check" onclick="toggleCheck('check1')">
         <div class="check-box" id="check1"><span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">check</span></div>
-        <p class="text-sm text-on-surface leading-snug">J'ai lu et j'accepte sans réserve la convention d'apporteur d'affaires Stacker</p>
+        <p class="text-sm text-on-surface leading-snug">J'ai lu et je comprends comment fonctionne le partenariat Stacker</p>
       </label>
       <label class="custom-check" onclick="toggleCheck('check2')">
         <div class="check-box" id="check2"><span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">check</span></div>
-        <p class="text-sm text-on-surface leading-snug">Je certifie avoir <strong>18 ans ou plus</strong>, ou avoir obtenu l'autorisation de mon représentant légal</p>
+        <p class="text-sm text-on-surface leading-snug">Je confirme avoir <strong>18 ans ou plus</strong>, ou avoir l'accord de mon parent</p>
       </label>
       <label class="custom-check" onclick="toggleCheck('check3')">
         <div class="check-box" id="check3"><span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">check</span></div>
-        <p class="text-sm text-on-surface leading-snug">Je comprends que mes commissions constituent des revenus imposables que je dois déclarer</p>
+        <p class="text-sm text-on-surface leading-snug">Je sais que mes commissions sont des revenus à déclarer aux impôts</p>
       </label>
     </div>
 
     <div class="mt-auto flex flex-col gap-3">
       <button onclick="validateStep4()" id="btnSign" class="w-full py-4 rounded-2xl cta-gradient text-white font-headline font-bold text-base hover:opacity-95 transition opacity-40 cursor-not-allowed" style="box-shadow:0 8px 28px rgba(181,35,48,0.22)" disabled>
-        J'accepte et je signe
+        C'est bon, on y va
       </button>
       <button onclick="prevStep()" class="w-full py-3 rounded-2xl text-on-surface-variant font-semibold text-sm hover:bg-surface-container transition">
         Retour
