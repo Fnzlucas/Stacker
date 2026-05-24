@@ -1149,46 +1149,63 @@ function generateLeads() {
   const query = [profession, ville].filter(Boolean).join(' ');
 
   if (typeof google === 'undefined' || !google.maps || !google.maps.places) {
-    // Google Maps pas encore chargé — retry
     setTimeout(generateLeads, 800);
     return;
   }
 
   const service = new google.maps.places.PlacesService(document.createElement('div'));
   let allResults = [];
+  const MAX = 60;
 
-  service.textSearch({ query, language: 'fr', region: 'fr' }, function(results, status, pagination) {
+  function fetchPage(pagination) {
+    if (pagination && pagination.hasNextPage && allResults.length < MAX) {
+      setTimeout(() => pagination.nextPage(), 300);
+    } else {
+      // On a les 60 (ou moins) — on enrichit
+      document.getElementById('leadsLoading').querySelector('p').textContent =
+        'Enrichissement des données (' + allResults.length + ' prospects)...';
+      enrichResults(service, allResults.slice(0, MAX));
+    }
+  }
+
+  service.textSearch({ query, language: 'fr', region: 'fr' }, function cb(results, status, pagination) {
     if (status === google.maps.places.PlacesServiceStatus.OK && results) {
       allResults = allResults.concat(results);
-      if (allResults.length < 20 && pagination && pagination.hasNextPage) {
-        setTimeout(() => pagination.nextPage(), 300);
-      } else {
-        enrichResults(service, allResults.slice(0, 20));
-      }
+      document.getElementById('leadsLoading').querySelector('p').textContent =
+        allResults.length + ' prospects trouvés...';
+      fetchPage(pagination);
     } else {
       document.getElementById('leadsLoading').style.display = 'none';
       document.getElementById('leadsBtn').disabled = false;
-      alert('Aucun résultat trouvé. Essaie une autre ville ou un autre secteur.');
+      alert('Aucun résultat. Essaie une autre ville ou un autre secteur.');
     }
   });
 }
 
 async function enrichResults(service, places) {
+  const BATCH = 10;
   const enriched = [];
-  for (const p of places) {
-    const details = await new Promise(resolve => {
-      service.getDetails(
-        { placeId: p.place_id, fields: ['formatted_phone_number','website','international_phone_number','formatted_address'] },
-        (place, status) => resolve(status === google.maps.places.PlacesServiceStatus.OK ? place : null)
-      );
-    });
-    enriched.push({
-      name: p.name,
-      address: p.formatted_address || p.vicinity || '',
-      phone: details?.formatted_phone_number || details?.international_phone_number || null,
-      website: details?.website || null,
-      rating: p.rating || null,
-    });
+  for (let i = 0; i < places.length; i += BATCH) {
+    const batch = places.slice(i, i + BATCH);
+    const results = await Promise.all(batch.map(p =>
+      new Promise(resolve => {
+        service.getDetails(
+          { placeId: p.place_id, fields: ['formatted_phone_number','website','international_phone_number'] },
+          (place, status) => {
+            resolve({
+              name: p.name,
+              address: p.formatted_address || p.vicinity || '',
+              phone: place?.formatted_phone_number || place?.international_phone_number || null,
+              website: place?.website || null,
+              rating: p.rating || null,
+            });
+          }
+        );
+      })
+    ));
+    enriched.push(...results);
+    document.getElementById('leadsLoading').querySelector('p').textContent =
+      'Enrichissement... ' + enriched.length + '/' + places.length;
   }
   leadsData = enriched;
   renderLeadsResults();
@@ -1198,19 +1215,26 @@ function renderLeadsResults() {
   document.getElementById('leadsLoading').style.display = 'none';
   document.getElementById('leadsResults').style.display = 'block';
   document.getElementById('leadsBtn').disabled = false;
-  document.getElementById('leadsCount').textContent = leadsData.length + ' prospects';
+  const withPhone = leadsData.filter(l => l.phone).length;
+  document.getElementById('leadsCount').textContent = leadsData.length + ' prospects · ' + withPhone + ' numéros';
   document.getElementById('leadsList').innerHTML = leadsData.map((l, i) => `
-    <div class="flex items-center justify-between px-5 py-3.5 hover:bg-surface-container-low transition">
-      <div class="flex items-center gap-3 min-w-0">
-        <div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center flex-shrink-0 font-headline font-bold text-xs text-on-surface-variant">${l.name.slice(0,2).toUpperCase()}</div>
-        <div class="min-w-0">
+    <div class="flex items-center justify-between px-5 py-3 hover:bg-surface-container-low transition">
+      <div class="flex items-center gap-3 min-w-0 flex-1">
+        <div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center flex-shrink-0 font-headline font-bold text-[10px] text-on-surface-variant">${l.name.slice(0,2).toUpperCase()}</div>
+        <div class="min-w-0 flex-1">
           <p class="font-semibold text-sm text-on-surface truncate">${l.name}</p>
           <p class="text-[11px] text-on-surface-variant truncate">${l.address}</p>
+          ${l.rating ? `<div class="flex items-center gap-1 mt-0.5"><span class="material-symbols-outlined filled" style="font-size:11px;color:#f59e0b;font-variation-settings:'FILL' 1">star</span><span class="text-[10px] text-on-surface-variant">${l.rating}</span></div>` : ''}
         </div>
       </div>
-      <div class="flex items-center gap-2 flex-shrink-0 ml-3">
-        ${l.phone ? `<a href="tel:${l.phone}" class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-tertiary-fixed text-tertiary text-[11px] font-semibold hover:bg-tertiary hover:text-white transition"><span class="material-symbols-outlined" style="font-size:13px">call</span>${l.phone}</a>` : ''}
-        ${l.website ? `<a href="${l.website}" target="_blank" class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-surface-container text-on-surface-variant text-[11px] font-semibold hover:bg-surface-container-high transition"><span class="material-symbols-outlined" style="font-size:13px">language</span>Site</a>` : ''}
+      <div class="flex items-center gap-1.5 flex-shrink-0 ml-3">
+        ${l.phone
+          ? `<a href="tel:${l.phone}" class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-tertiary-fixed text-tertiary text-[11px] font-bold hover:bg-tertiary hover:text-white transition whitespace-nowrap">
+              <span class="material-symbols-outlined" style="font-size:13px">call</span>${l.phone}
+             </a>`
+          : `<span class="text-[11px] text-on-surface-variant px-2">Pas de tél.</span>`
+        }
+        ${l.website ? `<a href="${l.website}" target="_blank" class="p-1.5 rounded-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition"><span class="material-symbols-outlined" style="font-size:14px">language</span></a>` : ''}
       </div>
     </div>
   `).join('');
