@@ -291,13 +291,19 @@
 
     <!-- Filter pills -->
     <section class="reveal mb-6" style="animation-delay:0.15s">
-      <div class="flex gap-2 overflow-x-auto scroll-hide pb-2">
-        <button class="filter-pill active px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap bg-surface-container-high" onclick="filterByTag('all')">Tous · 8</button>
-        <button class="filter-pill px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap bg-surface-container-high text-on-surface-variant" onclick="filterByTag('Commerce')">Commerce local</button>
-        <button class="filter-pill px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap bg-surface-container-high text-on-surface-variant" onclick="filterByTag('B2B')">B2B</button>
-        <button class="filter-pill px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap bg-surface-container-high text-on-surface-variant" onclick="filterByTag('Restauration')">Restauration</button>
-        <button class="filter-pill px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap bg-surface-container-high text-on-surface-variant" onclick="filterByTag('Hôtellerie')">Hôtellerie</button>
-        <button class="filter-pill px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap bg-surface-container-high text-on-surface-variant" onclick="filterByTag('Crypto')">Crypto</button>
+      <div class="flex gap-2 overflow-x-auto scroll-hide pb-2 mb-2">
+        <button class="filter-pill active px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap bg-surface-container-high" onclick="filterByTag('all', this)">Tous · 13</button>
+        <button class="filter-pill px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap bg-surface-container-high text-on-surface-variant" onclick="filterByTag('Commerce', this)">Commerce local</button>
+        <button class="filter-pill px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap bg-surface-container-high text-on-surface-variant" onclick="filterByTag('Particuliers', this)">Particuliers</button>
+        <button class="filter-pill px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap bg-surface-container-high text-on-surface-variant" onclick="filterByTag('B2B', this)">B2B</button>
+        <button class="filter-pill px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap bg-surface-container-high text-on-surface-variant" onclick="filterByTag('Restauration', this)">Restauration</button>
+        <button class="filter-pill px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap bg-surface-container-high text-on-surface-variant" onclick="filterByTag('Hôtellerie', this)">Hôtellerie</button>
+        <button class="filter-pill px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap bg-surface-container-high text-on-surface-variant" onclick="filterByTag('Crypto', this)">Crypto</button>
+      </div>
+      <div class="flex gap-2 overflow-x-auto scroll-hide pb-1">
+        <button class="level-pill filter-pill active px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap bg-surface-container-high" onclick="filterByLevel('all', this)">Tous niveaux</button>
+        <button class="level-pill filter-pill px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap bg-surface-container-high text-on-surface-variant" onclick="filterByLevel('debutant', this)">Débutant · closing direct</button>
+        <button class="level-pill filter-pill px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap bg-surface-container-high text-on-surface-variant" onclick="filterByLevel('experimente', this)">Expérimenté · RDV requis</button>
       </div>
     </section>
 
@@ -808,6 +814,134 @@ const PRODUCTS = [
      {q:"Comment je sais que ça marche vraiment",a:"On vous fournit un backtest complet sur 90 jours de données historiques avant de démarrer. Vous voyez exactement les performances passées de la stratégie sur votre paire. Essai gratuit 7 jours ensuite pour le voir en live."},
      {q:"Et si le bot perd de l'argent",a:"Les 2% sont prélevés une seule fois à l'entrée. Ensuite, on ne touche que 8% sur vos profits nets — rien d'autre. Si le bot ne génère pas de gains ce mois-là, vous ne nous devez rien de plus. Nos intérêts sont directement alignés avec les vôtres : on ne gagne que si vous gagnez."},
    ]
+ },
+ {
+ id:'avis', name:'E-Réputation Google', category:'Avis & Réputation en ligne',
+ tagline:'Générer et gérer les avis Google automatiquement',
+ icon:'reviews', color:'#f4b400', level:'debutant',
+ tags:['Avis Google','E-réputation','Commerçants','PAP'],
+ desc:"Un système clé en main pour générer des avis Google 5 étoiles automatiquement après chaque client, gérer et répondre aux avis négatifs, et améliorer le score de réputation en ligne. Le commerçant reçoit un QR code à poser en caisse — le client scanne et laisse son avis en 20 secondes.",
+ problems:["Des avis négatifs non répondus qui font fuir les nouveaux clients","Aucun système pour demander des avis aux clients satisfaits","Un score Google inférieur à la concurrence locale"],
+ args:["QR code caisse prêt en 24h — le client laisse son avis en 20 secondes","Alertes instantanées sur chaque nouvel avis positif ou négatif","Réponses automatiques personnalisées aux avis — aucune gestion manuelle","Score Google amélioré visible dès le 1er mois"],
+ target:"Tout commerçant local avec une fiche Google My Business — restaurant, boutique, salon, artisan, hôtel — ayant moins de 50 avis ou un score inférieur à 4,5 étoiles.",
+ plans:[
+ {name:'Starter',price:29,engagement:'Sans engagement',comRate:0.35,features:['QR code de collecte d\'avis','Alertes nouveaux avis','Tableau de bord avis','Support email'],rec:false},
+ {name:'Pro',price:49,engagement:'Sans engagement',comRate:0.35,features:['Tout Starter inclus','Réponses automatiques IA','Rapport mensuel réputation','Support prioritaire'],rec:true},
+ {name:'Premium',price:89,engagement:'12 mois',comRate:0.35,features:['Tout Pro inclus','Multi-établissements','Veille concurrents locaux','Manager dédié'],rec:false},
+ ],
+ scripts:{
+ tel:{intro:"Bonjour, je suis [Prénom]. Je vous appelle au sujet de votre réputation sur Google. Si je cherche '[métier] [ville]' en ce moment, combien d'étoiles avez-vous et combien d'avis ?",arg:"La plupart des clients regardent les avis avant de choisir. On a un système qui génère des avis 5 étoiles automatiquement après chaque client — un simple QR code posé en caisse. Aucune gestion de votre part.",close:"Je vous mets en place le QR code cette semaine. Dès 29€/mois sans engagement. On démarre quand ?"},
+ pap:{intro:"Bonjour ! Je passe vous voir au sujet de vos avis Google. Vous avez combien d'étoiles actuellement ?",arg:"Regardez — [montre le téléphone]. Votre concurrent d'en face a 124 avis à 4,8 étoiles. Vous en avez 12. Chaque client qui cherche en ligne choisit lui avant vous. Notre système règle ça en 24h avec un simple QR code en caisse.",close:"29€/mois, sans engagement, QR code prêt demain. On le fait ?"},
+ rdv:{intro:"Merci de me recevoir. J'ai fait une analyse de votre réputation en ligne avant de venir.",arg:"Voilà votre score actuel comparé à vos 3 concurrents directs. Avec notre système, nos clients gagnent en moyenne 40 avis supplémentaires par mois sans rien faire. Le score remonte en 6 semaines.",close:"On démarre sur quelle formule ? Le Pro est le plus complet pour votre situation."},
+ social:{intro:"Ton commerce a moins de 4,5 étoiles sur Google ? Tu perds des clients chaque jour sans le savoir.",arg:"Notre système génère des avis 5 étoiles automatiquement après chaque passage client. QR code en caisse, zéro gestion. Dès 29€/mois sans engagement.",close:"DM ou lien en bio pour démarrer cette semaine."}
+ },
+ objections:[
+ {q:"Mes clients ne laissent pas d'avis",a:"C'est exactement le problème qu'on règle. 78% des clients laissent un avis quand on leur facilite — un QR code devant eux après un bon service, c'est naturel. Ceux qui ne scannent pas ne vous coûtent rien."},
+ {q:"J'ai déjà de bons avis",a:"Parfait — on va les multiplier et vous alerter immédiatement sur chaque nouvel avis négatif pour que vous puissiez répondre avant que ça fasse des dégâts. Le score actuel peut toujours progresser."},
+ {q:"C'est légal de générer des avis ?",a:"Totalement légal — on ne génère pas de faux avis. On facilite la démarche pour vos vrais clients. C'est exactement ce que font McDonald's, les hôtels et toutes les grandes enseignes depuis des années."},
+ ]
+ },
+ {
+ id:'gmb', name:'Google My Business', category:'Référencement Local',
+ tagline:'Fiche GMB optimisée et gérée chaque mois pour vous',
+ icon:'location_on', color:'#0f9d58', level:'debutant',
+ tags:['GMB','Google','Local','Commerçants'],
+ desc:"Optimisation complète et gestion mensuelle de la fiche Google My Business — photos professionnelles, horaires à jour, posts hebdomadaires, réponses aux avis, catégories optimisées. La fiche GMB est souvent la première chose que voit un client avant même le site web.",
+ problems:["Fiche Google incomplète ou avec des infos erronées qui font fuir","Aucune publication régulière — la fiche semble abandonnée","Horaires non mis à jour — clients qui arrivent porte close"],
+ args:["Fiche 100% complète et optimisée dès la première semaine","1 post Google par semaine pour rester visible et actif","Horaires et infos toujours à jour — zéro mauvaise surprise client","Photos professionnelles de l'établissement incluses"],
+ target:"Commerçants, artisans, professions libérales avec une fiche Google My Business incomplète ou non gérée — particulièrement efficace pour les restaurants, hôtels, salons et cabinets.",
+ plans:[
+ {name:'Starter',price:39,engagement:'Sans engagement',comRate:0.35,features:['Optimisation complète initiale','Mise à jour horaires et infos','Support email'],rec:false},
+ {name:'Pro',price:69,engagement:'Sans engagement',comRate:0.35,features:['Tout Starter inclus','1 post Google/semaine','Réponses aux avis incluses','Rapport mensuel visibilité','Support prioritaire'],rec:true},
+ {name:'Premium',price:119,engagement:'12 mois',comRate:0.35,features:['Tout Pro inclus','Photos pro mensuelles','Multi-établissements','Stratégie saisonnière','Manager dédié'],rec:false},
+ ],
+ scripts:{
+ tel:{intro:"Bonjour, je suis [Prénom]. Je vous appelle au sujet de votre fiche Google My Business. Est-ce que vous la gérez vous-même actuellement ?",arg:"La plupart des commerçants ont une fiche incomplète sans le savoir — et c'est la première chose que voit un client avant de décider de venir. On optimise et gère votre fiche entièrement chaque mois pour que vous soyez toujours visible et professionnel.",close:"Dès 39€/mois sans engagement. Je fais l'audit de votre fiche gratuitement maintenant si vous voulez — donnez-moi juste votre nom d'établissement."},
+ pap:{intro:"Bonjour ! Je passe vous voir de la part de notre agence. On s'occupe de la gestion Google My Business pour les commerçants. Je peux regarder votre fiche rapidement ?",arg:"[Montre le téléphone] Voilà votre fiche — elle est incomplète ici, pas de posts depuis 6 mois, et vos horaires du samedi sont erronés. Un client qui vient ce samedi matin risque de trouver porte close selon Google. On règle tout ça.",close:"39€/mois, sans engagement. Je peux démarrer l'optimisation aujourd'hui même."},
+ rdv:{intro:"Merci de me recevoir. J'ai fait un audit complet de votre présence Google avant de venir.",arg:"Voilà les 5 points qui freinent votre visibilité locale actuellement. Avec une fiche optimisée et des posts réguliers, nos clients voient en moyenne +60% de vues sur leur fiche en 30 jours.",close:"On démarre sur quelle formule ? Le Pro est le plus adapté pour un établissement comme le vôtre."},
+ social:{intro:"Ta fiche Google est-elle vraiment optimisée ? La plupart des commerçants perdent des clients à cause d'une fiche incomplète.",arg:"On gère ta fiche Google My Business entièrement — optimisation, posts, réponses aux avis, horaires. Dès 39€/mois sans engagement.",close:"Audit gratuit de ta fiche en DM. Lien en bio pour démarrer."}
+ },
+ objections:[
+ {q:"Je gère ma fiche moi-même",a:"Parfait — combien de fois par mois publiez-vous des posts Google ? Et répondez-vous à tous vos avis ? Nos clients qui géraient eux-mêmes gagnent en moyenne 3h par mois et voient leur visibilité doubler."},
+ {q:"C'est quoi un post Google ?",a:"C'est comme un post Instagram mais directement sur votre fiche Google — visible par tous ceux qui vous cherchent. Promotion du moment, nouveau produit, événement. Google favorise les fiches actives dans les résultats."},
+ {q:"Ça change vraiment quelque chose ?",a:"Une fiche complète et active génère 7x plus de clics qu'une fiche incomplète selon Google. C'est leur propre statistique. Et c'est la première chose que voit votre futur client avant même votre site."},
+ ]
+ },
+ {
+ id:'social', name:'Contenu Réseaux Sociaux', category:'Marketing Digital',
+ tagline:'12 posts professionnels par mois, zéro effort de votre côté',
+ icon:'thumb_up', color:'#e1306c', level:'debutant',
+ tags:['Réseaux sociaux','Instagram','Facebook','Commerçants'],
+ desc:"Création et publication de 12 posts par mois sur Instagram et Facebook — visuels professionnels, textes engageants, hashtags optimisés. Le commerçant n'a rien à faire : il envoie quelques photos de son établissement une fois, on s'occupe de tout le reste chaque mois.",
+ problems:["Le commerçant ne publie jamais — sa page est abandonnée depuis des mois","Manque de temps et d'inspiration pour créer du contenu régulier","Les posts maison sont amateurs et ne génèrent aucun engagement"],
+ args:["12 posts professionnels par mois — soit 3 par semaine","Visuels créés sur mesure aux couleurs de l'établissement","Textes engageants rédigés par des experts","Publication planifiée et automatique — zéro gestion"],
+ target:"Commerçants, restaurateurs, artisans avec une page Instagram ou Facebook inactive ou peu professionnelle, voulant une présence réseaux soignée sans y consacrer du temps.",
+ plans:[
+ {name:'Starter',price:49,engagement:'Sans engagement',comRate:0.30,features:['8 posts/mois','Instagram ou Facebook','Visuels professionnels','Support email'],rec:false},
+ {name:'Pro',price:99,engagement:'Sans engagement',comRate:0.30,features:['12 posts/mois','Instagram + Facebook','Stories incluses','Rapport engagement mensuel','Support prioritaire'],rec:true},
+ {name:'Premium',price:199,engagement:'12 mois',comRate:0.30,features:['20 posts/mois','Toutes plateformes','Reels et vidéos courtes','Community management','Manager dédié'],rec:false},
+ ],
+ scripts:{
+ tel:{intro:"Bonjour, je suis [Prénom]. Je vous appelle au sujet de votre présence sur Instagram et Facebook. Vous publiez régulièrement actuellement ?",arg:"On crée et publie 12 posts professionnels par mois pour des commerçants comme vous — visuels soignés, textes rédigés, publication automatique. Vous n'avez rien à faire sauf nous envoyer quelques photos une fois.",close:"Dès 49€/mois sans engagement. Je vous envoie des exemples de réalisations par email maintenant si vous voulez — quelle est votre adresse ?"},
+ pap:{intro:"Bonjour ! Je regarde votre page Instagram — votre dernier post date de il y a 4 mois. Vous avez le temps de vous en occuper ?",arg:"On gère entièrement votre présence réseaux pour vous. 12 posts par mois, visuels pro, textes rédigés, publication automatique. Vous nous envoyez quelques photos une fois, on fait tout le reste.",close:"49€/mois sans engagement. On démarre cette semaine — je prends vos photos maintenant si vous avez 10 minutes ?"},
+ rdv:{intro:"Merci de me recevoir. J'ai regardé votre présence réseaux avant de venir et j'ai préparé quelques exemples de ce qu'on pourrait créer pour vous.",arg:"Voilà des posts qu'on a créés pour des commerçants similaires dans votre secteur. Résultat moyen : +200 abonnés en 3 mois et un engagement multiplié par 4. Vos concurrents locaux qui postent régulièrement captent vos clients potentiels.",close:"On démarre sur quelle formule ? Le Pro est le plus complet et le plus populaire."},
+ social:{intro:"Ta page Instagram est inactive depuis des mois ? Tu perds de la visibilité chaque jour.",arg:"On crée et publie 12 posts professionnels par mois pour ton commerce. Visuels pro, textes rédigés, publication automatique. Zéro effort de ta part. Dès 49€/mois sans engagement.",close:"DM pour voir nos réalisations. Lien en bio pour démarrer."}
+ },
+ objections:[
+ {q:"J'ai pas de contenu à vous envoyer",a:"On s'adapte à ce que vous avez — quelques photos de votre établissement prises avec votre téléphone suffisent. Nos graphistes font le reste. Et on peut aussi venir prendre des photos sur place si besoin."},
+ {q:"Mes clients ne sont pas sur Instagram",a:"Facebook aussi — et vos clients y sont certainement. Et même sans engagement direct, une page active et professionnelle rassure les nouveaux clients qui vous cherchent en ligne avant de venir."},
+ {q:"Je peux le faire moi-même",a:"Absolument — mais le ferez-vous vraiment chaque semaine, avec des visuels professionnels et des textes optimisés ? Nos clients qui géraient eux-mêmes économisent 6h par mois et ont une présence bien plus professionnelle."},
+ ]
+ },
+ {
+ id:'energie', name:'Réduction Facture Énergie', category:'Économies · Particuliers & Pro',
+ tagline:'Réduire la facture d\'électricité et de gaz jusqu\'à 30%',
+ icon:'bolt', color:'#f9ab00', level:'debutant',
+ tags:['Énergie','Particuliers','Téléphone','Closing direct'],
+ desc:"Service de comparaison et de changement de fournisseur d'énergie — électricité et gaz. Le particulier ou professionnel est accompagné gratuitement pour identifier la meilleure offre du marché et changer de fournisseur sans coupure. Commission versée par le fournisseur partenaire à la souscription.",
+ problems:["La facture d'énergie a augmenté de 40 à 60% depuis 2022","Le particulier ne sait pas qu'il peut changer de fournisseur librement","Des dizaines d'offres disponibles mais impossible de comparer seul"],
+ args:["Service 100% gratuit pour le client — aucun frais","Changement de fournisseur sans coupure ni démarche technique","Économies moyennes constatées : 200 à 400€ par an","Accompagnement complet de A à Z par téléphone"],
+ target:"Particuliers et petits professionnels payant plus de 100€/mois de facture énergie, sous contrat avec EDF, Engie ou un fournisseur classique, ouverts à changer pour économiser.",
+ plans:[
+ {name:'Résidentiel',price:null,priceLabel:'Commission fournisseur',engagement:'Par souscription',comRate:0.40,features:['Particuliers · maisons et appartements','Électricité et/ou gaz','Closing direct par téléphone','Commission versée à la souscription'],rec:true,variable:true,priceLabel2:'80–150 € / souscription'},
+ {name:'Professionnel',price:null,priceLabel:'Commission fournisseur',engagement:'Par souscription',comRate:0.40,features:['TPE et commerçants','Contrats pro électricité','Commission plus élevée','Nécessite un RDV'],rec:false,variable:true,priceLabel2:'200–400 € / souscription'},
+ ],
+ scripts:{
+ tel:{intro:"Bonjour, je suis [Prénom] de [Partenaire Énergie]. Je vous contacte car on aide les particuliers à réduire leur facture d'électricité. Vous êtes actuellement chez quel fournisseur ?",arg:"Depuis 2022 les tarifs ont augmenté considérablement. On compare gratuitement toutes les offres du marché pour vous et on s'occupe du changement de A à Z — aucune coupure, aucune démarche de votre côté. Nos clients économisent en moyenne 250€ par an.",close:"Pour vous faire une simulation gratuite j'ai juste besoin de votre dernière facture. Vous l'avez sous la main ou je vous rappelle quand c'est plus pratique ?"},
+ pap:{intro:"Bonjour ! Je passe dans le quartier pour informer les habitants sur les nouvelles offres énergie disponibles. Vous êtes chez quel fournisseur actuellement ?",arg:"Depuis l'ouverture du marché vous pouvez changer librement — et économiser jusqu'à 30% sur votre facture annuelle. C'est gratuit, sans coupure et sans engagement. On s'occupe de tout.",close:"Je peux faire la simulation maintenant en 5 minutes avec votre dernière facture. Vous l'avez ?"},
+ rdv:{intro:"Merci de me recevoir. J'ai préparé une simulation basée sur votre profil de consommation.",arg:"Voilà les 3 meilleures offres disponibles pour votre consommation. L'économie annuelle estimée est de [X]€. Le changement prend 2 semaines, sans aucune intervention technique chez vous.",close:"On part sur quelle offre ? Je lance la souscription maintenant — ça prend 10 minutes."},
+ social:{intro:"Ta facture EDF a encore augmenté ? Tu peux payer jusqu'à 30% moins cher légalement et gratuitement.",arg:"On compare toutes les offres du marché et on gère le changement de fournisseur pour toi. 100% gratuit, sans coupure, sans démarche. Économie moyenne : 250€/an.",close:"Simulation gratuite en DM ou lien en bio."}
+ },
+ objections:[
+ {q:"J'ai peur que ça coupe",a:"Aucune coupure possible — c'est la loi. Le nouveau fournisseur reprend le contrat en douceur, les compteurs et les câbles restent exactement les mêmes. Seule la facture change."},
+ {q:"C'est vraiment gratuit ?",a:"100% gratuit pour vous — c'est le nouveau fournisseur qui nous rémunère pour vous avoir apporté comme client. Exactement comme une agence immobilière payée par le propriétaire, pas par le locataire."},
+ {q:"J'ai un contrat en cours",a:"La plupart des contrats énergie sont résiliables à tout moment sans frais. Et même si vous avez un engagement, on regarde ensemble si le bénéfice justifie d'attendre l'échéance."},
+ ]
+ },
+ {
+ id:'rachat', name:'Rachat de Crédit', category:'Finance · Particuliers',
+ tagline:'Regrouper tous les crédits en un seul pour payer moins chaque mois',
+ icon:'account_balance', color:'#1565c0', level:'experimente',
+ tags:['Crédit','Finance','Particuliers','Téléphone','RDV'],
+ desc:"Service d'apporteur d'affaires en regroupement de crédits. Le particulier qui a plusieurs crédits en cours — voiture, conso, immobilier — peut les regrouper en un seul avec une mensualité réduite. On qualifie le dossier par téléphone et on le transmet au courtier partenaire qui gère le montage. Commission versée par le courtier à la signature du dossier.",
+ problems:["Des mensualités multiples qui étouffent le budget à la fin du mois","Le particulier ne sait pas qu'il peut réduire ses remboursements de 30 à 50%","Des crédits contractés à des taux élevés qu'on peut renégocier aujourd'hui"],
+ args:["Réduction moyenne des mensualités : 35 à 50%","Un seul interlocuteur, un seul prélèvement mensuel","Service gratuit pour le client — aucun frais avancé","Dossier traité par un courtier agréé ORIAS — sécurité totale"],
+ target:"Particuliers avec 2 crédits ou plus en cours (auto, conso, renouvelable, immo) dont le total de mensualités dépasse 400€/mois, avec des revenus stables et un dossier bancaire propre.",
+ plans:[
+ {name:'Dossier standard',price:null,priceLabel:'Commission courtier',engagement:'Par dossier signé',comRate:0.40,features:['Crédits conso et auto','Montant regroupé < 75 000€','Closing en 2-3 appels','Commission 400–800 € / dossier'],rec:false,variable:true,priceLabel2:'400–800 € / dossier'},
+ {name:'Dossier immo',price:null,priceLabel:'Commission courtier',engagement:'Par dossier signé',comRate:0.40,features:['Inclut crédit immobilier','Montant regroupé > 75 000€','RDV + suivi dossier','Commission 800–1 500 € / dossier'],rec:true,variable:true,priceLabel2:'800–1 500 € / dossier'},
+ ],
+ scripts:{
+ tel:{intro:"Bonjour, je suis [Prénom] de [Partenaire Crédit]. Je vous contacte car on aide les particuliers à réduire leurs mensualités de crédit. Vous avez actuellement plusieurs crédits en cours ?",arg:"On peut regrouper tous vos crédits en un seul avec une mensualité unique réduite — souvent de 35 à 50% de moins. C'est gratuit pour vous, et ça ne change rien à vos garanties ni à vos biens. Un courtier agréé gère le dossier de A à Z.",close:"Pour voir si votre dossier est éligible j'ai juste besoin de 3 infos rapides — le montant total de vos crédits, vos revenus nets et votre situation professionnelle. Vous avez 2 minutes ?"},
+ pap:{intro:"Bonjour ! Je passe dans le quartier au sujet des regroupements de crédits. Vous avez des mensualités de crédit en ce moment ?",arg:"Si vous avez plusieurs crédits — voiture, conso, autre — on peut les regrouper en un seul prélèvement moins élevé. Gratuit pour vous, géré par un courtier agréé.",close:"Je peux vérifier votre éligibilité en 5 minutes maintenant si vous voulez."},
+ rdv:{intro:"Merci de me recevoir. J'ai préparé une simulation de regroupement basée sur les informations que vous m'avez données au téléphone.",arg:"Voilà votre situation actuelle — [X]€/mois de mensualités. Et voilà ce que le regroupement donnerait — [Y]€/mois. Une économie de [Z]€ par mois, soit [Z×12]€ par an. Le dossier est monté par notre courtier partenaire, agréé ORIAS.",close:"Pour lancer le dossier j'ai besoin de vos 3 derniers bulletins de salaire et de vos contrats de crédit en cours. On peut le faire maintenant ou vous me les envoyez par email ?"},
+ social:{intro:"Tu rembourses plusieurs crédits chaque mois ? Tu peux peut-être payer 35 à 50% de moins.",arg:"On regroupe tous tes crédits en un seul avec une mensualité réduite. Gratuit, géré par un courtier agréé, sans changer tes garanties.",close:"Simulation gratuite en DM. Résultat en 24h."}
+ },
+ objections:[
+ {q:"J'ai peur pour ma maison ou mes biens",a:"Le regroupement de crédits conso ne touche pas à vos biens — aucune hypothèque sur votre logement si vous ne le souhaitez pas. Pour les dossiers immobiliers on vous explique chaque étape en détail avant toute signature."},
+ {q:"Je vais payer plus d'intérêts au total",a:"C'est exact sur la durée totale — la mensualité baisse mais la durée s'allonge. Pour beaucoup de nos clients, respirer financièrement chaque mois est la priorité. Le courtier vous présente les deux scénarios en toute transparence."},
+ {q:"Mon banquier peut faire ça",a:"Votre banque ne proposera que ses propres produits. Un courtier indépendant compare 20 banques différentes pour trouver le meilleur taux pour votre profil. C'est pour ça que nos clients obtiennent de meilleures conditions."},
+ ]
  }
 ];
 
@@ -816,94 +950,94 @@ let activePane = 'pitch';
 let activeChannel = 'tel';
 
 let activeTag = 'all';
+let activeLevel = 'all';
 
 const TAG_MAP = {
-  seoia: ['Commerce','SEO'],
-  fastfood: ['Commerce','Restauration'],
-  huntlist: ['B2B'],
-  rhpme: ['B2B'],
-  fidelite: ['Commerce'],
-  alma: ['Commerce','B2B'],
-  inroom: ['Hôtellerie'],
-  tradebot: ['Crypto']
+  seoia: ['Commerce','SEO'], fastfood: ['Commerce','Restauration'],
+  huntlist: ['B2B'], rhpme: ['B2B'], fidelite: ['Commerce'],
+  alma: ['Commerce','B2B'], inroom: ['Hôtellerie'], tradebot: ['Crypto'],
+  avis: ['Commerce'], gmb: ['Commerce'], social: ['Commerce'],
+  energie: ['Particuliers'], rachat: ['Particuliers','Finance']
+};
+const LEVEL_MAP = {
+  seoia: 'experimente', fastfood: 'debutant', huntlist: 'experimente',
+  rhpme: 'experimente', fidelite: 'debutant', alma: 'debutant',
+  inroom: 'experimente', tradebot: 'experimente',
+  avis: 'debutant', gmb: 'debutant', social: 'debutant',
+  energie: 'debutant', rachat: 'experimente'
 };
 
-function renderGrid() {
-  buildRows(PRODUCTS);
-}
+function renderGrid() { buildRows(PRODUCTS); }
 
 function buildRows(products) {
   const grid = document.getElementById('productGrid');
-  if (!products.length) {
-    grid.innerHTML = '';
-    document.getElementById('noResults').style.display = 'flex';
-    return;
-  }
+  if (!products.length) { grid.innerHTML = ''; document.getElementById('noResults').style.display = 'flex'; return; }
   document.getElementById('noResults').style.display = 'none';
-  // Skip seoia in list (it's the featured)
   const listed = products.filter(p => p.id !== 'seoia');
+  const tagColors = {
+    'Commerce':'bg-tertiary-fixed text-tertiary','B2B':'bg-primary-fixed text-primary',
+    'Restauration':'bg-surface-container-high text-on-surface-variant',
+    'Hôtellerie':'bg-surface-container-high text-on-surface-variant',
+    'Crypto':'bg-surface-container-high text-on-surface-variant',
+    'SEO':'bg-tertiary-fixed text-tertiary',
+    'Particuliers':'bg-yellow-100 text-yellow-800',
+    'Finance':'bg-primary-fixed text-primary',
+  };
   grid.innerHTML = listed.map((p, i) => {
-    const isVariable = p.plans.some(pl => pl.variable);
     const isTradebot = p.id === 'tradebot';
-    const validPrices = p.plans.filter(pl => pl.price !== null).map(pl => pl.price);
-    const minPrice = isVariable ? '5 €/chambre' : ('Dès ' + Math.min(...validPrices) + ' €/mois');
     const comRate = isTradebot ? '2%+8%+25%' : (Math.round(p.plans[0].comRate * 100) + '%');
-    const comLabel = isTradebot ? 'commission mixte' : 'commission récurrente';
-    // Tag badge
-    const tagColors = {
-      'Commerce': 'bg-tertiary-fixed text-tertiary',
-      'B2B': 'bg-primary-fixed text-primary',
-      'Restauration': 'bg-surface-container-high text-on-surface-variant',
-      'Hôtellerie': 'bg-surface-container-high text-on-surface-variant',
-      'Crypto': 'bg-surface-container-high text-on-surface-variant',
-      'SEO': 'bg-tertiary-fixed text-tertiary',
-    };
+    const level = LEVEL_MAP[p.id] || 'debutant';
+    const levelBadge = level === 'debutant'
+      ? '<span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-tertiary-fixed text-tertiary uppercase tracking-[0.1em]">Débutant</span>'
+      : '<span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant uppercase tracking-[0.1em]">Expérimenté</span>';
     const tags = TAG_MAP[p.id] || [];
     const mainTag = tags[0] || '';
     const tagClass = tagColors[mainTag] || 'bg-surface-container-high text-on-surface-variant';
+    let comDisplay, comUnit;
+    if (p.plans[0]?.priceLabel2) { comDisplay = p.plans[0].priceLabel2; comUnit = 'par dossier'; }
+    else if (isTradebot) { comDisplay = '2%+8%+25%'; comUnit = 'commission mixte'; }
+    else {
+      const prices = p.plans.filter(pl => pl.price).map(pl => pl.price);
+      const minC = Math.round(Math.min(...prices) * p.plans[0].comRate);
+      const maxC = Math.round(Math.max(...prices) * p.plans[0].comRate);
+      comDisplay = minC === maxC ? minC + ' €/mois' : minC + '–' + maxC + ' €/mois';
+      comUnit = 'commission récurrente';
+    }
     return `<a href="#" onclick="openProduct('${p.id}'); return false;" class="hybrid-row group" style="animation-delay:${i*40}ms">
       <div class="hybrid-row-content">
+        <div class="flex items-center gap-1.5 mb-1">${levelBadge}</div>
         <p class="hybrid-row-sector">${p.category}</p>
         <h4 class="hybrid-row-title">${p.name} <span class="text-on-surface-variant font-normal text-[13px]">— ${p.tagline}</span></h4>
       </div>
       <span class="tag ${tagClass}">${mainTag}</span>
-      <div class="hybrid-row-amount">
-        <p class="amount-main">${comRate}</p>
-        <p class="amount-unit">${comLabel}</p>
-      </div>
+      <div class="hybrid-row-amount"><p class="amount-main">${comDisplay}</p><p class="amount-unit">${comUnit}</p></div>
       <span class="material-symbols-outlined hybrid-row-arrow" style="font-size:18px">arrow_forward</span>
     </a>`;
   }).join('');
 }
 
-function filterByTag(tag) {
+function filterByTag(tag, el) {
   activeTag = tag;
-  document.querySelectorAll('.filter-pill').forEach(p => {
-    p.classList.remove('active');
-    p.classList.add('text-on-surface-variant');
-  });
-  event.target.classList.add('active');
-  event.target.classList.remove('text-on-surface-variant');
+  document.querySelectorAll('.filter-pill').forEach(p => { p.classList.remove('active'); p.classList.add('text-on-surface-variant'); });
+  el.classList.add('active'); el.classList.remove('text-on-surface-variant');
   applyFilters();
 }
 
-function filterProducts() {
+function filterByLevel(level, el) {
+  activeLevel = level;
+  document.querySelectorAll('.level-pill').forEach(p => { p.classList.remove('active'); p.classList.add('text-on-surface-variant'); });
+  el.classList.add('active'); el.classList.remove('text-on-surface-variant');
   applyFilters();
 }
+
+function filterProducts() { applyFilters(); }
 
 function applyFilters() {
   const q = (document.getElementById('searchInput')?.value || '').toLowerCase();
   let filtered = PRODUCTS;
-  if (activeTag !== 'all') {
-    filtered = filtered.filter(p => (TAG_MAP[p.id] || []).includes(activeTag));
-  }
-  if (q) {
-    filtered = filtered.filter(p =>
-      p.name.toLowerCase().includes(q) ||
-      p.tagline.toLowerCase().includes(q) ||
-      p.category.toLowerCase().includes(q)
-    );
-  }
+  if (activeTag !== 'all') filtered = filtered.filter(p => (TAG_MAP[p.id] || []).includes(activeTag));
+  if (activeLevel !== 'all') filtered = filtered.filter(p => (LEVEL_MAP[p.id] || 'debutant') === activeLevel);
+  if (q) filtered = filtered.filter(p => p.name.toLowerCase().includes(q) || p.tagline.toLowerCase().includes(q) || p.category.toLowerCase().includes(q));
   buildRows(filtered);
 }
 
