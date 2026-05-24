@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Créer mon compte · Stacker</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        "primary": "#b52330",
+        "primary-container": "#ff5a5f",
+        "primary-fixed": "#ffdad8",
+        "on-primary": "#ffffff",
+        "tertiary": "#006c4c",
+        "tertiary-fixed": "#78fac4",
+        "background": "#fcf9f8",
+        "surface-container-lowest": "#ffffff",
+        "surface-container-low": "#f6f3f2",
+        "surface-container": "#f0eded",
+        "surface-container-high": "#eae7e7",
+        "on-surface": "#1b1c1c",
+        "on-surface-variant": "#5a403f",
+        "outline-variant": "#e2bebc"
+      },
+      fontFamily: {
+        "headline": ["Plus Jakarta Sans"],
+        "body": ["Inter"],
+        "mono": ["JetBrains Mono"]
+      }
+    }
+  }
+}
+</script>
+<style>
+  body { font-family: 'Inter', sans-serif; }
+  .font-headline { font-family: 'Plus Jakarta Sans', sans-serif; }
+  .font-mono { font-family: 'JetBrains Mono', monospace; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  .filled { font-variation-settings: 'FILL' 1 !important; }
+  .hero-dark {
+    background:
+      radial-gradient(ellipse at top right, rgba(181,35,48,0.22), transparent 60%),
+      radial-gradient(ellipse at bottom left, rgba(255,90,95,0.08), transparent 50%),
+      #1b1c1c;
+  }
+  .cta-gradient { background: linear-gradient(135deg, #b52330 0%, #ff5a5f 100%); }
+  .soft-shadow { box-shadow: 0 8px 24px -8px rgba(27,28,28,0.06); }
+
+  /* Steps */
+  .step { display: none; }
+  .step.active { display: flex; flex-direction: column; animation: fadeUp 0.35s cubic-bezier(0.22,1,0.36,1) both; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+  /* Progress */
+  .progress-dot { width: 8px; height: 8px; border-radius: 50%; background: #e2bebc; transition: all 0.3s ease; }
+  .progress-dot.active { background: #b52330; width: 24px; border-radius: 4px; }
+  .progress-dot.done { background: #006c4c; }
+
+  /* Inputs */
+  .field-input {
+    width: 100%; padding: 13px 16px;
+    border: 1.5px solid #e2bebc; border-radius: 14px;
+    font-family: 'Inter', sans-serif; font-size: 15px;
+    background: #f6f3f2; color: #1b1c1c;
+    outline: none; transition: all 0.18s;
+  }
+  .field-input:focus { border-color: #b52330; background: #fff; box-shadow: 0 0 0 3px rgba(181,35,48,0.08); }
+  .field-input::placeholder { color: #8e706f; }
+  .field-label { display: block; font-size: 11px; font-weight: 600; color: #5a403f; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 7px; }
+
+  /* Option cards */
+  .option-card {
+    border: 1.5px solid #e2bebc; border-radius: 16px; padding: 20px;
+    cursor: pointer; transition: all 0.2s ease; background: #fff;
+    display: flex; align-items: flex-start; gap: 14px;
+  }
+  .option-card:hover { border-color: #b52330; background: #faf8f7; }
+  .option-card.selected { border-color: #b52330; background: #ffdad8; }
+  .option-card.selected .option-check { background: #b52330; border-color: #b52330; }
+  .option-card.selected .option-check span { color: #fff; }
+  .option-check { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #e2bebc; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; margin-top: 1px; }
+  .option-check span { font-size: 14px; color: transparent; transition: color 0.2s; }
+
+  /* Offer cards */
+  .offer-card {
+    border: 1.5px solid #e2bebc; border-radius: 16px; padding: 18px;
+    cursor: pointer; transition: all 0.2s ease; background: #fff;
+    position: relative;
+  }
+  .offer-card:hover { border-color: #b52330; transform: translateY(-1px); }
+  .offer-card.selected { border-color: #b52330; }
+  .offer-card.selected::after { content: ''; position: absolute; top: 10px; right: 10px; width: 20px; height: 20px; background: #b52330; border-radius: 50%; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z'/%3E%3C/svg%3E"); background-size: 14px; background-repeat: no-repeat; background-position: center; }
+
+  /* Convention */
+  .convention-body { max-height: 280px; overflow-y: auto; scrollbar-width: thin; }
+  .convention-body::-webkit-scrollbar { width: 4px; }
+  .convention-body::-webkit-scrollbar-thumb { background: #e2bebc; border-radius: 99px; }
+  .conv-article { margin-bottom: 18px; }
+  .conv-h1 { font-family: 'Plus Jakarta Sans'; font-weight: 700; font-size: 13px; color: #b52330; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .conv-h2 { font-weight: 600; font-size: 12px; color: #1b1c1c; margin-bottom: 4px; margin-top: 10px; }
+  .conv-p { font-size: 12px; color: #5a403f; line-height: 1.65; margin-bottom: 5px; }
+  .conv-li { font-size: 12px; color: #5a403f; line-height: 1.65; padding-left: 12px; margin-bottom: 3px; }
+  .conv-li::before { content: '·'; margin-right: 6px; color: #b52330; }
+  .conv-highlight { background: #ffdad8; border-radius: 8px; padding: 8px 12px; font-size: 12px; color: #b52330; font-weight: 600; margin: 8px 0; line-height: 1.55; }
+
+  /* Checkbox custom */
+  .custom-check { display: flex; align-items: flex-start; gap: 12px; cursor: pointer; }
+  .check-box { width: 22px; height: 22px; border: 2px solid #e2bebc; border-radius: 6px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.18s; margin-top: 1px; }
+  .check-box.checked { background: #b52330; border-color: #b52330; }
+  .check-box.checked span { color: #fff; }
+  .check-box span { font-size: 14px; color: transparent; transition: color 0.18s; }
+
+  /* Scroll indicator */
+  .scroll-indicator { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #8e706f; font-weight: 500; }
+
+  /* IBAN step */
+  .iban-skip { border: 1.5px dashed #e2bebc; border-radius: 14px; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.18s; }
+  .iban-skip:hover { border-color: #5a403f; background: #f6f3f2; }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-thumb { background: #e2bebc; border-radius: 99px; }
+</style>
+</head>
+<body class="bg-background min-h-screen flex flex-col">
+
+<!-- Top bar -->
+<header class="px-6 py-5 flex items-center justify-between max-w-lg mx-auto w-full">
+  <a href="index.html" class="flex items-baseline gap-0.5">
+    <span class="text-xl font-black text-primary tracking-tighter font-headline">Stacker</span>
+    <span class="w-1 h-1 bg-on-surface inline-block mb-0.5"></span>
+  </a>
+  <div class="flex gap-1.5" id="progressDots">
+    <!-- filled by JS -->
+  </div>
+</header>
+
+<!-- Main -->
+<main class="flex-1 flex flex-col max-w-lg mx-auto w-full px-6 pb-10">
+
+  <!-- STEP 1 — Bienvenue -->
+  <div class="step active flex-1" id="step-1">
+    <div class="hero-dark rounded-2xl p-8 mb-6 flex-shrink-0">
+      <p class="font-mono text-[9px] tracking-[0.2em] uppercase text-white/40 mb-3">Bienvenue sur</p>
+      <h1 class="font-headline font-extrabold text-4xl text-white mb-3" style="letter-spacing:-0.04em">Stacker.</h1>
+      <p class="text-white/60 text-sm leading-relaxed mb-6">La plateforme qui te donne tout ce qu'il faut pour vendre et toucher des commissions récurrentes — scripts, contrats, leads, outils.</p>
+      <div class="flex flex-col gap-2">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined filled text-white" style="font-size:16px;font-variation-settings:'FILL' 1">bolt</span>
+          </div>
+          <p class="text-sm text-white/70">Commence à vendre dès aujourd'hui — zéro expérience requise</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined filled text-white" style="font-size:16px;font-variation-settings:'FILL' 1">payments</span>
+          </div>
+          <p class="text-sm text-white/70">Commissions récurrentes versées chaque mois sur ton compte</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined filled text-white" style="font-size:16px;font-variation-settings:'FILL' 1">menu_book</span>
+          </div>
+          <p class="text-sm text-white/70">Scripts, objections et contrats inclus pour chaque produit</p>
+        </div>
+      </div>
+    </div>
+    <div class="mt-auto">
+      <button onclick="nextStep()" class="w-full py-4 rounded-2xl cta-gradient text-white font-headline font-bold text-base flex items-center justify-center gap-2 hover:opacity-95 transition" style="box-shadow:0 8px 28px rgba(181,35,48,0.22)">
+        Créer mon compte
+        <span class="material-symbols-outlined" style="font-size:20px">arrow_forward</span>
+      </button>
+      <p class="text-center text-xs text-on-surface-variant mt-3">Déjà un compte ? <a href="index.html" class="font-semibold text-primary">Se connecter</a></p>
+    </div>
+  </div>
+
+  <!-- STEP 2 — Infos personnelles -->
+  <div class="step flex-1" id="step-2">
+    <div class="mb-8">
+      <p class="font-mono text-[10px] tracking-[0.2em] uppercase text-on-surface-variant mb-2">Étape 1 sur 5</p>
+      <h2 class="font-headline font-extrabold text-2xl text-on-surface mb-1" style="letter-spacing:-0.03em">Qui es-tu ?</h2>
+      <p class="text-sm text-on-surface-variant">Ces informations servent uniquement à créer ton profil Stacker.</p>
+    </div>
+    <div class="flex flex-col gap-4 mb-6">
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="field-label">Prénom</label>
+          <input type="text" id="iPrenom" placeholder="Marie" class="field-input">
+        </div>
+        <div>
+          <label class="field-label">Nom</label>
+          <input type="text" id="iNom" placeholder="Dupont" class="field-input">
+        </div>
+      </div>
+      <div>
+        <label class="field-label">Email</label>
+        <input type="email" id="iEmail" placeholder="marie@email.fr" class="field-input">
+      </div>
+      <div>
+        <label class="field-label">Téléphone</label>
+        <input type="tel" id="iTel" placeholder="06 00 00 00 00" class="field-input">
+      </div>
+      <div>
+        <label class="field-label">Mot de passe</label>
+        <input type="password" id="iPassword" placeholder="Min. 8 caractères" class="field-input">
+      </div>
+    </div>
+    <div class="mt-auto flex flex-col gap-3">
+      <button onclick="validateStep2()" class="w-full py-4 rounded-2xl cta-gradient text-white font-headline font-bold text-base hover:opacity-95 transition" style="box-shadow:0 8px 28px rgba(181,35,48,0.22)">
+        Continuer
+      </button>
+      <button onclick="prevStep()" class="w-full py-3 rounded-2xl text-on-surface-variant font-semibold text-sm hover:bg-surface-container transition">
+        Retour
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 3 — Âge -->
+  <div class="step flex-1" id="step-3">
+    <div class="mb-8">
+      <p class="font-mono text-[10px] tracking-[0.2em] uppercase text-on-surface-variant mb-2">Étape 2 sur 5</p>
+      <h2 class="font-headline font-extrabold text-2xl text-on-surface mb-1" style="letter-spacing:-0.03em">Tu as quel âge ?</h2>
+      <p class="text-sm text-on-surface-variant">Cette information est requise pour des raisons légales. Aucun justificatif demandé.</p>
+    </div>
+
+    <div class="flex flex-col gap-3 mb-6">
+      <div class="option-card" id="opt-majeur" onclick="selectAge('majeur')">
+        <div class="option-check" id="check-majeur">
+          <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">check</span>
+        </div>
+        <div>
+          <p class="font-headline font-bold text-base text-on-surface mb-1">J'ai 18 ans ou plus</p>
+          <p class="text-sm text-on-surface-variant">Je déclare sur l'honneur être majeur. Je peux signer et percevoir des commissions directement.</p>
+        </div>
+      </div>
+
+      <div class="option-card" id="opt-mineur" onclick="selectAge('mineur')">
+        <div class="option-check" id="check-mineur">
+          <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">check</span>
+        </div>
+        <div>
+          <p class="font-headline font-bold text-base text-on-surface mb-1">J'ai moins de 18 ans</p>
+          <p class="text-sm text-on-surface-variant">Un email sera envoyé à mon parent ou tuteur légal pour valider mon inscription.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Champ email parent (affiché si mineur) -->
+    <div id="parentEmailBlock" style="display:none" class="mb-6">
+      <div class="bg-primary-fixed rounded-2xl p-4 mb-4">
+        <div class="flex items-start gap-3">
+          <span class="material-symbols-outlined filled text-primary flex-shrink-0 mt-0.5" style="font-size:18px;font-variation-settings:'FILL' 1">info</span>
+          <p class="text-sm text-primary font-medium leading-snug">Un email d'autorisation sera envoyé à ton parent ou tuteur légal. Ton compte sera activé dès sa validation.</p>
+        </div>
+      </div>
+      <label class="field-label">Email du parent / tuteur légal</label>
+      <input type="email" id="iParentEmail" placeholder="parent@email.fr" class="field-input">
+    </div>
+
+    <div class="mt-auto flex flex-col gap-3">
+      <button onclick="validateStep3()" class="w-full py-4 rounded-2xl cta-gradient text-white font-headline font-bold text-base hover:opacity-95 transition" style="box-shadow:0 8px 28px rgba(181,35,48,0.22)">
+        Continuer
+      </button>
+      <button onclick="prevStep()" class="w-full py-3 rounded-2xl text-on-surface-variant font-semibold text-sm hover:bg-surface-container transition">
+        Retour
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 4 — Convention -->
+  <div class="step flex-1" id="step-4">
+    <div class="mb-5">
+      <p class="font-mono text-[10px] tracking-[0.2em] uppercase text-on-surface-variant mb-2">Étape 3 sur 5</p>
+      <h2 class="font-headline font-extrabold text-2xl text-on-surface mb-1" style="letter-spacing:-0.03em">La convention</h2>
+      <p class="text-sm text-on-surface-variant">Lis attentivement avant d'accepter. Tu peux scroller pour tout voir.</p>
+    </div>
+
+    <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/40 overflow-hidden mb-4 flex-shrink-0" style="box-shadow:0 2px 8px rgba(27,28,28,0.04)">
+      <div class="flex items-center justify-between px-4 py-3 border-b border-outline-variant/30">
+        <p class="font-headline font-bold text-sm text-on-surface">Convention d'apporteur d'affaires</p>
+        <div class="scroll-indicator">
+          <span class="material-symbols-outlined" style="font-size:14px">expand_more</span>
+          Scroll pour lire
+        </div>
+      </div>
+      <div class="convention-body px-4 py-4" id="convBody" onscroll="checkConvScroll()">
+
+        <div class="conv-article">
+          <div class="conv-h1">Préambule</div>
+          <p class="conv-p">La présente convention est conclue entre la plateforme STACKER et toute personne qui s'inscrit et accepte les présentes conditions (l'Apporteur d'affaires). L'Apporteur d'affaires agit en qualité de mandataire non exclusif et indépendant. Il n'existe aucun lien de subordination. Cette convention ne constitue en aucun cas un contrat de travail.</p>
+          <div class="conv-highlight">En acceptant, tu reconnais avoir lu et compris l'intégralité de la présente convention.</div>
+        </div>
+
+        <div class="conv-article">
+          <div class="conv-h1">Article 1 — Objet</div>
+          <p class="conv-p">Tu peux, de façon libre et indépendante, présenter et recommander les produits Stacker à des tiers. Tu t'engages à :</p>
+          <p class="conv-li">Présenter les produits de façon honnête et conforme aux scripts fournis</p>
+          <p class="conv-li">Ne pas faire de promesses au-delà des fonctionnalités réelles</p>
+          <p class="conv-li">Respecter les règles légales dans tes activités de prospection</p>
+        </div>
+
+        <div class="conv-article">
+          <div class="conv-h1">Article 2 — Indépendance</div>
+          <p class="conv-p">Tu exerces ton activité en toute indépendance. Stacker ne t'impose aucun horaire, aucun lieu, aucun quota, aucune exclusivité. Tu es libre de travailler pour d'autres entreprises en parallèle.</p>
+          <div class="conv-highlight">Cette convention ne peut être requalifiée en contrat de travail, les critères de subordination étant expressément absents.</div>
+        </div>
+
+        <div class="conv-article">
+          <div class="conv-h1">Article 3 — Commissions</div>
+          <div class="conv-h2">3.1 Principe</div>
+          <p class="conv-p">Tu es rémunéré exclusivement à la performance, sur les montants effectivement encaissés. Aucune rémunération fixe ni garantie de revenus.</p>
+          <div class="conv-h2">3.2 Paliers de fidélisation</div>
+          <p class="conv-li">Client actif à 3 mois : bonus équivalent à 1 mois de commission</p>
+          <p class="conv-li">Client actif à 6 mois : +5 points sur le taux de commission</p>
+          <p class="conv-li">Client actif à 12 mois : prime exceptionnelle + statut Closer Elite</p>
+          <div class="conv-h2">3.3 Versement</div>
+          <p class="conv-p">Les commissions sont versées le 15 de chaque mois suivant sur l'IBAN renseigné dans ton profil, sur les montants effectivement encaissés ce mois-là.</p>
+          <div class="conv-h2">3.4 Fiscalité</div>
+          <p class="conv-p">Les commissions constituent des revenus imposables que tu dois déclarer. Stacker effectuera une déclaration DAS2 pour tout apporteur percevant plus de 1 200 € sur l'année civile.</p>
+        </div>
+
+        <div class="conv-article">
+          <div class="conv-h1">Article 4 — Déclaration d'âge</div>
+          <p class="conv-p">Tu déclares sur l'honneur avoir 18 ans ou plus, ou avoir obtenu l'autorisation préalable de ton représentant légal. Toute fausse déclaration engage ta seule responsabilité.</p>
+          <div class="conv-highlight">Ta déclaration est horodatée et conservée avec ton adresse IP. Elle constitue une preuve opposable.</div>
+        </div>
+
+        <div class="conv-article">
+          <div class="conv-h1">Article 5 — Tes obligations</div>
+          <p class="conv-li">Ne pas modifier les tarifs ou conditions des produits Stacker</p>
+          <p class="conv-li">Ne pas te présenter comme salarié ou représentant légal de Stacker</p>
+          <p class="conv-li">Ne pas utiliser des pratiques commerciales déloyales ou trompeuses</p>
+          <p class="conv-li">Respecter le système de lock prospect (15 jours)</p>
+          <p class="conv-li">Respecter le RGPD dans la collecte de données prospects</p>
+        </div>
+
+        <div class="conv-article">
+          <div class="conv-h1">Article 6 — Obligations de Stacker</div>
+          <p class="conv-li">Mettre à disposition les outils, scripts et supports commerciaux</p>
+          <p class="conv-li">Verser les commissions dues dans les délais prévus</p>
+          <p class="conv-li">Informer de toute modification de taux avec 30 jours de préavis</p>
+          <p class="conv-li">Protéger tes données personnelles conformément au RGPD</p>
+        </div>
+
+        <div class="conv-article">
+          <div class="conv-h1">Article 7 — Résiliation</div>
+          <p class="conv-p">Convention à durée indéterminée. Chaque partie peut résilier à tout moment avec 15 jours de préavis. Les commissions acquises restent dues après résiliation.</p>
+        </div>
+
+        <div class="conv-article">
+          <div class="conv-h1">Article 8 — Confidentialité</div>
+          <p class="conv-p">Tu t'engages à garder confidentiels les scripts, tarifs, données clients et informations stratégiques — pendant la durée de la convention et 3 ans après résiliation.</p>
+        </div>
+
+        <div class="conv-article">
+          <div class="conv-h1">Article 9 — RGPD</div>
+          <p class="conv-p">Tes données personnelles sont traitées uniquement pour la gestion de cette convention. Tu disposes d'un droit d'accès, de rectification et de suppression via ton espace personnel.</p>
+        </div>
+
+        <div class="conv-article">
+          <div class="conv-h1">Article 10 — Droit applicable</div>
+          <p class="conv-p">Convention soumise au droit français. En cas de litige, recherche d'une solution amiable dans les 30 jours avant tout recours judiciaire.</p>
+          <div class="conv-highlight">En cochant la case ci-dessous, tu acceptes sans réserve l'intégralité de cette convention. Cette acceptation électronique a la même valeur qu'une signature manuscrite (articles 1366 et 1367 du Code civil).</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Checkboxes -->
+    <div class="flex flex-col gap-3 mb-5" id="convChecks">
+      <label class="custom-check" onclick="toggleCheck('check1')">
+        <div class="check-box" id="check1"><span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">check</span></div>
+        <p class="text-sm text-on-surface leading-snug">J'ai lu et j'accepte sans réserve la convention d'apporteur d'affaires Stacker</p>
+      </label>
+      <label class="custom-check" onclick="toggleCheck('check2')">
+        <div class="check-box" id="check2"><span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">check</span></div>
+        <p class="text-sm text-on-surface leading-snug">Je certifie avoir <strong>18 ans ou plus</strong>, ou avoir obtenu l'autorisation de mon représentant légal</p>
+      </label>
+      <label class="custom-check" onclick="toggleCheck('check3')">
+        <div class="check-box" id="check3"><span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">check</span></div>
+        <p class="text-sm text-on-surface leading-snug">Je comprends que mes commissions constituent des revenus imposables que je dois déclarer</p>
+      </label>
+    </div>
+
+    <div class="mt-auto flex flex-col gap-3">
+      <button onclick="validateStep4()" id="btnSign" class="w-full py-4 rounded-2xl cta-gradient text-white font-headline font-bold text-base hover:opacity-95 transition opacity-40 cursor-not-allowed" style="box-shadow:0 8px 28px rgba(181,35,48,0.22)" disabled>
+        J'accepte et je signe
+      </button>
+      <button onclick="prevStep()" class="w-full py-3 rounded-2xl text-on-surface-variant font-semibold text-sm hover:bg-surface-container transition">
+        Retour
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 5 — Premières offres -->
+  <div class="step flex-1" id="step-5">
+    <div class="mb-6">
+      <p class="font-mono text-[10px] tracking-[0.2em] uppercase text-on-surface-variant mb-2">Étape 4 sur 5</p>
+      <h2 class="font-headline font-extrabold text-2xl text-on-surface mb-1" style="letter-spacing:-0.03em">Tes premières offres</h2>
+      <p class="text-sm text-on-surface-variant">Choisis les produits que tu veux vendre en priorité. Tu pourras changer à tout moment.</p>
+    </div>
+
+    <div class="grid grid-cols-1 gap-2.5 mb-6" id="offerCards">
+      <!-- filled by JS -->
+    </div>
+
+    <div class="mt-auto flex flex-col gap-3">
+      <button onclick="validateStep5()" class="w-full py-4 rounded-2xl cta-gradient text-white font-headline font-bold text-base hover:opacity-95 transition" style="box-shadow:0 8px 28px rgba(181,35,48,0.22)">
+        Continuer
+      </button>
+      <button onclick="prevStep()" class="w-full py-3 rounded-2xl text-on-surface-variant font-semibold text-sm hover:bg-surface-container transition">
+        Retour
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 6 — IBAN -->
+  <div class="step flex-1" id="step-6">
+    <div class="mb-8">
+      <p class="font-mono text-[10px] tracking-[0.2em] uppercase text-on-surface-variant mb-2">Étape 5 sur 5</p>
+      <h2 class="font-headline font-extrabold text-2xl text-on-surface mb-1" style="letter-spacing:-0.03em">Ton IBAN</h2>
+      <p class="text-sm text-on-surface-variant">Pour recevoir tes commissions. Tu peux le renseigner maintenant ou plus tard.</p>
+    </div>
+
+    <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/40 p-5 mb-4 soft-shadow">
+      <div class="flex items-start gap-3 mb-5">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(0,108,76,0.1)">
+          <span class="material-symbols-outlined filled text-tertiary" style="font-size:20px;font-variation-settings:'FILL' 1">payments</span>
+        </div>
+        <div>
+          <p class="font-headline font-bold text-sm text-on-surface mb-0.5">Commissions payées sous 7 jours</p>
+          <p class="text-xs text-on-surface-variant leading-snug">Dès qu'un deal est confirmé, ta commission est virée sur ton compte dans les 7 jours.</p>
+        </div>
+      </div>
+      <div>
+        <label class="field-label">IBAN</label>
+        <input type="text" id="iIban" placeholder="FR76 0000 0000 0000 0000 0000 000" class="field-input" oninput="formatIban(this)">
+        <p class="text-xs text-on-surface-variant mt-2">IBAN personnel ou professionnel accepté · Données chiffrées et sécurisées</p>
+      </div>
+    </div>
+
+    <button onclick="skipIban()" class="w-full text-center text-sm text-on-surface-variant font-semibold py-3 hover:text-on-surface transition mb-2">
+      Le faire plus tard
+    </button>
+
+    <div class="mt-auto flex flex-col gap-3">
+      <button onclick="validateStep6()" class="w-full py-4 rounded-2xl cta-gradient text-white font-headline font-bold text-base hover:opacity-95 transition" style="box-shadow:0 8px 28px rgba(181,35,48,0.22)">
+        Enregistrer et terminer
+      </button>
+      <button onclick="prevStep()" class="w-full py-3 rounded-2xl text-on-surface-variant font-semibold text-sm hover:bg-surface-container transition">
+        Retour
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 7 — C'est parti -->
+  <div class="step flex-1" id="step-7">
+    <div class="flex-1 flex flex-col items-center justify-center text-center py-12">
+      <div class="w-20 h-20 rounded-full cta-gradient flex items-center justify-center mb-6" style="box-shadow:0 12px 36px rgba(181,35,48,0.28)">
+        <span class="material-symbols-outlined filled text-white" style="font-size:40px;font-variation-settings:'FILL' 1">check</span>
+      </div>
+      <h2 class="font-headline font-extrabold text-3xl text-on-surface mb-3" style="letter-spacing:-0.04em">C'est parti !</h2>
+      <p class="text-on-surface-variant text-base mb-2" id="welcomeName">Bienvenue sur Stacker.</p>
+      <p class="text-sm text-on-surface-variant max-w-xs leading-relaxed mb-8">Ton compte est créé. Consulte le catalogue, choisis ton produit et commence à prospecter dès maintenant.</p>
+
+      <div id="ibanWarning" style="display:none" class="w-full bg-surface-container border border-outline-variant/60 rounded-2xl p-4 mb-6 flex items-start gap-3 text-left">
+        <span class="material-symbols-outlined filled text-on-surface-variant flex-shrink-0 mt-0.5" style="font-size:18px;font-variation-settings:'FILL' 1">info</span>
+        <div>
+          <p class="font-bold text-sm text-on-surface mb-0.5">IBAN non renseigné</p>
+          <p class="text-xs text-on-surface-variant leading-snug">Tu pourras l'ajouter à tout moment dans tes paramètres pour recevoir tes commissions.</p>
+        </div>
+      </div>
+
+      <div class="w-full flex flex-col gap-3">
+        <a href="offres.html" class="w-full py-4 rounded-2xl cta-gradient text-white font-headline font-bold text-base flex items-center justify-center gap-2 hover:opacity-95 transition" style="box-shadow:0 8px 28px rgba(181,35,48,0.22)">
+          <span class="material-symbols-outlined" style="font-size:20px">inventory_2</span>
+          Voir le catalogue
+        </a>
+        <a href="index.html" class="w-full py-3 rounded-2xl bg-surface-container text-on-surface font-semibold text-sm flex items-center justify-center gap-2 hover:bg-surface-container-high transition">
+          <span class="material-symbols-outlined" style="font-size:18px">space_dashboard</span>
+          Mon tableau de bord
+        </a>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+const TOTAL_STEPS = 6; // steps 2-7 show dots, step 1 is cover
+let currentStep = 1;
+let ageChoice = null;
+let checks = { check1: false, check2: false, check3: false };
+let convScrolled = false;
+let ibanSkipped = false;
+let selectedOffers = [];
+
+const OFFERS = [
+  { id: 'fidelite', name: 'Carte Fidélité', cat: 'Commerce local · Débutant', com: '40%', icon: 'loyalty', color: '#006c4c' },
+  { id: 'avis', name: 'E-Réputation Google', cat: 'Commerce local · Débutant', com: '35%', icon: 'reviews', color: '#f4b400' },
+  { id: 'gmb', name: 'Google My Business', cat: 'Commerce local · Débutant', com: '35%', icon: 'location_on', color: '#0f9d58' },
+  { id: 'social', name: 'Contenu Réseaux Sociaux', cat: 'Commerce local · Débutant', com: '30%', icon: 'thumb_up', color: '#e1306c' },
+  { id: 'alma', name: 'Site web Alma', cat: 'Commerce · Débutant', com: '24%', icon: 'web', color: '#0d47a1' },
+  { id: 'energie', name: 'Réduction Facture Énergie', cat: 'Particuliers · Débutant', com: '40%', icon: 'bolt', color: '#f9ab00' },
+  { id: 'seoia', name: 'Seoia Partners', cat: 'SEO · Expérimenté', com: '20%', icon: 'travel_explore', color: '#b52330' },
+  { id: 'rachat', name: 'Rachat de Crédit', cat: 'Finance · Expérimenté', com: '40%', icon: 'account_balance', color: '#1565c0' },
+];
+
+function renderDots() {
+  const container = document.getElementById('progressDots');
+  if (currentStep === 1) { container.innerHTML = ''; return; }
+  const step = currentStep - 1;
+  container.innerHTML = Array.from({ length: TOTAL_STEPS }, (_, i) => {
+    const cls = i + 1 < step ? 'done' : i + 1 === step ? 'active' : '';
+    return `<div class="progress-dot ${cls}"></div>`;
+  }).join('');
+}
+
+function showStep(n) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById('step-' + n);
+  if (el) el.classList.add('active');
+  currentStep = n;
+  renderDots();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function nextStep() { showStep(currentStep + 1); }
+function prevStep() { showStep(currentStep - 1); }
+
+function validateStep2() {
+  const prenom = document.getElementById('iPrenom').value.trim();
+  const nom = document.getElementById('iNom').value.trim();
+  const email = document.getElementById('iEmail').value.trim();
+  const tel = document.getElementById('iTel').value.trim();
+  const pwd = document.getElementById('iPassword').value;
+  if (!prenom || !nom || !email || !tel || !pwd) {
+    showError('Merci de remplir tous les champs.'); return;
+  }
+  if (!email.includes('@')) { showError('Email invalide.'); return; }
+  if (pwd.length < 8) { showError('Mot de passe trop court (min. 8 caractères).'); return; }
+  nextStep();
+}
+
+function selectAge(choice) {
+  ageChoice = choice;
+  document.getElementById('opt-majeur').classList.toggle('selected', choice === 'majeur');
+  document.getElementById('opt-mineur').classList.toggle('selected', choice === 'mineur');
+  document.getElementById('check-majeur').classList.toggle('selected', choice === 'majeur');
+  document.getElementById('check-mineur').classList.toggle('selected', choice === 'mineur');
+  document.getElementById('parentEmailBlock').style.display = choice === 'mineur' ? 'block' : 'none';
+}
+
+function validateStep3() {
+  if (!ageChoice) { showError('Merci de sélectionner ton âge.'); return; }
+  if (ageChoice === 'mineur') {
+    const parentEmail = document.getElementById('iParentEmail').value.trim();
+    if (!parentEmail || !parentEmail.includes('@')) { showError('Merci d\'entrer l\'email de ton parent ou tuteur légal.'); return; }
+  }
+  nextStep();
+}
+
+function toggleCheck(id) {
+  checks[id] = !checks[id];
+  const box = document.getElementById(id);
+  box.classList.toggle('checked', checks[id]);
+  updateSignBtn();
+}
+
+function checkConvScroll() {
+  const el = document.getElementById('convBody');
+  if (el.scrollTop + el.clientHeight >= el.scrollHeight - 20) {
+    convScrolled = true;
+    document.querySelector('.scroll-indicator').innerHTML = '<span class="material-symbols-outlined" style="font-size:14px">check_circle</span><span style="color:#006c4c;font-weight:600">Lu</span>';
+  }
+}
+
+function updateSignBtn() {
+  const allChecked = checks.check1 && checks.check2 && checks.check3;
+  const btn = document.getElementById('btnSign');
+  btn.disabled = !allChecked;
+  btn.classList.toggle('opacity-40', !allChecked);
+  btn.classList.toggle('cursor-not-allowed', !allChecked);
+}
+
+function validateStep4() {
+  if (!checks.check1 || !checks.check2 || !checks.check3) {
+    showError('Merci de cocher toutes les cases pour continuer.'); return;
+  }
+  renderOffers();
+  nextStep();
+}
+
+function renderOffers() {
+  document.getElementById('offerCards').innerHTML = OFFERS.map(o => `
+    <div class="offer-card ${selectedOffers.includes(o.id) ? 'selected' : ''}" onclick="toggleOffer('${o.id}')">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style="background:${o.color}14">
+          <span class="material-symbols-outlined filled" style="font-size:18px;color:${o.color};font-variation-settings:'FILL' 1">${o.icon}</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="font-headline font-bold text-sm text-on-surface" style="letter-spacing:-0.02em">${o.name}</p>
+          <p class="text-[11px] text-on-surface-variant">${o.cat}</p>
+        </div>
+        <span class="text-[11px] font-bold px-2.5 py-1 rounded-full flex-shrink-0" style="background:rgba(0,108,76,0.1);color:#006c4c">${o.com}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleOffer(id) {
+  if (selectedOffers.includes(id)) {
+    selectedOffers = selectedOffers.filter(o => o !== id);
+  } else {
+    selectedOffers.push(id);
+  }
+  renderOffers();
+}
+
+function validateStep5() {
+  nextStep();
+}
+
+function formatIban(input) {
+  let val = input.value.replace(/\s/g, '').toUpperCase();
+  val = val.replace(/(.{4})/g, '$1 ').trim();
+  input.value = val;
+}
+
+function skipIban() {
+  ibanSkipped = true;
+  finalize();
+}
+
+function validateStep6() {
+  const iban = document.getElementById('iIban').value.replace(/\s/g, '');
+  if (iban && iban.length < 14) { showError('IBAN invalide.'); return; }
+  ibanSkipped = iban.length === 0;
+  finalize();
+}
+
+function finalize() {
+  const prenom = document.getElementById('iPrenom').value.trim();
+  document.getElementById('welcomeName').textContent = 'Bienvenue ' + prenom + ' !';
+  document.getElementById('ibanWarning').style.display = ibanSkipped ? 'flex' : 'none';
+  // Save to localStorage (simulated)
+  localStorage.setItem('stacker_onboarded', '1');
+  localStorage.setItem('stacker_iban_set', ibanSkipped ? '0' : '1');
+  localStorage.setItem('stacker_prenom', prenom);
+  showStep(7);
+}
+
+function showError(msg) {
+  // Simple inline error toast
+  const existing = document.getElementById('errorToast');
+  if (existing) existing.remove();
+  const el = document.createElement('div');
+  el.id = 'errorToast';
+  el.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 bg-on-surface text-white text-sm font-semibold px-5 py-3 rounded-2xl z-50 shadow-xl';
+  el.style.animation = 'fadeUp 0.3s ease both';
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 3000);
+}
+
+// Init
+renderDots();
+</script>
+</body>
+</html>
