@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nos Offres · Stacker</title>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhK-hKjLuDvi-xH3hqgY-9L1w0WxQF4_A&libraries=places&language=fr&loading=async" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhK-hKjLuDvi-xH3hqgY-9L1w0WxQF4_A&libraries=places&language=fr&callback=initGoogleMaps" defer></script>
 <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
@@ -528,7 +528,12 @@
           <div id="leadsResults" style="display:none" class="border-t border-outline-variant/20">
             <div class="px-5 pt-4 pb-2 flex items-center justify-between">
               <p class="font-mono text-[9.5px] tracking-[0.12em] uppercase text-on-surface-variant">Prospects trouvés</p>
-              <span class="font-headline font-bold text-sm text-primary" id="leadsCount">0</span>
+              <div class="flex items-center gap-2">
+                <button onclick="showFollowUp()" class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-surface-container text-on-surface-variant text-[11px] font-semibold hover:bg-surface-container-high transition">
+                  <span class="material-symbols-outlined" style="font-size:13px">history</span>Suivi
+                </button>
+                <span class="font-headline font-bold text-sm text-primary" id="leadsCount">0</span>
+              </div>
             </div>
             <div id="leadsList" class="divide-y divide-outline-variant/15 pb-2"></div>
             <div class="px-5 pb-4 pt-2">
@@ -1105,7 +1110,99 @@ const LEADS_SUGGESTIONS = {
   inroom: ['Hôtel','Résidence tourisme','Chambre hôtes','Appart-hôtel'],
 };
 
-let leadsData = [];
+let googleMapsReady = false;
+window.initGoogleMaps = function() { googleMapsReady = true; };
+
+// ─── PROSPECT TRACKING ──────────────────────────────
+// Stocké dans localStorage : { placeId: { name, phone, status, note, date } }
+function getContacts() {
+  try { return JSON.parse(localStorage.getItem('stacker_contacts') || '{}'); } catch { return {}; }
+}
+function saveContact(id, data) {
+  const all = getContacts();
+  all[id] = { ...all[id], ...data, updatedAt: new Date().toISOString() };
+  localStorage.setItem('stacker_contacts', JSON.stringify(all));
+}
+function getContactStatus(id) {
+  return getContacts()[id]?.status || null;
+}
+
+const STATUS_CONFIG = {
+  conclus:    { label: 'Conclu',      color: '#006c4c', bg: 'rgba(0,108,76,0.1)',   icon: 'check_circle' },
+  rappeler:   { label: 'À rappeler',  color: '#b86e00', bg: 'rgba(184,110,0,0.1)',  icon: 'schedule' },
+  refus:      { label: 'Refus',       color: '#b52330', bg: 'rgba(181,35,48,0.1)',  icon: 'cancel' },
+  encours:    { label: 'En cours',    color: '#1565c0', bg: 'rgba(21,101,192,0.1)', icon: 'pending' },
+};
+
+function setProspectStatus(idx, status) {
+  const l = leadsData[idx];
+  if (!l) return;
+  const key = l.place_id || (l.name + l.address);
+  saveContact(key, { name: l.name, phone: l.phone, address: l.address, status });
+  leadsData[idx].status = status;
+  renderLeadsResults();
+  // XP si conclus
+  if (status === 'conclus') showStatusToast('Deal potentiel enregistré !', 'success');
+  else if (status === 'rappeler') showStatusToast('Rappel enregistré', 'info');
+  else if (status === 'refus') showStatusToast('Refus noté', 'neutral');
+}
+
+function showStatusToast(msg, type) {
+  const colors = { success: 'background:#006c4c;color:#fff', info: 'background:#1565c0;color:#fff', neutral: 'background:#f0eded;color:#1b1c1c' };
+  const el = document.createElement('div');
+  el.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:10px 18px;border-radius:99px;font-size:13px;font-weight:600;z-index:999;box-shadow:0 4px 16px rgba(0,0,0,0.15);animation:fadeUp 0.3s ease both;' + (colors[type] || colors.neutral);
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 2500);
+}
+
+// ─── SUIVI PAGE ──────────────────────────────────────
+function showFollowUp() {
+  const contacts = getContacts();
+  const list = Object.entries(contacts);
+  if (!list.length) { alert('Aucun prospect contacté pour l\'instant.'); return; }
+
+  const panel = document.createElement('div');
+  panel.style.cssText = 'position:fixed;inset:0;z-index:200;display:flex;align-items:flex-end;justify-content:center;background:rgba(27,28,28,0.5);backdrop-filter:blur(6px)';
+  panel.innerHTML = `
+    <div style="width:100%;max-width:680px;background:#fff;border-radius:24px 24px 0 0;max-height:85vh;overflow-y:auto;box-shadow:0 -20px 60px rgba(0,0,0,0.15)">
+      <div style="padding:16px 20px 12px;border-bottom:1px solid #e2bebc;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:1">
+        <div>
+          <p style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:16px;color:#1b1c1c;letter-spacing:-0.02em">Suivi prospects</p>
+          <p style="font-size:11px;color:#8e706f;margin-top:2px">${list.length} contacté${list.length>1?'s':''}</p>
+        </div>
+        <button onclick="this.closest('[style*=fixed]').remove()" style="padding:8px;border-radius:50%;border:none;background:#f0eded;cursor:pointer">
+          <span style="font-family:'Material Symbols Outlined';font-size:18px">close</span>
+        </button>
+      </div>
+      <div style="padding:8px 0">
+        ${list.map(([id, c]) => {
+          const s = STATUS_CONFIG[c.status] || { label: 'Contacté', color: '#8e706f', bg: 'rgba(142,112,111,0.08)', icon: 'radio_button_unchecked' };
+          const date = c.updatedAt ? new Date(c.updatedAt).toLocaleDateString('fr-FR') : '';
+          return `<div style="display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid rgba(226,190,188,0.25)">
+            <div style="width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:${s.bg}">
+              <span style="font-family:'Material Symbols Outlined';font-size:18px;color:${s.color};font-variation-settings:'FILL' 1">${s.icon}</span>
+            </div>
+            <div style="flex:1;min-width:0">
+              <p style="font-weight:600;font-size:13px;color:#1b1c1c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.name}</p>
+              <div style="display:flex;align-items:center;gap:8px;margin-top:2px">
+                <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;background:${s.bg};color:${s.color}">${s.label}</span>
+                <span style="font-size:10px;color:#8e706f">${date}</span>
+              </div>
+            </div>
+            ${c.phone ? `<a href="tel:${c.phone}" style="padding:6px 12px;background:rgba(0,108,76,0.1);color:#006c4c;border-radius:99px;font-size:11px;font-weight:700;text-decoration:none;white-space:nowrap;display:flex;align-items:center;gap:4px">
+              <span style="font-family:'Material Symbols Outlined';font-size:13px">call</span>${c.phone}
+            </a>` : ''}
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+  `;
+  panel.addEventListener('click', e => { if (e.target === panel) panel.remove(); });
+  document.body.appendChild(panel);
+}
+
+
 
 function showLeadsSection() {
   const isB2B = current && B2B_IDS.includes(current.id);
@@ -1148,8 +1245,9 @@ function generateLeads() {
 
   const query = [profession, ville].filter(Boolean).join(' ');
 
-  if (typeof google === 'undefined' || !google.maps || !google.maps.places) {
-    setTimeout(generateLeads, 800);
+  if (!googleMapsReady) {
+    document.getElementById('leadsLoading').querySelector('p').textContent = 'Chargement de Google Maps...';
+    setTimeout(generateLeads, 600);
     return;
   }
 
@@ -1185,6 +1283,7 @@ function generateLeads() {
 async function enrichResults(service, places) {
   const BATCH = 10;
   const enriched = [];
+  const contacts = getContacts();
   for (let i = 0; i < places.length; i += BATCH) {
     const batch = places.slice(i, i + BATCH);
     const results = await Promise.all(batch.map(p =>
@@ -1192,12 +1291,16 @@ async function enrichResults(service, places) {
         service.getDetails(
           { placeId: p.place_id, fields: ['formatted_phone_number','website','international_phone_number'] },
           (place, status) => {
+            const key = p.place_id || (p.name + (p.formatted_address||''));
+            const existing = contacts[key];
             resolve({
               name: p.name,
               address: p.formatted_address || p.vicinity || '',
               phone: place?.formatted_phone_number || place?.international_phone_number || null,
               website: place?.website || null,
               rating: p.rating || null,
+              place_id: p.place_id,
+              status: existing?.status || null,
             });
           }
         );
@@ -1216,28 +1319,32 @@ function renderLeadsResults() {
   document.getElementById('leadsResults').style.display = 'block';
   document.getElementById('leadsBtn').disabled = false;
   const withPhone = leadsData.filter(l => l.phone).length;
-  document.getElementById('leadsCount').textContent = leadsData.length + ' prospects · ' + withPhone + ' numéros';
-  document.getElementById('leadsList').innerHTML = leadsData.map((l, i) => `
-    <div class="flex items-center justify-between px-5 py-3 hover:bg-surface-container-low transition">
-      <div class="flex items-center gap-3 min-w-0 flex-1">
-        <div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center flex-shrink-0 font-headline font-bold text-[10px] text-on-surface-variant">${l.name.slice(0,2).toUpperCase()}</div>
-        <div class="min-w-0 flex-1">
+  const contacted = leadsData.filter(l => l.status).length;
+  document.getElementById('leadsCount').textContent = leadsData.length + ' prospects · ' + withPhone + ' numéros' + (contacted ? ' · ' + contacted + ' contactés' : '');
+  document.getElementById('leadsList').innerHTML = leadsData.map((l, i) => {
+    const s = l.status ? STATUS_CONFIG[l.status] : null;
+    const alreadyContacted = !!l.status;
+    return `<div class="flex items-start gap-3 px-4 py-3 border-b border-outline-variant/20 ${alreadyContacted ? 'bg-surface-container-low/50' : 'hover:bg-surface-container-low'} transition">
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-2 mb-1 flex-wrap">
           <p class="font-semibold text-sm text-on-surface truncate">${l.name}</p>
-          <p class="text-[11px] text-on-surface-variant truncate">${l.address}</p>
-          ${l.rating ? `<div class="flex items-center gap-1 mt-0.5"><span class="material-symbols-outlined filled" style="font-size:11px;color:#f59e0b;font-variation-settings:'FILL' 1">star</span><span class="text-[10px] text-on-surface-variant">${l.rating}</span></div>` : ''}
+          ${s ? `<span class="text-[9px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap" style="background:${s.bg};color:${s.color}">${s.label}</span>` : ''}
+        </div>
+        <p class="text-[11px] text-on-surface-variant truncate mb-2">${l.address}</p>
+        <div class="flex items-center gap-1.5 flex-wrap">
+          ${l.phone ? `<a href="tel:${l.phone}" onclick="setProspectStatus(${i},'encours')" class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[11px] font-bold transition whitespace-nowrap" style="background:rgba(0,108,76,0.1);color:#006c4c">
+            <span class="material-symbols-outlined" style="font-size:13px">call</span>${l.phone}
+          </a>` : `<span class="text-[11px] text-on-surface-variant">Pas de numéro</span>`}
+          ${l.website ? `<a href="${l.website}" target="_blank" class="p-1.5 rounded-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition"><span class="material-symbols-outlined" style="font-size:14px">language</span></a>` : ''}
         </div>
       </div>
-      <div class="flex items-center gap-1.5 flex-shrink-0 ml-3">
-        ${l.phone
-          ? `<a href="tel:${l.phone}" class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-tertiary-fixed text-tertiary text-[11px] font-bold hover:bg-tertiary hover:text-white transition whitespace-nowrap">
-              <span class="material-symbols-outlined" style="font-size:13px">call</span>${l.phone}
-             </a>`
-          : `<span class="text-[11px] text-on-surface-variant px-2">Pas de tél.</span>`
-        }
-        ${l.website ? `<a href="${l.website}" target="_blank" class="p-1.5 rounded-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition"><span class="material-symbols-outlined" style="font-size:14px">language</span></a>` : ''}
+      <div class="flex flex-col gap-1 flex-shrink-0">
+        <button onclick="setProspectStatus(${i},'conclus')" class="px-2 py-1 rounded-lg text-[10px] font-bold transition whitespace-nowrap ${l.status==='conclus'?'bg-tertiary text-white':'bg-surface-container text-on-surface-variant hover:bg-tertiary-fixed hover:text-tertiary'}">Conclu</button>
+        <button onclick="setProspectStatus(${i},'rappeler')" class="px-2 py-1 rounded-lg text-[10px] font-bold transition whitespace-nowrap ${l.status==='rappeler'?'text-white':'bg-surface-container text-on-surface-variant'}" style="${l.status==='rappeler'?'background:#b86e00':''}">Rappeler</button>
+        <button onclick="setProspectStatus(${i},'refus')" class="px-2 py-1 rounded-lg text-[10px] font-bold transition whitespace-nowrap ${l.status==='refus'?'bg-primary text-white':'bg-surface-container text-on-surface-variant hover:bg-primary-fixed hover:text-primary'}">Refus</button>
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 }
 
 function generateMockLeads() {} // kept for compatibility
