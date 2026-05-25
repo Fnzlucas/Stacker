@@ -3,344 +3,464 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Stacker Elite Gathering · 8 Juin</title>
+<title>Stacker Elite Gathering · 8 Juin 2027</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--dark:#1b1c1c;--surface:#fcf9f8;--muted:#5a403f;--border:rgba(226,190,188,0.4);--gold:#c9a84c;--gold2:#ffd700;--red:#b52330}
-html,body{min-height:100%;background:#fcf9f8;color:#1b1c1c;font-family:'Inter',sans-serif}
+:root{
+  --dark:#1b1c1c;
+  --surface:#faf7f4;
+  --muted:#6b5550;
+  --border:rgba(226,190,188,0.45);
+  --gold:#c9a84c;
+  --gold2:#e8c96a;
+  --red:#b52330;
+  --cream:#f5f0e8;
+}
+html{scroll-behavior:smooth}
+body{background:var(--surface);color:var(--dark);font-family:'Inter',sans-serif;overflow-x:hidden}
 .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;line-height:1;font-family:'Material Symbols Outlined'}
+.fi{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
 
-/* NAV */
-.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(to bottom,rgba(252,249,248,0.97),transparent)}
-.nav-logo{font-family:'Plus Jakarta Sans';font-weight:900;font-size:18px;color:#1b1c1c;letter-spacing:-0.03em;display:flex;align-items:center;gap:4px}
-.nav-logo .dot{width:5px;height:5px;background:var(--red);border-radius:50%;margin-bottom:3px}
-.nav-back{display:flex;align-items:center;gap:6px;font-size:13px;color:#5a403f;cursor:pointer;text-decoration:none;transition:color 0.2s}
-.nav-back:hover{color:#1b1c1c}
+/* ─── NAV ─── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;transition:background 0.4s,backdrop-filter 0.4s}
+.nav.scrolled{background:rgba(250,247,244,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Plus Jakarta Sans';font-weight:900;font-size:17px;color:#fff;letter-spacing:-0.03em;transition:color 0.4s;display:flex;align-items:center;gap:3px}
+.nav.scrolled .nav-logo{color:var(--dark)}
+.nav-logo-dot{width:5px;height:5px;background:var(--red);border-radius:50%;margin-bottom:3px}
+.nav-back{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.7);text-decoration:none;transition:color 0.3s}
+.nav.scrolled .nav-back{color:var(--muted)}
+.nav-back:hover{color:var(--dark)}
 
-/* HERO */
-.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:flex-start;overflow:hidden}
-.hero-img{position:absolute;inset:0;object-fit:cover;width:100%;height:100%;opacity:0.45}
-.hero-img-placeholder{position:absolute;inset:0;background:linear-gradient(135deg,#0a0a0a 0%,#1b1c1c 100%)}
-.hero-gradient{position:absolute;inset:0;background:linear-gradient(to top,rgba(27,28,28,1) 0%,rgba(27,28,28,0.6) 40%,transparent 100%)}
-.hero-content{position:relative;padding:120px 20px 40px;max-width:680px;margin:0 auto;width:100%}
-
-.hero-title{font-family:'Plus Jakarta Sans';font-weight:900;font-size:clamp(36px,8vw,64px);letter-spacing:-0.04em;line-height:0.95;margin-bottom:16px;color:#fff}
-.hero-title em{font-style:normal;display:block;background:linear-gradient(135deg,var(--gold2),var(--gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.hero-sub{font-size:16px;color:rgba(255,255,255,0.55);line-height:1.6;margin-bottom:32px;max-width:480px}
-.hero-meta{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+/* ─── HERO ─── */
+.hero{position:relative;height:100svh;min-height:600px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:#0d0c0a}
+.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.5}
+.hero-gradient{position:absolute;inset:0;background:linear-gradient(to top,rgba(13,12,10,0.95) 0%,rgba(13,12,10,0.4) 50%,rgba(13,12,10,0.15) 100%)}
+.hero-content{position:relative;z-index:2;padding:0 24px 52px;max-width:720px}
+.hero-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.hero-eyebrow-line{width:28px;height:1px;background:var(--gold)}
+.hero-eyebrow-text{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold)}
+.hero-title{font-family:'Plus Jakarta Sans';font-weight:900;font-size:clamp(42px,9vw,72px);letter-spacing:-0.04em;line-height:0.93;color:#fff;margin-bottom:20px}
+.hero-title em{font-style:normal;background:linear-gradient(135deg,var(--gold2),var(--gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sub{font-size:15px;color:rgba(255,255,255,0.55);line-height:1.65;max-width:440px;margin-bottom:36px}
+.hero-meta{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
 .hero-meta-item{display:flex;align-items:center;gap:8px}
-.hero-meta-item .material-symbols-outlined{font-size:16px;color:var(--gold)}
-.hero-meta-item span{font-size:13px;color:rgba(255,255,255,0.6);font-weight:500}
-.hero-meta-item strong{color:#fff}
+.hero-meta-item .material-symbols-outlined{font-size:15px;color:var(--gold)}
+.hero-meta-item p{font-size:13px;font-weight:600;color:rgba(255,255,255,0.75)}
+.hero-scroll{position:absolute;bottom:28px;right:24px;z-index:2;display:flex;flex-direction:column;align-items:center;gap:6px;opacity:0.4}
+.hero-scroll span.label{font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:#fff;writing-mode:vertical-rl}
+.hero-scroll .material-symbols-outlined{font-size:16px;color:#fff;animation:bob 2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
 
-/* SCROLL INDICATOR */
-.scroll-hint{position:absolute;bottom:20px;right:20px;display:flex;flex-direction:column;align-items:center;gap:4px;opacity:0.4}
-.scroll-hint span{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;writing-mode:vertical-rl}
-.scroll-hint .material-symbols-outlined{font-size:16px;animation:bounce 1.5s infinite}
-@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+/* ─── SECTION BASE ─── */
+.s{padding:80px 24px;max-width:720px;margin:0 auto}
+.s-sm{padding:48px 24px;max-width:720px;margin:0 auto}
+.eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.eyebrow-line{width:20px;height:1px;background:var(--gold)}
+.eyebrow-text{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold)}
+.s-title{font-family:'Plus Jakarta Sans';font-weight:900;font-size:clamp(26px,5vw,38px);letter-spacing:-0.04em;line-height:1.05;color:var(--dark);margin-bottom:16px}
+.s-body{font-size:15px;color:var(--muted);line-height:1.75}
 
-/* SECTIONS */
-.section{max-width:680px;margin:0 auto;padding:60px 20px}
-.section-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
-.section-title{font-family:'Plus Jakarta Sans';font-weight:900;font-size:clamp(24px,5vw,36px);letter-spacing:-0.04em;line-height:1.05;margin-bottom:20px;color:#1b1c1c}
-.section-body{font-size:15px;color:#5a403f;line-height:1.75}
+/* ─── DIVIDER ─── */
+.hr{border:none;height:1px;background:var(--border);max-width:720px;margin:0 auto}
 
-/* DIVIDER */
-.divider{max-width:680px;margin:0 auto 0;padding:0 20px}
-.divider-line{height:1px;background:linear-gradient(90deg,transparent,rgba(226,190,188,0.6) 50%,transparent)}
+/* ─── INTRO DOMAINE ─── */
+.domaine-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:32px}
+.domaine-img-wrap{border-radius:20px;overflow:hidden;background:var(--cream)}
+.domaine-img-wrap img{width:100%;height:200px;object-fit:cover;display:block}
+.domaine-img-wrap.tall{grid-row:span 2}
+.domaine-img-wrap.tall img{height:100%}
+.domaine-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:28px}
+.domaine-stat{padding:20px;border-radius:16px;background:#fff;border:1px solid var(--border)}
+.domaine-stat-num{font-family:'Plus Jakarta Sans';font-weight:900;font-size:28px;letter-spacing:-0.04em;color:var(--dark);margin-bottom:2px}
+.domaine-stat-num.gold{background:linear-gradient(135deg,var(--gold2),var(--gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.domaine-stat-label{font-size:12px;color:var(--muted)}
 
-/* AVANTAGES */
-.avantages-grid{display:flex;flex-direction:column;gap:16px;margin-top:32px}
-.avantage-card{display:flex;align-items:flex-start;gap:16px;padding:20px;border-radius:20px;border:1px solid rgba(226,190,188,0.5);background:#fff;transition:all 0.3s;box-shadow:0 2px 12px rgba(27,28,28,0.05)}
-.avantage-card:hover{background:#fffbf0;border-color:rgba(201,168,76,0.4)}
-.avantage-icon{width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.2)}
-.avantage-icon .material-symbols-outlined{font-size:20px;color:var(--gold)}
-.avantage-title{font-family:'Plus Jakarta Sans';font-weight:700;font-size:15px;color:#1b1c1c;margin-bottom:4px}
-.avantage-desc{font-size:13px;color:#5a403f;line-height:1.6}
+/* ─── PROGRAMME JOURS ─── */
+.jours{display:flex;flex-direction:column;gap:0;margin-top:32px}
+.jour{border-radius:20px;overflow:hidden;border:1px solid var(--border);background:#fff;margin-bottom:12px}
+.jour-header{padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.jour-num{font-family:'Plus Jakarta Sans';font-weight:900;font-size:13px;letter-spacing:-0.02em;color:var(--dark)}
+.jour-date{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.15em;color:var(--muted)}
+.jour-body{padding:20px 24px}
+.jour-items{display:flex;flex-direction:column;gap:14px}
+.jour-item{display:flex;align-items:flex-start;gap:14px}
+.jour-item-time{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:0.08em;width:44px;flex-shrink:0;padding-top:2px}
+.jour-item-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:5px}
+.jour-item-text p{font-size:14px;font-weight:600;color:var(--dark);line-height:1.3;margin-bottom:2px}
+.jour-item-text span{font-size:12px;color:var(--muted)}
 
-/* TIRAGE AU SORT */
-.tirage-card{margin-top:32px;border-radius:24px;overflow:hidden;border:1px solid rgba(201,168,76,0.25);position:relative;background:linear-gradient(135deg,#0f0d00,#1a1800)}
-.tirage-top{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold2) 50%,transparent)}
-.tirage-content{padding:28px}
-.tirage-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:99px;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.25);margin-bottom:16px}
-.tirage-badge span{font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:0.15em;font-family:'JetBrains Mono',monospace}
-.tirage-title{font-family:'Plus Jakarta Sans';font-weight:900;font-size:28px;letter-spacing:-0.04em;line-height:1.1;margin-bottom:8px;background:linear-gradient(135deg,var(--gold2),var(--gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.tirage-sub{font-size:13px;color:rgba(255,255,255,0.4);line-height:1.6;margin-bottom:20px}
-.tirage-car{width:100%;height:180px;object-fit:cover;border-radius:14px;background:rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:center}
-.tirage-note{margin-top:16px;font-size:11px;color:rgba(255,255,255,0.35);text-align:center;font-style:italic}
+/* ─── AVANTAGES ─── */
+.avantages{display:flex;flex-direction:column;gap:1px;margin-top:32px;border-radius:20px;overflow:hidden;border:1px solid var(--border)}
+.avantage{display:flex;align-items:flex-start;gap:18px;padding:22px 24px;background:#fff;border-bottom:1px solid var(--border);transition:background 0.2s}
+.avantage:last-child{border-bottom:none}
+.avantage:hover{background:#fffbf2}
+.avantage-icon{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,rgba(201,168,76,0.15),rgba(201,168,76,0.05));border:1px solid rgba(201,168,76,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.avantage-icon .material-symbols-outlined{font-size:18px;color:var(--gold)}
+.avantage-title{font-family:'Plus Jakarta Sans';font-weight:700;font-size:14px;color:var(--dark);margin-bottom:3px}
+.avantage-desc{font-size:13px;color:var(--muted);line-height:1.55}
 
-/* CONDITIONS */
-.conditions-card{margin-top:32px;padding:28px;border-radius:20px;background:#fff;border:1px solid rgba(226,190,188,0.5);box-shadow:0 2px 12px rgba(27,28,28,0.05)}
-.condition-row{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid rgba(226,190,188,0.3)}
+/* ─── TIRAGE ─── */
+.tirage{margin-top:32px;border-radius:24px;overflow:hidden;position:relative;background:linear-gradient(135deg,#111007,#1c1a0e);border:1px solid rgba(201,168,76,0.2)}
+.tirage-gold-line{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent 0%,var(--gold2) 40%,var(--gold) 70%,transparent 100%)}
+.tirage-body{padding:32px 28px}
+.tirage-eyebrow{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.tirage-title{font-family:'Plus Jakarta Sans';font-weight:900;font-size:32px;letter-spacing:-0.04em;line-height:1;background:linear-gradient(135deg,var(--gold2),var(--gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+.tirage-sub{font-size:13px;color:rgba(255,255,255,0.4);line-height:1.6;margin-bottom:24px}
+.tirage-car{width:100%;border-radius:16px;overflow:hidden;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07)}
+.tirage-car img{width:100%;height:200px;object-fit:cover;display:block}
+.tirage-car-fallback{height:200px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px}
+.tirage-car-fallback .material-symbols-outlined{font-size:48px;color:rgba(255,255,255,0.15)}
+.tirage-car-fallback p{font-size:13px;font-weight:700;color:rgba(255,255,255,0.3);letter-spacing:0.05em}
+.tirage-note{margin-top:14px;font-size:11px;color:rgba(255,255,255,0.2);text-align:center;font-style:italic}
+
+/* ─── CONDITIONS ─── */
+.conditions{margin-top:32px;border-radius:20px;overflow:hidden;border:1px solid var(--border)}
+.condition-row{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;background:#fff;border-bottom:1px solid var(--border)}
 .condition-row:last-child{border-bottom:none}
-.condition-label{font-size:13px;color:#5a403f}
-.condition-val{font-family:'Plus Jakarta Sans';font-weight:800;font-size:15px;color:#1b1c1c}
+.condition-label{font-size:13px;color:var(--muted)}
+.condition-val{font-family:'Plus Jakarta Sans';font-weight:800;font-size:14px;color:var(--dark)}
 .condition-val.gold{background:linear-gradient(135deg,var(--gold2),var(--gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 
-/* INTERVENANTS */
-.intervenants-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:32px}
-.intervenant-card{padding:20px;border-radius:18px;border:1px solid rgba(226,190,188,0.5);background:#fff;text-align:center;box-shadow:0 2px 8px rgba(27,28,28,0.04)}
-.intervenant-avatar{width:56px;height:56px;border-radius:50%;background:rgba(201,168,76,0.15);border:2px solid rgba(201,168,76,0.3);display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
-.intervenant-avatar .material-symbols-outlined{font-size:24px;color:var(--gold)}
-.intervenant-name{font-family:'Plus Jakarta Sans';font-weight:700;font-size:14px;color:#1b1c1c;margin-bottom:3px}
-.intervenant-role{font-size:11px;color:#5a403f}
+/* ─── INTERVENANTS ─── */
+.intervenants{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:32px}
+.intervenant{padding:22px;border-radius:18px;background:#fff;border:1px solid var(--border);text-align:center;transition:all 0.2s}
+.intervenant:hover{border-color:rgba(201,168,76,0.4);box-shadow:0 8px 24px rgba(201,168,76,0.08)}
+.intervenant-avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,rgba(201,168,76,0.2),rgba(201,168,76,0.05));border:1.5px solid rgba(201,168,76,0.3);display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.intervenant-avatar .material-symbols-outlined{font-size:22px;color:var(--gold)}
+.intervenant-name{font-family:'Plus Jakarta Sans';font-weight:700;font-size:14px;color:var(--dark);margin-bottom:3px}
+.intervenant-role{font-size:11px;color:var(--muted)}
 
-/* CTA FIXE */
-.cta-bar{position:fixed;bottom:0;left:0;right:0;padding:16px 20px 32px;background:linear-gradient(to top,rgba(252,249,248,1) 60%,transparent);z-index:100}
-.cta-inner{max-width:680px;margin:0 auto;display:flex;align-items:center;gap:12px}
+/* ─── CTA FIXE ─── */
+.cta-bar{position:fixed;bottom:0;left:0;right:0;z-index:100;padding:16px 24px 36px;background:linear-gradient(to top,rgba(250,247,244,1) 55%,transparent)}
+.cta-inner{max-width:720px;margin:0 auto;display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--border);border-radius:20px;padding:14px 18px;box-shadow:0 8px 32px rgba(27,28,28,0.1)}
 .cta-info{flex:1}
-.cta-info-label{font-size:10px;color:#5a403f;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:2px}
-.cta-info-val{font-family:'Plus Jakarta Sans';font-weight:800;font-size:15px;color:#1b1c1c}
-.cta-btn{padding:16px 28px;border-radius:16px;border:none;font-family:'Plus Jakarta Sans';font-weight:800;font-size:14px;cursor:pointer;background:linear-gradient(135deg,var(--gold2),var(--gold));color:#1b1c1c;letter-spacing:-0.01em;white-space:nowrap;transition:all 0.2s;box-shadow:0 8px 24px rgba(201,168,76,0.3)}
-.cta-btn:hover{transform:translateY(-1px);box-shadow:0 12px 32px rgba(201,168,76,0.4)}
-.cta-btn:active{transform:scale(0.98)}
-.cta-locked{padding:16px 28px;border-radius:16px;border:1px solid rgba(201,168,76,0.4);font-family:'Plus Jakarta Sans';font-weight:800;font-size:14px;color:#b8860b;background:rgba(201,168,76,0.1);white-space:nowrap;display:flex;align-items:center;gap:8px;cursor:default}
+.cta-info-label{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:2px}
+.cta-info-val{font-family:'Plus Jakarta Sans';font-weight:800;font-size:14px;color:var(--dark)}
+.cta-btn{padding:14px 22px;border-radius:14px;border:none;font-family:'Plus Jakarta Sans';font-weight:800;font-size:13px;cursor:pointer;background:linear-gradient(135deg,var(--gold2),var(--gold));color:#1b1c1c;letter-spacing:-0.01em;white-space:nowrap;transition:all 0.2s;box-shadow:0 4px 16px rgba(201,168,76,0.3);flex-shrink:0}
+.cta-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(201,168,76,0.4)}
+.cta-locked{padding:14px 22px;border-radius:14px;border:1px solid rgba(201,168,76,0.3);font-family:'Plus Jakarta Sans';font-weight:700;font-size:13px;color:#b8860b;background:rgba(201,168,76,0.08);display:flex;align-items:center;gap:7px;cursor:default;flex-shrink:0;white-space:nowrap}
+.cta-locked .material-symbols-outlined{font-size:15px}
+.spacer{height:120px}
 
-/* AMBIENT */
-.ambient{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse at 80% 20%,rgba(201,168,76,0.06) 0%,transparent 50%)}
-body>*:not(.ambient){position:relative;z-index:1}
-
-@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-.fade-up{animation:fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) both}
+/* ─── ANIMS ─── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{opacity:0;transform:translateY(28px);transition:opacity 0.65s cubic-bezier(0.22,1,0.36,1),transform 0.65s cubic-bezier(0.22,1,0.36,1)}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+.hero-content{animation:fadeUp 0.8s 0.2s cubic-bezier(0.22,1,0.36,1) both}
 </style>
 </head>
 <body>
 
-<div class="ambient"></div>
-
 <!-- NAV -->
-<nav class="nav">
+<nav class="nav" id="nav">
   <a href="index.html" class="nav-back">
-    <span class="material-symbols-outlined" style="font-size:18px">arrow_back</span>
+    <span class="material-symbols-outlined" style="font-size:17px">arrow_back</span>
     Accueil
   </a>
-  <div class="nav-logo">
-    Stacker<div class="dot"></div>
-  </div>
+  <div class="nav-logo">Stacker<div class="nav-logo-dot"></div></div>
 </nav>
 
 <!-- HERO -->
 <div class="hero">
-  <img src="assets/banners/elite.jpg" alt="Stacker Elite Gathering" class="hero-img" onerror="this.style.display='none'">
-  <div class="hero-img-placeholder"></div>
+  <div class="hero-bg"></div>
+  <img src="assets/banners/elite.jpg" alt="Elite Gathering" class="hero-img" onerror="this.style.display='none'">
   <div class="hero-gradient"></div>
-  <div class="hero-content fade-up">
-    <h1 class="hero-title">
-      La soirée<br>où il faut
-      <em>être.</em>
-    </h1>
-    <p class="hero-sub">Un soir par an. Les meilleurs closers de France. Des connexions qui changent une carrière. Tu y seras ou tu regarderas les autres.</p>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-line"></div>
+      <span class="hero-eyebrow-text">Stacker Elite Gathering · 2027</span>
+    </div>
+    <h1 class="hero-title">La soirée<br>où il faut<br><em>être.</em></h1>
+    <p class="hero-sub">Un soir par an. Les meilleurs closers de France réunis dans un domaine en Provence. Des connexions qui changent une carrière.</p>
     <div class="hero-meta">
       <div class="hero-meta-item">
-        <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">calendar_month</span>
-        <span><strong>8 Juin 2027</strong></span>
+        <span class="material-symbols-outlined fi">calendar_month</span>
+        <p>8 & 9 Juin 2027</p>
       </div>
       <div class="hero-meta-item">
-        <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">location_on</span>
-        <span><strong>À confirmer</strong></span>
+        <span class="material-symbols-outlined fi">location_on</span>
+        <p>Domaine privé · Provence</p>
       </div>
       <div class="hero-meta-item">
-        <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">group</span>
-        <span>Top closers Stacker uniquement</span>
+        <span class="material-symbols-outlined fi">lock</span>
+        <p>Sur invitation uniquement</p>
       </div>
     </div>
   </div>
-  <div class="scroll-hint">
+  <div class="hero-scroll">
     <span class="material-symbols-outlined">expand_more</span>
-    <span>Scroll</span>
+    <span class="label">Scroll</span>
   </div>
 </div>
 
-<!-- AMBIANCE -->
-<div class="section" style="padding-top:48px;padding-bottom:32px">
-  <p class="section-label">L'événement</p>
-  <h2 class="section-title">Ce n'est pas<br>une soirée comme les autres.</h2>
-  <p class="section-body">C'est la nuit où les meilleurs closers de France se retrouvent dans la même pièce. Pas de grand public, pas de spectateurs. Que des performeurs. Chaque personne présente a prouvé qu'elle appartient à l'élite — et tu le sais dès que tu passes la porte.</p>
-</div>
-
-<div class="divider"><div class="divider-line"></div></div>
-
-<!-- AVANTAGES -->
-<div class="section">
-  <p class="section-label">Au programme</p>
-  <h2 class="section-title">Ce qui t'attend cette nuit-là.</h2>
-  <div class="avantages-grid">
-    <div class="avantage-card">
-      <div class="avantage-icon">
-        <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">groups</span>
-      </div>
-      <div>
-        <p class="avantage-title">Networking d'élite</p>
-        <p class="avantage-desc">Un carnet de contacts que tu ne peux pas construire ailleurs. Des closers qui génèrent des dizaines de milliers d'euros par mois, dans la même salle que toi.</p>
-      </div>
+<!-- DOMAINE -->
+<div class="s fade-up">
+  <div class="eyebrow"><div class="eyebrow-line"></div><span class="eyebrow-text">Le lieu</span></div>
+  <h2 class="s-title">Deux jours dans<br>un domaine en Provence.</h2>
+  <p class="s-body">Pas une salle de conférence. Un domaine privé en Provence, réservé pour l'occasion. Deux jours entiers loin du quotidien — pour se retrouver, apprendre, et construire des relations qui durent.</p>
+  <div class="domaine-stat-grid">
+    <div class="domaine-stat">
+      <div class="domaine-stat-num gold">2</div>
+      <div class="domaine-stat-label">Jours de programme complet</div>
     </div>
-    <div class="avantage-card">
-      <div class="avantage-icon">
-        <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">mic</span>
-      </div>
-      <div>
-        <p class="avantage-title">Interventions exclusives</p>
-        <p class="avantage-desc">Les meilleurs closers français prennent la parole. Techniques avancées, mindset, stratégies que tu ne trouveras pas sur YouTube. Du concret, du brut.</p>
-      </div>
+    <div class="domaine-stat">
+      <div class="domaine-stat-num gold">150K€</div>
+      <div class="domaine-stat-label">CA annuel requis</div>
     </div>
-    <div class="avantage-card">
-      <div class="avantage-icon">
-        <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">book</span>
-      </div>
-      <div>
-        <p class="avantage-title">Carnet de contact Stacker</p>
-        <p class="avantage-desc">Chaque participant reçoit le carnet de contact officiel de l'événement — les coordonnées de tous les présents. Un réseau que tu gardes à vie.</p>
-      </div>
+    <div class="domaine-stat">
+      <div class="domaine-stat-num gold">Top 5%</div>
+      <div class="domaine-stat-label">Des closers Stacker</div>
     </div>
-    <div class="avantage-card">
-      <div class="avantage-icon">
-        <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">inventory_2</span>
-      </div>
-      <div>
-        <p class="avantage-title">Offres & partenariats exclusifs</p>
-        <p class="avantage-desc">Des offres que seuls les participants voient. Partenariats, deals, opportunités — réservés à ceux qui ont mérité leur place dans la salle.</p>
-      </div>
+    <div class="domaine-stat">
+      <div class="domaine-stat-num gold">1</div>
+      <div class="domaine-stat-label">Voiture à remporter</div>
     </div>
   </div>
 </div>
 
-<div class="divider"><div class="divider-line"></div></div>
+<hr class="hr">
 
-<!-- TIRAGE AU SORT -->
-<div class="section">
-  <p class="section-label">Le grand tirage</p>
-  <h2 class="section-title">Une voiture à gagner.</h2>
-  <p class="section-body">Chaque participant est automatiquement inscrit au tirage au sort. Un seul gagnant. Une voiture. C'est tout.</p>
-  <div class="tirage-card">
-    <div class="tirage-top"></div>
-    <div class="tirage-content">
-      <div class="tirage-badge">
-        <span class="material-symbols-outlined filled" style="font-size:12px;color:var(--gold);font-variation-settings:'FILL' 1">stars</span>
-        <span>Tirage au sort · 8 Juin 2027</span>
+<!-- PROGRAMME -->
+<div class="s fade-up">
+  <div class="eyebrow"><div class="eyebrow-line"></div><span class="eyebrow-text">Programme</span></div>
+  <h2 class="s-title">Deux jours qui<br>changent la donne.</h2>
+  <p class="s-body">Chaque heure est pensée. Rien n'est laissé au hasard.</p>
+  <div class="jours">
+    <div class="jour">
+      <div class="jour-header">
+        <span class="jour-num">Jour 1 — Samedi 8 Juin</span>
+        <span class="jour-date">Arrivée & soirée de gala</span>
       </div>
-      <p class="tirage-title">1 voiture<br>à remporter.</p>
-      <p class="tirage-sub">Tous les participants présents sont automatiquement inscrits. Aucune condition supplémentaire. Tu es là, tu joues.</p>
-      <div class="tirage-car" style="overflow:hidden;border-radius:14px;background:#0d0d0d;height:180px;display:flex;align-items:center;justify-content:center">
-        <img src="assets/voiture/mercedes" alt="Mercedes Classe A 2026" style="width:100%;height:100%;object-fit:cover;border-radius:14px" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div style="display:none;flex-direction:column;align-items:center;gap:8px;opacity:0.3">
-          <span class="material-symbols-outlined" style="font-size:48px">directions_car</span>
-          <p style="font-size:13px;font-weight:600">Mercedes Classe A 2026</p>
+      <div class="jour-body">
+        <div class="jour-items">
+          <div class="jour-item">
+            <span class="jour-item-time">15:00</span>
+            <div class="jour-item-dot"></div>
+            <div class="jour-item-text"><p>Accueil & installation au domaine</p><span>Découverte des lieux, check-in</span></div>
+          </div>
+          <div class="jour-item">
+            <span class="jour-item-time">17:00</span>
+            <div class="jour-item-dot"></div>
+            <div class="jour-item-text"><p>Session networking dirigée</p><span>Rencontres structurées entre participants</span></div>
+          </div>
+          <div class="jour-item">
+            <span class="jour-item-time">19:30</span>
+            <div class="jour-item-dot"></div>
+            <div class="jour-item-text"><p>Dîner de gala & remise du carnet de contacts</p><span>Le carnet officiel de tous les participants</span></div>
+          </div>
+          <div class="jour-item">
+            <span class="jour-item-time">22:00</span>
+            <div class="jour-item-dot"></div>
+            <div class="jour-item-text"><p>Soirée & tirage au sort</p><span>Mercedes Classe A 2026 à gagner — tirage en direct</span></div>
+          </div>
         </div>
       </div>
-      <p class="tirage-note">Tirage réalisé en direct le soir de l'événement devant tous les participants.</p>
+    </div>
+    <div class="jour">
+      <div class="jour-header">
+        <span class="jour-num">Jour 2 — Dimanche 9 Juin</span>
+        <span class="jour-date">Formations & départs</span>
+      </div>
+      <div class="jour-body">
+        <div class="jour-items">
+          <div class="jour-item">
+            <span class="jour-item-time">09:00</span>
+            <div class="jour-item-dot"></div>
+            <div class="jour-item-text"><p>Petit-déjeuner & sessions libres</p><span>Échanges informels dans le domaine</span></div>
+          </div>
+          <div class="jour-item">
+            <span class="jour-item-time">10:30</span>
+            <div class="jour-item-dot"></div>
+            <div class="jour-item-text"><p>Interventions des meilleurs closers français</p><span>Techniques avancées, mindset, stratégies exclusives</span></div>
+          </div>
+          <div class="jour-item">
+            <span class="jour-item-time">13:00</span>
+            <div class="jour-item-dot"></div>
+            <div class="jour-item-text"><p>Déjeuner & offres partenaires exclusives</p><span>Deals réservés aux participants uniquement</span></div>
+          </div>
+          <div class="jour-item">
+            <span class="jour-item-time">15:00</span>
+            <div class="jour-item-dot"></div>
+            <div class="jour-item-text"><p>Départs</p><span>À bientôt — pour ceux qui l'ont mérité</span></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
-<div class="divider"><div class="divider-line"></div></div>
+<hr class="hr">
+
+<!-- AVANTAGES -->
+<div class="s fade-up">
+  <div class="eyebrow"><div class="eyebrow-line"></div><span class="eyebrow-text">Ce qui t'attend</span></div>
+  <h2 class="s-title">Tout ce que tu ne<br>trouveras nulle part ailleurs.</h2>
+  <div class="avantages">
+    <div class="avantage">
+      <div class="avantage-icon"><span class="material-symbols-outlined fi">groups</span></div>
+      <div>
+        <p class="avantage-title">Networking d'élite</p>
+        <p class="avantage-desc">Chaque personne dans la salle génère plus de 150K€ par an. Deux jours entiers pour créer des connexions qui durent bien après l'événement.</p>
+      </div>
+    </div>
+    <div class="avantage">
+      <div class="avantage-icon"><span class="material-symbols-outlined fi">book</span></div>
+      <div>
+        <p class="avantage-title">Carnet de contacts officiel</p>
+        <p class="avantage-desc">Chaque participant reçoit le carnet de contacts de l'événement — les coordonnées directes de tous les présents. Un réseau que tu gardes à vie.</p>
+      </div>
+    </div>
+    <div class="avantage">
+      <div class="avantage-icon"><span class="material-symbols-outlined fi">mic</span></div>
+      <div>
+        <p class="avantage-title">Interventions exclusives</p>
+        <p class="avantage-desc">Les meilleurs closers français prennent la parole. Du concret, du brut — des techniques que tu ne trouveras pas sur YouTube.</p>
+      </div>
+    </div>
+    <div class="avantage">
+      <div class="avantage-icon"><span class="material-symbols-outlined fi">inventory_2</span></div>
+      <div>
+        <p class="avantage-title">Offres & partenariats exclusifs</p>
+        <p class="avantage-desc">Des deals réservés aux participants. Partenariats, opportunités et offres que seuls ceux qui étaient là peuvent voir.</p>
+      </div>
+    </div>
+    <div class="avantage">
+      <div class="avantage-icon"><span class="material-symbols-outlined fi">location_on</span></div>
+      <div>
+        <p class="avantage-title">Domaine privé en Provence</p>
+        <p class="avantage-desc">Deux jours dans un cadre d'exception — hébergement, repas gastronomiques et soirée de gala entièrement pris en charge.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="hr">
+
+<!-- TIRAGE -->
+<div class="s fade-up">
+  <div class="eyebrow"><div class="eyebrow-line"></div><span class="eyebrow-text">Le grand tirage</span></div>
+  <h2 class="s-title">Une Mercedes<br>à remporter.</h2>
+  <p class="s-body">Chaque participant présent le soir du gala est automatiquement inscrit. Un seul gagnant. Une Mercedes Classe A 2026. Tirage en direct devant toute la salle.</p>
+  <div class="tirage">
+    <div class="tirage-gold-line"></div>
+    <div class="tirage-body">
+      <p class="tirage-eyebrow">Tirage au sort · Soir du 8 Juin 2027</p>
+      <p class="tirage-title">Mercedes<br>Classe A 2026</p>
+      <p class="tirage-sub">Tu es présent au gala, tu joues. Aucune condition supplémentaire.</p>
+      <div class="tirage-car">
+        <img src="assets/voiture/mercedes" alt="Mercedes Classe A 2026" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="tirage-car-fallback">
+          <span class="material-symbols-outlined">directions_car</span>
+          <p>Mercedes Classe A 2026</p>
+        </div>
+      </div>
+      <p class="tirage-note">Tirage réalisé en direct le soir du gala devant tous les participants.</p>
+    </div>
+  </div>
+</div>
+
+<hr class="hr">
 
 <!-- INTERVENANTS -->
-<div class="section">
-  <p class="section-label">Sur scène</p>
-  <h2 class="section-title">Les meilleurs closers<br>français prennent la parole.</h2>
-  <p class="section-body">Pas des théoriciens. Des gens qui vendent, chaque jour, des sommes que la plupart n'imaginent pas. Ils partagent ce qui marche vraiment.</p>
-  <div class="intervenants-grid">
-    <div class="intervenant-card">
-      <div class="intervenant-avatar">
-        <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">person</span>
-      </div>
+<div class="s fade-up">
+  <div class="eyebrow"><div class="eyebrow-line"></div><span class="eyebrow-text">Sur scène</span></div>
+  <h2 class="s-title">Les meilleurs closers<br>français prennent la parole.</h2>
+  <p class="s-body">Pas des théoriciens. Des gens qui vendent chaque jour, et qui partagent ce qui marche vraiment.</p>
+  <div class="intervenants">
+    <div class="intervenant">
+      <div class="intervenant-avatar"><span class="material-symbols-outlined fi">person</span></div>
       <p class="intervenant-name">À confirmer</p>
       <p class="intervenant-role">Closer · Top 1% France</p>
     </div>
-    <div class="intervenant-card">
-      <div class="intervenant-avatar">
-        <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">person</span>
-      </div>
+    <div class="intervenant">
+      <div class="intervenant-avatar"><span class="material-symbols-outlined fi">person</span></div>
       <p class="intervenant-name">À confirmer</p>
       <p class="intervenant-role">Closer · Top 1% France</p>
     </div>
-    <div class="intervenant-card">
-      <div class="intervenant-avatar">
-        <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">person</span>
-      </div>
+    <div class="intervenant">
+      <div class="intervenant-avatar"><span class="material-symbols-outlined fi">person</span></div>
       <p class="intervenant-name">À confirmer</p>
       <p class="intervenant-role">Closer · Top 1% France</p>
     </div>
-    <div class="intervenant-card" style="border:1px dashed rgba(201,168,76,0.2);background:transparent">
-      <div class="intervenant-avatar" style="border-style:dashed">
-        <span class="material-symbols-outlined" style="font-size:20px;color:rgba(201,168,76,0.4)">add</span>
-      </div>
-      <p class="intervenant-name" style="color:rgba(255,255,255,0.3)">+ d'autres</p>
+    <div class="intervenant" style="border-style:dashed;border-color:rgba(201,168,76,0.3);background:rgba(201,168,76,0.03)">
+      <div class="intervenant-avatar" style="border-style:dashed"><span class="material-symbols-outlined" style="font-size:18px;color:var(--gold)">add</span></div>
+      <p class="intervenant-name" style="color:var(--muted)">Et d'autres…</p>
       <p class="intervenant-role">Annonces à venir</p>
     </div>
   </div>
 </div>
 
-<div class="divider"><div class="divider-line"></div></div>
+<hr class="hr">
 
 <!-- CONDITIONS -->
-<div class="section">
-  <p class="section-label">Comment y accéder</p>
-  <h2 class="section-title">L'invitation se mérite.</h2>
-  <p class="section-body">Pas de candidature. Pas de favoritisme. Un seul critère objectif : ton CA annuel. Tu l'atteins, tu es invité. C'est aussi simple que ça.</p>
-  <div class="conditions-card">
+<div class="s fade-up">
+  <div class="eyebrow"><div class="eyebrow-line"></div><span class="eyebrow-text">L'accès</span></div>
+  <h2 class="s-title">L'invitation<br>se mérite.</h2>
+  <p class="s-body">Pas de candidature. Pas de favoritisme. Un seul critère : ton CA annuel. Tu l'atteins, tu es invité. Automatiquement.</p>
+  <div class="conditions">
     <div class="condition-row">
       <span class="condition-label">CA annuel requis</span>
       <span class="condition-val gold">150 000 €</span>
     </div>
     <div class="condition-row">
-      <span class="condition-label">Date de l'événement</span>
-      <span class="condition-val">8 Juin 2027</span>
+      <span class="condition-label">Date</span>
+      <span class="condition-val">8 & 9 Juin 2027</span>
+    </div>
+    <div class="condition-row">
+      <span class="condition-label">Lieu</span>
+      <span class="condition-val">Domaine privé · Provence</span>
     </div>
     <div class="condition-row">
       <span class="condition-label">Accès</span>
       <span class="condition-val">Sur invitation uniquement</span>
     </div>
     <div class="condition-row">
-      <span class="condition-label">Places disponibles</span>
-      <span class="condition-val">Limitées</span>
-    </div>
-    <div class="condition-row">
       <span class="condition-label">Tirage au sort</span>
-      <span class="condition-val">Automatique si présent</span>
+      <span class="condition-val">Automatique si présent au gala</span>
+    </div>
+    <div class="condition-row" style="border:none">
+      <span class="condition-label">Hébergement & repas</span>
+      <span class="condition-val" style="color:#006c4c">Inclus</span>
     </div>
   </div>
-  <p style="font-size:12px;color:#8e706f;margin-top:16px;line-height:1.6;text-align:center">Les participants éligibles reçoivent leur invitation par email dès la validation de leur CA. Aucune démarche supplémentaire n'est nécessaire.</p>
+  <p style="font-size:12px;color:var(--muted);margin-top:16px;line-height:1.6;text-align:center">Les participants éligibles reçoivent leur invitation par email dès validation de leur CA. Aucune démarche supplémentaire nécessaire.</p>
 </div>
 
-<!-- ESPACE POUR LE CTA FIXE -->
-<div style="height:120px"></div>
+<div class="spacer"></div>
 
 <!-- CTA FIXE -->
 <div class="cta-bar">
   <div class="cta-inner">
     <div class="cta-info">
-      <p class="cta-info-label">Objectif pour être invité</p>
+      <p class="cta-info-label">Pour être invité</p>
       <p class="cta-info-val">150 000 € de CA annuel</p>
     </div>
     <div class="cta-locked">
-      <span class="material-symbols-outlined" style="font-size:16px">lock</span>
+      <span class="material-symbols-outlined" style="font-size:15px">lock</span>
       Invitation à débloquer
     </div>
   </div>
 </div>
 
 <script>
-// Déverouiller le CTA si l'utilisateur a le CA requis
+// Nav scroll
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+// CTA unlock check
 const ca = parseFloat(localStorage.getItem('stacker_ca_annuel') || '0');
 if (ca >= 150000) {
-  const btn = document.querySelector('.cta-locked');
-  if (btn) {
-    btn.outerHTML = '<button class="cta-btn">Confirmer ma présence</button>';
-  }
+  document.querySelector('.cta-locked').outerHTML = '<button class="cta-btn">Confirmer ma présence ✦</button>';
 }
-
-// Reveal au scroll
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.style.opacity = '1'; e.target.style.transform = 'translateY(0)'; } });
-}, { threshold: 0.1 });
-document.querySelectorAll('.avantage-card, .intervenant-card').forEach(el => {
-  el.style.opacity = '0';
-  el.style.transform = 'translateY(20px)';
-  el.style.transition = 'all 0.5s cubic-bezier(0.22,1,0.36,1)';
-  observer.observe(el);
-});
 </script>
 </body>
 </html>
