@@ -3,518 +3,620 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Créer mon compte · Stacker</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-<script>
-tailwind.config = {
-  theme: {
-    extend: {
-      colors: {
-        "primary": "#b52330",
-        "primary-container": "#ff5a5f",
-        "primary-fixed": "#ffdad8",
-        "on-primary": "#ffffff",
-        "tertiary": "#006c4c",
-        "tertiary-fixed": "#78fac4",
-        "background": "#fcf9f8",
-        "surface-container-lowest": "#ffffff",
-        "surface-container-low": "#f6f3f2",
-        "surface-container": "#f0eded",
-        "surface-container-high": "#eae7e7",
-        "on-surface": "#1b1c1c",
-        "on-surface-variant": "#5a403f",
-        "outline-variant": "#e2bebc"
-      },
-      fontFamily: {
-        "headline": ["Plus Jakarta Sans"],
-        "body": ["Inter"],
-        "mono": ["JetBrains Mono"]
-      }
-    }
-  }
-}
-</script>
+<title>Bienvenue · Stacker</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 <style>
-  body { font-family: 'Inter', sans-serif; }
-  .font-headline { font-family: 'Plus Jakarta Sans', sans-serif; }
-  .font-mono { font-family: 'JetBrains Mono', monospace; }
-  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-  .filled { font-variation-settings: 'FILL' 1 !important; }
-  .hero-dark {
-    background:
-      radial-gradient(ellipse at top right, rgba(181,35,48,0.22), transparent 60%),
-      radial-gradient(ellipse at bottom left, rgba(255,90,95,0.08), transparent 50%),
-      #1b1c1c;
-  }
-  .cta-gradient { background: linear-gradient(135deg, #b52330 0%, #ff5a5f 100%); }
-  .soft-shadow { box-shadow: 0 8px 24px -8px rgba(27,28,28,0.06); }
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --red:#b52330;--red2:#ff5a5f;--green:#006c4c;--green2:#00a879;
+  --dark:#1b1c1c;--surface:#fcf9f8;--card:#fff;
+  --muted:#5a403f;--border:rgba(226,190,188,0.4);
+  --red-soft:#ffdad8;--surface-low:#f6f3f2;--surface-mid:#f0eded;
+}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Inter',sans-serif;background:var(--surface);color:var(--dark);display:flex;flex-direction:column}
+.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;line-height:1;font-family:'Material Symbols Outlined'}
+.filled{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24 !important}
 
-  /* Steps */
-  .step { display: none; }
-  .step.active { display: flex; flex-direction: column; animation: fadeUp 0.35s cubic-bezier(0.22,1,0.36,1) both; }
-  @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+/* PROGRESS BAR */
+.progress-wrap{position:fixed;top:0;left:0;right:0;height:3px;background:rgba(226,190,188,0.3);z-index:100}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--red),var(--red2));transition:width 0.5s cubic-bezier(0.22,1,0.36,1)}
 
-  /* Progress */
-  .progress-dot { width: 8px; height: 8px; border-radius: 50%; background: #e2bebc; transition: all 0.3s ease; }
-  .progress-dot.active { background: #b52330; width: 24px; border-radius: 4px; }
-  .progress-dot.done { background: #006c4c; }
+/* SCREENS */
+.screens{flex:1;position:relative;overflow:hidden}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;transform:translateX(60px);transition:all 0.45s cubic-bezier(0.22,1,0.36,1)}
+.screen.active{opacity:1;pointer-events:auto;transform:translateX(0)}
+.screen.out{opacity:0;transform:translateX(-60px)}
 
-  /* Inputs */
-  .field-input {
-    width: 100%; padding: 13px 16px;
-    border: 1.5px solid #e2bebc; border-radius: 14px;
-    font-family: 'Inter', sans-serif; font-size: 15px;
-    background: #f6f3f2; color: #1b1c1c;
-    outline: none; transition: all 0.18s;
-  }
-  .field-input:focus { border-color: #b52330; background: #fff; box-shadow: 0 0 0 3px rgba(181,35,48,0.08); }
-  .field-input::placeholder { color: #8e706f; }
-  .field-label { display: block; font-size: 11px; font-weight: 600; color: #5a403f; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 7px; }
+/* SCREEN 1 — WELCOME */
+#s1{background:var(--dark);justify-content:center;align-items:center;text-align:center;padding:72px 32px 40px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.s1-logo{display:flex;align-items:baseline;gap:2px;margin-bottom:48px;justify-content:center}
+.s1-logo span{font-family:'Plus Jakarta Sans';font-weight:900;font-size:36px;color:#fff;letter-spacing:-0.04em}
+.s1-logo .dot{width:6px;height:6px;background:var(--red2);border-radius:50%;margin-bottom:4px}
+.s1-tagline{font-family:'Plus Jakarta Sans';font-weight:800;font-size:28px;color:#fff;letter-spacing:-0.03em;line-height:1.2;margin-bottom:16px}
+.s1-tagline em{font-style:normal;color:var(--red2)}
+.s1-sub{font-size:15px;color:rgba(255,255,255,0.5);line-height:1.6;margin-bottom:44px;max-width:320px}
+.s1-perks{display:flex;flex-direction:column;gap:10px;margin-bottom:44px;width:100%;max-width:360px;text-align:left}
+.s1-perk{display:flex;align-items:center;gap:12px}
+.s1-perk-icon{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.s1-perk-icon .material-symbols-outlined{font-size:16px;color:#fff}
+.s1-perk-text{font-size:13px;color:rgba(255,255,255,0.65);line-height:1.4}
+.btn-start{width:100%;max-width:360px;padding:18px;border-radius:16px;background:linear-gradient(135deg,var(--red),var(--red2));border:none;color:#fff;font-family:'Plus Jakarta Sans';font-weight:800;font-size:16px;cursor:pointer;letter-spacing:-0.01em;box-shadow:0 12px 32px rgba(181,35,48,0.35);transition:transform 0.2s,box-shadow 0.2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-start:active{transform:scale(0.98)}
+.s1-login{font-size:13px;color:rgba(255,255,255,0.35);margin-top:16px}
+.s1-login a{color:rgba(255,255,255,0.6);font-weight:600;text-decoration:none}
 
-  /* Option cards */
-  .option-card {
-    border: 1.5px solid #e2bebc; border-radius: 16px; padding: 20px;
-    cursor: pointer; transition: all 0.2s ease; background: #fff;
-    display: flex; align-items: flex-start; gap: 14px;
-  }
-  .option-card:hover { border-color: #b52330; background: #faf8f7; }
-  .option-card.selected { border-color: #b52330; background: #ffdad8; }
-  .option-card.selected .option-check { background: #b52330; border-color: #b52330; }
-  .option-card.selected .option-check span { color: #fff; }
-  .option-check { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #e2bebc; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; margin-top: 1px; }
-  .option-check span { font-size: 14px; color: transparent; transition: color 0.2s; }
+/* SCREEN INNER */
+.screen-inner{flex:1;display:flex;flex-direction:column;padding:28px 24px 16px;max-width:480px;width:100%;margin:0 auto;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.screen-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.screen-q{font-family:'Plus Jakarta Sans';font-weight:800;font-size:24px;letter-spacing:-0.03em;color:var(--dark);line-height:1.2;margin-bottom:6px}
+.screen-hint{font-size:14px;color:var(--muted);margin-bottom:24px;line-height:1.5}
 
-  /* Offer cards */
-  .offer-card {
-    border: 1.5px solid #e2bebc; border-radius: 16px; padding: 18px;
-    cursor: pointer; transition: all 0.2s ease; background: #fff;
-    position: relative;
-  }
-  .offer-card:hover { border-color: #b52330; transform: translateY(-1px); }
-  .offer-card.selected { border-color: #b52330; }
-  .offer-card.selected::after { content: ''; position: absolute; top: 10px; right: 10px; width: 20px; height: 20px; background: #b52330; border-radius: 50%; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z'/%3E%3C/svg%3E"); background-size: 14px; background-repeat: no-repeat; background-position: center; }
+/* FIELDS */
+.field-label{display:block;font-size:11px;font-weight:600;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px}
+.field-input{width:100%;padding:13px 16px;border:1.5px solid rgba(226,190,188,0.6);border-radius:14px;font-family:'Inter',sans-serif;font-size:15px;background:var(--surface-low);color:var(--dark);outline:none;transition:all 0.18s}
+.field-input:focus{border-color:var(--red);background:#fff;box-shadow:0 0 0 3px rgba(181,35,48,0.08)}
+.field-input::placeholder{color:#8e706f}
+.field-group{display:flex;flex-direction:column;gap:14px;margin-bottom:8px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 
-  /* Convention */
-  .convention-body { max-height: 280px; overflow-y: auto; scrollbar-width: thin; }
-  .convention-body::-webkit-scrollbar { width: 4px; }
-  .convention-body::-webkit-scrollbar-thumb { background: #e2bebc; border-radius: 99px; }
-  .conv-article { margin-bottom: 18px; }
-  .conv-h1 { font-family: 'Plus Jakarta Sans'; font-weight: 700; font-size: 13px; color: #b52330; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
-  .conv-h2 { font-weight: 600; font-size: 12px; color: #1b1c1c; margin-bottom: 4px; margin-top: 10px; }
-  .conv-p { font-size: 12px; color: #5a403f; line-height: 1.65; margin-bottom: 5px; }
-  .conv-li { font-size: 12px; color: #5a403f; line-height: 1.65; padding-left: 12px; margin-bottom: 3px; }
-  .conv-li::before { content: '·'; margin-right: 6px; color: #b52330; }
-  .conv-highlight { background: #ffdad8; border-radius: 8px; padding: 8px 12px; font-size: 12px; color: #b52330; font-weight: 600; margin: 8px 0; line-height: 1.55; }
+/* OPTION CARDS */
+.option-card{border:1.5px solid rgba(226,190,188,0.6);border-radius:16px;padding:18px;cursor:pointer;transition:all 0.2s ease;background:#fff;display:flex;align-items:flex-start;gap:14px}
+.option-card:hover{border-color:var(--red);background:#faf8f7}
+.option-card.selected{border-color:var(--dark);background:var(--red-soft)}
+.option-check{width:24px;height:24px;border-radius:50%;border:2px solid rgba(226,190,188,0.8);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;margin-top:1px}
+.option-card.selected .option-check{background:var(--dark);border-color:var(--dark)}
+.option-check .material-symbols-outlined{font-size:14px;color:transparent;transition:color 0.2s}
+.option-card.selected .option-check .material-symbols-outlined{color:#fff}
+.option-title{font-family:'Plus Jakarta Sans';font-weight:700;font-size:15px;color:var(--dark);margin-bottom:3px}
+.option-desc{font-size:13px;color:var(--muted);line-height:1.4}
 
-  /* Checkbox custom */
-  .custom-check { display: flex; align-items: flex-start; gap: 12px; cursor: pointer; }
-  .check-box { width: 22px; height: 22px; border: 2px solid #e2bebc; border-radius: 6px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.18s; margin-top: 1px; }
-  .check-box.checked { background: #b52330; border-color: #b52330; }
-  .check-box.checked span { color: #fff; }
-  .check-box span { font-size: 14px; color: transparent; transition: color 0.18s; }
+/* CANAL CARDS */
+.canal-grid{display:flex;flex-direction:column;gap:10px}
+.canal-card{padding:16px 18px;border-radius:16px;border:1.5px solid rgba(226,190,188,0.6);background:#fff;cursor:pointer;transition:all 0.2s cubic-bezier(0.22,1,0.36,1);display:flex;align-items:center;gap:14px}
+.canal-card:hover{border-color:var(--dark)}
+.canal-card.selected{border-color:var(--dark);background:var(--surface-low)}
+.canal-card.selected .canal-icon-wrap{background:var(--dark)}
+.canal-card.selected .canal-icon-wrap .material-symbols-outlined{color:#fff}
+.canal-icon-wrap{width:40px;height:40px;border-radius:12px;background:var(--surface-mid);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background 0.2s}
+.canal-icon-wrap .material-symbols-outlined{font-size:18px;color:var(--muted);transition:color 0.2s}
+.canal-card-title{font-family:'Plus Jakarta Sans';font-weight:700;font-size:14px;color:var(--dark);margin-bottom:2px}
+.canal-card-desc{font-size:12px;color:var(--muted)}
 
-  /* Scroll indicator */
-  .scroll-indicator { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #8e706f; font-weight: 500; }
+/* OBJECTIF SLIDER */
+.objectif-display{text-align:center;margin-bottom:24px;padding:20px;background:#fff;border-radius:18px;border:1.5px solid rgba(226,190,188,0.4)}
+.objectif-num{font-family:'Plus Jakarta Sans';font-weight:900;font-size:48px;color:var(--dark);letter-spacing:-0.05em;line-height:1}
+.objectif-unit{font-size:14px;color:var(--muted);margin-top:4px}
+.objectif-equiv{font-size:12px;color:var(--green);font-weight:600;margin-top:8px;background:rgba(0,108,76,0.08);display:inline-block;padding:4px 12px;border-radius:99px}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:99px;background:rgba(226,190,188,0.5);outline:none;margin-bottom:10px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:var(--dark);cursor:pointer;box-shadow:0 2px 8px rgba(27,28,28,0.25)}
+.range-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);font-weight:600;margin-bottom:16px}
 
-  /* IBAN step */
-  .iban-skip { border: 1.5px dashed #e2bebc; border-radius: 14px; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.18s; }
-  .iban-skip:hover { border-color: #5a403f; background: #f6f3f2; }
+/* CONVENTION */
+.conv-box{background:#fff;border-radius:16px;border:1.5px solid rgba(226,190,188,0.4);overflow:hidden;margin-bottom:14px;flex-shrink:0}
+.conv-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid rgba(226,190,188,0.3)}
+.conv-header-left{display:flex;align-items:center;gap:8px}
+.conv-header-left .material-symbols-outlined{font-size:15px;color:var(--green)}
+.conv-header-title{font-family:'Plus Jakarta Sans';font-weight:700;font-size:13px;color:var(--dark)}
+.scroll-indicator{display:flex;align-items:center;gap:5px;font-size:11px;color:#8e706f;font-weight:500}
+.conv-body{max-height:220px;overflow-y:auto;padding:14px 16px;scrollbar-width:thin}
+.conv-body::-webkit-scrollbar{width:3px}
+.conv-body::-webkit-scrollbar-thumb{background:rgba(226,190,188,0.6);border-radius:99px}
+.conv-h1{font-family:'Plus Jakarta Sans';font-weight:700;font-size:11px;color:var(--dark);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.06em;margin-top:14px}
+.conv-h1:first-child{margin-top:0}
+.conv-p{font-size:12px;color:var(--muted);line-height:1.65;margin-bottom:4px}
+.conv-li{font-size:12px;color:var(--muted);line-height:1.65;padding-left:12px;margin-bottom:2px}
+.conv-li::before{content:'·';margin-right:6px;color:var(--red)}
+.conv-note{background:var(--surface-low);border-radius:10px;padding:10px 12px;font-size:11px;color:var(--muted);line-height:1.6;margin-top:10px;text-align:center}
 
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-thumb { background: #e2bebc; border-radius: 99px; }
+/* CHECKBOXES */
+.custom-check{display:flex;align-items:flex-start;gap:12px;cursor:pointer;padding:10px 0}
+.custom-check+.custom-check{border-top:1px solid rgba(226,190,188,0.25)}
+.check-box{width:22px;height:22px;border:2px solid rgba(226,190,188,0.8);border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.18s;margin-top:1px}
+.check-box.checked{background:var(--dark);border-color:var(--dark)}
+.check-box .material-symbols-outlined{font-size:13px;color:transparent;transition:color 0.18s}
+.check-box.checked .material-symbols-outlined{color:#fff}
+.checks-wrap{background:#fff;border-radius:14px;border:1.5px solid rgba(226,190,188,0.4);padding:4px 14px;margin-bottom:14px}
+
+/* OFFER CARDS */
+.offer-card{border:1.5px solid rgba(226,190,188,0.5);border-radius:14px;padding:14px 16px;cursor:pointer;transition:all 0.2s ease;background:#fff;display:flex;align-items:center;gap:12px;position:relative}
+.offer-card:hover{border-color:var(--red)}
+.offer-card.selected{border-color:var(--dark);background:var(--surface-low)}
+.offer-check{width:20px;height:20px;border-radius:50%;border:2px solid rgba(226,190,188,0.7);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;margin-left:auto}
+.offer-card.selected .offer-check{background:var(--dark);border-color:var(--dark)}
+.offer-check .material-symbols-outlined{font-size:12px;color:transparent}
+.offer-card.selected .offer-check .material-symbols-outlined{color:#fff}
+.offer-icon-wrap{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.offer-grid{display:flex;flex-direction:column;gap:8px}
+.offer-name{font-family:'Plus Jakarta Sans';font-weight:700;font-size:13px;color:var(--dark);letter-spacing:-0.01em}
+.offer-cat{font-size:11px;color:var(--muted)}
+.offer-com{font-size:11px;font-weight:700;padding:3px 8px;border-radius:99px;flex-shrink:0}
+
+/* IBAN */
+.iban-box{background:#fff;border-radius:16px;border:1.5px solid rgba(226,190,188,0.4);padding:20px;margin-bottom:12px}
+.iban-skip{border:1.5px dashed rgba(226,190,188,0.6);border-radius:12px;padding:14px 18px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.18s;font-size:13px;font-weight:600;color:var(--muted);gap:6px;margin-bottom:8px}
+.iban-skip:hover{border-color:var(--muted);color:var(--dark)}
+
+/* BOTTOM NAV */
+.screen-bottom{padding:16px 24px 32px;max-width:480px;width:100%;margin:0 auto;flex-shrink:0}
+.btn-next{width:100%;padding:16px;border-radius:16px;background:var(--dark);border:none;color:#fff;font-family:'Plus Jakarta Sans';font-weight:800;font-size:15px;cursor:pointer;letter-spacing:-0.01em;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px}
+.btn-next:hover{background:#2a2b2b}
+.btn-next:active{transform:scale(0.99)}
+.btn-next:disabled{background:#e5e2e1;color:#8e706f;cursor:not-allowed}
+.btn-next.cta{background:linear-gradient(135deg,var(--red),var(--red2));box-shadow:0 8px 24px rgba(181,35,48,0.25)}
+.btn-back{width:100%;background:none;border:none;font-size:13px;color:var(--muted);cursor:pointer;padding:10px;font-family:'Inter';display:flex;align-items:center;justify-content:center;gap:4px;border-radius:12px;transition:all 0.2s}
+.btn-back:hover{background:var(--surface-mid);color:var(--dark)}
+
+/* INFO BANNER */
+.info-banner{background:var(--red-soft);border-radius:14px;padding:12px 14px;display:flex;align-items:flex-start;gap:10px;margin-bottom:14px}
+.info-banner .material-symbols-outlined{font-size:16px;color:var(--red);flex-shrink:0;margin-top:1px}
+.info-banner p{font-size:12px;color:var(--red);font-weight:500;line-height:1.5}
+
+/* SUCCESS */
+.success-ring{width:72px;height:72px;border-radius:24px;background:var(--dark);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;animation:popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both}
+@keyframes popIn{from{opacity:0;transform:scale(0.5)}to{opacity:1;transform:scale(1)}}
+.recap-cards{display:flex;flex-direction:column;gap:8px;width:100%;margin-bottom:24px}
+.recap-card{background:#fff;border:1.5px solid rgba(226,190,188,0.4);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.recap-card .material-symbols-outlined{font-size:16px;color:var(--red);flex-shrink:0}
+.recap-card-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;font-weight:600;margin-bottom:1px}
+.recap-card-val{font-family:'Plus Jakarta Sans';font-weight:700;font-size:13px;color:var(--dark)}
+.btn-go{width:100%;padding:17px;border-radius:16px;background:linear-gradient(135deg,var(--red),var(--red2));border:none;color:#fff;font-family:'Plus Jakarta Sans';font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 12px 32px rgba(181,35,48,0.3);transition:transform 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px}
+.btn-go:active{transform:scale(0.98)}
+.btn-dashboard{width:100%;padding:14px;border-radius:16px;background:var(--surface-mid);border:none;color:var(--dark);font-family:'Plus Jakarta Sans';font-weight:700;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s}
+.btn-dashboard:hover{background:#e5e2e1}
+.iban-warning{background:var(--surface-mid);border:1.5px solid rgba(226,190,188,0.5);border-radius:14px;padding:14px;display:flex;align-items:flex-start;gap:10px;margin-bottom:16px}
+.iban-warning .material-symbols-outlined{font-size:16px;color:var(--muted);flex-shrink:0;margin-top:1px}
+
+/* NOTIF */
+.notif-banner{background:rgba(0,108,76,0.08);border:1.5px solid rgba(0,108,76,0.2);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all 0.2s;margin-bottom:16px}
+.notif-banner:hover{background:rgba(0,108,76,0.12)}
+.notif-banner .material-symbols-outlined{font-size:18px;color:var(--green);flex-shrink:0}
+.notif-banner-text{flex:1}
+.notif-banner-title{font-weight:700;font-size:13px;color:var(--dark);margin-bottom:1px}
+.notif-banner-sub{font-size:11px;color:var(--muted)}
 </style>
 </head>
-<body class="bg-background min-h-screen flex flex-col">
+<body>
 
-<!-- Top bar -->
-<header class="px-6 py-5 flex items-center justify-between max-w-lg mx-auto w-full">
-  <a href="index.html" class="flex items-baseline gap-0.5">
-    <span class="text-xl font-black text-primary tracking-tighter font-headline">Stacker</span>
-    <span class="w-1 h-1 bg-on-surface inline-block mb-0.5"></span>
-  </a>
-  <div class="flex gap-1.5" id="progressDots">
-    <!-- filled by JS -->
+<div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+
+<div class="screens">
+
+  <!-- S1 — WELCOME -->
+  <div class="screen active" id="s1">
+    <div class="s1-logo">
+      <span>Stacker</span>
+      <div class="dot"></div>
+    </div>
+    <h1 class="s1-tagline">Vends. Gagne.<br><em>Recommence.</em></h1>
+    <p class="s1-sub">La plateforme des commerciaux terrain qui veulent gagner de l'argent vrai — sans patron, sans bureau, sans limite.</p>
+    <div class="s1-perks">
+      <div class="s1-perk">
+        <div class="s1-perk-icon"><span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">bolt</span></div>
+        <p class="s1-perk-text">Commence à vendre dès aujourd'hui — zéro expérience requise</p>
+      </div>
+      <div class="s1-perk">
+        <div class="s1-perk-icon"><span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">payments</span></div>
+        <p class="s1-perk-text">Commissions récurrentes versées sous 7 jours</p>
+      </div>
+      <div class="s1-perk">
+        <div class="s1-perk-icon"><span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">menu_book</span></div>
+        <p class="s1-perk-text">Scripts, objections et contrats inclus pour chaque produit</p>
+      </div>
+    </div>
+    <button class="btn-start" onclick="goTo(2)">
+      <span class="material-symbols-outlined filled" style="font-size:20px;font-variation-settings:'FILL' 1">bolt</span>
+      Créer mon compte
+    </button>
+    <p class="s1-login">Déjà un compte ? <a href="index.html">Se connecter</a></p>
   </div>
-</header>
 
-<!-- Main -->
-<main class="flex-1 flex flex-col max-w-lg mx-auto w-full px-6 pb-10">
-
-  <!-- STEP 1 — Bienvenue -->
-  <div class="step active flex-1" id="step-1">
-    <div class="hero-dark rounded-2xl p-8 mb-6 flex-shrink-0">
-      <p class="font-mono text-[9px] tracking-[0.2em] uppercase text-white/40 mb-3">Bienvenue sur</p>
-      <h1 class="font-headline font-extrabold text-4xl text-white mb-3" style="letter-spacing:-0.04em">Stacker.</h1>
-      <p class="text-white/60 text-sm leading-relaxed mb-6">La plateforme qui te donne tout ce qu'il faut pour vendre et toucher des commissions récurrentes — scripts, contrats, leads, outils.</p>
-      <div class="flex flex-col gap-2">
-        <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
-            <span class="material-symbols-outlined filled text-white" style="font-size:16px;font-variation-settings:'FILL' 1">bolt</span>
+  <!-- S2 — INFOS PERSO -->
+  <div class="screen" id="s2">
+    <div class="screen-inner">
+      <p class="screen-label">Étape 1 sur 7 · Profil</p>
+      <h2 class="screen-q">Qui es-tu ?</h2>
+      <p class="screen-hint">Ces informations servent à créer ton profil Stacker.</p>
+      <div class="field-group">
+        <div class="field-row">
+          <div>
+            <label class="field-label">Prénom</label>
+            <input type="text" id="iPrenom" placeholder="Marie" class="field-input" autocomplete="given-name">
           </div>
-          <p class="text-sm text-white/70">Commence à vendre dès aujourd'hui — zéro expérience requise</p>
-        </div>
-        <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
-            <span class="material-symbols-outlined filled text-white" style="font-size:16px;font-variation-settings:'FILL' 1">payments</span>
+          <div>
+            <label class="field-label">Nom</label>
+            <input type="text" id="iNom" placeholder="Dupont" class="field-input" autocomplete="family-name">
           </div>
-          <p class="text-sm text-white/70">Commissions récurrentes versées chaque mois sur ton compte</p>
         </div>
-        <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
-            <span class="material-symbols-outlined filled text-white" style="font-size:16px;font-variation-settings:'FILL' 1">menu_book</span>
+        <div>
+          <label class="field-label">Email</label>
+          <input type="email" id="iEmail" placeholder="marie@email.fr" class="field-input" autocomplete="email">
+        </div>
+        <div>
+          <label class="field-label">Téléphone</label>
+          <input type="tel" id="iTel" placeholder="06 00 00 00 00" class="field-input" autocomplete="tel">
+        </div>
+        <div>
+          <label class="field-label">Mot de passe</label>
+          <input type="password" id="iPassword" placeholder="Min. 8 caractères" class="field-input">
+        </div>
+      </div>
+    </div>
+    <div class="screen-bottom">
+      <button class="btn-next cta" onclick="validateS2()">
+        Continuer <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span>
+      </button>
+      <button class="btn-back" onclick="goTo(1)">
+        <span class="material-symbols-outlined" style="font-size:14px">arrow_back</span> Retour
+      </button>
+    </div>
+  </div>
+
+  <!-- S3 — ÂGE -->
+  <div class="screen" id="s3">
+    <div class="screen-inner">
+      <p class="screen-label">Étape 2 sur 7 · Âge</p>
+      <h2 class="screen-q">Tu as quel âge ?</h2>
+      <p class="screen-hint">Requis pour des raisons légales. Aucun justificatif demandé.</p>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px">
+        <div class="option-card" id="opt-majeur" onclick="selectAge('majeur')">
+          <div class="option-check" id="check-majeur">
+            <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">check</span>
           </div>
-          <p class="text-sm text-white/70">Scripts, objections et contrats inclus pour chaque produit</p>
+          <div>
+            <p class="option-title">J'ai 18 ans ou plus</p>
+            <p class="option-desc">Je déclare sur l'honneur être majeur. Je peux signer et percevoir des commissions directement.</p>
+          </div>
+        </div>
+        <div class="option-card" id="opt-mineur" onclick="selectAge('mineur')">
+          <div class="option-check" id="check-mineur">
+            <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">check</span>
+          </div>
+          <div>
+            <p class="option-title">J'ai moins de 18 ans</p>
+            <p class="option-desc">Un email sera envoyé à mon parent ou tuteur légal pour valider mon inscription.</p>
+          </div>
         </div>
       </div>
+      <div id="parentEmailBlock" style="display:none">
+        <div class="info-banner">
+          <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">info</span>
+          <p>Un email d'autorisation sera envoyé à ton parent. Ton compte sera activé dès sa validation.</p>
+        </div>
+        <label class="field-label">Email du parent / tuteur légal</label>
+        <input type="email" id="iParentEmail" placeholder="parent@email.fr" class="field-input">
+      </div>
     </div>
-    <div class="mt-auto">
-      <button onclick="nextStep()" class="w-full py-4 rounded-2xl cta-gradient text-white font-headline font-bold text-base flex items-center justify-center gap-2 hover:opacity-95 transition" style="box-shadow:0 8px 28px rgba(181,35,48,0.22)">
-        Créer mon compte
-        <span class="material-symbols-outlined" style="font-size:20px">arrow_forward</span>
+    <div class="screen-bottom">
+      <button class="btn-next cta" onclick="validateS3()">
+        Continuer <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span>
       </button>
-      <p class="text-center text-xs text-on-surface-variant mt-3">Déjà un compte ? <a href="index.html" class="font-semibold text-primary">Se connecter</a></p>
-    </div>
-  </div>
-
-  <!-- STEP 2 — Infos personnelles -->
-  <div class="step flex-1" id="step-2">
-    <div class="mb-8">
-      <p class="font-mono text-[10px] tracking-[0.2em] uppercase text-on-surface-variant mb-2">Étape 1 sur 5</p>
-      <h2 class="font-headline font-extrabold text-2xl text-on-surface mb-1" style="letter-spacing:-0.03em">Qui es-tu ?</h2>
-      <p class="text-sm text-on-surface-variant">Ces informations servent uniquement à créer ton profil Stacker.</p>
-    </div>
-    <div class="flex flex-col gap-4 mb-6">
-      <div class="grid grid-cols-2 gap-3">
-        <div>
-          <label class="field-label">Prénom</label>
-          <input type="text" id="iPrenom" placeholder="Marie" class="field-input">
-        </div>
-        <div>
-          <label class="field-label">Nom</label>
-          <input type="text" id="iNom" placeholder="Dupont" class="field-input">
-        </div>
-      </div>
-      <div>
-        <label class="field-label">Email</label>
-        <input type="email" id="iEmail" placeholder="marie@email.fr" class="field-input">
-      </div>
-      <div>
-        <label class="field-label">Téléphone</label>
-        <input type="tel" id="iTel" placeholder="06 00 00 00 00" class="field-input">
-      </div>
-      <div>
-        <label class="field-label">Mot de passe</label>
-        <input type="password" id="iPassword" placeholder="Min. 8 caractères" class="field-input">
-      </div>
-    </div>
-    <div class="mt-auto flex flex-col gap-3">
-      <button onclick="validateStep2()" class="w-full py-4 rounded-2xl cta-gradient text-white font-headline font-bold text-base hover:opacity-95 transition" style="box-shadow:0 8px 28px rgba(181,35,48,0.22)">
-        Continuer
-      </button>
-      <button onclick="prevStep()" class="w-full py-3 rounded-2xl text-on-surface-variant font-semibold text-sm hover:bg-surface-container transition">
-        Retour
+      <button class="btn-back" onclick="goTo(2)">
+        <span class="material-symbols-outlined" style="font-size:14px">arrow_back</span> Retour
       </button>
     </div>
   </div>
 
-  <!-- STEP 3 — Âge -->
-  <div class="step flex-1" id="step-3">
-    <div class="mb-8">
-      <p class="font-mono text-[10px] tracking-[0.2em] uppercase text-on-surface-variant mb-2">Étape 2 sur 5</p>
-      <h2 class="font-headline font-extrabold text-2xl text-on-surface mb-1" style="letter-spacing:-0.03em">Tu as quel âge ?</h2>
-      <p class="text-sm text-on-surface-variant">Cette information est requise pour des raisons légales. Aucun justificatif demandé.</p>
-    </div>
-
-    <div class="flex flex-col gap-3 mb-6">
-      <div class="option-card" id="opt-majeur" onclick="selectAge('majeur')">
-        <div class="option-check" id="check-majeur">
-          <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">check</span>
+  <!-- S4 — CONVENTION -->
+  <div class="screen" id="s4">
+    <div class="screen-inner">
+      <p class="screen-label">Étape 3 sur 7 · Convention</p>
+      <h2 class="screen-q">La convention</h2>
+      <p class="screen-hint">Lis attentivement avant d'accepter.</p>
+      <div class="conv-box">
+        <div class="conv-header">
+          <div class="conv-header-left">
+            <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">handshake</span>
+            <span class="conv-header-title">Accord de partenariat Stacker</span>
+          </div>
+          <div class="scroll-indicator" id="scrollIndicator">
+            <span class="material-symbols-outlined" style="font-size:14px">expand_more</span>
+            Scroll pour lire
+          </div>
         </div>
-        <div>
-          <p class="font-headline font-bold text-base text-on-surface mb-1">J'ai 18 ans ou plus</p>
-          <p class="text-sm text-on-surface-variant">Je déclare sur l'honneur être majeur. Je peux signer et percevoir des commissions directement.</p>
-        </div>
-      </div>
-
-      <div class="option-card" id="opt-mineur" onclick="selectAge('mineur')">
-        <div class="option-check" id="check-mineur">
-          <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">check</span>
-        </div>
-        <div>
-          <p class="font-headline font-bold text-base text-on-surface mb-1">J'ai moins de 18 ans</p>
-          <p class="text-sm text-on-surface-variant">Un email sera envoyé à mon parent ou tuteur légal pour valider mon inscription.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Champ email parent (affiché si mineur) -->
-    <div id="parentEmailBlock" style="display:none" class="mb-6">
-      <div class="bg-primary-fixed rounded-2xl p-4 mb-4">
-        <div class="flex items-start gap-3">
-          <span class="material-symbols-outlined filled text-primary flex-shrink-0 mt-0.5" style="font-size:18px;font-variation-settings:'FILL' 1">info</span>
-          <p class="text-sm text-primary font-medium leading-snug">Un email d'autorisation sera envoyé à ton parent ou tuteur légal. Ton compte sera activé dès sa validation.</p>
-        </div>
-      </div>
-      <label class="field-label">Email du parent / tuteur légal</label>
-      <input type="email" id="iParentEmail" placeholder="parent@email.fr" class="field-input">
-    </div>
-
-    <div class="mt-auto flex flex-col gap-3">
-      <button onclick="validateStep3()" class="w-full py-4 rounded-2xl cta-gradient text-white font-headline font-bold text-base hover:opacity-95 transition" style="box-shadow:0 8px 28px rgba(181,35,48,0.22)">
-        Continuer
-      </button>
-      <button onclick="prevStep()" class="w-full py-3 rounded-2xl text-on-surface-variant font-semibold text-sm hover:bg-surface-container transition">
-        Retour
-      </button>
-    </div>
-  </div>
-
-  <!-- STEP 4 — Convention -->
-  <div class="step flex-1" id="step-4">
-    <div class="mb-5">
-      <p class="font-mono text-[10px] tracking-[0.2em] uppercase text-on-surface-variant mb-2">Étape 3 sur 5</p>
-      <h2 class="font-headline font-extrabold text-2xl text-on-surface mb-1" style="letter-spacing:-0.03em">La convention</h2>
-      <p class="text-sm text-on-surface-variant">Lis attentivement avant d'accepter. Tu peux scroller pour tout voir.</p>
-    </div>
-
-    <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/40 overflow-hidden mb-4 flex-shrink-0" style="box-shadow:0 2px 8px rgba(27,28,28,0.04)">
-      <div class="flex items-center justify-between px-4 py-3 border-b border-outline-variant/30">
-        <div class="flex items-center gap-2">
-          <span class="material-symbols-outlined filled text-tertiary" style="font-size:16px;font-variation-settings:'FILL' 1">handshake</span>
-          <p class="font-headline font-bold text-sm text-on-surface">Accord de partenariat Stacker</p>
-        </div>
-        <div class="scroll-indicator">
-          <span class="material-symbols-outlined" style="font-size:14px">expand_more</span>
-          Scroll pour lire
-        </div>
-      </div>
-      <div class="convention-body px-4 py-4" id="convBody" onscroll="checkConvScroll()">
-
-        <div class="conv-article">
-          <p class="conv-p" style="font-size:13px;color:#1b1c1c;line-height:1.7">Cet accord définit comment on travaille ensemble. En résumé : tu es totalement libre, tu ne travailles pas pour Stacker, et tu touches des commissions chaque fois qu'un client signe. C'est simple, transparent, et sans piège.</p>
-        </div>
-
-        <div class="conv-article">
-          <div class="conv-h1" style="color:#1b1c1c;font-size:11px">Tu es libre et indépendant</div>
+        <div class="conv-body" id="convBody" onscroll="checkConvScroll()">
+          <p class="conv-p" style="font-size:13px;color:var(--dark);line-height:1.7">Cet accord définit comment on travaille ensemble. En résumé : tu es totalement libre, tu ne travailles pas pour Stacker, et tu touches des commissions chaque fois qu'un client signe.</p>
+          <p class="conv-h1">Tu es libre et indépendant</p>
           <p class="conv-p">Tu organises ton activité comme tu le souhaites — aucun horaire imposé, aucun quota, aucune exclusivité. Tu peux vendre pour d'autres entreprises en parallèle. Stacker n'est pas ton employeur.</p>
-        </div>
-
-        <div class="conv-article">
-          <div class="conv-h1" style="color:#1b1c1c;font-size:11px">Comment tu es payé</div>
-          <p class="conv-p">Tu touches une commission sur chaque client que tu apportes, tant qu'il reste abonné. Plus le client reste longtemps, plus tu gagnes grâce aux paliers de fidélisation. Tes commissions sont versées sous 7 jours après confirmation du deal.</p>
+          <p class="conv-h1">Comment tu es payé</p>
+          <p class="conv-p">Tu touches une commission sur chaque client que tu apportes, tant qu'il reste abonné.</p>
           <p class="conv-li">Client actif à 3 mois → bonus d'un mois de commission</p>
           <p class="conv-li">Client actif à 6 mois → +5% sur ton taux de commission</p>
           <p class="conv-li">Client actif à 12 mois → prime + statut Closer Elite</p>
-        </div>
-
-        <div class="conv-article">
-          <div class="conv-h1" style="color:#1b1c1c;font-size:11px">Ce qu'on te demande</div>
-          <p class="conv-p">Présente les produits honnêtement, n'invente pas de fonctionnalités qui n'existent pas, et respecte les prospects. C'est tout.</p>
+          <p class="conv-h1">Ce qu'on te demande</p>
+          <p class="conv-p">Présente les produits honnêtement, n'invente pas de fonctionnalités, et respecte les prospects.</p>
           <p class="conv-li">Utilise les scripts et tarifs fournis par Stacker</p>
           <p class="conv-li">Ne te présente pas comme salarié ou représentant légal de Stacker</p>
           <p class="conv-li">Respecte la vie privée des prospects (RGPD)</p>
-        </div>
-
-        <div class="conv-article">
-          <div class="conv-h1" style="color:#1b1c1c;font-size:11px">Ce que Stacker s'engage à faire</div>
+          <p class="conv-h1">Ce que Stacker s'engage à faire</p>
           <p class="conv-li">Te fournir tous les outils, scripts et supports pour vendre</p>
           <p class="conv-li">Te payer tes commissions sous 7 jours après confirmation</p>
           <p class="conv-li">Te prévenir 30 jours à l'avance de tout changement de taux</p>
           <p class="conv-li">Protéger tes données personnelles</p>
-        </div>
-
-        <div class="conv-article">
-          <div class="conv-h1" style="color:#1b1c1c;font-size:11px">Ton âge et tes revenus</div>
-          <p class="conv-p">Tu déclares avoir 18 ans ou plus, ou avoir l'autorisation de ton parent. Les commissions que tu touches sont des revenus à déclarer aux impôts — comme n'importe quel revenu.</p>
-        </div>
-
-        <div class="conv-article">
-          <div class="conv-h1" style="color:#1b1c1c;font-size:11px">Quitter Stacker</div>
+          <p class="conv-h1">Ton âge et tes revenus</p>
+          <p class="conv-p">Tu déclares avoir 18 ans ou plus, ou avoir l'autorisation de ton parent. Les commissions sont des revenus à déclarer aux impôts.</p>
+          <p class="conv-h1">Quitter Stacker</p>
           <p class="conv-p">Tu peux partir à tout moment avec 15 jours de préavis. Les commissions déjà gagnées te sont versées normalement.</p>
+          <div class="conv-note">En cochant les cases ci-dessous, tu confirmes avoir compris et accepté cet accord. Cette acceptation a la même valeur qu'une signature (art. 1366 et 1367 du Code civil).</div>
         </div>
-
-        <div class="bg-surface-container rounded-xl p-3 mt-2">
-          <p class="text-[12px] text-on-surface-variant leading-snug text-center">En cochant les cases ci-dessous, tu confirmes avoir compris et accepté cet accord. Cette acceptation a la même valeur qu'une signature (articles 1366 et 1367 du Code civil).</p>
-        </div>
-
+      </div>
+      <div class="checks-wrap">
+        <label class="custom-check" onclick="toggleCheck('check1')">
+          <div class="check-box" id="check1"><span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">check</span></div>
+          <p style="font-size:13px;color:var(--dark);line-height:1.45">J'ai lu et je comprends comment fonctionne le partenariat Stacker</p>
+        </label>
+        <label class="custom-check" onclick="toggleCheck('check2')">
+          <div class="check-box" id="check2"><span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">check</span></div>
+          <p style="font-size:13px;color:var(--dark);line-height:1.45">Je confirme avoir <strong>18 ans ou plus</strong>, ou avoir l'accord de mon parent</p>
+        </label>
+        <label class="custom-check" onclick="toggleCheck('check3')">
+          <div class="check-box" id="check3"><span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">check</span></div>
+          <p style="font-size:13px;color:var(--dark);line-height:1.45">Je sais que mes commissions sont des revenus à déclarer aux impôts</p>
+        </label>
       </div>
     </div>
-
-    <!-- Checkboxes -->
-    <div class="flex flex-col gap-3 mb-5" id="convChecks">
-      <label class="custom-check" onclick="toggleCheck('check1')">
-        <div class="check-box" id="check1"><span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">check</span></div>
-        <p class="text-sm text-on-surface leading-snug">J'ai lu et je comprends comment fonctionne le partenariat Stacker</p>
-      </label>
-      <label class="custom-check" onclick="toggleCheck('check2')">
-        <div class="check-box" id="check2"><span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">check</span></div>
-        <p class="text-sm text-on-surface leading-snug">Je confirme avoir <strong>18 ans ou plus</strong>, ou avoir l'accord de mon parent</p>
-      </label>
-      <label class="custom-check" onclick="toggleCheck('check3')">
-        <div class="check-box" id="check3"><span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">check</span></div>
-        <p class="text-sm text-on-surface leading-snug">Je sais que mes commissions sont des revenus à déclarer aux impôts</p>
-      </label>
-    </div>
-
-    <div class="mt-auto flex flex-col gap-3">
-      <button onclick="validateStep4()" id="btnSign" class="w-full py-4 rounded-2xl cta-gradient text-white font-headline font-bold text-base hover:opacity-95 transition opacity-40 cursor-not-allowed" style="box-shadow:0 8px 28px rgba(181,35,48,0.22)" disabled>
-        C'est bon, on y va
+    <div class="screen-bottom">
+      <button class="btn-next cta" id="btnSign" onclick="validateS4()" disabled style="opacity:0.4;cursor:not-allowed">
+        C'est bon, on y va <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span>
       </button>
-      <button onclick="prevStep()" class="w-full py-3 rounded-2xl text-on-surface-variant font-semibold text-sm hover:bg-surface-container transition">
-        Retour
+      <button class="btn-back" onclick="goTo(3)">
+        <span class="material-symbols-outlined" style="font-size:14px">arrow_back</span> Retour
       </button>
     </div>
   </div>
 
-  <!-- STEP 5 — Premières offres -->
-  <div class="step flex-1" id="step-5">
-    <div class="mb-6">
-      <p class="font-mono text-[10px] tracking-[0.2em] uppercase text-on-surface-variant mb-2">Étape 4 sur 5</p>
-      <h2 class="font-headline font-extrabold text-2xl text-on-surface mb-1" style="letter-spacing:-0.03em">Tes premières offres</h2>
-      <p class="text-sm text-on-surface-variant">Choisis les produits que tu veux vendre en priorité. Tu pourras changer à tout moment.</p>
+  <!-- S5 — OFFRES -->
+  <div class="screen" id="s5">
+    <div class="screen-inner">
+      <p class="screen-label">Étape 4 sur 7 · Offres</p>
+      <h2 class="screen-q">Tes premières offres</h2>
+      <p class="screen-hint">Choisis les produits que tu veux vendre. Tu pourras changer à tout moment.</p>
+      <div class="offer-grid" id="offerGrid"></div>
     </div>
-
-    <div class="grid grid-cols-1 gap-2.5 mb-6" id="offerCards">
-      <!-- filled by JS -->
-    </div>
-
-    <div class="mt-auto flex flex-col gap-3">
-      <button onclick="validateStep5()" class="w-full py-4 rounded-2xl cta-gradient text-white font-headline font-bold text-base hover:opacity-95 transition" style="box-shadow:0 8px 28px rgba(181,35,48,0.22)">
-        Continuer
+    <div class="screen-bottom">
+      <button class="btn-next cta" onclick="goTo(6)">
+        Continuer <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span>
       </button>
-      <button onclick="prevStep()" class="w-full py-3 rounded-2xl text-on-surface-variant font-semibold text-sm hover:bg-surface-container transition">
-        Retour
+      <button class="btn-back" onclick="goTo(4)">
+        <span class="material-symbols-outlined" style="font-size:14px">arrow_back</span> Retour
       </button>
     </div>
   </div>
 
-  <!-- STEP 6 — IBAN -->
-  <div class="step flex-1" id="step-6">
-    <div class="mb-8">
-      <p class="font-mono text-[10px] tracking-[0.2em] uppercase text-on-surface-variant mb-2">Étape 5 sur 5</p>
-      <h2 class="font-headline font-extrabold text-2xl text-on-surface mb-1" style="letter-spacing:-0.03em">Ton IBAN</h2>
-      <p class="text-sm text-on-surface-variant">Pour recevoir tes commissions. Tu peux le renseigner maintenant ou plus tard.</p>
-    </div>
-
-    <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/40 p-5 mb-4 soft-shadow">
-      <div class="flex items-start gap-3 mb-5">
-        <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(0,108,76,0.1)">
-          <span class="material-symbols-outlined filled text-tertiary" style="font-size:20px;font-variation-settings:'FILL' 1">payments</span>
+  <!-- S6 — CANAL -->
+  <div class="screen" id="s6">
+    <div class="screen-inner">
+      <p class="screen-label">Étape 5 sur 7 · Prospection</p>
+      <h2 class="screen-q">Comment tu vas prospecter ?</h2>
+      <p class="screen-hint">Sélectionne tous les canaux que tu comptes utiliser.</p>
+      <div class="canal-grid">
+        <div class="canal-card" onclick="toggleCanal('pap', this)">
+          <div class="canal-icon-wrap"><span class="material-symbols-outlined">directions_walk</span></div>
+          <div>
+            <div class="canal-card-title">Porte-à-porte</div>
+            <div class="canal-card-desc">Tu vas directement voir les commerçants en physique</div>
+          </div>
         </div>
-        <div>
-          <p class="font-headline font-bold text-sm text-on-surface mb-0.5">Commissions payées sous 7 jours</p>
-          <p class="text-xs text-on-surface-variant leading-snug">Dès qu'un deal est confirmé, ta commission est virée sur ton compte dans les 7 jours.</p>
+        <div class="canal-card" onclick="toggleCanal('call', this)">
+          <div class="canal-icon-wrap"><span class="material-symbols-outlined">call</span></div>
+          <div>
+            <div class="canal-card-title">Cold Call</div>
+            <div class="canal-card-desc">Tu appelles des prospects depuis une liste</div>
+          </div>
+        </div>
+        <div class="canal-card" onclick="toggleCanal('rdv', this)">
+          <div class="canal-icon-wrap"><span class="material-symbols-outlined">handshake</span></div>
+          <div>
+            <div class="canal-card-title">Rendez-vous</div>
+            <div class="canal-card-desc">Tu prends des RDV et tu closes en face à face</div>
+          </div>
+        </div>
+        <div class="canal-card" onclick="toggleCanal('social', this)">
+          <div class="canal-icon-wrap"><span class="material-symbols-outlined">chat</span></div>
+          <div>
+            <div class="canal-card-title">Réseaux sociaux</div>
+            <div class="canal-card-desc">Tu prospectes via Instagram, LinkedIn, WhatsApp</div>
+          </div>
         </div>
       </div>
-      <div>
+    </div>
+    <div class="screen-bottom">
+      <button class="btn-next cta" id="btnNextCanal" onclick="goTo(7)" disabled>
+        Continuer <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span>
+      </button>
+      <button class="btn-back" onclick="goTo(5)">
+        <span class="material-symbols-outlined" style="font-size:14px">arrow_back</span> Retour
+      </button>
+    </div>
+  </div>
+
+  <!-- S7 — OBJECTIF -->
+  <div class="screen" id="s7">
+    <div class="screen-inner">
+      <p class="screen-label">Étape 6 sur 7 · Objectif</p>
+      <h2 class="screen-q">Quel est ton objectif ?</h2>
+      <p class="screen-hint">Combien tu veux gagner en commissions par mois.</p>
+      <div class="objectif-display">
+        <div class="objectif-num" id="objNum">500</div>
+        <div class="objectif-unit">€ / mois de commissions</div>
+        <div class="objectif-equiv" id="objEquiv">≈ 8 deals par mois</div>
+      </div>
+      <input type="range" min="1" max="10" value="4" id="objSlider" oninput="updateObj()">
+      <div class="range-labels">
+        <span>100 €</span><span>500 €</span><span>1 000 €</span><span>2 500 €</span><span>5 000 €</span>
+      </div>
+    </div>
+    <div class="screen-bottom">
+      <button class="btn-next cta" onclick="goTo(8)">
+        Continuer <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span>
+      </button>
+      <button class="btn-back" onclick="goTo(6)">
+        <span class="material-symbols-outlined" style="font-size:14px">arrow_back</span> Retour
+      </button>
+    </div>
+  </div>
+
+  <!-- S8 — IBAN -->
+  <div class="screen" id="s8">
+    <div class="screen-inner">
+      <p class="screen-label">Étape 7 sur 7 · Paiement</p>
+      <h2 class="screen-q">Ton IBAN</h2>
+      <p class="screen-hint">Pour recevoir tes commissions. Tu peux le renseigner maintenant ou plus tard.</p>
+      <div class="iban-box">
+        <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:18px">
+          <div style="width:40px;height:40px;border-radius:12px;background:rgba(0,108,76,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <span class="material-symbols-outlined filled" style="font-size:20px;color:var(--green);font-variation-settings:'FILL' 1">payments</span>
+          </div>
+          <div>
+            <p style="font-family:'Plus Jakarta Sans';font-weight:700;font-size:14px;color:var(--dark);margin-bottom:3px">Commissions payées sous 7 jours</p>
+            <p style="font-size:12px;color:var(--muted);line-height:1.5">Dès qu'un deal est confirmé, ta commission est virée sur ton compte.</p>
+          </div>
+        </div>
         <label class="field-label">IBAN</label>
         <input type="text" id="iIban" placeholder="FR76 0000 0000 0000 0000 0000 000" class="field-input" oninput="formatIban(this)">
-        <p class="text-xs text-on-surface-variant mt-2">IBAN personnel ou professionnel accepté · Données chiffrées et sécurisées</p>
+        <p style="font-size:11px;color:var(--muted);margin-top:8px">IBAN personnel ou professionnel accepté · Données chiffrées</p>
       </div>
-    </div>
-
-    <button onclick="skipIban()" class="w-full text-center text-sm text-on-surface-variant font-semibold py-3 hover:text-on-surface transition mb-2">
-      Le faire plus tard
-    </button>
-
-    <div class="mt-auto flex flex-col gap-3">
-      <button onclick="validateStep6()" class="w-full py-4 rounded-2xl cta-gradient text-white font-headline font-bold text-base hover:opacity-95 transition" style="box-shadow:0 8px 28px rgba(181,35,48,0.22)">
-        Enregistrer et terminer
+      <button class="iban-skip" onclick="skipIban()">
+        <span class="material-symbols-outlined" style="font-size:15px">schedule</span>
+        Le renseigner plus tard
       </button>
-      <button onclick="prevStep()" class="w-full py-3 rounded-2xl text-on-surface-variant font-semibold text-sm hover:bg-surface-container transition">
-        Retour
+    </div>
+    <div class="screen-bottom">
+      <button class="btn-next cta" onclick="validateS8()">
+        Enregistrer et terminer <span class="material-symbols-outlined" style="font-size:18px">check</span>
+      </button>
+      <button class="btn-back" onclick="goTo(7)">
+        <span class="material-symbols-outlined" style="font-size:14px">arrow_back</span> Retour
       </button>
     </div>
   </div>
 
-  <!-- STEP 7 — C'est parti -->
-  <div class="step flex-1" id="step-7">
-    <div class="flex-1 flex flex-col items-center justify-center text-center py-12">
-      <div class="w-20 h-20 rounded-full cta-gradient flex items-center justify-center mb-6" style="box-shadow:0 12px 36px rgba(181,35,48,0.28)">
-        <span class="material-symbols-outlined filled text-white" style="font-size:40px;font-variation-settings:'FILL' 1">check</span>
+  <!-- S9 — SUCCESS -->
+  <div class="screen" id="s9">
+    <div class="screen-inner" style="align-items:center;text-align:center;padding-top:32px">
+      <div class="success-ring">
+        <span class="material-symbols-outlined filled" style="font-size:38px;color:#fff;font-variation-settings:'FILL' 1">check</span>
       </div>
-      <h2 class="font-headline font-extrabold text-3xl text-on-surface mb-3" style="letter-spacing:-0.04em">C'est parti !</h2>
-      <p class="text-on-surface-variant text-base mb-2" id="welcomeName">Bienvenue sur Stacker.</p>
-      <p class="text-sm text-on-surface-variant max-w-xs leading-relaxed mb-8">Ton compte est créé. Consulte le catalogue, choisis ton produit et commence à prospecter dès maintenant.</p>
+      <h2 style="font-family:'Plus Jakarta Sans';font-weight:900;font-size:28px;letter-spacing:-0.03em;color:var(--dark);margin-bottom:6px">C'est parti, <em id="successPrenom" style="font-style:normal;color:var(--red)">–</em> !</h2>
+      <p style="font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:24px;max-width:300px">Ton compte est créé. Voilà ce qui t'attend dès aujourd'hui.</p>
 
-      <div id="ibanWarning" style="display:none" class="w-full bg-surface-container border border-outline-variant/60 rounded-2xl p-4 mb-6 flex items-start gap-3 text-left">
-        <span class="material-symbols-outlined filled text-on-surface-variant flex-shrink-0 mt-0.5" style="font-size:18px;font-variation-settings:'FILL' 1">info</span>
+      <div id="ibanWarning" style="display:none" class="iban-warning">
+        <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">info</span>
         <div>
-          <p class="font-bold text-sm text-on-surface mb-0.5">IBAN non renseigné</p>
-          <p class="text-xs text-on-surface-variant leading-snug">Tu pourras l'ajouter à tout moment dans tes paramètres pour recevoir tes commissions.</p>
+          <p style="font-weight:700;font-size:13px;color:var(--dark);margin-bottom:2px">IBAN non renseigné</p>
+          <p style="font-size:12px;color:var(--muted)">Tu pourras l'ajouter dans tes paramètres.</p>
         </div>
       </div>
 
-      <div class="w-full flex flex-col gap-3">
-        <a href="offres.html" class="w-full py-4 rounded-2xl cta-gradient text-white font-headline font-bold text-base flex items-center justify-center gap-2 hover:opacity-95 transition" style="box-shadow:0 8px 28px rgba(181,35,48,0.22)">
-          <span class="material-symbols-outlined" style="font-size:20px">inventory_2</span>
-          Voir le catalogue
-        </a>
-        <a href="index.html" class="w-full py-3 rounded-2xl bg-surface-container text-on-surface font-semibold text-sm flex items-center justify-center gap-2 hover:bg-surface-container-high transition">
-          <span class="material-symbols-outlined" style="font-size:18px">space_dashboard</span>
-          Mon tableau de bord
-        </a>
+      <div class="recap-cards">
+        <div class="recap-card">
+          <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">route</span>
+          <div>
+            <div class="recap-card-label">Canal principal</div>
+            <div class="recap-card-val" id="recapCanal">–</div>
+          </div>
+        </div>
+        <div class="recap-card">
+          <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">savings</span>
+          <div>
+            <div class="recap-card-label">Objectif mensuel</div>
+            <div class="recap-card-val" id="recapObj">–</div>
+          </div>
+        </div>
+        <div class="recap-card">
+          <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">inventory_2</span>
+          <div>
+            <div class="recap-card-label">Offres sélectionnées</div>
+            <div class="recap-card-val" id="recapOffres">–</div>
+          </div>
+        </div>
       </div>
+
+      <div class="notif-banner" id="notifBanner" onclick="requestNotifs()">
+        <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">notifications_active</span>
+        <div class="notif-banner-text">
+          <div class="notif-banner-title">Active les notifications push</div>
+          <div class="notif-banner-sub">Rappels streak, alertes deal, objectif du jour</div>
+        </div>
+        <span class="material-symbols-outlined" style="font-size:15px;color:var(--green)">chevron_right</span>
+      </div>
+    </div>
+    <div class="screen-bottom">
+      <button class="btn-go" onclick="window.location.href='offres.html'">
+        <span class="material-symbols-outlined filled" style="font-size:18px;font-variation-settings:'FILL' 1">inventory_2</span>
+        Voir le catalogue
+      </button>
+      <button class="btn-dashboard" onclick="window.location.href='index.html'">
+        <span class="material-symbols-outlined" style="font-size:17px">space_dashboard</span>
+        Mon tableau de bord
+      </button>
     </div>
   </div>
 
-</main>
+</div>
 
 <script>
-const TOTAL_STEPS = 6; // steps 2-7 show dots, step 1 is cover
-let currentStep = 1;
+const TOTAL = 9;
+let cur = 1;
 let ageChoice = null;
 let checks = { check1: false, check2: false, check3: false };
-let convScrolled = false;
 let ibanSkipped = false;
+let selectedCanaux = [];
 let selectedOffers = [];
+let selectedObj = 500;
 
+const CANAL_LABELS = { pap:'Porte-à-porte', call:'Cold Call', rdv:'Rendez-vous', social:'Réseaux sociaux' };
+const OBJ_VALUES = [100,200,300,500,750,1000,1500,2000,3000,5000];
+const OBJ_DEALS  = [2,3,5,8,12,16,24,32,48,80];
 const OFFERS = [
-  { id: 'fidelite', name: 'Carte Fidélité', cat: 'Commerce local · Débutant', com: '40%', icon: 'loyalty', color: '#006c4c' },
-  { id: 'avis', name: 'E-Réputation Google', cat: 'Commerce local · Débutant', com: '35%', icon: 'reviews', color: '#f4b400' },
-  { id: 'gmb', name: 'Google My Business', cat: 'Commerce local · Débutant', com: '35%', icon: 'location_on', color: '#0f9d58' },
-  { id: 'social', name: 'Contenu Réseaux Sociaux', cat: 'Commerce local · Débutant', com: '30%', icon: 'thumb_up', color: '#e1306c' },
-  { id: 'alma', name: 'Site web Alma', cat: 'Commerce · Débutant', com: '24%', icon: 'web', color: '#0d47a1' },
-  { id: 'energie', name: 'Réduction Facture Énergie', cat: 'Particuliers · Débutant', com: '40%', icon: 'bolt', color: '#f9ab00' },
-  { id: 'seoia', name: 'Seoia Partners', cat: 'SEO · Expérimenté', com: '20%', icon: 'travel_explore', color: '#b52330' },
-  { id: 'rachat', name: 'Rachat de Crédit', cat: 'Finance · Expérimenté', com: '40%', icon: 'account_balance', color: '#1565c0' },
+  { id:'fidelite', name:'Carte Fidélité', cat:'Commerce local · Débutant', com:'40%', icon:'loyalty', color:'#006c4c' },
+  { id:'avis', name:'E-Réputation Google', cat:'Commerce local · Débutant', com:'35%', icon:'reviews', color:'#f4b400' },
+  { id:'gmb', name:'Google My Business', cat:'Commerce local · Débutant', com:'35%', icon:'location_on', color:'#0f9d58' },
+  { id:'social', name:'Contenu Réseaux Sociaux', cat:'Commerce local · Débutant', com:'30%', icon:'thumb_up', color:'#e1306c' },
+  { id:'alma', name:'Site web Alma', cat:'Commerce · Débutant', com:'24%', icon:'web', color:'#0d47a1' },
+  { id:'energie', name:'Réduction Facture Énergie', cat:'Particuliers · Débutant', com:'40%', icon:'bolt', color:'#f9ab00' },
+  { id:'seoia', name:'Seoia Partners', cat:'SEO · Expérimenté', com:'20%', icon:'travel_explore', color:'#b52330' },
+  { id:'rachat', name:'Rachat de Crédit', cat:'Finance · Expérimenté', com:'40%', icon:'account_balance', color:'#1565c0' },
 ];
 
-function renderDots() {
-  const container = document.getElementById('progressDots');
-  if (currentStep === 1) { container.innerHTML = ''; return; }
-  const step = currentStep - 1;
-  container.innerHTML = Array.from({ length: TOTAL_STEPS }, (_, i) => {
-    const cls = i + 1 < step ? 'done' : i + 1 === step ? 'active' : '';
-    return `<div class="progress-dot ${cls}"></div>`;
-  }).join('');
+function goTo(n) {
+  if (n < 1 || n > TOTAL) return;
+  const prev = document.getElementById('s' + cur);
+  const next = document.getElementById('s' + n);
+  if (!next) return;
+  prev.classList.remove('active');
+  prev.classList.add('out');
+  setTimeout(() => prev.classList.remove('out'), 450);
+  next.classList.add('active');
+  cur = n;
+  const pct = n === 1 ? 0 : Math.round(((n - 1) / (TOTAL - 1)) * 100);
+  document.getElementById('progressBar').style.width = pct + '%';
+  if (n === 5) renderOffers();
+  if (n === 9) buildSuccess();
+  window.scrollTo(0, 0);
 }
 
-function showStep(n) {
-  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-  const el = document.getElementById('step-' + n);
-  if (el) el.classList.add('active');
-  currentStep = n;
-  renderDots();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+function showError(msg) {
+  const existing = document.getElementById('errToast');
+  if (existing) existing.remove();
+  const el = document.createElement('div');
+  el.id = 'errToast';
+  el.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--dark);color:#fff;font-size:13px;font-weight:600;padding:12px 20px;border-radius:14px;z-index:200;box-shadow:0 8px 24px rgba(27,28,28,0.25);white-space:nowrap';
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 3000);
 }
 
-function nextStep() { showStep(currentStep + 1); }
-function prevStep() { showStep(currentStep - 1); }
-
-function validateStep2() {
+function validateS2() {
   const prenom = document.getElementById('iPrenom').value.trim();
   const nom = document.getElementById('iNom').value.trim();
   const email = document.getElementById('iEmail').value.trim();
   const tel = document.getElementById('iTel').value.trim();
   const pwd = document.getElementById('iPassword').value;
-  if (!prenom || !nom || !email || !tel || !pwd) {
-    showError('Merci de remplir tous les champs.'); return;
-  }
+  if (!prenom || !nom || !email || !tel || !pwd) { showError('Merci de remplir tous les champs.'); return; }
   if (!email.includes('@')) { showError('Email invalide.'); return; }
   if (pwd.length < 8) { showError('Mot de passe trop court (min. 8 caractères).'); return; }
-  nextStep();
+  goTo(3);
 }
 
 function selectAge(choice) {
@@ -526,58 +628,54 @@ function selectAge(choice) {
   document.getElementById('parentEmailBlock').style.display = choice === 'mineur' ? 'block' : 'none';
 }
 
-function validateStep3() {
+function validateS3() {
   if (!ageChoice) { showError('Merci de sélectionner ton âge.'); return; }
   if (ageChoice === 'mineur') {
-    const parentEmail = document.getElementById('iParentEmail').value.trim();
-    if (!parentEmail || !parentEmail.includes('@')) { showError('Merci d\'entrer l\'email de ton parent ou tuteur légal.'); return; }
+    const pe = document.getElementById('iParentEmail').value.trim();
+    if (!pe || !pe.includes('@')) { showError("Merci d'entrer l'email de ton parent."); return; }
   }
-  nextStep();
+  goTo(4);
 }
 
 function toggleCheck(id) {
   checks[id] = !checks[id];
-  const box = document.getElementById(id);
-  box.classList.toggle('checked', checks[id]);
+  document.getElementById(id).classList.toggle('checked', checks[id]);
   updateSignBtn();
+}
+
+function updateSignBtn() {
+  const all = checks.check1 && checks.check2 && checks.check3;
+  const btn = document.getElementById('btnSign');
+  btn.disabled = !all;
+  btn.style.opacity = all ? '1' : '0.4';
+  btn.style.cursor = all ? 'pointer' : 'not-allowed';
 }
 
 function checkConvScroll() {
   const el = document.getElementById('convBody');
   if (el.scrollTop + el.clientHeight >= el.scrollHeight - 20) {
-    convScrolled = true;
-    document.querySelector('.scroll-indicator').innerHTML = '<span class="material-symbols-outlined" style="font-size:14px">check_circle</span><span style="color:#006c4c;font-weight:600">Lu</span>';
+    document.getElementById('scrollIndicator').innerHTML = '<span class="material-symbols-outlined" style="font-size:14px;color:var(--green)">check_circle</span><span style="color:var(--green);font-weight:600">Lu</span>';
   }
 }
 
-function updateSignBtn() {
-  const allChecked = checks.check1 && checks.check2 && checks.check3;
-  const btn = document.getElementById('btnSign');
-  btn.disabled = !allChecked;
-  btn.classList.toggle('opacity-40', !allChecked);
-  btn.classList.toggle('cursor-not-allowed', !allChecked);
-}
-
-function validateStep4() {
-  if (!checks.check1 || !checks.check2 || !checks.check3) {
-    showError('Merci de cocher toutes les cases pour continuer.'); return;
-  }
-  renderOffers();
-  nextStep();
+function validateS4() {
+  if (!checks.check1 || !checks.check2 || !checks.check3) { showError('Coche toutes les cases pour continuer.'); return; }
+  goTo(5);
 }
 
 function renderOffers() {
-  document.getElementById('offerCards').innerHTML = OFFERS.map(o => `
+  document.getElementById('offerGrid').innerHTML = OFFERS.map(o => `
     <div class="offer-card ${selectedOffers.includes(o.id) ? 'selected' : ''}" onclick="toggleOffer('${o.id}')">
-      <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style="background:${o.color}14">
-          <span class="material-symbols-outlined filled" style="font-size:18px;color:${o.color};font-variation-settings:'FILL' 1">${o.icon}</span>
-        </div>
-        <div class="flex-1 min-w-0">
-          <p class="font-headline font-bold text-sm text-on-surface" style="letter-spacing:-0.02em">${o.name}</p>
-          <p class="text-[11px] text-on-surface-variant">${o.cat}</p>
-        </div>
-        <span class="text-[11px] font-bold px-2.5 py-1 rounded-full flex-shrink-0" style="background:rgba(0,108,76,0.1);color:#006c4c">${o.com}</span>
+      <div class="offer-icon-wrap" style="background:${o.color}18">
+        <span class="material-symbols-outlined filled" style="font-size:18px;color:${o.color};font-variation-settings:'FILL' 1">${o.icon}</span>
+      </div>
+      <div style="flex:1;min-width:0">
+        <p class="offer-name">${o.name}</p>
+        <p class="offer-cat">${o.cat}</p>
+      </div>
+      <span class="offer-com" style="background:rgba(0,108,76,0.1);color:#006c4c">${o.com}</span>
+      <div class="offer-check">
+        <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">check</span>
       </div>
     </div>
   `).join('');
@@ -592,23 +690,35 @@ function toggleOffer(id) {
   renderOffers();
 }
 
-function validateStep5() {
-  nextStep();
+function toggleCanal(id, el) {
+  if (selectedCanaux.includes(id)) {
+    selectedCanaux = selectedCanaux.filter(c => c !== id);
+    el.classList.remove('selected');
+  } else {
+    selectedCanaux.push(id);
+    el.classList.add('selected');
+  }
+  document.getElementById('btnNextCanal').disabled = selectedCanaux.length === 0;
+}
+
+function updateObj() {
+  const idx = parseInt(document.getElementById('objSlider').value) - 1;
+  selectedObj = OBJ_VALUES[idx];
+  const deals = OBJ_DEALS[idx];
+  document.getElementById('objNum').textContent = selectedObj.toLocaleString('fr-FR');
+  document.getElementById('objEquiv').textContent = '≈ ' + deals + ' deal' + (deals > 1 ? 's' : '') + ' par mois';
 }
 
 function formatIban(input) {
-  let val = input.value.replace(/\s/g, '').toUpperCase();
-  val = val.replace(/(.{4})/g, '$1 ').trim();
+  let val = input.value.replace(/\s/g,'').toUpperCase();
+  val = val.replace(/(.{4})/g,'$1 ').trim();
   input.value = val;
 }
 
-function skipIban() {
-  ibanSkipped = true;
-  finalize();
-}
+function skipIban() { ibanSkipped = true; finalize(); }
 
-function validateStep6() {
-  const iban = document.getElementById('iIban').value.replace(/\s/g, '');
+function validateS8() {
+  const iban = document.getElementById('iIban').value.replace(/\s/g,'');
   if (iban && iban.length < 14) { showError('IBAN invalide.'); return; }
   ibanSkipped = iban.length === 0;
   finalize();
@@ -616,30 +726,44 @@ function validateStep6() {
 
 function finalize() {
   const prenom = document.getElementById('iPrenom').value.trim();
-  document.getElementById('welcomeName').textContent = 'Bienvenue ' + prenom + ' !';
-  document.getElementById('ibanWarning').style.display = ibanSkipped ? 'flex' : 'none';
-  // Save to localStorage (simulated)
+  const prenomFmt = prenom.charAt(0).toUpperCase() + prenom.slice(1).toLowerCase();
+  localStorage.setItem('stacker_prenom', prenomFmt);
   localStorage.setItem('stacker_onboarded', '1');
   localStorage.setItem('stacker_iban_set', ibanSkipped ? '0' : '1');
-  localStorage.setItem('stacker_prenom', prenom);
-  showStep(7);
+  localStorage.setItem('stacker_canal', selectedCanaux[0] || 'pap');
+  localStorage.setItem('stacker_canaux', JSON.stringify(selectedCanaux));
+  localStorage.setItem('stacker_objectif', selectedObj);
+  localStorage.setItem('stacker_offres', JSON.stringify(selectedOffers));
+  localStorage.setItem('stacker_xp', '0');
+  localStorage.setItem('stacker_streak', '1');
+  localStorage.setItem('stacker_last_active', new Date().toDateString());
+  goTo(9);
 }
 
-function showError(msg) {
-  // Simple inline error toast
-  const existing = document.getElementById('errorToast');
-  if (existing) existing.remove();
-  const el = document.createElement('div');
-  el.id = 'errorToast';
-  el.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 bg-on-surface text-white text-sm font-semibold px-5 py-3 rounded-2xl z-50 shadow-xl';
-  el.style.animation = 'fadeUp 0.3s ease both';
-  el.textContent = msg;
-  document.body.appendChild(el);
-  setTimeout(() => el.remove(), 3000);
+function buildSuccess() {
+  const prenom = document.getElementById('iPrenom').value.trim();
+  const prenomFmt = prenom.charAt(0).toUpperCase() + prenom.slice(1).toLowerCase();
+  document.getElementById('successPrenom').textContent = prenomFmt;
+  document.getElementById('recapCanal').textContent = selectedCanaux.map(c => CANAL_LABELS[c]).join(', ') || '–';
+  document.getElementById('recapObj').textContent = selectedObj.toLocaleString('fr-FR') + ' € / mois';
+  const offresNoms = selectedOffers.map(id => { const o = OFFERS.find(x => x.id === id); return o ? o.name : ''; }).filter(Boolean);
+  document.getElementById('recapOffres').textContent = offresNoms.length ? offresNoms.join(', ') : 'Aucune sélectionnée';
+  document.getElementById('ibanWarning').style.display = ibanSkipped ? 'flex' : 'none';
 }
 
-// Init
-renderDots();
+function requestNotifs() {
+  if (!('Notification' in window)) return;
+  Notification.requestPermission().then(perm => {
+    const b = document.getElementById('notifBanner');
+    if (perm === 'granted') {
+      b.style.background = 'rgba(0,108,76,0.15)';
+      b.innerHTML = '<span class="material-symbols-outlined filled" style="font-size:18px;color:var(--green);font-variation-settings:\'FILL\' 1">check_circle</span><div class="notif-banner-text"><div class="notif-banner-title" style="color:var(--green)">Notifications activées ✓</div><div class="notif-banner-sub">Tu recevras tes rappels chaque jour</div></div>';
+      localStorage.setItem('stacker_notifs','1');
+    } else { b.style.opacity='0.5'; }
+  });
+}
+
+updateObj();
 </script>
 </body>
 </html>
