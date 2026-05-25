@@ -367,6 +367,101 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
     </a>
   </section>
 
+  <!-- MISSION DU JOUR -->
+  <section class="reveal mb-6" style="animation-delay:0.09s">
+    <div class="bg-surface-container-lowest rounded-2xl soft-shadow overflow-hidden border border-outline-variant/40">
+
+      <!-- Header -->
+      <div class="flex items-center justify-between px-5 py-4 border-b border-outline-variant/20">
+        <div class="flex items-center gap-2">
+          <span class="w-1.5 h-1.5 bg-primary rounded-full live-dot"></span>
+          <p class="font-headline font-bold text-sm text-on-surface">Mission du jour</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <!-- Cagnotte streak -->
+          <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full" style="background:rgba(181,35,48,0.08);border:1px solid rgba(181,35,48,0.15)">
+            <span class="material-symbols-outlined filled text-primary" style="font-size:14px;font-variation-settings:'FILL' 1">local_fire_department</span>
+            <span class="font-headline font-bold text-sm text-primary" id="streakBonus">0 €</span>
+            <span class="text-[10px] text-primary/60">accumulés</span>
+          </div>
+          <!-- Countdown minuit -->
+          <div class="flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-surface-container-high">
+            <span class="material-symbols-outlined text-on-surface-variant" style="font-size:12px">timer</span>
+            <span class="font-mono text-[11px] font-semibold text-on-surface-variant" id="midnightCountdown">–</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mission principale : 20 appels -->
+      <div class="px-5 py-4 border-b border-outline-variant/20">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-xl bg-on-surface flex items-center justify-center flex-shrink-0">
+              <span class="material-symbols-outlined text-white" style="font-size:16px">call</span>
+            </div>
+            <div>
+              <p class="font-headline font-bold text-sm text-on-surface">20 appels minimum</p>
+              <p class="text-[11px] text-on-surface-variant">Obligatoire pour valider la journée et garder tes 2€</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <p class="font-headline font-extrabold text-xl text-on-surface metric-num"><span id="callsToday">0</span><span class="text-on-surface-variant text-sm font-normal">/20</span></p>
+          </div>
+        </div>
+        <!-- Barre de progression appels -->
+        <div class="h-2 rounded-full bg-surface-container-high overflow-hidden mb-2">
+          <div class="h-full rounded-full transition-all duration-500" id="callsBar" style="width:0%;background:linear-gradient(90deg,#b52330,#ff5a5f)"></div>
+        </div>
+        <div class="flex items-center justify-between">
+          <p class="text-[11px] text-on-surface-variant" id="callsStatus">Lance tes appels — chaque appel compte</p>
+          <button onclick="logCallMission()" class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-on-surface text-white text-[12px] font-bold hover:opacity-90 transition active:scale-95">
+            <span class="material-symbols-outlined" style="font-size:14px">add_call</span>
+            +1 appel
+          </button>
+        </div>
+      </div>
+
+      <!-- Actions bonus -->
+      <div class="px-5 py-3 flex items-center gap-3 flex-wrap">
+        <p class="text-[10px] font-bold uppercase tracking-[0.12em] text-on-surface-variant">En plus des calls :</p>
+        <button onclick="logAction('pap')" class="flex items-center gap-1 px-2.5 py-1.5 rounded-full text-[11px] font-semibold transition" id="btn-pap" style="background:#f0eded;color:#5a403f">
+          <span class="material-symbols-outlined" style="font-size:13px">directions_walk</span>PAP
+        </button>
+        <button onclick="logAction('dm')" class="flex items-center gap-1 px-2.5 py-1.5 rounded-full text-[11px] font-semibold transition" id="btn-dm" style="background:#f0eded;color:#5a403f">
+          <span class="material-symbols-outlined" style="font-size:13px">chat</span>DM
+        </button>
+        <button onclick="logAction('email')" class="flex items-center gap-1 px-2.5 py-1.5 rounded-full text-[11px] font-semibold transition" id="btn-email" style="background:#f0eded;color:#5a403f">
+          <span class="material-symbols-outlined" style="font-size:13px">mail</span>Email
+        </button>
+        <button onclick="logAction('social')" class="flex items-center gap-1 px-2.5 py-1.5 rounded-full text-[11px] font-semibold transition" id="btn-social" style="background:#f0eded;color:#5a403f">
+          <span class="material-symbols-outlined" style="font-size:13px">thumb_up</span>Réseaux
+        </button>
+      </div>
+
+      <!-- Alerte streak en danger -->
+      <div id="streakDanger" class="hidden px-5 py-3 border-t border-outline-variant/20" style="background:rgba(181,35,48,0.05)">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined filled text-primary" style="font-size:16px;font-variation-settings:'FILL' 1">warning</span>
+          <p class="text-[12px] font-semibold text-primary">Streak en danger — complète tes 20 appels avant minuit ou tu perds <span id="dangerAmount">0 €</span></p>
+        </div>
+      </div>
+
+      <!-- Mission validée -->
+      <div id="missionDone" class="hidden px-5 py-4 border-t border-outline-variant/20" style="background:rgba(0,108,76,0.06)">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style="background:#006c4c">
+            <span class="material-symbols-outlined filled text-white" style="font-size:16px;font-variation-settings:'FILL' 1">check</span>
+          </div>
+          <div>
+            <p class="font-headline font-bold text-sm" style="color:#006c4c">Mission validée — +2€ ajoutés à ta cagnotte</p>
+            <p class="text-[11px]" style="color:#006c4c">Continue comme ça. Tu cumules <span id="doneBonus">0 €</span> au total.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
   <!-- KPI + STREAK + XP -->
   <section class="reveal grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6" style="animation-delay:0.1s">
     <div class="bg-surface-container-lowest rounded-2xl p-4 soft-shadow">
@@ -412,66 +507,57 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
         <p class="text-[10px] uppercase tracking-[0.25em] text-on-surface-variant font-bold">Missions flash</p>
       </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-      <div class="bg-surface-container-lowest rounded-2xl p-4 soft-shadow border border-outline-variant/40 relative overflow-hidden">
-        <div class="flex items-start justify-between mb-3">
-          <div>
-            <span class="tag bg-primary-fixed text-primary mb-2 inline-flex">Flash</span>
-            <p class="font-headline font-bold text-sm text-on-surface">1er à signer une Carte Fidélité</p>
-          </div>
-          <div class="relative w-10 h-10 flex-shrink-0">
-            <svg class="w-10 h-10 -rotate-90" viewBox="0 0 36 36">
-              <circle cx="18" cy="18" r="14" fill="none" stroke="#e2bebc" stroke-width="3"/>
-              <circle cx="18" cy="18" r="14" fill="none" stroke="#b52330" stroke-width="3" stroke-linecap="round" stroke-dasharray="87.9" stroke-dashoffset="0" id="flash1ring" style="transition:stroke-dashoffset 1s linear"/>
-            </svg>
-            <span class="absolute inset-0 flex items-center justify-center font-mono font-bold text-[9px] text-primary" id="flash1timer">02:00</span>
-          </div>
+    <div class="bg-surface-container-lowest rounded-2xl soft-shadow overflow-hidden border border-outline-variant/30">
+      <!-- Flash 1 -->
+      <div class="flex items-center gap-3 px-4 py-3.5 border-b border-outline-variant/20">
+        <span class="tag bg-primary-fixed text-primary flex-shrink-0">Flash</span>
+        <div class="flex-1 min-w-0">
+          <p class="font-semibold text-sm text-on-surface truncate">1er à signer une Carte Fidélité</p>
         </div>
-        <div class="flex items-center justify-between">
-          <p class="font-headline font-extrabold text-lg text-tertiary metric-num">+30 €</p>
-          <a href="offres.html" class="px-3 py-1.5 rounded-full bg-primary text-white text-xs font-bold hover:opacity-90 transition">Je vends</a>
+        <p class="font-headline font-extrabold text-sm text-tertiary metric-num flex-shrink-0">+30 €</p>
+        <div class="relative w-8 h-8 flex-shrink-0">
+          <svg class="w-8 h-8 -rotate-90" viewBox="0 0 36 36">
+            <circle cx="18" cy="18" r="14" fill="none" stroke="#e2bebc" stroke-width="3"/>
+            <circle cx="18" cy="18" r="14" fill="none" stroke="#b52330" stroke-width="3" stroke-linecap="round" stroke-dasharray="87.9" stroke-dashoffset="0" id="flash1ring" style="transition:stroke-dashoffset 1s linear"/>
+          </svg>
+          <span class="absolute inset-0 flex items-center justify-center font-mono font-bold text-[8px] text-primary" id="flash1timer">02:00</span>
         </div>
+        <a href="offres.html" class="flex-shrink-0 px-3 py-1.5 rounded-full bg-primary text-white text-xs font-bold hover:opacity-90 transition">Je vends</a>
       </div>
-      <div class="bg-surface-container-lowest rounded-2xl p-4 soft-shadow border border-outline-variant/40 relative overflow-hidden">
-        <div class="flex items-start justify-between mb-3">
-          <div>
-            <span class="tag bg-tertiary-fixed text-tertiary mb-2 inline-flex">Défi</span>
-            <p class="font-headline font-bold text-sm text-on-surface">3 appels cette heure</p>
-          </div>
-          <div class="relative w-10 h-10 flex-shrink-0">
-            <svg class="w-10 h-10 -rotate-90" viewBox="0 0 36 36">
-              <circle cx="18" cy="18" r="14" fill="none" stroke="#e2bebc" stroke-width="3"/>
-              <circle cx="18" cy="18" r="14" fill="none" stroke="#006c4c" stroke-width="3" stroke-linecap="round" stroke-dasharray="87.9" stroke-dashoffset="0" id="flash2ring" style="transition:stroke-dashoffset 1s linear"/>
-            </svg>
-            <span class="absolute inset-0 flex items-center justify-center font-mono font-bold text-[9px] text-tertiary" id="flash2timer">45:00</span>
-          </div>
+      <!-- Flash 2 -->
+      <div class="flex items-center gap-3 px-4 py-3.5 border-b border-outline-variant/20">
+        <span class="tag bg-tertiary-fixed text-tertiary flex-shrink-0">Défi</span>
+        <div class="flex-1 min-w-0">
+          <p class="font-semibold text-sm text-on-surface truncate">3 appels cette heure</p>
         </div>
-        <div class="flex items-center justify-between">
-          <p class="font-headline font-extrabold text-lg text-tertiary metric-num">+50 XP</p>
-          <button onclick="logCall()" class="px-3 py-1.5 rounded-full bg-tertiary text-white text-xs font-bold hover:opacity-90 transition">Logger</button>
+        <p class="font-headline font-extrabold text-sm text-tertiary metric-num flex-shrink-0">+50 XP</p>
+        <div class="relative w-8 h-8 flex-shrink-0">
+          <svg class="w-8 h-8 -rotate-90" viewBox="0 0 36 36">
+            <circle cx="18" cy="18" r="14" fill="none" stroke="#e2bebc" stroke-width="3"/>
+            <circle cx="18" cy="18" r="14" fill="none" stroke="#006c4c" stroke-width="3" stroke-linecap="round" stroke-dasharray="87.9" stroke-dashoffset="0" id="flash2ring" style="transition:stroke-dashoffset 1s linear"/>
+          </svg>
+          <span class="absolute inset-0 flex items-center justify-center font-mono font-bold text-[8px] text-tertiary" id="flash2timer">45:00</span>
         </div>
+        <button onclick="logCall()" class="flex-shrink-0 px-3 py-1.5 rounded-full bg-tertiary text-white text-xs font-bold hover:opacity-90 transition">Logger</button>
       </div>
-      <div class="gold-gradient rounded-2xl p-4 relative overflow-hidden shimmer">
-        <div class="flex items-start justify-between mb-3">
-          <div>
-            <span class="tag mb-2 inline-flex" style="background:rgba(255,197,0,0.15);color:#b8860b">Elite</span>
-            <p class="font-headline font-bold text-sm text-white">Top CA cette semaine</p>
-          </div>
-          <span class="material-symbols-outlined filled" style="font-size:22px;color:#ffd700;font-variation-settings:'FILL' 1">emoji_events</span>
+      <!-- Elite -->
+      <div class="flex items-center gap-3 px-4 py-3.5" style="background:linear-gradient(90deg,#1f1d18,#2a2620)">
+        <span class="tag flex-shrink-0" style="background:rgba(255,197,0,0.15);color:#b8860b">Elite</span>
+        <div class="flex-1 min-w-0">
+          <p class="font-semibold text-sm text-white truncate">Top CA cette semaine</p>
         </div>
-        <div class="flex items-center justify-between">
-          <p class="font-headline font-extrabold text-lg gold-text metric-num">iPhone 17 Pro Max</p>
-          <a href="offres.html" class="px-3 py-1.5 rounded-full text-xs font-bold hover:opacity-90 transition" style="background:rgba(255,197,0,0.2);color:#ffd700">Participer</a>
-        </div>
+        <p class="font-headline font-extrabold text-sm gold-text metric-num flex-shrink-0">iPhone 17</p>
+        <span class="material-symbols-outlined filled flex-shrink-0" style="font-size:18px;color:#ffd700;font-variation-settings:'FILL' 1">emoji_events</span>
+        <a href="offres.html" class="flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-bold hover:opacity-90 transition" style="background:rgba(255,197,0,0.2);color:#ffd700;white-space:nowrap">Participer</a>
       </div>
     </div>
   </section>
 
-  <!-- CATALOGUE + CLASSEMENT -->
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+  <!-- CATALOGUE -->
+  <div class="mb-6">
 
     <!-- Catalogue -->
-    <section class="reveal lg:col-span-2" style="animation-delay:0.2s">
+    <section class="reveal" style="animation-delay:0.2s">
       <div class="flex items-end justify-between mb-3">
         <div>
           <p class="text-[10px] uppercase tracking-[0.25em] text-on-surface-variant font-bold mb-1">Catalogue</p>
@@ -500,23 +586,6 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
         <a href="offres.html" class="mission-row"><div class="row-content"><p class="row-sector">Finance · Expérimenté</p><h4 class="row-title">Rachat de Crédit — Regroupement</h4></div><span class="tag bg-primary-fixed text-primary">40%</span><div class="row-amount"><p class="amount-main">400–1 500 €</p><p class="amount-unit">/dossier</p></div><span class="material-symbols-outlined row-arrow" style="font-size:16px">arrow_forward</span></a>
       </div>
     </section>
-
-    <!-- Classement -->
-    <section class="reveal" style="animation-delay:0.25s">
-      <div class="flex items-end justify-between mb-3">
-        <div>
-          <p class="text-[10px] uppercase tracking-[0.25em] text-on-surface-variant font-bold mb-1">Live</p>
-          <h2 class="font-headline font-extrabold text-xl display-tight text-on-surface">Classement</h2>
-        </div>
-      </div>
-      <div class="bg-surface-container-lowest rounded-2xl soft-shadow overflow-hidden" id="leaderboard">
-        <div class="flex flex-col items-center justify-center py-10 px-5 text-center">
-          <span class="material-symbols-outlined text-on-surface-variant mb-3" style="font-size:32px">leaderboard</span>
-          <p class="font-semibold text-sm text-on-surface mb-1">Pas encore classé</p>
-          <p class="text-xs text-on-surface-variant">Signe ton premier deal pour apparaître.</p>
-        </div>
-      </div>
-    </section>
   </div>
 
   <!-- RÉCOMPENSES -->
@@ -541,67 +610,41 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
     <!-- Reward cards -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
       <div class="reward-card" id="reward-1">
-        <span class="material-symbols-outlined filled mb-2 block" style="font-size:28px;color:#1b1c1c;font-variation-settings:'FILL' 1">headphones</span>
+        <div class="w-full h-24 rounded-xl overflow-hidden mb-3 bg-surface-container-high flex items-center justify-center">
+          <img src="assets/cadeaux/airpods-pro.jpg" alt="AirPods Pro" class="w-full h-full object-cover" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <span class="material-symbols-outlined filled text-on-surface-variant" style="font-size:32px;display:none;font-variation-settings:'FILL' 1">headphones</span>
+        </div>
         <p class="font-headline font-bold text-sm text-on-surface mb-0.5">AirPods Pro</p>
         <p class="text-[11px] text-on-surface-variant mb-3">500 € de CA</p>
         <div class="h-1 rounded-full bg-surface-container-high"><div class="reward-fill h-full rounded-full bg-tertiary" id="rbar-1" style="width:0%"></div></div>
       </div>
       <div class="reward-card" id="reward-2">
-        <span class="material-symbols-outlined filled mb-2 block" style="font-size:28px;color:#1b1c1c;font-variation-settings:'FILL' 1">watch</span>
+        <div class="w-full h-24 rounded-xl overflow-hidden mb-3 bg-surface-container-high flex items-center justify-center">
+          <img src="assets/cadeaux/apple-watch.jpg" alt="Apple Watch" class="w-full h-full object-cover" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <span class="material-symbols-outlined filled text-on-surface-variant" style="font-size:32px;display:none;font-variation-settings:'FILL' 1">watch</span>
+        </div>
         <p class="font-headline font-bold text-sm text-on-surface mb-0.5">Apple Watch</p>
         <p class="text-[11px] text-on-surface-variant mb-3">1 500 € de CA</p>
         <div class="h-1 rounded-full bg-surface-container-high"><div class="reward-fill h-full rounded-full bg-tertiary" id="rbar-2" style="width:0%"></div></div>
       </div>
       <div class="reward-card" id="reward-3">
-        <span class="material-symbols-outlined filled mb-2 block" style="font-size:28px;color:#1b1c1c;font-variation-settings:'FILL' 1">smartphone</span>
+        <div class="w-full h-24 rounded-xl overflow-hidden mb-3 bg-surface-container-high flex items-center justify-center">
+          <img src="assets/cadeaux/iphone-17-pro-max.jpg" alt="iPhone 17 Pro Max" class="w-full h-full object-cover" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <span class="material-symbols-outlined filled text-on-surface-variant" style="font-size:32px;display:none;font-variation-settings:'FILL' 1">smartphone</span>
+        </div>
         <p class="font-headline font-bold text-sm text-on-surface mb-0.5">iPhone 17 Pro Max</p>
         <p class="text-[11px] text-on-surface-variant mb-3">5 000 € de CA</p>
         <div class="h-1 rounded-full bg-surface-container-high"><div class="reward-fill h-full rounded-full bg-tertiary" id="rbar-3" style="width:0%"></div></div>
       </div>
       <div class="reward-card relative overflow-hidden" id="reward-4" style="background:#ffffff;border:1.5px solid rgba(255,197,0,0.5)">
         <div class="absolute top-0 left-0 right-0 h-0.5" style="background:linear-gradient(90deg,#ffd700,#b8860b)"></div>
-        <span class="material-symbols-outlined filled mb-2 block" style="font-size:28px;color:#b8860b;font-variation-settings:'FILL' 1">watch</span>
+        <div class="w-full h-24 rounded-xl overflow-hidden mb-3 bg-surface-container-high flex items-center justify-center">
+          <img src="assets/cadeaux/rolex-daytona.jpg" alt="Rolex Daytona" class="w-full h-full object-cover" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <span class="material-symbols-outlined filled" style="font-size:32px;display:none;color:#b8860b;font-variation-settings:'FILL' 1">watch</span>
+        </div>
         <p class="font-headline font-bold text-sm mb-0.5" style="color:#b8860b">Rolex Daytona</p>
         <p class="text-[11px] text-on-surface-variant mb-3">15 000 € de CA</p>
         <div class="h-1 rounded-full bg-surface-container-high"><div class="reward-fill h-full rounded-full" style="background:linear-gradient(90deg,#ffd700,#b8860b)" id="rbar-4" style="width:0%"></div></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SIMULATEUR DE REVENUS -->
-  <section class="reveal mb-6" style="animation-delay:0.35s">
-    <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5">
-      <div class="flex items-center gap-2 mb-4">
-        <span class="material-symbols-outlined filled text-primary" style="font-size:20px">calculate</span>
-        <h2 class="font-headline font-extrabold text-lg display-tight text-on-surface">Simule tes revenus</h2>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <div class="flex justify-between mb-2">
-            <label class="text-sm font-semibold text-on-surface">Deals signés par mois</label>
-            <span class="font-headline font-bold text-primary" id="simDealsVal">5</span>
-          </div>
-          <input type="range" min="1" max="50" value="5" id="simDeals" oninput="updateSim()" class="w-full mb-4">
-          <div class="flex justify-between mb-2">
-            <label class="text-sm font-semibold text-on-surface">Abonnement moyen client</label>
-            <span class="font-headline font-bold text-primary" id="simPriceVal">99 €</span>
-          </div>
-          <input type="range" min="29" max="499" value="99" step="10" id="simPrice" oninput="updateSim()" class="w-full">
-        </div>
-        <div class="flex flex-col gap-3">
-          <div class="bg-surface-container rounded-xl p-4">
-            <p class="text-[11px] text-on-surface-variant mb-1">Commission mensuelle (mois 1)</p>
-            <p class="font-headline font-extrabold text-2xl text-on-surface metric-num" id="simMonthly">–</p>
-          </div>
-          <div class="bg-surface-container rounded-xl p-4">
-            <p class="text-[11px] text-on-surface-variant mb-1">Revenus cumulés à 12 mois</p>
-            <p class="font-headline font-extrabold text-2xl text-tertiary metric-num" id="simYearly">–</p>
-          </div>
-          <div class="rounded-xl p-4" style="background:linear-gradient(135deg,#006c4c,#00a879)">
-            <p class="text-[11px] text-white/60 mb-1">Avec fidélisation clients</p>
-            <p class="font-headline font-extrabold text-2xl text-white metric-num" id="simFidelised">–</p>
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -744,9 +787,16 @@ function init() {
 
   renderStats();
   startFlashTimers();
-  updateSim();
   populateCoachProducts();
   renderWeekOffer();
+
+  // Mission du jour
+  checkMidnightReset();
+  renderMission();
+  checkStreakDanger();
+  updateMidnightCountdown();
+  setInterval(updateMidnightCountdown, 60000);
+  setInterval(checkStreakDanger, 300000); // check toutes les 5 min
 }
 
 // ─── OFFRE DE LA SEMAINE ─────────────────────────────
@@ -838,7 +888,161 @@ function renderStats() {
     : 'Plus que ' + (nextTarget - ca) + ' € pour débloquer ' + (nextName || 'ta récompense');
 }
 
-// ─── STREAK ──────────────────────────────────────────
+// ─── MISSION DU JOUR ─────────────────────────────────
+function getMissionData() {
+  const today = new Date().toDateString();
+  const raw = localStorage.getItem('stacker_mission');
+  try { const d = JSON.parse(raw); if (d && d.date === today) return d; } catch {}
+  return { date: today, calls: 0, pap: false, dm: false, email: false, social: false, validated: false };
+}
+
+function saveMission(data) {
+  localStorage.setItem('stacker_mission', JSON.stringify(data));
+}
+
+function getStreakBonus() {
+  return parseFloat(localStorage.getItem('stacker_streak_bonus') || '0');
+}
+
+function addStreakBonus(amount) {
+  const current = getStreakBonus();
+  const newVal = Math.round((current + amount) * 100) / 100;
+  localStorage.setItem('stacker_streak_bonus', newVal);
+  return newVal;
+}
+
+function burnStreakBonus() {
+  const amount = getStreakBonus();
+  localStorage.setItem('stacker_streak_bonus', '0');
+  return amount;
+}
+
+function renderMission() {
+  const mission = getMissionData();
+  const bonus = getStreakBonus();
+  const calls = mission.calls;
+  const pct = Math.min(100, Math.round((calls / 20) * 100));
+
+  // Appels
+  document.getElementById('callsToday').textContent = calls;
+  document.getElementById('callsBar').style.width = pct + '%';
+
+  // Status text
+  const statusEl = document.getElementById('callsStatus');
+  if (calls === 0) statusEl.textContent = 'Lance tes appels — chaque appel compte';
+  else if (calls < 10) statusEl.textContent = 'Bon début — continue, tu en as besoin de ' + (20 - calls) + ' de plus';
+  else if (calls < 20) statusEl.textContent = 'Plus que ' + (20 - calls) + ' appels pour valider ta journée !';
+  else statusEl.textContent = '20 appels atteints — mission principale validée ✓';
+
+  // Cagnotte
+  document.getElementById('streakBonus').textContent = bonus.toFixed(0) + ' €';
+  document.getElementById('dangerAmount').textContent = bonus.toFixed(0) + ' €';
+
+  // Boutons actions bonus
+  ['pap','dm','email','social'].forEach(a => {
+    const btn = document.getElementById('btn-' + a);
+    if (!btn) return;
+    if (mission[a]) {
+      btn.style.background = 'rgba(0,108,76,0.1)';
+      btn.style.color = '#006c4c';
+    }
+  });
+
+  // Mission validée
+  if (mission.validated) {
+    document.getElementById('missionDone').classList.remove('hidden');
+    document.getElementById('streakDanger').classList.add('hidden');
+    document.getElementById('doneBonus').textContent = bonus.toFixed(0) + ' €';
+  }
+}
+
+window.logCallMission = function() {
+  const mission = getMissionData();
+  mission.calls = (mission.calls || 0) + 1;
+
+  // Valider à 20
+  if (mission.calls >= 20 && !mission.validated) {
+    mission.validated = true;
+    const newBonus = addStreakBonus(2);
+    gainXP(30, '20 appels — mission validée !');
+    document.getElementById('missionDone').classList.remove('hidden');
+    document.getElementById('streakDanger').classList.add('hidden');
+    document.getElementById('doneBonus').textContent = newBonus.toFixed(0) + ' €';
+    showMissionToast('Mission validée — +2€ ajoutés à ta cagnotte 🔥', 'success');
+  }
+
+  saveMission(mission);
+  renderMission();
+  gainXP(5, 'Appel loggé');
+};
+
+window.logAction = function(type) {
+  const mission = getMissionData();
+  if (mission[type]) return; // déjà fait
+  mission[type] = true;
+  saveMission(mission);
+
+  const btn = document.getElementById('btn-' + type);
+  if (btn) {
+    btn.style.background = 'rgba(0,108,76,0.1)';
+    btn.style.color = '#006c4c';
+  }
+  gainXP(15, type.toUpperCase() + ' loggé');
+  showMissionToast('+15 XP · ' + type.toUpperCase() + ' enregistré', 'info');
+};
+
+function showMissionToast(msg, type) {
+  const colors = { success:'background:#006c4c;color:#fff', info:'background:#1b1c1c;color:#fff' };
+  const el = document.createElement('div');
+  el.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:99px;font-size:13px;font-weight:600;z-index:999;box-shadow:0 4px 16px rgba(0,0,0,0.2);animation:fadeUp 0.3s ease both;white-space:nowrap;' + (colors[type]||colors.info);
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 3000);
+}
+
+function checkStreakDanger() {
+  const now = new Date();
+  const hours = now.getHours();
+  const mission = getMissionData();
+  const bonus = getStreakBonus();
+
+  if (hours >= 20 && !mission.validated && bonus > 0) {
+    document.getElementById('streakDanger').classList.remove('hidden');
+  }
+}
+
+function checkMidnightReset() {
+  const mission = getMissionData();
+  const bonus = getStreakBonus();
+  const today = new Date().toDateString();
+
+  // Si c'est un nouveau jour et que hier la mission n'était pas validée → brûle la cagnotte
+  const lastMission = localStorage.getItem('stacker_mission');
+  if (lastMission) {
+    try {
+      const last = JSON.parse(lastMission);
+      if (last.date !== today && !last.validated && bonus > 0) {
+        const burnt = burnStreakBonus();
+        streak = 0;
+        localStorage.setItem('stacker_streak', '0');
+        showMissionToast('Streak perdu — ' + burnt.toFixed(0) + '€ brûlés. Recommence aujourd\'hui.', 'info');
+      }
+    } catch {}
+  }
+}
+
+function updateMidnightCountdown() {
+  const now = new Date();
+  const midnight = new Date(now);
+  midnight.setHours(24, 0, 0, 0);
+  const diff = midnight - now;
+  const h = Math.floor(diff / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const el = document.getElementById('midnightCountdown');
+  if (el) el.textContent = String(h).padStart(2,'0') + 'h' + String(m).padStart(2,'0');
+}
+
+
 function updateStreak() {
   const today = new Date().toDateString();
   const lastActive = localStorage.getItem('stacker_last_active');
