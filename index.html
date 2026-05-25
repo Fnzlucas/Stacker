@@ -7,128 +7,155 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 <script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          "primary": "#b52330",
-          "primary-container": "#ff5a5f",
-          "primary-fixed": "#ffdad8",
-          "on-primary": "#ffffff",
-          "tertiary": "#006c4c",
-          "tertiary-container": "#00a879",
-          "tertiary-fixed": "#78fac4",
-          "background": "#fcf9f8",
-          "surface-container-lowest": "#ffffff",
-          "surface-container-low": "#f6f3f2",
-          "surface-container": "#f0eded",
-          "surface-container-high": "#eae7e7",
-          "surface-container-highest": "#e5e2e1",
-          "on-surface": "#1b1c1c",
-          "on-surface-variant": "#5a403f",
-          "outline-variant": "#e2bebc"
-        },
-        fontFamily: {
-          "headline": ["Plus Jakarta Sans"],
-          "body": ["Inter"],
-          "mono": ["JetBrains Mono"]
-        }
-      }
-    }
-  }
+tailwind.config = {
+  theme: { extend: { colors: {
+    "primary":"#b52330","primary-container":"#ff5a5f","primary-fixed":"#ffdad8","on-primary":"#ffffff",
+    "tertiary":"#006c4c","tertiary-container":"#00a879","tertiary-fixed":"#78fac4",
+    "background":"#fcf9f8","surface-container-lowest":"#ffffff","surface-container-low":"#f6f3f2",
+    "surface-container":"#f0eded","surface-container-high":"#eae7e7","surface-container-highest":"#e5e2e1",
+    "on-surface":"#1b1c1c","on-surface-variant":"#5a403f","outline-variant":"#e2bebc"
+  }, fontFamily: { "headline":["Plus Jakarta Sans"],"body":["Inter"],"mono":["JetBrains Mono"] } } }
+}
 </script>
 <style>
-  body { font-family: 'Inter', sans-serif; }
-  .font-headline { font-family: 'Plus Jakarta Sans', sans-serif; }
-  .font-mono { font-family: 'JetBrains Mono', monospace; }
-  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-  .material-symbols-outlined.filled { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-  .glass-nav { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); background: rgba(252, 249, 248, 0.75); border-bottom: 1px solid rgba(226, 190, 188, 0.2); }
-  .cta-gradient { background: linear-gradient(135deg, #b52330 0%, #ff5a5f 100%); }
-  .float-shadow { box-shadow: 0 20px 40px -12px rgba(27, 28, 28, 0.08); }
-  .soft-shadow { box-shadow: 0 8px 24px -8px rgba(27, 28, 28, 0.06); }
-  .display-tight { letter-spacing: -0.03em; }
-  .num-tight { letter-spacing: -0.04em; font-feature-settings: "tnum"; }
-  .metric-num { letter-spacing: -0.045em; font-feature-settings: "tnum"; }
-  .hero-dark {
-    background:
-      radial-gradient(ellipse at top right, rgba(181, 35, 48, 0.18), transparent 60%),
-      radial-gradient(ellipse at bottom left, rgba(255, 90, 95, 0.08), transparent 50%),
-      #1b1c1c;
-  }
-  .gold-card {
-    background:
-      radial-gradient(ellipse at top right, rgba(255, 197, 0, 0.25), transparent 60%),
-      radial-gradient(ellipse at bottom left, rgba(184, 134, 11, 0.2), transparent 50%),
-      linear-gradient(135deg, #1f1d18 0%, #2a2620 50%, #1f1d18 100%);
-    position: relative; overflow: hidden;
-  }
-  .gold-card::before {
-    content: ''; position: absolute; inset: 0;
-    background: linear-gradient(135deg, transparent 30%, rgba(255, 197, 0, 0.06) 50%, transparent 70%);
-    background-size: 200% 200%; animation: goldShimmer 6s ease infinite; pointer-events: none;
-  }
-  @keyframes goldShimmer { 0%, 100% { background-position: 0% 0%; } 50% { background-position: 100% 100%; } }
-  .gold-text { background: linear-gradient(135deg, #ffd700 0%, #ffed4a 50%, #b8860b 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
-  .gold-border { border: 1px solid rgba(255, 197, 0, 0.3); }
-  .gold-btn { background: linear-gradient(135deg, #ffd700 0%, #ffb700 100%); color: #1b1c1c; }
-  @keyframes pulse-dot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.4); } }
-  .live-dot { animation: pulse-dot 2s ease-in-out infinite; }
-  @keyframes grow { from { width: 0; } }
-  .progress-fill { animation: grow 1.2s cubic-bezier(0.22, 1, 0.36, 1); }
-  @keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-  .reveal { animation: slideUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) both; }
-  ::-webkit-scrollbar { width: 6px; height: 6px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: #e5e2e1; border-radius: 9999px; }
-  ::-webkit-scrollbar-thumb:hover { background: #8e706f; }
-  .divider-soft { background: linear-gradient(90deg, transparent, rgba(226, 190, 188, 0.3) 50%, transparent); height: 1px; }
-  .tag { display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.25rem 0.625rem; border-radius: 9999px; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
-  .hover-lift { transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease; }
-  .hover-lift:hover { transform: translateY(-2px); box-shadow: 0 16px 32px -12px rgba(27, 28, 28, 0.12); }
-  @keyframes flame { 0%, 100% { transform: translateY(0) scale(1); opacity: 1; } 50% { transform: translateY(-2px) scale(1.05); opacity: 0.85; } }
-  .flame-pulse { animation: flame 1.6s ease-in-out infinite; }
-  @keyframes toastSlide { from { opacity: 0; transform: translateY(-12px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
-  @keyframes toastOut { to { opacity: 0; transform: translateX(120%); } }
-  .toast { animation: toastSlide 0.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
-  .toast.leaving { animation: toastOut 0.4s ease-in forwards; }
-  .scroll-hide::-webkit-scrollbar { display: none; } .scroll-hide { scrollbar-width: none; }
-  .filter-pill { transition: all 0.2s ease; }
-  .filter-pill.active { background: #1b1c1c; color: #ffffff; }
-  /* Hamburger */
-  .hamburger-panel {
-    position: fixed; top: 0; left: 0; width: 360px; max-width: 100vw; height: 100vh;
-    background: #fcf9f8; z-index: 75; transform: translateX(-100%);
-    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-    display: flex; flex-direction: column; box-shadow: 20px 0 60px -10px rgba(0,0,0,0.15);
-  }
-  .hamburger-panel.open { transform: translateX(0); }
-  .hamburger-backdrop { position: fixed; inset: 0; background: rgba(27, 28, 28, 0.4); backdrop-filter: blur(4px); z-index: 72; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
-  .hamburger-backdrop.open { opacity: 1; pointer-events: auto; }
-  .nav-item {
-    display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 12px;
-    transition: background 0.2s ease; cursor: pointer; text-decoration: none; color: inherit;
-  }
-  .nav-item:hover { background: #f6f3f2; }
-  .nav-item.active { background: #ffdad8; }
-  .nav-item.active .nav-item-label { color: #b52330; font-weight: 700; }
-  /* Page transitions */
-  .page-enter { animation: pageEnter 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
-  @keyframes pageEnter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+body{font-family:'Inter',sans-serif}
+.font-headline{font-family:'Plus Jakarta Sans',sans-serif}
+.font-mono{font-family:'JetBrains Mono',monospace}
+.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.filled{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24 !important}
+.glass-nav{backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:rgba(252,249,248,0.88);border-bottom:1px solid rgba(226,190,188,0.2)}
+.cta-gradient{background:linear-gradient(135deg,#b52330 0%,#ff5a5f 100%)}
+.soft-shadow{box-shadow:0 8px 24px -8px rgba(27,28,28,0.06)}
+.float-shadow{box-shadow:0 20px 40px -12px rgba(27,28,28,0.08)}
+.display-tight{letter-spacing:-0.03em}
+.metric-num{letter-spacing:-0.045em;font-feature-settings:"tnum"}
+.hero-dark{background:radial-gradient(ellipse at top right,rgba(181,35,48,0.18),transparent 60%),radial-gradient(ellipse at bottom left,rgba(255,90,95,0.08),transparent 50%),#1b1c1c}
+.gold-gradient{background:linear-gradient(135deg,#1f1d18 0%,#2a2620 50%,#1f1d18 100%);border:1px solid rgba(255,197,0,0.25)}
+.gold-text{background:linear-gradient(135deg,#ffd700 0%,#ffed4a 50%,#b8860b 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hover-lift{transition:transform 0.3s cubic-bezier(0.22,1,0.36,1),box-shadow 0.3s ease}
+.hover-lift:hover{transform:translateY(-2px);box-shadow:0 16px 32px -12px rgba(27,28,28,0.12)}
+@keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.reveal{animation:slideUp 0.5s cubic-bezier(0.22,1,0.36,1) both}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+.live-dot{animation:pulse-dot 2s ease-in-out infinite}
+@keyframes flame{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.flame{animation:flame 1.6s ease-in-out infinite}
+@keyframes shimmer{0%,100%{background-position:0% 0%}50%{background-position:100% 100%}}
+.shimmer::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 30%,rgba(255,197,0,0.06) 50%,transparent 70%);background-size:200% 200%;animation:shimmer 6s ease infinite;pointer-events:none}
+.scroll-hide::-webkit-scrollbar{display:none}.scroll-hide{scrollbar-width:none}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:#e5e2e1;border-radius:99px}
+.divider-soft{background:linear-gradient(90deg,transparent,rgba(226,190,188,0.3) 50%,transparent);height:1px}
+.tag{display:inline-flex;align-items:center;gap:.375rem;padding:.25rem .625rem;border-radius:9999px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+/* Nav */
+.hamburger-panel{position:fixed;top:0;left:0;width:340px;max-width:100vw;height:100vh;background:#fcf9f8;z-index:75;transform:translateX(-100%);transition:transform 0.4s cubic-bezier(0.22,1,0.36,1);display:flex;flex-direction:column;box-shadow:20px 0 60px -10px rgba(0,0,0,0.15)}
+.hamburger-panel.open{transform:translateX(0)}
+.hamburger-backdrop{position:fixed;inset:0;background:rgba(27,28,28,0.4);backdrop-filter:blur(4px);z-index:72;opacity:0;pointer-events:none;transition:opacity 0.3s ease}
+.hamburger-backdrop.open{opacity:1;pointer-events:auto}
+.nav-item{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;transition:background 0.2s ease;cursor:pointer;text-decoration:none;color:inherit}
+.nav-item:hover{background:#f6f3f2}
+.nav-item.active{background:#ffdad8}
+.nav-item.active .nav-item-label{color:#b52330;font-weight:700}
+/* Streak */
+.streak-fire{font-size:28px;filter:drop-shadow(0 0 8px rgba(255,120,0,0.5))}
+/* Missions flash */
+@keyframes countdown{from{stroke-dashoffset:0}to{stroke-dashoffset:125.6}}
+.countdown-ring{animation:countdown linear forwards}
+/* Reward bar */
+.reward-fill{transition:width 1.2s cubic-bezier(0.22,1,0.36,1)}
+/* Coach modal */
+.coach-modal{position:fixed;inset:0;z-index:80;display:flex;align-items:flex-end;justify-content:center;padding:0}
+.coach-panel{width:100%;max-width:680px;background:#fff;border-radius:24px 24px 0 0;box-shadow:0 -20px 60px rgba(27,28,28,0.15);transform:translateY(100%);transition:transform 0.4s cubic-bezier(0.22,1,0.36,1);max-height:85vh;overflow-y:auto}
+.coach-panel.open{transform:translateY(0)}
+.coach-backdrop{position:fixed;inset:0;background:rgba(27,28,28,0.4);backdrop-filter:blur(4px);z-index:79;opacity:0;pointer-events:none;transition:opacity 0.3s ease}
+.coach-backdrop.open{opacity:1;pointer-events:auto}
+.objection-card{border:1.5px solid #e2bebc;border-radius:14px;padding:14px 16px;cursor:pointer;transition:all 0.18s;background:#fff}
+.objection-card:hover{border-color:#b52330;background:#faf8f7}
+.objection-card.active{border-color:#b52330;background:#ffdad8}
+/* Page enter */
+@keyframes pageEnter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.page-enter{animation:pageEnter 0.5s cubic-bezier(0.22,1,0.36,1) both}
+/* Toast */
+@keyframes toastIn{from{opacity:0;transform:translateY(-10px) scale(0.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+.toast{animation:toastIn 0.3s ease both}
+/* XP bar */
+.xp-fill{height:6px;border-radius:99px;background:linear-gradient(90deg,#b52330,#ff5a5f);transition:width 1s cubic-bezier(0.22,1,0.36,1)}
+/* Row styles */
+.mission-row{display:grid;grid-template-columns:1fr auto auto auto;gap:16px;padding:16px 20px;align-items:center;border-bottom:1px solid rgba(226,190,188,0.15);transition:background 0.15s;cursor:pointer;text-decoration:none;color:inherit}
+.mission-row:last-child{border-bottom:none}
+.mission-row:hover{background:#f6f3f2}
+.row-content .row-sector{font-size:10px;text-transform:uppercase;letter-spacing:.15em;color:#8e706f;font-weight:600;margin-bottom:3px}
+.row-content .row-title{font-size:14px;font-weight:600;color:#1b1c1c}
+.row-amount .amount-main{font-family:'Plus Jakarta Sans';font-weight:800;font-size:16px;color:#1b1c1c;letter-spacing:-.04em;text-align:right}
+.row-amount .amount-unit{font-size:10px;color:#8e706f;text-align:right}
+.row-arrow{color:#8e706f;transition:transform 0.2s,color 0.2s}
+.mission-row:hover .row-arrow{color:#b52330;transform:translateX(3px)}
+/* Reward card */
+.reward-card{border:1.5px solid #e2bebc;border-radius:18px;padding:18px;background:#fff;transition:all 0.2s;cursor:pointer;position:relative;overflow:hidden}
+.reward-card:hover{border-color:#b52330;transform:translateY(-1px);box-shadow:0 8px 24px -8px rgba(27,28,28,0.1)}
+.reward-card.unlocked{border-color:#ffd700;background:linear-gradient(135deg,#fffbeb,#fff)}
+/* Simulator */
+input[type=range]{-webkit-appearance:none;appearance:none;height:6px;border-radius:99px;background:#e2bebc;outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#b52330;cursor:pointer;box-shadow:0 2px 8px rgba(181,35,48,0.3)}
+/* Explore card */
+.explore-card{display:flex;flex-direction:column;gap:4px;padding:16px;background:#fff;border:1px solid rgba(226,190,188,0.5);border-radius:16px;text-decoration:none;transition:all 0.2s;cursor:pointer}
+.explore-card:hover{border-color:#e2bebc;box-shadow:0 4px 16px -4px rgba(27,28,28,0.08);transform:translateY(-1px)}
+.explore-label{font-family:'Plus Jakarta Sans';font-weight:700;font-size:13px;color:#1b1c1c;letter-spacing:-.02em}
+.explore-meta{font-size:11px;color:#8e706f}
+.explore-card-gold{background:linear-gradient(135deg,#fffbeb,#fff8dc);border-color:rgba(255,197,0,0.4)}
 </style>
 </head>
 <body class="bg-background text-on-surface font-body antialiased" data-page="home">
 
-<!-- Toast container -->
-<div id="toastContainer" class="fixed top-24 right-6 z-[60] flex flex-col gap-3 pointer-events-none w-[340px] max-w-[calc(100vw-3rem)]"></div>
+<!-- Toast -->
+<div id="toastContainer" class="fixed top-20 right-4 z-[90] flex flex-col gap-2 pointer-events-none w-80"></div>
 
-<!-- Hamburger backdrop + panel -->
+<!-- Coach backdrop -->
+<div id="coachBackdrop" class="coach-backdrop" onclick="closeCoach()"></div>
+
+<!-- Coach IA modal -->
+<div id="coachModal" class="coach-modal" style="display:none">
+  <div id="coachPanel" class="coach-panel">
+    <div class="px-5 pt-4 pb-3 flex items-center justify-between border-b border-outline-variant/30 sticky top-0 bg-white z-10">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-on-surface flex items-center justify-center">
+          <span class="material-symbols-outlined filled text-white" style="font-size:16px">headset_mic</span>
+        </div>
+        <div>
+          <p class="font-headline font-bold text-sm text-on-surface" id="coachProductName">Coach IA</p>
+          <div class="flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 bg-tertiary rounded-full live-dot"></span>
+            <p class="text-[11px] text-on-surface-variant">Call en cours</p>
+          </div>
+        </div>
+      </div>
+      <button onclick="closeCoach()" class="p-2 rounded-full hover:bg-surface-container transition">
+        <span class="material-symbols-outlined text-on-surface-variant" style="font-size:20px">close</span>
+      </button>
+    </div>
+    <div class="px-5 py-4">
+      <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-3">Clique sur l'objection que tu entends</p>
+      <div class="flex flex-col gap-2" id="coachObjections"></div>
+      <div id="coachAnswer" class="hidden mt-4 p-4 rounded-2xl bg-tertiary-fixed border border-tertiary/20">
+        <p class="text-[10px] font-bold uppercase tracking-[0.15em] text-tertiary mb-2">Ta réponse</p>
+        <p class="text-sm text-on-surface leading-relaxed" id="coachAnswerText"></p>
+      </div>
+      <div class="mt-4 pt-4 border-t border-outline-variant/30">
+        <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-3">Produit actif</p>
+        <select id="coachProductSelect" onchange="loadCoachProduct()" class="w-full px-3 py-2.5 rounded-xl border border-outline-variant bg-surface-container text-sm text-on-surface outline-none focus:border-primary transition">
+          <option value="">Choisir un produit...</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Hamburger -->
 <div id="hamburgerBackdrop" class="hamburger-backdrop" onclick="closeHamburger()"></div>
 <aside id="hamburgerPanel" class="hamburger-panel">
-  <div class="px-6 pt-6 pb-4 border-b border-outline-variant/30 flex items-center justify-between">
+  <div class="px-5 pt-6 pb-4 border-b border-outline-variant/30 flex items-center justify-between">
     <div>
-      <p class="text-[10px] uppercase tracking-[0.25em] font-bold text-on-surface-variant">Stacker · Navigation</p>
-      <h2 class="font-headline font-extrabold text-xl text-on-surface mt-0.5">Toutes les sections</h2>
+      <p class="text-[10px] uppercase tracking-[0.25em] font-bold text-on-surface-variant">Stacker</p>
+      <h2 class="font-headline font-extrabold text-xl text-on-surface mt-0.5">Navigation</h2>
     </div>
     <button onclick="closeHamburger()" class="p-2 rounded-full hover:bg-surface-container-high transition">
       <span class="material-symbols-outlined">close</span>
@@ -136,624 +163,824 @@
   </div>
   <div class="flex-1 overflow-y-auto px-4 py-4">
     <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-on-surface-variant px-3 mb-2">Principal</p>
-    <a href="index.html" class="nav-item" data-page="home">
-      <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface" style="font-size:18px">space_dashboard</span></div>
+    <a href="index.html" class="nav-item active">
+      <div class="w-9 h-9 rounded-lg bg-primary-fixed flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-primary filled" style="font-size:18px">space_dashboard</span></div>
       <span class="nav-item-label text-sm font-semibold flex-1">Tableau de bord</span>
     </a>
-
     <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-on-surface-variant px-3 mt-4 mb-2">Vendre</p>
-    <a href="offres.html" class="nav-item" data-page="offres">
-      <div class="w-9 h-9 rounded-lg bg-primary-fixed flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-primary" style="font-size:18px">inventory_2</span></div>
-      <div class="flex-1 min-w-0">
-        <p class="nav-item-label text-sm font-semibold">Nos offres</p>
-        <p class="text-[11px] text-on-surface-variant truncate">8 produits · scripts + contrats</p>
-      </div>
+    <a href="offres.html" class="nav-item">
+      <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface" style="font-size:18px">inventory_2</span></div>
+      <div class="flex-1 min-w-0"><p class="nav-item-label text-sm font-semibold">Nos offres</p><p class="text-[11px] text-on-surface-variant">13 produits · scripts + contrats</p></div>
     </a>
-    <a href="pipeline.html" class="nav-item" data-page="pipeline">
-      <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface" style="font-size:18px">account_tree</span></div>
-      <div class="flex-1 min-w-0">
-        <p class="nav-item-label text-sm font-semibold">Pipeline</p>
-        <p class="text-[11px] text-on-surface-variant truncate">Aucun prospect actif</p>
-      </div>
-    </a>
-
-    <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-on-surface-variant px-3 mt-4 mb-2">Performance</p>
-    <a href="classement.html" class="nav-item" data-page="classement">
-      <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface" style="font-size:18px">leaderboard</span></div>
-      <div class="flex-1 min-w-0">
-        <p class="nav-item-label text-sm font-semibold">Classement</p>
-        <p class="text-[11px] text-on-surface-variant truncate">Pas encore classé</p>
-      </div>
-    </a>
-    <a href="performance.html" class="nav-item" data-page="performance">
-      <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface" style="font-size:18px">trending_up</span></div>
-      <div class="flex-1 min-w-0">
-        <p class="nav-item-label text-sm font-semibold">Performance</p>
-        <p class="text-[11px] text-on-surface-variant truncate">0 € ce mois</p>
-      </div>
-    </a>
-
-    <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-on-surface-variant px-3 mt-4 mb-2">Compétition</p>
-    <a href="battle.html" class="nav-item" data-page="battle">
-      <div class="w-9 h-9 rounded-lg cta-gradient flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-white" style="font-size:18px">swords</span></div>
-      <div class="flex-1 min-w-0">
-        <p class="nav-item-label text-sm font-semibold">Battle royale</p>
-        <p class="text-[11px] text-on-surface-variant truncate">Course aux 2 deals avant 18h</p>
-      </div>
-    </a>
-    <a href="mission-impossible.html" class="nav-item" data-page="mi">
-      <div class="w-9 h-9 rounded-lg gold-card gold-border flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined gold-text" style="font-size:18px">crisis_alert</span></div>
-      <div class="flex-1 min-w-0">
-        <p class="nav-item-label text-sm font-semibold">Mission impossible</p>
-        <p class="text-[11px] text-on-surface-variant truncate">Réservée Top 50 · 1 500 €</p>
-      </div>
-    </a>
-
-    <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-on-surface-variant px-3 mt-4 mb-2">Outils</p>
-    <a href="coach.html" class="nav-item" data-page="coach">
+    <a href="#" onclick="openCoach();closeHamburger()" class="nav-item">
       <div class="w-9 h-9 rounded-lg bg-on-surface flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-white" style="font-size:18px">headset_mic</span></div>
-      <div class="flex-1 min-w-0">
-        <p class="nav-item-label text-sm font-semibold">Coach IA en call</p>
-        <p class="text-[11px] text-on-surface-variant truncate">Transcription et suggestions live</p>
-      </div>
+      <div class="flex-1 min-w-0"><p class="nav-item-label text-sm font-semibold">Coach IA en call</p><p class="text-[11px] text-on-surface-variant">Objections en temps réel</p></div>
     </a>
-    <a href="voice.html" class="nav-item" data-page="voice">
-      <div class="w-9 h-9 rounded-lg bg-primary flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-white" style="font-size:18px">mic</span></div>
-      <div class="flex-1 min-w-0">
-        <p class="nav-item-label text-sm font-semibold">Hey Stacker</p>
-        <p class="text-[11px] text-on-surface-variant truncate">Commandes vocales en français</p>
-      </div>
+    <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-on-surface-variant px-3 mt-4 mb-2">Performance</p>
+    <a href="#" class="nav-item">
+      <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface" style="font-size:18px">leaderboard</span></div>
+      <div class="flex-1 min-w-0"><p class="nav-item-label text-sm font-semibold">Classement</p><p class="text-[11px] text-on-surface-variant" id="navRank">–</p></div>
+    </a>
+    <a href="#" class="nav-item">
+      <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface" style="font-size:18px">trending_up</span></div>
+      <div class="flex-1 min-w-0"><p class="nav-item-label text-sm font-semibold">Performance</p><p class="text-[11px] text-on-surface-variant" id="navPerf">0 € ce mois</p></div>
+    </a>
+    <a href="#" class="nav-item">
+      <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface" style="font-size:18px">card_giftcard</span></div>
+      <div class="flex-1 min-w-0"><p class="nav-item-label text-sm font-semibold">Mes récompenses</p><p class="text-[11px] text-on-surface-variant" id="navRewards">0 € de CA</p></div>
     </a>
   </div>
-  <div class="px-6 py-4 border-t border-outline-variant/30 flex items-center justify-between">
+  <div class="px-5 py-4 border-t border-outline-variant/30 flex items-center justify-between">
     <div class="flex items-center gap-2">
-      <div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-white text-[10px] font-bold">LM</div>
-      <div>
-        <p class="text-xs font-bold text-on-surface">Mon profil</p>
-        <p class="text-[10px] text-on-surface-variant">Pas encore classé</p>
-      </div>
+      <div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-white text-[10px] font-bold" id="navAvatar">?</div>
+      <div><p class="text-xs font-bold text-on-surface" id="navName">Mon profil</p><p class="text-[10px] text-on-surface-variant" id="navLevel">Rookie</p></div>
     </div>
-    <button class="p-2 rounded-full hover:bg-surface-container-high transition">
-      <span class="material-symbols-outlined text-on-surface-variant" style="font-size:18px">settings</span>
-    </button>
+    <div class="flex items-center gap-1 px-2 py-1 rounded-full bg-surface-container">
+      <span class="material-symbols-outlined filled flame" style="font-size:18px;color:#f97316;font-variation-settings:'FILL' 1">local_fire_department</span>
+      <span class="font-headline font-bold text-sm text-on-surface" id="navStreak">0</span>
+    </div>
   </div>
 </aside>
 
 <!-- NAV -->
-<header class="sticky top-0 w-full z-50 px-6 py-4 glass-nav">
-  <nav class="flex justify-between items-center max-w-[1400px] mx-auto">
-    <div class="flex items-center gap-4">
-      <button onclick="openHamburger()" class="p-2 rounded-full hover:bg-surface-container-high transition" title="Menu">
+<header class="sticky top-0 w-full z-50 px-5 py-4 glass-nav">
+  <nav class="flex justify-between items-center max-w-[1100px] mx-auto">
+    <div class="flex items-center gap-3">
+      <button onclick="openHamburger()" class="p-2 rounded-full hover:bg-surface-container-high transition">
         <span class="material-symbols-outlined">menu</span>
       </button>
       <a href="index.html" class="flex items-baseline gap-0.5">
-        <span class="text-2xl font-black text-primary tracking-tighter font-headline leading-none">Stacker</span>
-        <span class="w-1 h-1 bg-on-surface"></span>
+        <span class="text-xl font-black text-primary tracking-tighter font-headline">Stacker</span>
+        <span class="w-1 h-1 bg-on-surface mb-0.5 inline-block"></span>
       </a>
     </div>
     <div class="flex items-center gap-2">
-      <button class="hidden sm:flex items-center gap-2 bg-surface-container-high px-4 py-2.5 rounded-full text-sm font-semibold hover:bg-surface-container-highest transition">
-        <span class="w-1.5 h-1.5 bg-tertiary rounded-full live-dot"></span>
-        Disponible
-      </button>
-      <button class="p-2.5 rounded-full hover:bg-surface-container-high transition relative">
-        <span class="material-symbols-outlined">notifications</span>
-        <span class="absolute top-2 right-2.5 w-2 h-2 bg-primary rounded-full"></span>
-      </button>
-      <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-on-primary font-bold text-sm">LM</div>
+      <!-- Streak -->
+      <div class="flex items-center gap-1 px-3 py-1.5 rounded-full bg-surface-container-high">
+        <span class="material-symbols-outlined filled flame" style="font-size:18px;color:#f97316;font-variation-settings:'FILL' 1">local_fire_department</span>
+        <span class="font-headline font-bold text-sm text-on-surface" id="streakCount">0</span>
+      </div>
+      <!-- XP niveau -->
+      <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-high">
+        <span class="material-symbols-outlined filled text-primary" style="font-size:14px">military_tech</span>
+        <span class="font-semibold text-xs text-on-surface" id="levelBadge">Rookie</span>
+      </div>
+      <!-- Avatar -->
+      <div class="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-white text-xs font-bold cursor-pointer" id="headerAvatar" onclick="openHamburger()">?</div>
     </div>
   </nav>
 </header>
 
 <!-- IBAN Banner -->
-<div id="ibanBanner" class="hidden max-w-[1400px] mx-auto px-6 pt-4">
+<div id="ibanBanner" class="hidden max-w-[1100px] mx-auto px-5 pt-4">
   <div class="flex items-center justify-between gap-4 px-5 py-3.5 rounded-2xl bg-surface-container border border-outline-variant/50">
     <div class="flex items-center gap-3">
       <span class="material-symbols-outlined text-on-surface-variant flex-shrink-0" style="font-size:18px">info</span>
       <p class="text-sm font-medium text-on-surface">IBAN manquant — tu ne pourras pas recevoir tes commissions sans le renseigner.</p>
     </div>
-    <a href="parametres.html" class="flex-shrink-0 px-4 py-2 rounded-full bg-on-surface text-white text-xs font-bold hover:opacity-90 transition whitespace-nowrap">Ajouter mon IBAN</a>
+    <a href="#" class="flex-shrink-0 px-4 py-2 rounded-full bg-on-surface text-white text-xs font-bold hover:opacity-90 transition whitespace-nowrap">Ajouter mon IBAN</a>
   </div>
 </div>
 
-<main class="max-w-[1400px] mx-auto px-6 py-8 page-enter">
+<main class="max-w-[1100px] mx-auto px-5 py-6 page-enter">
 
   <!-- CHECKLIST GUIDÉE -->
-  <div id="guidedChecklist" class="mb-8 hidden">
+  <div id="guidedChecklist" class="mb-6 hidden">
     <div class="bg-surface-container-lowest rounded-2xl soft-shadow overflow-hidden">
-      <div class="px-6 py-5 flex items-center justify-between border-b border-outline-variant/30">
+      <div class="px-6 py-5 flex items-center justify-between border-b border-outline-variant/20">
         <div>
           <p class="font-mono text-[9px] tracking-[0.2em] uppercase text-on-surface-variant mb-1">Par où commencer</p>
           <h2 class="font-headline font-extrabold text-lg text-on-surface" style="letter-spacing:-0.03em">Tes 4 premières actions</h2>
-          <p class="text-[12px] text-on-surface-variant mt-0.5">Complète chaque étape pour closer ton premier deal.</p>
         </div>
-        <div class="flex-shrink-0 ml-4 relative w-12 h-12">
-          <svg class="w-12 h-12 -rotate-90" viewBox="0 0 36 36">
+        <div class="relative w-11 h-11 flex-shrink-0 ml-4">
+          <svg class="w-11 h-11 -rotate-90" viewBox="0 0 36 36">
             <circle cx="18" cy="18" r="15" fill="none" stroke="#e2bebc" stroke-width="3"/>
             <circle cx="18" cy="18" r="15" fill="none" stroke="#006c4c" stroke-width="3" stroke-linecap="round" stroke-dasharray="94.2" stroke-dashoffset="94.2" id="progressCircle"/>
           </svg>
-          <span class="absolute inset-0 flex items-center justify-center font-headline font-extrabold text-sm text-on-surface" id="progressCount">0/4</span>
+          <span class="absolute inset-0 flex items-center justify-center font-headline font-extrabold text-xs text-on-surface" id="progressCount">0/4</span>
         </div>
       </div>
-      <div class="divide-y divide-outline-variant/20">
+      <div class="divide-y divide-outline-variant/20" id="checklistSteps">
         <div class="flex items-start gap-4 px-5 py-4 cursor-pointer hover:bg-surface-container-low transition" id="cstep-1" onclick="doStep(1)">
-          <div class="w-8 h-8 rounded-full border-2 border-outline-variant flex items-center justify-center flex-shrink-0 mt-0.5 transition" id="scircle-1">
-            <span class="material-symbols-outlined text-on-surface-variant" style="font-size:16px">inventory_2</span>
-          </div>
-          <div class="flex-1 min-w-0">
-            <p class="font-headline font-bold text-sm text-on-surface mb-0.5">Choisis ton premier produit à vendre</p>
-            <p class="text-[12px] text-on-surface-variant leading-snug">Consulte le catalogue et clique sur l'offre qui t'intéresse le plus.</p>
-          </div>
-          <span class="material-symbols-outlined text-on-surface-variant flex-shrink-0 mt-1" style="font-size:18px">chevron_right</span>
+          <div class="w-8 h-8 rounded-full border-2 border-outline-variant flex items-center justify-center flex-shrink-0 mt-0.5 transition" id="scircle-1"><span class="material-symbols-outlined text-on-surface-variant" style="font-size:16px">inventory_2</span></div>
+          <div class="flex-1"><p class="font-headline font-bold text-sm text-on-surface mb-0.5">Choisis ton premier produit à vendre</p><p class="text-[12px] text-on-surface-variant">Consulte le catalogue et clique sur l'offre qui t'intéresse.</p></div>
+          <span class="material-symbols-outlined text-on-surface-variant mt-1 flex-shrink-0" style="font-size:18px">chevron_right</span>
         </div>
         <div class="flex items-start gap-4 px-5 py-4 cursor-pointer hover:bg-surface-container-low transition opacity-40 pointer-events-none" id="cstep-2" onclick="doStep(2)">
-          <div class="w-8 h-8 rounded-full border-2 border-outline-variant flex items-center justify-center flex-shrink-0 mt-0.5 transition" id="scircle-2">
-            <span class="material-symbols-outlined text-on-surface-variant" style="font-size:16px">record_voice_over</span>
-          </div>
-          <div class="flex-1 min-w-0">
-            <p class="font-headline font-bold text-sm text-on-surface mb-0.5">Lis le script à voix haute une fois</p>
-            <p class="text-[12px] text-on-surface-variant leading-snug">Sur la page de l'offre, lis le script téléphone une fois. Tu vas voir, c'est simple.</p>
-          </div>
-          <span class="material-symbols-outlined text-on-surface-variant flex-shrink-0 mt-1" style="font-size:18px">chevron_right</span>
+          <div class="w-8 h-8 rounded-full border-2 border-outline-variant flex items-center justify-center flex-shrink-0 mt-0.5 transition" id="scircle-2"><span class="material-symbols-outlined text-on-surface-variant" style="font-size:16px">record_voice_over</span></div>
+          <div class="flex-1"><p class="font-headline font-bold text-sm text-on-surface mb-0.5">Lis le script à voix haute une fois</p><p class="text-[12px] text-on-surface-variant">Sur la page de l'offre, lis le script téléphone. Tu vas voir, c'est simple.</p></div>
+          <span class="material-symbols-outlined text-on-surface-variant mt-1 flex-shrink-0" style="font-size:18px">chevron_right</span>
         </div>
         <div class="flex items-start gap-4 px-5 py-4 cursor-pointer hover:bg-surface-container-low transition opacity-40 pointer-events-none" id="cstep-3" onclick="doStep(3)">
-          <div class="w-8 h-8 rounded-full border-2 border-outline-variant flex items-center justify-center flex-shrink-0 mt-0.5 transition" id="scircle-3">
-            <span class="material-symbols-outlined text-on-surface-variant" style="font-size:16px">contacts</span>
-          </div>
-          <div class="flex-1 min-w-0">
-            <p class="font-headline font-bold text-sm text-on-surface mb-0.5">Trouve tes 10 premiers prospects</p>
-            <p class="text-[12px] text-on-surface-variant leading-snug">Utilise l'outil de leads Stacker pour trouver des contacts qualifiés pour ton offre.</p>
-          </div>
-          <span class="material-symbols-outlined text-on-surface-variant flex-shrink-0 mt-1" style="font-size:18px">chevron_right</span>
+          <div class="w-8 h-8 rounded-full border-2 border-outline-variant flex items-center justify-center flex-shrink-0 mt-0.5 transition" id="scircle-3"><span class="material-symbols-outlined text-on-surface-variant" style="font-size:16px">contacts</span></div>
+          <div class="flex-1"><p class="font-headline font-bold text-sm text-on-surface mb-0.5">Trouve tes 10 premiers prospects</p><p class="text-[12px] text-on-surface-variant">Utilise l'outil de leads pour trouver des contacts qualifiés.</p></div>
+          <span class="material-symbols-outlined text-on-surface-variant mt-1 flex-shrink-0" style="font-size:18px">chevron_right</span>
         </div>
         <div class="flex items-start gap-4 px-5 py-4 cursor-pointer hover:bg-surface-container-low transition opacity-40 pointer-events-none" id="cstep-4" onclick="doStep(4)">
-          <div class="w-8 h-8 rounded-full border-2 border-outline-variant flex items-center justify-center flex-shrink-0 mt-0.5 transition" id="scircle-4">
-            <span class="material-symbols-outlined text-on-surface-variant" style="font-size:16px">call</span>
-          </div>
-          <div class="flex-1 min-w-0">
-            <p class="font-headline font-bold text-sm text-on-surface mb-0.5">Fais ton premier appel</p>
-            <p class="text-[12px] text-on-surface-variant leading-snug">Appelle ton premier prospect avec le script. Log le résultat en 2 secondes. C'est parti.</p>
-          </div>
-          <span class="material-symbols-outlined text-on-surface-variant flex-shrink-0 mt-1" style="font-size:18px">chevron_right</span>
+          <div class="w-8 h-8 rounded-full border-2 border-outline-variant flex items-center justify-center flex-shrink-0 mt-0.5 transition" id="scircle-4"><span class="material-symbols-outlined text-on-surface-variant" style="font-size:16px">call</span></div>
+          <div class="flex-1"><p class="font-headline font-bold text-sm text-on-surface mb-0.5">Fais ton premier appel</p><p class="text-[12px] text-on-surface-variant">Appelle avec le script. Log le résultat. C'est parti.</p></div>
+          <span class="material-symbols-outlined text-on-surface-variant mt-1 flex-shrink-0" style="font-size:18px">chevron_right</span>
         </div>
       </div>
-      <div class="px-5 py-3 border-t border-outline-variant/20 flex items-center justify-between">
-        <p class="text-[11px] text-on-surface-variant">Ce guide disparaît automatiquement une fois terminé</p>
+      <div class="px-5 py-3 border-t border-outline-variant/20 flex justify-between items-center">
+        <p class="text-[11px] text-on-surface-variant">Disparaît automatiquement une fois terminé</p>
         <button onclick="dismissChecklist()" class="text-[11px] font-semibold text-on-surface-variant hover:text-on-surface transition">Masquer</button>
       </div>
     </div>
   </div>
 
-  <!-- HERO -->
-  <section class="reveal mb-10" style="animation-delay: 0.05s">
-    <div class="flex items-end justify-between flex-wrap gap-4 mb-2">
+  <!-- HERO + STREAK -->
+  <section class="reveal mb-6" style="animation-delay:0.05s">
+    <div class="flex items-start justify-between flex-wrap gap-4">
       <div>
-        <p class="text-[10px] font-semibold tracking-[0.25em] text-on-surface-variant uppercase mb-2" id="heroDate">–</p>
-        <h1 class="font-headline font-extrabold text-2xl md:text-4xl display-tight text-on-surface">Bonjour.</h1>
-        <p class="text-sm md:text-base text-on-surface-variant mt-2 max-w-xl">Consulte le catalogue et commence à prospecter.</p>
+        <p class="text-[10px] font-semibold tracking-[0.25em] text-on-surface-variant uppercase mb-1" id="heroDate">–</p>
+        <h1 class="font-headline font-extrabold text-2xl md:text-3xl display-tight text-on-surface">Bonjour <span id="heroName" style="text-transform:none">!</span></h1>
+        <p class="text-sm text-on-surface-variant mt-1">Voilà ce que tu dois vendre cette semaine.</p>
       </div>
-      <div class="flex items-center gap-3 flex-wrap">
-        <a href="coach.html" class="px-5 py-3 rounded-full bg-on-surface text-white font-semibold text-sm hover:opacity-90 transition flex items-center gap-2 whitespace-nowrap">
-          <span class="w-1.5 h-1.5 bg-primary rounded-full live-dot"></span>
-          <span class="material-symbols-outlined" style="font-size:18px">headset_mic</span>
-          Je suis en call
+      <div class="flex items-center gap-2">
+        <button onclick="openCoach()" class="flex items-center gap-2 px-4 py-2.5 rounded-full bg-on-surface text-white text-sm font-semibold hover:opacity-90 transition">
+          <span class="w-1.5 h-1.5 bg-tertiary-fixed rounded-full live-dot"></span>
+          <span class="material-symbols-outlined" style="font-size:16px">headset_mic</span>
+          Coach IA
+        </button>
+        <a href="offres.html" class="flex items-center gap-2 px-4 py-2.5 rounded-full cta-gradient text-white text-sm font-semibold hover:opacity-95 transition" style="box-shadow:0 6px 20px rgba(181,35,48,0.2)">
+          <span class="material-symbols-outlined" style="font-size:16px">inventory_2</span>
+          Tout le catalogue
         </a>
-        <a href="offres.html" class="px-5 py-3 rounded-full cta-gradient text-on-primary font-semibold text-sm hover:opacity-95 transition flex items-center gap-2 shadow-lg shadow-primary/20 whitespace-nowrap">
-          <span class="material-symbols-outlined" style="font-size:18px">bolt</span>
-          Voir les offres
-        </a>
       </div>
     </div>
   </section>
 
-  <!-- KPI ROW -->
-  <section class="reveal grid grid-cols-2 lg:grid-cols-4 gap-4 mb-12" style="animation-delay: 0.15s">
-    <a href="performance.html" class="kpi-card">
-      <p class="kpi-label">Commissions ce mois</p>
-      <p class="kpi-value">0 <span class="kpi-unit">€</span></p>
-      <p class="kpi-delta text-on-surface-variant">Premier deal en cours</p>
-    </a>
-    <a href="performance.html" class="kpi-card">
-      <p class="kpi-label">Deals signés</p>
-      <p class="kpi-value">0</p>
-      <p class="kpi-delta text-on-surface-variant">Lance-toi</p>
-    </a>
-    <a href="performance.html" class="kpi-card">
-      <p class="kpi-label">Taux de closing</p>
-      <p class="kpi-value">–</p>
-      <p class="kpi-delta text-on-surface-variant">Données insuffisantes</p>
-    </a>
-    <a href="classement.html" class="kpi-card kpi-card-dark">
-      <p class="kpi-label text-white/60">Rang top closer</p>
-      <p class="kpi-value text-white">–</p>
-      <p class="kpi-delta text-white/40">Signe ton premier deal</p>
-    </a>
-  </section>
-
-  <!-- OFFRES CTA -->
-  <section class="reveal mb-12" style="animation-delay: 0.25s">
-    <div class="flex items-end justify-between mb-4">
-      <div>
-        <p class="text-[10px] uppercase tracking-[0.25em] text-on-surface-variant font-bold mb-2">Catalogue commercial</p>
-        <h2 class="font-headline font-extrabold text-2xl md:text-3xl display-tight text-on-surface">Commence à vendre</h2>
+  <!-- OFFRE DE LA SEMAINE -->
+  <section class="reveal mb-6" style="animation-delay:0.08s">
+    <div class="flex items-center gap-2 mb-3">
+      <span class="w-1.5 h-1.5 bg-primary rounded-full live-dot"></span>
+      <p class="text-[10px] uppercase tracking-[0.25em] text-on-surface-variant font-bold">Offre de la semaine</p>
+      <div class="flex items-center gap-1.5 ml-auto px-3 py-1 rounded-full bg-surface-container-high">
+        <span class="material-symbols-outlined text-on-surface-variant" style="font-size:13px">schedule</span>
+        <span class="font-mono text-[11px] font-semibold text-on-surface-variant" id="weekCountdown">–</span>
       </div>
-      <a href="offres.html" class="text-sm font-semibold text-on-surface border-b border-on-surface/30 pb-0.5 hover:border-on-surface transition whitespace-nowrap flex items-center gap-1">
-        Voir tout
-        <span class="material-symbols-outlined" style="font-size:16px">arrow_forward</span>
-      </a>
     </div>
-
-    <!-- Featured -->
-    <a href="offres.html" class="hero-dark rounded-2xl overflow-hidden relative block mb-4 hover-lift">
-      <div class="p-8 md:p-10 relative z-10">
-        <div class="flex items-center gap-2 mb-4">
-          <span class="tag bg-primary text-on-primary">Top vente</span>
-          <span class="tag bg-white/10 text-white/80">SEO · IA</span>
-          <span class="tag bg-white/10 text-white/80">Récurrent</span>
-        </div>
-        <h3 class="font-headline font-extrabold text-2xl md:text-4xl display-tight text-white mb-2 max-w-2xl">Visibilité Google pour commerçants locaux</h3>
-        <p class="text-white/60 text-sm md:text-base mb-6 max-w-xl">Script validé, audit gratuit comme accroche, commission récurrente à vie.</p>
-        <div class="flex items-center gap-6 flex-wrap">
-          <div>
-            <p class="font-headline font-extrabold text-2xl text-white metric-num">98 €</p>
-            <p class="text-xs text-white/50">com. mensuelle · Pack Pro</p>
-          </div>
-          <div class="h-8 w-px bg-white/20"></div>
-          <div>
-            <p class="font-headline font-extrabold text-2xl text-white metric-num">20%</p>
-            <p class="text-xs text-white/50">commission récurrente</p>
-          </div>
-          <div class="h-8 w-px bg-white/20"></div>
-          <div>
-            <p class="font-headline font-extrabold text-2xl text-white metric-num">8</p>
-            <p class="text-xs text-white/50">produits disponibles</p>
-          </div>
-        </div>
-      </div>
-    </a>
-
-    <!-- 3 autres offres -->
-    <div class="bg-surface-container-lowest rounded-2xl soft-shadow overflow-hidden">
-      <a href="offres.html" class="mission-row group">
-        <div class="row-content">
-          <p class="row-sector">Marketing · Commerçants</p>
-          <h4 class="row-title">Carte Fidélité digitale — Wallet Apple & Google</h4>
-        </div>
-        <span class="tag bg-tertiary-fixed text-tertiary">40% com.</span>
-        <div class="row-amount">
-          <p class="amount-main">Dès 12 €</p>
-          <p class="amount-unit">par mois récurrent</p>
-        </div>
-        <span class="material-symbols-outlined row-arrow" style="font-size:18px">arrow_forward</span>
-      </a>
-      <a href="offres.html" class="mission-row group">
-        <div class="row-content">
-          <p class="row-sector">Hôtellerie · Conciergerie</p>
-          <h4 class="row-title">InRoom — 5€ par chambre par mois</h4>
-        </div>
-        <span class="tag bg-tertiary-fixed text-tertiary">50% com.</span>
-        <div class="row-amount">
-          <p class="amount-main">Variable</p>
-          <p class="amount-unit">selon nb chambres</p>
-        </div>
-        <span class="material-symbols-outlined row-arrow" style="font-size:18px">arrow_forward</span>
-      </a>
-      <a href="offres.html" class="mission-row group">
-        <div class="row-content">
-          <p class="row-sector">B2B · Prospection</p>
-          <h4 class="row-title">Huntlist — Scraping B2B automatisé</h4>
-        </div>
-        <span class="tag bg-primary-fixed text-primary">25% com.</span>
-        <div class="row-amount">
-          <p class="amount-main">Dès 25 €</p>
-          <p class="amount-unit">par mois récurrent</p>
-        </div>
-        <span class="material-symbols-outlined row-arrow" style="font-size:18px">arrow_forward</span>
-      </a>
-    </div>
-  </section>
-
-  <!-- CLASSEMENT + ACTIVITÉ -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-    <!-- Classement -->
-    <section class="reveal" style="animation-delay: 0.4s">
-      <div class="flex items-end justify-between mb-4">
+    <a href="offres.html" id="weekOfferCard" class="hero-dark rounded-2xl block p-6 hover-lift" style="text-decoration:none">
+      <div class="flex items-start justify-between gap-4 mb-4">
         <div>
-          <p class="text-[10px] uppercase tracking-[0.25em] text-on-surface-variant font-bold mb-2">Compétition</p>
+          <p class="font-mono text-[9px] tracking-[0.16em] uppercase text-white/40 mb-2" id="weekOfferCat">–</p>
+          <h2 class="font-headline font-extrabold text-2xl display-tight text-white mb-2 leading-tight" id="weekOfferName">–</h2>
+          <p class="text-sm text-white/55 leading-relaxed" id="weekOfferTagline">–</p>
+        </div>
+        <div class="w-12 h-12 rounded-2xl bg-primary/20 border border-primary/25 flex items-center justify-center flex-shrink-0">
+          <span class="material-symbols-outlined text-white filled" id="weekOfferIcon" style="font-size:24px;font-variation-settings:'FILL' 1">bolt</span>
+        </div>
+      </div>
+      <!-- Stats -->
+      <div class="flex items-center gap-4 flex-wrap mb-4">
+        <div><p class="font-headline font-extrabold text-xl text-white metric-num" id="weekOfferCom">–</p><p class="text-[10px] text-white/40">commission récurrente</p></div>
+        <div class="h-6 w-px bg-white/15"></div>
+        <div><p class="font-headline font-extrabold text-xl text-white metric-num" id="weekOfferPrice">–</p><p class="text-[10px] text-white/40">abonnement client</p></div>
+        <div class="h-6 w-px bg-white/15"></div>
+        <div><p class="font-headline font-extrabold text-xl text-white metric-num" id="weekOfferLevel">–</p><p class="text-[10px] text-white/40">niveau requis</p></div>
+      </div>
+      <!-- Script rapide -->
+      <div class="bg-white/08 rounded-xl p-3 border border-white/10" style="background:rgba(255,255,255,0.06)">
+        <p class="text-[9.5px] font-bold uppercase tracking-[0.12em] text-white/40 mb-1.5">Accroche · ce que tu dis d'abord</p>
+        <p class="text-[12.5px] text-white/70 leading-relaxed italic" id="weekOfferScript">–</p>
+      </div>
+      <div class="mt-4 flex items-center justify-between">
+        <div class="flex gap-2" id="weekOfferTags"></div>
+        <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white text-on-surface text-xs font-bold">
+          Voir le kit complet
+          <span class="material-symbols-outlined" style="font-size:14px">arrow_forward</span>
+        </div>
+      </div>
+    </a>
+  </section>
+
+  <!-- KPI + STREAK + XP -->
+  <section class="reveal grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6" style="animation-delay:0.1s">
+    <div class="bg-surface-container-lowest rounded-2xl p-4 soft-shadow">
+      <p class="text-[10px] uppercase tracking-[0.15em] text-on-surface-variant font-semibold mb-1">Commissions</p>
+      <p class="font-headline font-extrabold text-2xl text-on-surface metric-num" id="kpiCom">0 €</p>
+      <p class="text-[11px] text-on-surface-variant mt-0.5">ce mois</p>
+    </div>
+    <div class="bg-surface-container-lowest rounded-2xl p-4 soft-shadow">
+      <p class="text-[10px] uppercase tracking-[0.15em] text-on-surface-variant font-semibold mb-1">Deals signés</p>
+      <p class="font-headline font-extrabold text-2xl text-on-surface metric-num" id="kpiDeals">0</p>
+      <p class="text-[11px] text-on-surface-variant mt-0.5">au total</p>
+    </div>
+    <!-- Streak card -->
+    <div class="bg-surface-container-lowest rounded-2xl p-4 soft-shadow">
+      <p class="text-[10px] uppercase tracking-[0.15em] text-on-surface-variant font-semibold mb-1">Streak</p>
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined filled flame" style="font-size:26px;color:#f97316;font-variation-settings:'FILL' 1">local_fire_department</span>
+        <p class="font-headline font-extrabold text-2xl text-on-surface metric-num" id="kpiStreak">0</p>
+      </div>
+      <p class="text-[11px] text-on-surface-variant mt-0.5">jours consécutifs</p>
+    </div>
+    <!-- Niveau -->
+    <div class="bg-on-surface rounded-2xl p-4">
+      <p class="text-[10px] uppercase tracking-[0.15em] text-white/50 font-semibold mb-1">Niveau</p>
+      <p class="font-headline font-extrabold text-xl text-white" id="kpiLevel">Rookie</p>
+      <div class="mt-2">
+        <div class="flex justify-between mb-1">
+          <span class="text-[10px] text-white/40" id="xpCurrent">0 XP</span>
+          <span class="text-[10px] text-white/40" id="xpNext">500 XP</span>
+        </div>
+        <div class="h-1.5 rounded-full bg-white/10">
+          <div class="xp-fill" id="xpBar" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MISSIONS FLASH -->
+  <section class="reveal mb-6" style="animation-delay:0.15s">
+    <div class="flex items-center justify-between mb-3">
+      <div class="flex items-center gap-2">
+        <span class="w-1.5 h-1.5 bg-primary rounded-full live-dot"></span>
+        <p class="text-[10px] uppercase tracking-[0.25em] text-on-surface-variant font-bold">Missions flash</p>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+      <div class="bg-surface-container-lowest rounded-2xl p-4 soft-shadow border border-outline-variant/40 relative overflow-hidden">
+        <div class="flex items-start justify-between mb-3">
+          <div>
+            <span class="tag bg-primary-fixed text-primary mb-2 inline-flex">Flash</span>
+            <p class="font-headline font-bold text-sm text-on-surface">1er à signer une Carte Fidélité</p>
+          </div>
+          <div class="relative w-10 h-10 flex-shrink-0">
+            <svg class="w-10 h-10 -rotate-90" viewBox="0 0 36 36">
+              <circle cx="18" cy="18" r="14" fill="none" stroke="#e2bebc" stroke-width="3"/>
+              <circle cx="18" cy="18" r="14" fill="none" stroke="#b52330" stroke-width="3" stroke-linecap="round" stroke-dasharray="87.9" stroke-dashoffset="0" id="flash1ring" style="transition:stroke-dashoffset 1s linear"/>
+            </svg>
+            <span class="absolute inset-0 flex items-center justify-center font-mono font-bold text-[9px] text-primary" id="flash1timer">02:00</span>
+          </div>
+        </div>
+        <div class="flex items-center justify-between">
+          <p class="font-headline font-extrabold text-lg text-tertiary metric-num">+30 €</p>
+          <a href="offres.html" class="px-3 py-1.5 rounded-full bg-primary text-white text-xs font-bold hover:opacity-90 transition">Je vends</a>
+        </div>
+      </div>
+      <div class="bg-surface-container-lowest rounded-2xl p-4 soft-shadow border border-outline-variant/40 relative overflow-hidden">
+        <div class="flex items-start justify-between mb-3">
+          <div>
+            <span class="tag bg-tertiary-fixed text-tertiary mb-2 inline-flex">Défi</span>
+            <p class="font-headline font-bold text-sm text-on-surface">3 appels cette heure</p>
+          </div>
+          <div class="relative w-10 h-10 flex-shrink-0">
+            <svg class="w-10 h-10 -rotate-90" viewBox="0 0 36 36">
+              <circle cx="18" cy="18" r="14" fill="none" stroke="#e2bebc" stroke-width="3"/>
+              <circle cx="18" cy="18" r="14" fill="none" stroke="#006c4c" stroke-width="3" stroke-linecap="round" stroke-dasharray="87.9" stroke-dashoffset="0" id="flash2ring" style="transition:stroke-dashoffset 1s linear"/>
+            </svg>
+            <span class="absolute inset-0 flex items-center justify-center font-mono font-bold text-[9px] text-tertiary" id="flash2timer">45:00</span>
+          </div>
+        </div>
+        <div class="flex items-center justify-between">
+          <p class="font-headline font-extrabold text-lg text-tertiary metric-num">+50 XP</p>
+          <button onclick="logCall()" class="px-3 py-1.5 rounded-full bg-tertiary text-white text-xs font-bold hover:opacity-90 transition">Logger</button>
+        </div>
+      </div>
+      <div class="gold-gradient rounded-2xl p-4 relative overflow-hidden shimmer">
+        <div class="flex items-start justify-between mb-3">
+          <div>
+            <span class="tag mb-2 inline-flex" style="background:rgba(255,197,0,0.15);color:#b8860b">Elite</span>
+            <p class="font-headline font-bold text-sm text-white">Top CA cette semaine</p>
+          </div>
+          <span class="material-symbols-outlined filled" style="font-size:22px;color:#ffd700;font-variation-settings:'FILL' 1">emoji_events</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <p class="font-headline font-extrabold text-lg gold-text metric-num">iPhone 17 Pro Max</p>
+          <a href="offres.html" class="px-3 py-1.5 rounded-full text-xs font-bold hover:opacity-90 transition" style="background:rgba(255,197,0,0.2);color:#ffd700">Participer</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATALOGUE + CLASSEMENT -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+
+    <!-- Catalogue -->
+    <section class="reveal lg:col-span-2" style="animation-delay:0.2s">
+      <div class="flex items-end justify-between mb-3">
+        <div>
+          <p class="text-[10px] uppercase tracking-[0.25em] text-on-surface-variant font-bold mb-1">Catalogue</p>
+          <h2 class="font-headline font-extrabold text-xl display-tight text-on-surface">Commence à vendre</h2>
+        </div>
+        <a href="offres.html" class="text-xs font-semibold text-on-surface border-b border-on-surface/30 hover:border-on-surface transition flex items-center gap-1">
+          Tout voir <span class="material-symbols-outlined" style="font-size:14px">arrow_forward</span>
+        </a>
+      </div>
+      <a href="offres.html" class="hero-dark rounded-2xl block p-6 mb-2 hover-lift">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="tag bg-primary text-on-primary">Top vente</span>
+          <span class="tag bg-white/10 text-white/80">20% com.</span>
+        </div>
+        <h3 class="font-headline font-extrabold text-xl display-tight text-white mb-1">Visibilité Google · Seoia Partners</h3>
+        <p class="text-white/55 text-xs mb-4">Script validé, audit gratuit comme accroche. Commission récurrente à vie.</p>
+        <div class="flex items-center gap-4">
+          <div><p class="font-headline font-extrabold text-lg text-white metric-num">98 €</p><p class="text-[10px] text-white/40">com./mois</p></div>
+          <div class="h-6 w-px bg-white/15"></div>
+          <div><p class="font-headline font-extrabold text-lg text-white metric-num">20%</p><p class="text-[10px] text-white/40">récurrent</p></div>
+        </div>
+      </a>
+      <div class="bg-surface-container-lowest rounded-2xl soft-shadow overflow-hidden">
+        <a href="offres.html" class="mission-row"><div class="row-content"><p class="row-sector">Commerce · Débutant</p><h4 class="row-title">Carte Fidélité digitale — Wallet Apple & Google</h4></div><span class="tag bg-tertiary-fixed text-tertiary">40%</span><div class="row-amount"><p class="amount-main">Dès 12 €</p><p class="amount-unit">/mois</p></div><span class="material-symbols-outlined row-arrow" style="font-size:16px">arrow_forward</span></a>
+        <a href="offres.html" class="mission-row"><div class="row-content"><p class="row-sector">Énergie · Débutant</p><h4 class="row-title">Réduction Facture Énergie — Particuliers</h4></div><span class="tag bg-tertiary-fixed text-tertiary">40%</span><div class="row-amount"><p class="amount-main">80–150 €</p><p class="amount-unit">/dossier</p></div><span class="material-symbols-outlined row-arrow" style="font-size:16px">arrow_forward</span></a>
+        <a href="offres.html" class="mission-row"><div class="row-content"><p class="row-sector">Finance · Expérimenté</p><h4 class="row-title">Rachat de Crédit — Regroupement</h4></div><span class="tag bg-primary-fixed text-primary">40%</span><div class="row-amount"><p class="amount-main">400–1 500 €</p><p class="amount-unit">/dossier</p></div><span class="material-symbols-outlined row-arrow" style="font-size:16px">arrow_forward</span></a>
+      </div>
+    </section>
+
+    <!-- Classement -->
+    <section class="reveal" style="animation-delay:0.25s">
+      <div class="flex items-end justify-between mb-3">
+        <div>
+          <p class="text-[10px] uppercase tracking-[0.25em] text-on-surface-variant font-bold mb-1">Live</p>
           <h2 class="font-headline font-extrabold text-xl display-tight text-on-surface">Classement</h2>
         </div>
-        <a href="classement.html" class="text-xs font-semibold text-on-surface border-b border-on-surface/30 pb-0.5 hover:border-on-surface transition flex items-center gap-1">
-          Tout voir
-          <span class="material-symbols-outlined" style="font-size:14px">arrow_forward</span>
-        </a>
       </div>
-      <div class="bg-surface-container-lowest rounded-2xl soft-shadow overflow-hidden">
-        <div class="flex flex-col items-center justify-center py-12 px-6 text-center">
-          <div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center mb-4">
-            <span class="material-symbols-outlined text-on-surface-variant" style="font-size:24px">leaderboard</span>
-          </div>
+      <div class="bg-surface-container-lowest rounded-2xl soft-shadow overflow-hidden" id="leaderboard">
+        <div class="flex flex-col items-center justify-center py-10 px-5 text-center">
+          <span class="material-symbols-outlined text-on-surface-variant mb-3" style="font-size:32px">leaderboard</span>
           <p class="font-semibold text-sm text-on-surface mb-1">Pas encore classé</p>
-          <p class="text-xs text-on-surface-variant">Signe ton premier deal pour apparaître dans le classement.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Activité -->
-    <section class="reveal" style="animation-delay: 0.5s">
-      <div class="flex items-end justify-between mb-4">
-        <div>
-          <p class="text-[10px] uppercase tracking-[0.25em] text-on-surface-variant font-bold mb-2 flex items-center gap-2">
-            <span class="w-1.5 h-1.5 bg-tertiary rounded-full live-dot"></span>
-            Live
-          </p>
-          <h2 class="font-headline font-extrabold text-xl display-tight text-on-surface">Activité</h2>
-        </div>
-        <a href="performance.html" class="text-xs font-semibold text-on-surface border-b border-on-surface/30 pb-0.5 hover:border-on-surface transition flex items-center gap-1">
-          Historique
-          <span class="material-symbols-outlined" style="font-size:14px">arrow_forward</span>
-        </a>
-      </div>
-      <div class="bg-surface-container-lowest rounded-2xl soft-shadow overflow-hidden">
-        <div class="flex flex-col items-center justify-center py-12 px-6 text-center">
-          <div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center mb-4">
-            <span class="material-symbols-outlined text-on-surface-variant" style="font-size:24px">history</span>
-          </div>
-          <p class="font-semibold text-sm text-on-surface mb-1">Aucune activité</p>
-          <p class="text-xs text-on-surface-variant">Tes deals signés et relances apparaîtront ici.</p>
+          <p class="text-xs text-on-surface-variant">Signe ton premier deal pour apparaître.</p>
         </div>
       </div>
     </section>
   </div>
 
-  <!-- CTA GRID -->
-  <section class="reveal" style="animation-delay: 0.6s">
-    <p class="text-[10px] uppercase tracking-[0.25em] text-on-surface-variant font-bold mb-4">Explorer</p>
+  <!-- RÉCOMPENSES -->
+  <section class="reveal mb-6" style="animation-delay:0.3s">
+    <div class="flex items-end justify-between mb-3">
+      <div>
+        <p class="text-[10px] uppercase tracking-[0.25em] text-on-surface-variant font-bold mb-1">Boutique récompenses</p>
+        <h2 class="font-headline font-extrabold text-xl display-tight text-on-surface">Tes objectifs cadeaux</h2>
+      </div>
+    </div>
+    <!-- Progress bar CA -->
+    <div class="bg-surface-container-lowest rounded-2xl p-5 soft-shadow mb-3">
+      <div class="flex items-center justify-between mb-2">
+        <p class="text-sm font-semibold text-on-surface">CA généré ce mois</p>
+        <p class="font-headline font-extrabold text-sm text-on-surface metric-num"><span id="caTotal">0</span> € / <span id="caTarget">500</span> €</p>
+      </div>
+      <div class="h-2 rounded-full bg-surface-container-high mb-1">
+        <div class="reward-fill h-full rounded-full cta-gradient" id="caBar" style="width:0%"></div>
+      </div>
+      <p class="text-[11px] text-on-surface-variant" id="caNext">Plus que 500 € pour débloquer tes AirPods</p>
+    </div>
+    <!-- Reward cards -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-      <a href="battle.html" class="explore-card">
-        <p class="explore-label">Battle royale</p>
-        <p class="explore-meta">Compétition entre commerciaux</p>
-      </a>
-      <a href="mission-impossible.html" class="explore-card explore-card-gold">
-        <p class="explore-label">Mission impossible</p>
-        <p class="explore-meta">Réservée Top 50 · 1 500 €</p>
-      </a>
-      <a href="offres.html" class="explore-card">
-        <p class="explore-label">Nos offres</p>
-        <p class="explore-meta">8 produits · scripts + contrats</p>
-      </a>
-      <a href="pipeline.html" class="explore-card">
-        <p class="explore-label">Pipeline</p>
-        <p class="explore-meta">Suivi de tes prospects</p>
-      </a>
+      <div class="reward-card" id="reward-1">
+        <span class="material-symbols-outlined filled mb-2 block" style="font-size:28px;color:#1b1c1c;font-variation-settings:'FILL' 1">headphones</span>
+        <p class="font-headline font-bold text-sm text-on-surface mb-0.5">AirPods Pro</p>
+        <p class="text-[11px] text-on-surface-variant mb-3">500 € de CA</p>
+        <div class="h-1 rounded-full bg-surface-container-high"><div class="reward-fill h-full rounded-full bg-tertiary" id="rbar-1" style="width:0%"></div></div>
+      </div>
+      <div class="reward-card" id="reward-2">
+        <span class="material-symbols-outlined filled mb-2 block" style="font-size:28px;color:#1b1c1c;font-variation-settings:'FILL' 1">watch</span>
+        <p class="font-headline font-bold text-sm text-on-surface mb-0.5">Apple Watch</p>
+        <p class="text-[11px] text-on-surface-variant mb-3">1 500 € de CA</p>
+        <div class="h-1 rounded-full bg-surface-container-high"><div class="reward-fill h-full rounded-full bg-tertiary" id="rbar-2" style="width:0%"></div></div>
+      </div>
+      <div class="reward-card" id="reward-3">
+        <span class="material-symbols-outlined filled mb-2 block" style="font-size:28px;color:#1b1c1c;font-variation-settings:'FILL' 1">smartphone</span>
+        <p class="font-headline font-bold text-sm text-on-surface mb-0.5">iPhone 17 Pro Max</p>
+        <p class="text-[11px] text-on-surface-variant mb-3">5 000 € de CA</p>
+        <div class="h-1 rounded-full bg-surface-container-high"><div class="reward-fill h-full rounded-full bg-tertiary" id="rbar-3" style="width:0%"></div></div>
+      </div>
+      <div class="reward-card relative overflow-hidden" id="reward-4" style="background:#ffffff;border:1.5px solid rgba(255,197,0,0.5)">
+        <div class="absolute top-0 left-0 right-0 h-0.5" style="background:linear-gradient(90deg,#ffd700,#b8860b)"></div>
+        <span class="material-symbols-outlined filled mb-2 block" style="font-size:28px;color:#b8860b;font-variation-settings:'FILL' 1">watch</span>
+        <p class="font-headline font-bold text-sm mb-0.5" style="color:#b8860b">Rolex Daytona</p>
+        <p class="text-[11px] text-on-surface-variant mb-3">15 000 € de CA</p>
+        <div class="h-1 rounded-full bg-surface-container-high"><div class="reward-fill h-full rounded-full" style="background:linear-gradient(90deg,#ffd700,#b8860b)" id="rbar-4" style="width:0%"></div></div>
+      </div>
     </div>
   </section>
+
+  <!-- SIMULATEUR DE REVENUS -->
+  <section class="reveal mb-6" style="animation-delay:0.35s">
+    <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5">
+      <div class="flex items-center gap-2 mb-4">
+        <span class="material-symbols-outlined filled text-primary" style="font-size:20px">calculate</span>
+        <h2 class="font-headline font-extrabold text-lg display-tight text-on-surface">Simule tes revenus</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <div class="flex justify-between mb-2">
+            <label class="text-sm font-semibold text-on-surface">Deals signés par mois</label>
+            <span class="font-headline font-bold text-primary" id="simDealsVal">5</span>
+          </div>
+          <input type="range" min="1" max="50" value="5" id="simDeals" oninput="updateSim()" class="w-full mb-4">
+          <div class="flex justify-between mb-2">
+            <label class="text-sm font-semibold text-on-surface">Abonnement moyen client</label>
+            <span class="font-headline font-bold text-primary" id="simPriceVal">99 €</span>
+          </div>
+          <input type="range" min="29" max="499" value="99" step="10" id="simPrice" oninput="updateSim()" class="w-full">
+        </div>
+        <div class="flex flex-col gap-3">
+          <div class="bg-surface-container rounded-xl p-4">
+            <p class="text-[11px] text-on-surface-variant mb-1">Commission mensuelle (mois 1)</p>
+            <p class="font-headline font-extrabold text-2xl text-on-surface metric-num" id="simMonthly">–</p>
+          </div>
+          <div class="bg-surface-container rounded-xl p-4">
+            <p class="text-[11px] text-on-surface-variant mb-1">Revenus cumulés à 12 mois</p>
+            <p class="font-headline font-extrabold text-2xl text-tertiary metric-num" id="simYearly">–</p>
+          </div>
+          <div class="rounded-xl p-4" style="background:linear-gradient(135deg,#006c4c,#00a879)">
+            <p class="text-[11px] text-white/60 mb-1">Avec fidélisation clients</p>
+            <p class="font-headline font-extrabold text-2xl text-white metric-num" id="simFidelised">–</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPLORER -->
+  <section class="reveal mb-6" style="animation-delay:0.4s">
+    <p class="text-[10px] uppercase tracking-[0.25em] text-on-surface-variant font-bold mb-3">Explorer</p>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <a href="offres.html" class="explore-card"><p class="explore-label">Nos offres</p><p class="explore-meta">13 produits · scripts</p></a>
+      <a href="#" onclick="openCoach();return false" class="explore-card"><p class="explore-label">Coach IA</p><p class="explore-meta">Objections en live</p></a>
+      <a href="#" class="explore-card explore-card-gold"><p class="explore-label">Top closers</p><p class="explore-meta">Classement national</p></a>
+      <a href="#" class="explore-card"><p class="explore-label">Pipeline</p><p class="explore-meta">Mes prospects</p></a>
+    </div>
+  </section>
+
 </main>
 
-<style>
-  /* KPI cards allégées */
-  .kpi-card {
-    display: block; padding: 24px; border-radius: 16px;
-    background: #ffffff; transition: transform 0.3s, box-shadow 0.3s;
-    box-shadow: 0 2px 8px rgba(27,28,28,0.04);
-  }
-  .kpi-card:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(27,28,28,0.08); }
-  .kpi-card-dark { background: #1b1c1c; }
-  .kpi-label {
-    font-size: 10px; text-transform: uppercase; letter-spacing: 0.15em;
-    color: #8e706f; font-weight: 600; margin-bottom: 16px;
-  }
-  .kpi-value {
-    font-family: 'Plus Jakarta Sans'; font-weight: 800; font-size: 36px;
-    color: #1b1c1c; letter-spacing: -0.045em; font-feature-settings: "tnum"; line-height: 1;
-  }
-  .kpi-unit { font-size: 20px; color: #8e706f; font-weight: 700; }
-  .kpi-delta { font-size: 13px; font-weight: 600; margin-top: 12px; }
-
-  /* Mission rows */
-  .mission-row {
-    display: grid; grid-template-columns: 1fr 100px 120px 24px; gap: 20px;
-    padding: 18px 24px; align-items: center;
-    border-bottom: 1px solid rgba(226, 190, 188, 0.15);
-    transition: background 0.15s ease; cursor: pointer; text-decoration: none; color: inherit;
-  }
-  .mission-row:last-child { border-bottom: none; }
-  .mission-row:hover { background: #f6f3f2; }
-  .row-sector { font-size: 10px; text-transform: uppercase; letter-spacing: 0.15em; color: #8e706f; font-weight: 600; margin-bottom: 4px; }
-  .row-title { font-size: 14px; font-weight: 600; color: #1b1c1c; }
-  .row-amount { text-align: right; }
-  .row-amount .amount-main { font-family: 'Plus Jakarta Sans'; font-weight: 800; font-size: 16px; color: #1b1c1c; letter-spacing: -0.04em; }
-  .row-amount .amount-unit { font-size: 10px; color: #8e706f; margin-top: 2px; }
-  .row-arrow { color: #8e706f; transition: all 0.2s; }
-  .mission-row:hover .row-arrow { color: #b52330; transform: translateX(4px); }
-  @media (max-width: 768px) {
-    .mission-row { grid-template-columns: 1fr auto; gap: 6px; padding: 16px 20px; }
-    .row-content { grid-column: 1; grid-row: 1; }
-    .tag { grid-column: 1; grid-row: 2; justify-self: start; margin-top: 4px; }
-    .row-amount { grid-column: 2; grid-row: 1 / 3; align-self: center; }
-    .row-arrow { display: none; }
-  }
-
-  /* Classement rows */
-  .rank-row {
-    display: grid; grid-template-columns: 32px 1fr auto; gap: 16px;
-    padding: 14px 20px; align-items: center;
-    border-bottom: 1px solid rgba(226, 190, 188, 0.15);
-    transition: background 0.15s ease;
-  }
-  .rank-row:last-child { border-bottom: none; }
-  .rank-row:hover { background: #f6f3f2; }
-  .rank-row-me { background: #ffdad8; }
-  .rank-row-me:hover { background: #ffcbc9; }
-  .rank-num { font-family: 'Plus Jakarta Sans'; font-weight: 700; color: #8e706f; font-size: 14px; letter-spacing: -0.04em; }
-  .rank-name { font-size: 14px; font-weight: 600; color: #1b1c1c; }
-  .rank-amount { font-family: 'Plus Jakarta Sans'; font-weight: 800; font-size: 14px; color: #1b1c1c; letter-spacing: -0.04em; font-feature-settings: "tnum"; }
-
-  /* Activity rows */
-  .activity-row {
-    display: grid; grid-template-columns: 16px 1fr; gap: 16px;
-    padding: 14px 20px; align-items: start;
-    border-bottom: 1px solid rgba(226, 190, 188, 0.15);
-  }
-  .activity-row:last-child { border-bottom: none; }
-  .activity-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 8px; }
-  .activity-title { font-size: 14px; font-weight: 600; color: #1b1c1c; }
-  .activity-meta { font-size: 12px; color: #8e706f; margin-top: 2px; }
-
-  /* Explore cards */
-  .explore-card {
-    display: block; padding: 20px; border-radius: 14px;
-    background: #ffffff; transition: transform 0.3s, box-shadow 0.3s;
-    box-shadow: 0 2px 8px rgba(27,28,28,0.04); cursor: pointer;
-  }
-  .explore-card:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(27,28,28,0.08); }
-  .explore-card-gold {
-    background: linear-gradient(135deg, #1f1d18 0%, #2a2620 100%);
-    color: white; position: relative; overflow: hidden;
-  }
-  .explore-card-gold::before {
-    content: ''; position: absolute; inset: 0;
-    background: linear-gradient(135deg, transparent 30%, rgba(255,197,0,0.08) 50%, transparent 70%);
-    background-size: 200% 200%; animation: goldShimmer 6s ease infinite;
-  }
-  .explore-card-gold .explore-label { color: #ffd700; position: relative; }
-  .explore-card-gold .explore-meta { color: rgba(255,255,255,0.5); position: relative; }
-  .explore-label { font-family: 'Plus Jakarta Sans'; font-weight: 700; font-size: 14px; color: #1b1c1c; margin-bottom: 4px; }
-  .explore-meta { font-size: 11px; color: #8e706f; }
-</style>
-
-<!-- FOOTER -->
-<footer class="max-w-[1400px] mx-auto px-6 mt-16 pt-8 pb-10">
-  <div class="divider-soft mb-6"></div>
-  <div class="flex justify-between items-center flex-wrap gap-4">
-    <p class="text-xs text-on-surface-variant">Stacker · Plateforme de commissionnement commercial</p>
-    <p class="text-xs text-on-surface-variant font-semibold tracking-[0.25em] uppercase">Defined by editorial precision</p>
-  </div>
-</footer>
-
 <script>
-(function() {
-  'use strict';
+// ─── DATA ───────────────────────────────────────────
+const LEVELS = [
+  { name:'Rookie', min:0, max:500 },
+  { name:'Closer', min:500, max:1500 },
+  { name:'Pro', min:1500, max:3500 },
+  { name:'Elite', min:3500, max:7000 },
+  { name:'Legend', min:7000, max:Infinity }
+];
 
-  window.showToast = function(opts) {
-    const c = document.getElementById('toastContainer');
-    const el = document.createElement('div');
-    el.className = 'toast pointer-events-auto bg-surface-container-lowest rounded-2xl p-4 float-shadow flex items-start gap-3 border border-outline-variant/30';
-    el.innerHTML = '<div class="w-9 h-9 rounded-full ' + (opts.iconBg || 'bg-tertiary/10') + ' flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined ' + (opts.iconColor || 'text-tertiary') + '" style="font-size:20px">' + (opts.icon || 'check_circle') + '</span></div>' +
-      '<div class="flex-1 min-w-0"><p class="font-bold text-sm text-on-surface">' + opts.title + '</p><p class="text-xs text-on-surface-variant mt-0.5">' + opts.body + '</p></div>' +
-      '<button class="text-on-surface-variant hover:text-on-surface" onclick="this.parentElement.remove()"><span class="material-symbols-outlined" style="font-size:16px">close</span></button>';
-    c.appendChild(el);
-    setTimeout(function() { el.classList.add('leaving'); setTimeout(function() { el.remove(); }, 400); }, 4500);
-  };
+const PRODUCTS_OBJECTIONS = {
+  seoia: [
+    { q:"J'ai déjà quelqu'un pour mon site", a:"Parfait — notre service est 100% complémentaire. On s'occupe uniquement du référencement Google, pas du site lui-même." },
+    { q:"C'est trop cher", a:"Un seul client supplémentaire par semaine rembourse largement l'abonnement. L'audit gratuit vous montrera exactement combien de clients vous perdez." },
+    { q:"J'ai pas le temps de m'en occuper", a:"C'est exactement pour ça qu'on existe. Vous n'avez rien à faire — on gère tout de A à Z. Vous recevez un rapport mensuel et vous voyez les résultats." },
+    { q:"Ça marche vraiment le SEO ?", a:"Nos clients voient en moyenne +40% de visites organiques dès le 2ème mois. On vous montre des exemples concrets de votre secteur." },
+  ],
+  fidelite: [
+    { q:"Mes clients ne laissent pas d'avis", a:"78% des clients laissent un avis quand on leur facilite. Un QR code devant eux après un bon service, c'est naturel." },
+    { q:"J'ai déjà une carte papier", a:"Le taux de rétention avec le wallet est 3x supérieur aux cartes papier — les clients ne la perdent jamais et vous pouvez les recontacter." },
+    { q:"C'est compliqué à mettre en place ?", a:"Aucune app à télécharger pour le client. Installation en 24h, QR code prêt à poser en caisse. On s'occupe de tout." },
+  ],
+  energie: [
+    { q:"J'ai peur que ça coupe", a:"Aucune coupure possible — c'est la loi. Le nouveau fournisseur reprend le contrat en douceur, les compteurs restent les mêmes." },
+    { q:"C'est vraiment gratuit ?", a:"100% gratuit pour vous — c'est le nouveau fournisseur qui nous rémunère pour vous avoir apporté comme client." },
+    { q:"J'ai un contrat en cours", a:"La plupart des contrats énergie sont résiliables à tout moment sans frais. On regarde ensemble si le bénéfice justifie d'attendre." },
+  ],
+  rachat: [
+    { q:"J'ai peur pour ma maison", a:"Le regroupement de crédits conso ne touche pas à vos biens — aucune hypothèque si vous ne le souhaitez pas." },
+    { q:"Je vais payer plus d'intérêts", a:"C'est exact sur la durée totale. Pour beaucoup, respirer financièrement chaque mois est la priorité. Le courtier vous présente les deux scénarios." },
+    { q:"Mon banquier peut faire ça", a:"Votre banque ne proposera que ses propres produits. Un courtier compare 20 banques pour trouver le meilleur taux pour votre profil." },
+  ],
+};
 
-  window.openHamburger = function() {
-    document.getElementById('hamburgerPanel').classList.add('open');
-    document.getElementById('hamburgerBackdrop').classList.add('open');
-  };
-  window.closeHamburger = function() {
-    document.getElementById('hamburgerPanel').classList.remove('open');
-    document.getElementById('hamburgerBackdrop').classList.remove('open');
-  };
+// ─── STATE ──────────────────────────────────────────
+let xp = parseInt(localStorage.getItem('stacker_xp') || '0');
+let streak = parseInt(localStorage.getItem('stacker_streak') || '0');
+let deals = parseInt(localStorage.getItem('stacker_deals') || '0');
+let ca = parseInt(localStorage.getItem('stacker_ca') || '0');
+let com = parseInt(localStorage.getItem('stacker_com') || '0');
+let callsToday = parseInt(localStorage.getItem('stacker_calls_today') || '0');
+const prenom = localStorage.getItem('stacker_prenom') || '';
 
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closeHamburger();
-  });
+// Flash timers
+let flash1 = 120, flash2 = 2700;
 
-  // IBAN banner
-  if (localStorage.getItem('stacker_onboarded') === '1' && localStorage.getItem('stacker_iban_set') === '0') {
-    document.getElementById('ibanBanner').classList.remove('hidden');
-  }
+// ─── INIT ────────────────────────────────────────────
+function init() {
+  // Redirect
+  // if (!localStorage.getItem('stacker_onboarded')) { window.location.href = 'onboarding.html'; return; }
+  localStorage.setItem('stacker_onboarded', '1');
+  localStorage.setItem('stacker_prenom', localStorage.getItem('stacker_prenom') || 'Lucas');
 
-  // Redirect to onboarding if not onboarded
-  if (!localStorage.getItem('stacker_onboarded')) {
-    window.location.href = 'onboarding.html';
-  }
+  // IBAN
+  if (localStorage.getItem('stacker_iban_set') === '0') document.getElementById('ibanBanner').classList.remove('hidden');
 
-  // Checklist guidée
-  const checklistDone = localStorage.getItem('stacker_checklist_done');
-  const checklistDismissed = localStorage.getItem('stacker_checklist_dismissed');
-  if (!checklistDone && !checklistDismissed) {
+  // Checklist
+  if (!localStorage.getItem('stacker_checklist_done') && !localStorage.getItem('stacker_checklist_dismissed')) {
     document.getElementById('guidedChecklist').classList.remove('hidden');
   }
   updateChecklist();
 
-  function updateChecklist() {
-    const steps = parseInt(localStorage.getItem('stacker_steps') || '0');
-    const circumference = 94.2;
-    const offset = circumference - (steps / 4) * circumference;
-    const circle = document.getElementById('progressCircle');
-    const count = document.getElementById('progressCount');
-    if (circle) circle.setAttribute('stroke-dashoffset', offset);
-    if (count) count.textContent = steps + '/4';
-
-    for (let i = 1; i <= 4; i++) {
-      const step = document.getElementById('cstep-' + i);
-      const circle = document.getElementById('scircle-' + i);
-      if (!step || !circle) continue;
-      if (i <= steps) {
-        // Completed
-        step.classList.remove('opacity-40', 'pointer-events-none');
-        circle.classList.remove('border-outline-variant');
-        circle.classList.add('border-tertiary', 'bg-tertiary');
-        circle.innerHTML = '<span class="material-symbols-outlined text-white" style="font-size:14px;font-variation-settings:\'FILL\' 1">check</span>';
-      } else if (i === steps + 1) {
-        // Next to do
-        step.classList.remove('opacity-40', 'pointer-events-none');
-      }
-    }
-
-    if (steps >= 4) {
-      localStorage.setItem('stacker_checklist_done', '1');
-      setTimeout(() => {
-        const el = document.getElementById('guidedChecklist');
-        if (el) { el.style.transition = 'opacity 0.5s ease'; el.style.opacity = '0'; setTimeout(() => el.remove(), 500); }
-      }, 1500);
-    }
+  // Profile
+  if (prenom) {
+    const prenomFormate = prenom.charAt(0).toUpperCase() + prenom.slice(1).toLowerCase();
+    document.getElementById('heroName').textContent = prenomFormate + ' !';
+    document.getElementById('navName').textContent = prenomFormate;
+    const initials = prenom.slice(0,2).toUpperCase();
+    document.getElementById('headerAvatar').textContent = initials;
+    document.getElementById('navAvatar').textContent = initials;
   }
 
-  window.doStep = function(n) {
-    const steps = parseInt(localStorage.getItem('stacker_steps') || '0');
-    if (n !== steps + 1) return;
-
-    if (n === 1) {
-      localStorage.setItem('stacker_steps', '1');
-      updateChecklist();
-      setTimeout(() => window.location.href = 'offres.html', 300);
-    } else if (n === 2) {
-      localStorage.setItem('stacker_steps', '2');
-      updateChecklist();
-      setTimeout(() => window.location.href = 'offres.html', 300);
-    } else if (n === 3) {
-      localStorage.setItem('stacker_steps', '3');
-      updateChecklist();
-      // Leads tool — à connecter quand disponible
-      const el = document.getElementById('cstep-3');
-      el.innerHTML = el.innerHTML.replace('Utilise l\'outil de leads Stacker pour trouver des contacts qualifiés pour ton offre.', '✓ Fait ! Tes premiers prospects sont prêts.');
-    } else if (n === 4) {
-      localStorage.setItem('stacker_steps', '4');
-      updateChecklist();
-    }
-  };
-
-  window.dismissChecklist = function() {
-    localStorage.setItem('stacker_checklist_dismissed', '1');
-    const el = document.getElementById('guidedChecklist');
-    if (el) { el.style.transition = 'opacity 0.3s ease'; el.style.opacity = '0'; setTimeout(() => el.remove(), 300); }
-  };
-
-  // Dynamic date
+  // Date
   const days = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
   const months = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
   const now = new Date();
-  const dateEl = document.getElementById('heroDate');
-  if (dateEl) dateEl.textContent = days[now.getDay()] + ' ' + now.getDate() + ' ' + months[now.getMonth()];
+  document.getElementById('heroDate').textContent = days[now.getDay()] + ' ' + now.getDate() + ' ' + months[now.getMonth()];
 
-  const currentPage = document.body.getAttribute('data-page');
-  if (currentPage) {
-    const activeItem = document.querySelector('[data-page="' + currentPage + '"]');
-    if (activeItem) activeItem.classList.add('active');
+  renderStats();
+  startFlashTimers();
+  updateSim();
+  populateCoachProducts();
+  renderWeekOffer();
+}
+
+// ─── OFFRE DE LA SEMAINE ─────────────────────────────
+const WEEK_OFFERS = [
+  { name:'Carte Fidélité', cat:'Commerce local · Débutant', tagline:'Wallet Apple & Google pour fidéliser les clients', icon:'loyalty', com:'25%', price:'Dès 29 €/mois', level:'Débutant', script:"Bonjour, je passe vous voir au sujet d'un système de carte de fidélité directement dans le téléphone de vos clients — aucune app à télécharger, ça prend 30 secondes à expliquer. Vous avez 2 minutes ?", tags:['PAP','Closing direct'] },
+  { name:'Réduction Facture Énergie', cat:'Particuliers · Débutant', tagline:"Réduire la facture d'électricité jusqu'à 30% gratuitement", icon:'bolt', com:'25%', price:'80–150 €/dossier', level:'Débutant', script:"Bonjour, je vous contacte car on aide les particuliers à réduire leur facture d'électricité. Vous êtes actuellement chez quel fournisseur ?", tags:['Call','Closing direct'] },
+  { name:'E-Réputation Google', cat:'Commerce local · Débutant', tagline:'Générer des avis 5 étoiles automatiquement', icon:'reviews', com:'25%', price:'Dès 29 €/mois', level:'Débutant', script:"Bonjour, si je tape votre nom sur Google en ce moment, combien d'étoiles avez-vous ? On a un système qui génère des avis 5 étoiles automatiquement après chaque passage client.", tags:['PAP','Call'] },
+  { name:'Alma Company', cat:'Commerce · Débutant', tagline:'Site web professionnel livré en 7 jours', icon:'web', com:'25%', price:'Dès 49 €/mois', level:'Débutant', script:"Bonjour, est-ce que vous avez un site internet actuellement ? On livre des sites professionnels en 7 jours à partir de 49€/mois tout inclus.", tags:['PAP','RDV'] },
+  { name:'Rachat de Crédit', cat:'Particuliers · Expérimenté', tagline:'Regrouper tous les crédits, réduire les mensualités', icon:'account_balance', com:'25%', price:'400–1 500 €/dossier', level:'Expérimenté', script:"Bonjour, je vous contacte car on aide les particuliers à réduire leurs mensualités de crédit. Vous avez actuellement plusieurs crédits en cours ?", tags:['Call','RDV'] },
+  { name:'Seoia Partners', cat:'SEO · Expérimenté', tagline:'Visibilité Google garantie pour commerçants locaux', icon:'travel_explore', com:'25%', price:'Dès 199 €/mois', level:'Expérimenté', script:"Bonjour, j'ai analysé votre présence Google et vous n'apparaissez pas dans les premiers résultats — ça représente des clients qui vont chez vos concurrents chaque semaine.", tags:['Call','RDV'] },
+  { name:'InRoom', cat:'Hôtellerie · Expérimenté', tagline:'Conciergerie digitale 5€ par chambre par mois', icon:'hotel', com:'25%', price:'5 €/chambre', level:'Expérimenté', script:"Bonjour, je vous contacte au sujet d'un service de conciergerie digitale pour hôtels. Avez-vous actuellement un service de conciergerie en interne ?", tags:['Call','RDV'] },
+];
+
+function getWeekNumber() {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 1);
+  return Math.floor((now - start) / (7 * 24 * 60 * 60 * 1000));
+}
+
+function renderWeekOffer() {
+  const offer = WEEK_OFFERS[getWeekNumber() % WEEK_OFFERS.length];
+  document.getElementById('weekOfferCat').textContent = offer.cat;
+  document.getElementById('weekOfferName').textContent = offer.name;
+  document.getElementById('weekOfferTagline').textContent = offer.tagline;
+  document.getElementById('weekOfferIcon').textContent = offer.icon;
+  document.getElementById('weekOfferCom').textContent = offer.com;
+  document.getElementById('weekOfferPrice').textContent = offer.price;
+  document.getElementById('weekOfferLevel').textContent = offer.level;
+  document.getElementById('weekOfferScript').textContent = offer.script;
+  document.getElementById('weekOfferTags').innerHTML = offer.tags.map(t =>
+    `<span class="text-[10px] font-bold px-2.5 py-1 rounded-full" style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7)">${t}</span>`
+  ).join('');
+
+  function updateCountdown() {
+    const now = new Date();
+    const nextMonday = new Date(now);
+    nextMonday.setDate(now.getDate() + ((1 + 7 - now.getDay()) % 7 || 7));
+    nextMonday.setHours(0,0,0,0);
+    const diff = nextMonday - now;
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const el = document.getElementById('weekCountdown');
+    if (el) el.textContent = d + 'j ' + String(h).padStart(2,'0') + 'h ' + String(m).padStart(2,'0') + 'min';
   }
-})();
-</script>
+  updateCountdown();
+  setInterval(updateCountdown, 60000);
+}
+function renderStats() {
+  document.getElementById('kpiCom').textContent = com.toLocaleString('fr-FR') + ' €';
+  document.getElementById('kpiDeals').textContent = deals;
+  document.getElementById('kpiStreak').textContent = streak;
+  document.getElementById('streakCount').textContent = streak;
+  document.getElementById('navStreak').textContent = streak;
+  document.getElementById('navPerf').textContent = com + ' € ce mois';
+  document.getElementById('navRewards').textContent = ca + ' € de CA';
+  document.getElementById('caTotal').textContent = ca;
+  document.getElementById('navRank').textContent = deals > 0 ? 'Deal #' + deals : 'Pas encore classé';
 
+  // Level
+  const level = LEVELS.find(l => xp >= l.min && xp < l.max) || LEVELS[0];
+  const nextLevel = LEVELS[LEVELS.indexOf(level) + 1];
+  const pct = nextLevel ? Math.round(((xp - level.min) / (nextLevel.min - level.min)) * 100) : 100;
+  document.getElementById('kpiLevel').textContent = level.name;
+  document.getElementById('levelBadge').textContent = level.name;
+  document.getElementById('navLevel').textContent = level.name + ' · ' + xp + ' XP';
+  document.getElementById('xpCurrent').textContent = xp + ' XP';
+  document.getElementById('xpNext').textContent = (nextLevel ? nextLevel.min : xp) + ' XP';
+  document.getElementById('xpBar').style.width = pct + '%';
+
+  // Rewards
+  const rewardTargets = [500, 1500, 5000, 15000];
+  const rewardNames = ['AirPods Pro', 'Apple Watch', 'iPhone 17 Pro Max', 'Rolex Daytona'];
+  rewardTargets.forEach((target, i) => {
+    const pct = Math.min(100, Math.round((ca / target) * 100));
+    const bar = document.getElementById('rbar-' + (i+1));
+    const card = document.getElementById('reward-' + (i+1));
+    if (bar) bar.style.width = pct + '%';
+    if (card && ca >= target) card.classList.add('unlocked');
+  });
+
+  // CA bar
+  const nextTarget = rewardTargets.find(t => t > ca) || rewardTargets[rewardTargets.length-1];
+  const nextName = rewardNames[rewardTargets.indexOf(nextTarget)];
+  document.getElementById('caTarget').textContent = nextTarget;
+  document.getElementById('caBar').style.width = Math.min(100, (ca / nextTarget) * 100) + '%';
+  document.getElementById('caNext').textContent = ca >= nextTarget
+    ? 'Récompense débloquée !'
+    : 'Plus que ' + (nextTarget - ca) + ' € pour débloquer ' + (nextName || 'ta récompense');
+}
+
+// ─── STREAK ──────────────────────────────────────────
+function updateStreak() {
+  const today = new Date().toDateString();
+  const lastActive = localStorage.getItem('stacker_last_active');
+  const yesterday = new Date(Date.now() - 86400000).toDateString();
+  if (lastActive === today) return;
+  if (lastActive === yesterday) streak++;
+  else if (lastActive !== today) streak = 1;
+  localStorage.setItem('stacker_streak', streak);
+  localStorage.setItem('stacker_last_active', today);
+}
+
+// ─── XP ──────────────────────────────────────────────
+function gainXP(amount, reason) {
+  xp += amount;
+  localStorage.setItem('stacker_xp', xp);
+  showToast('+' + amount + ' XP · ' + reason, 'xp');
+  renderStats();
+}
+
+// ─── FLASH TIMERS ────────────────────────────────────
+function startFlashTimers() {
+  setInterval(() => {
+    flash1 = Math.max(0, flash1 - 1);
+    flash2 = Math.max(0, flash2 - 1);
+    const f1el = document.getElementById('flash1timer');
+    const f2el = document.getElementById('flash2timer');
+    if (f1el) f1el.textContent = formatTime(flash1);
+    if (f2el) f2el.textContent = formatTime(flash2);
+    // Ring
+    const ring1 = document.getElementById('flash1ring');
+    const ring2 = document.getElementById('flash2ring');
+    if (ring1) ring1.setAttribute('stroke-dashoffset', (1 - flash1/120) * 87.9);
+    if (ring2) ring2.setAttribute('stroke-dashoffset', (1 - flash2/2700) * 87.9);
+  }, 1000);
+}
+
+function formatTime(s) {
+  const m = Math.floor(s/60);
+  const sec = s % 60;
+  return String(m).padStart(2,'0') + ':' + String(sec).padStart(2,'0');
+}
+
+// ─── LOG CALL ────────────────────────────────────────
+function logCall() {
+  callsToday++;
+  localStorage.setItem('stacker_calls_today', callsToday);
+  gainXP(10, 'Appel loggé');
+  updateStreak();
+  if (callsToday >= 3) {
+    gainXP(50, 'Défi 3 appels complété !');
+    showToast('Défi complété ! +50 XP bonus', 'success');
+  }
+  showToast('Appel loggé — ' + callsToday + '/3 aujourd\'hui', 'info');
+}
+
+// ─── SIMULATOR ───────────────────────────────────────
+function updateSim() {
+  const d = parseInt(document.getElementById('simDeals').value);
+  const p = parseInt(document.getElementById('simPrice').value);
+  const rate = 0.25;
+  document.getElementById('simDealsVal').textContent = d;
+  document.getElementById('simPriceVal').textContent = p + ' €';
+  const monthly = Math.round(d * p * rate);
+  // Cumul 12 mois avec churn 10%/mois
+  let cumul = 0, clients = 0;
+  for (let i = 1; i <= 12; i++) { clients = clients * 0.9 + d; cumul += Math.round(clients * p * rate); }
+  const fidelised = Math.round(cumul * 1.35);
+  document.getElementById('simMonthly').textContent = monthly.toLocaleString('fr-FR') + ' €';
+  document.getElementById('simYearly').textContent = cumul.toLocaleString('fr-FR') + ' €';
+  document.getElementById('simFidelised').textContent = fidelised.toLocaleString('fr-FR') + ' €';
+}
+
+// ─── COACH IA ────────────────────────────────────────
+function populateCoachProducts() {
+  const sel = document.getElementById('coachProductSelect');
+  const products = [
+    { id:'seoia', name:'Seoia Partners — SEO' },
+    { id:'fidelite', name:'Carte Fidélité' },
+    { id:'energie', name:'Réduction Facture Énergie' },
+    { id:'rachat', name:'Rachat de Crédit' },
+  ];
+  products.forEach(p => {
+    const opt = document.createElement('option');
+    opt.value = p.id; opt.textContent = p.name;
+    sel.appendChild(opt);
+  });
+}
+
+function loadCoachProduct() {
+  const id = document.getElementById('coachProductSelect').value;
+  const name = document.getElementById('coachProductSelect').selectedOptions[0]?.text || 'Coach IA';
+  document.getElementById('coachProductName').textContent = name;
+  const obs = PRODUCTS_OBJECTIONS[id] || [];
+  const container = document.getElementById('coachObjections');
+  document.getElementById('coachAnswer').classList.add('hidden');
+  container.innerHTML = obs.map((o, i) => `
+    <div class="objection-card" onclick="showCoachAnswer(${i}, '${id}')">
+      <p class="font-semibold text-sm text-on-surface flex items-center gap-2">
+        <span class="material-symbols-outlined flex-shrink-0" style="font-size:14px;color:#b52330">help</span>
+        "${o.q}"
+      </p>
+    </div>
+  `).join('');
+}
+
+function showCoachAnswer(idx, productId) {
+  const obs = PRODUCTS_OBJECTIONS[productId];
+  if (!obs || !obs[idx]) return;
+  document.querySelectorAll('.objection-card').forEach(c => c.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  const answerEl = document.getElementById('coachAnswer');
+  document.getElementById('coachAnswerText').textContent = obs[idx].a;
+  answerEl.classList.remove('hidden');
+  gainXP(5, 'Objection traitée');
+}
+
+function openCoach() {
+  document.getElementById('coachModal').style.display = 'flex';
+  setTimeout(() => {
+    document.getElementById('coachPanel').classList.add('open');
+    document.getElementById('coachBackdrop').classList.add('open');
+  }, 10);
+}
+
+function closeCoach() {
+  document.getElementById('coachPanel').classList.remove('open');
+  document.getElementById('coachBackdrop').classList.remove('open');
+  setTimeout(() => document.getElementById('coachModal').style.display = 'none', 400);
+}
+
+// ─── CHECKLIST ───────────────────────────────────────
+function updateChecklist() {
+  const steps = parseInt(localStorage.getItem('stacker_steps') || '0');
+  const circ = 94.2;
+  const circle = document.getElementById('progressCircle');
+  const count = document.getElementById('progressCount');
+  if (circle) circle.setAttribute('stroke-dashoffset', circ - (steps/4)*circ);
+  if (count) count.textContent = steps + '/4';
+  for (let i = 1; i <= 4; i++) {
+    const step = document.getElementById('cstep-' + i);
+    const circ = document.getElementById('scircle-' + i);
+    if (!step || !circ) continue;
+    if (i <= steps) {
+      step.classList.remove('opacity-40','pointer-events-none');
+      circ.innerHTML = '<span class="material-symbols-outlined filled text-white" style="font-size:14px;font-variation-settings:\'FILL\' 1">check</span>';
+      circ.className = 'w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 transition bg-tertiary border-2 border-tertiary';
+    } else if (i === steps + 1) {
+      step.classList.remove('opacity-40','pointer-events-none');
+    }
+  }
+  if (steps >= 4) {
+    localStorage.setItem('stacker_checklist_done','1');
+    setTimeout(() => {
+      const el = document.getElementById('guidedChecklist');
+      if (el) { el.style.opacity='0'; el.style.transition='opacity 0.5s'; setTimeout(()=>el.remove(),500); }
+    }, 1500);
+  }
+}
+
+window.doStep = function(n) {
+  const steps = parseInt(localStorage.getItem('stacker_steps')||'0');
+  if (n !== steps+1) return;
+  localStorage.setItem('stacker_steps', n);
+  gainXP(20, 'Étape ' + n + ' complétée');
+  updateChecklist();
+  if (n === 1 || n === 2) setTimeout(()=>window.location.href='offres.html',400);
+};
+
+window.dismissChecklist = function() {
+  localStorage.setItem('stacker_checklist_dismissed','1');
+  const el = document.getElementById('guidedChecklist');
+  if (el) { el.style.opacity='0'; el.style.transition='opacity 0.3s'; setTimeout(()=>el.remove(),300); }
+};
+
+// ─── TOAST ───────────────────────────────────────────
+function showToast(msg, type='info') {
+  const colors = { xp:'bg-on-surface text-white', success:'bg-tertiary text-white', info:'bg-surface-container-lowest text-on-surface border border-outline-variant/50' };
+  const el = document.createElement('div');
+  el.className = 'toast pointer-events-auto px-4 py-3 rounded-2xl text-sm font-semibold ' + (colors[type]||colors.info);
+  el.style.boxShadow = '0 8px 24px rgba(27,28,28,0.12)';
+  el.textContent = msg;
+  const container = document.getElementById('toastContainer');
+  container.appendChild(el);
+  setTimeout(() => { el.style.opacity='0'; el.style.transition='opacity 0.3s'; setTimeout(()=>el.remove(),300); }, 3000);
+}
+
+// ─── NAV ─────────────────────────────────────────────
+window.openHamburger = function() {
+  document.getElementById('hamburgerPanel').classList.add('open');
+  document.getElementById('hamburgerBackdrop').classList.add('open');
+};
+window.closeHamburger = function() {
+  document.getElementById('hamburgerPanel').classList.remove('open');
+  document.getElementById('hamburgerBackdrop').classList.remove('open');
+};
+
+// ─── RUN ─────────────────────────────────────────────
+updateStreak();
+init();
+</script>
 </body>
 </html>
