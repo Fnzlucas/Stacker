@@ -18,14 +18,15 @@ tailwind.config = {
 }
 </script>
 <style>
-body{font-family:'Inter',sans-serif}
+body{font-family:'Inter',sans-serif;background:#faf7f4}
+:root{--gold:#c9a84c;--gold2:#e8c96a}
 .font-headline{font-family:'Plus Jakarta Sans',sans-serif}
 .font-mono{font-family:'JetBrains Mono',monospace}
 .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
 .filled{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24 !important}
-.glass-nav{backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:rgba(252,249,248,0.88);border-bottom:1px solid rgba(226,190,188,0.2)}
+.glass-nav{backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);background:rgba(250,247,244,0.92);border-bottom:1px solid rgba(226,190,188,0.35)}
 .cta-gradient{background:linear-gradient(135deg,#b52330 0%,#ff5a5f 100%)}
-.soft-shadow{box-shadow:0 8px 24px -8px rgba(27,28,28,0.06)}
+.soft-shadow{box-shadow:0 2px 16px -4px rgba(27,28,28,0.07),0 0 0 1px rgba(226,190,188,0.3)}
 .float-shadow{box-shadow:0 20px 40px -12px rgba(27,28,28,0.08)}
 .display-tight{letter-spacing:-0.03em}
 .metric-num{letter-spacing:-0.045em;font-feature-settings:"tnum"}
@@ -45,6 +46,10 @@ body{font-family:'Inter',sans-serif}
 .scroll-hide::-webkit-scrollbar{display:none}.scroll-hide{scrollbar-width:none}
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:#e5e2e1;border-radius:99px}
 .divider-soft{background:linear-gradient(90deg,transparent,rgba(226,190,188,0.3) 50%,transparent);height:1px}
+.eyebrow-gold{display:inline-flex;align-items:center;gap:8px;margin-bottom:10px}
+.eyebrow-gold::before{content:'';width:18px;height:1px;background:var(--gold);display:block}
+.eyebrow-gold span{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold)}
+.card-premium{background:#fff;border-radius:22px;border:1px solid rgba(226,190,188,0.45);box-shadow:0 2px 20px -6px rgba(27,28,28,0.08)}
 .tag{display:inline-flex;align-items:center;gap:.375rem;padding:.25rem .625rem;border-radius:9999px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
 /* Nav */
 .hamburger-panel{position:fixed;top:0;left:0;width:340px;max-width:100vw;height:100vh;background:#fcf9f8;z-index:75;transform:translateX(-100%);transition:transform 0.4s cubic-bezier(0.22,1,0.36,1);display:flex;flex-direction:column;box-shadow:20px 0 60px -10px rgba(0,0,0,0.15)}
@@ -90,15 +95,15 @@ body{font-family:'Inter',sans-serif}
 .row-arrow{color:#8e706f;transition:transform 0.2s,color 0.2s}
 .mission-row:hover .row-arrow{color:#b52330;transform:translateX(3px)}
 /* Reward card */
-.reward-card{border:1.5px solid #e2bebc;border-radius:18px;padding:18px;background:#fff;transition:all 0.2s;cursor:pointer;position:relative;overflow:hidden}
-.reward-card:hover{border-color:#b52330;transform:translateY(-1px);box-shadow:0 8px 24px -8px rgba(27,28,28,0.1)}
+.reward-card{border:1px solid rgba(226,190,188,0.55);border-radius:22px;padding:18px;background:#fff;transition:all 0.2s;cursor:pointer;position:relative;overflow:hidden;box-shadow:0 2px 12px -4px rgba(27,28,28,0.06)}
+.reward-card:hover{border-color:rgba(181,35,48,0.4);transform:translateY(-2px);box-shadow:0 12px 32px -8px rgba(27,28,28,0.12)}
 .reward-card.unlocked{border-color:#ffd700;background:linear-gradient(135deg,#fffbeb,#fff)}
 /* Simulator */
 input[type=range]{-webkit-appearance:none;appearance:none;height:6px;border-radius:99px;background:#e2bebc;outline:none}
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#b52330;cursor:pointer;box-shadow:0 2px 8px rgba(181,35,48,0.3)}
 /* Explore card */
-.explore-card{display:flex;flex-direction:column;gap:4px;padding:16px;background:#fff;border:1px solid rgba(226,190,188,0.5);border-radius:16px;text-decoration:none;transition:all 0.2s;cursor:pointer}
-.explore-card:hover{border-color:#e2bebc;box-shadow:0 4px 16px -4px rgba(27,28,28,0.08);transform:translateY(-1px)}
+.explore-card{display:flex;flex-direction:column;gap:4px;padding:18px;background:#fff;border:1px solid rgba(226,190,188,0.45);border-radius:20px;text-decoration:none;transition:all 0.2s;cursor:pointer;box-shadow:0 2px 12px -4px rgba(27,28,28,0.05)}
+.explore-card:hover{border-color:rgba(181,35,48,0.3);box-shadow:0 8px 24px -6px rgba(27,28,28,0.1);transform:translateY(-2px)}
 .explore-label{font-family:'Plus Jakarta Sans';font-weight:700;font-size:13px;color:#1b1c1c;letter-spacing:-.02em}
 .explore-meta{font-size:11px;color:#8e706f}
 .explore-card-gold{background:linear-gradient(135deg,#fffbeb,#fff8dc);border-color:rgba(255,197,0,0.4)}
@@ -254,7 +259,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
   </div>
 </div>
 
-<main class="max-w-[1100px] mx-auto px-5 py-8 page-enter" style="display:flex;flex-direction:column;gap:28px">
+<main class="max-w-[1100px] mx-auto px-5 py-8 page-enter" style="display:flex;flex-direction:column;gap:32px">
 
   <!-- CHECKLIST GUIDÉE -->
   <div id="guidedChecklist" class="hidden">
@@ -305,11 +310,11 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
   <section class="reveal" style="animation-delay:0.05s">
     <div class="flex items-center justify-between gap-3">
       <div>
-        <p class="text-[10px] font-semibold tracking-[0.25em] text-on-surface-variant uppercase mb-1" id="heroDate">–</p>
-        <h1 class="font-headline font-extrabold text-2xl display-tight text-on-surface">Bonjour <span id="heroName" style="text-transform:none">!</span></h1>
+        <p class="text-[9px] font-bold tracking-[0.25em] uppercase mb-2" id="heroDate" style="color:var(--gold)">–</p>
+        <h1 class="font-headline font-extrabold display-tight text-on-surface" style="font-size:clamp(24px,6vw,36px);letter-spacing:-0.04em;line-height:1.05">Bonjour <span id="heroName" style="text-transform:none;color:#b52330">!</span></h1>
       </div>
       <div class="flex items-center gap-2">
-        <button onclick="openCoach()" class="flex items-center gap-2 px-3 py-2 rounded-full bg-on-surface text-white text-sm font-semibold hover:opacity-90 transition">
+        <button onclick="openCoach()" class="flex items-center gap-2 px-3 py-2 rounded-full bg-on-surface text-white text-sm font-semibold hover:opacity-90 transition" style="box-shadow:0 4px 14px -2px rgba(27,28,28,0.3)">
           <span class="w-1.5 h-1.5 bg-tertiary-fixed rounded-full live-dot"></span>
           <span class="material-symbols-outlined" style="font-size:16px">headset_mic</span>
           <span class="hidden sm:inline">Coach IA</span>
@@ -321,10 +326,10 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
       </div>
     </div>
   </section>
-  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(226,190,188,0.5) 50%,transparent);margin:0 8px"></div>
+  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.25) 50%,transparent);margin:0 4px"></div>
   <!-- MISSION DU JOUR — section principale -->
   <section class="reveal" style="animation-delay:0.07s">
-    <div class="bg-surface-container-lowest rounded-2xl soft-shadow overflow-hidden border border-outline-variant/40">
+    <div class="card-premium overflow-hidden">
       <!-- Header -->
       <div class="flex items-center justify-between px-5 py-4 border-b border-outline-variant/20">
         <div class="flex items-center gap-2">
@@ -405,22 +410,22 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
       </div>
     </div>
   </section>
-  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(226,190,188,0.5) 50%,transparent);margin:0 8px"></div>
+  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.25) 50%,transparent);margin:0 4px"></div>
   <!-- KPI STATS -->
   <section class="reveal" style="animation-delay:0.1s">
     <div class="grid grid-cols-3 gap-3">
-      <div class="bg-surface-container-lowest rounded-2xl p-4 soft-shadow">
-        <p class="text-[10px] uppercase tracking-[0.12em] text-on-surface-variant font-semibold mb-1">Commissions</p>
+      <div class="card-premium p-5">
+        <p class="text-[9px] uppercase tracking-[0.2em] text-on-surface-variant font-bold mb-2" style="color:var(--gold)">Commissions</p>
         <p class="font-headline font-extrabold text-xl text-on-surface metric-num" id="kpiCom">0 €</p>
         <p class="text-[10px] text-on-surface-variant mt-0.5">ce mois</p>
       </div>
-      <div class="bg-surface-container-lowest rounded-2xl p-4 soft-shadow">
-        <p class="text-[10px] uppercase tracking-[0.12em] text-on-surface-variant font-semibold mb-1">Deals</p>
+      <div class="card-premium p-5">
+        <p class="text-[9px] uppercase tracking-[0.2em] text-on-surface-variant font-bold mb-2" style="color:var(--gold)">Deals</p>
         <p class="font-headline font-extrabold text-xl text-on-surface metric-num" id="kpiDeals">0</p>
         <p class="text-[10px] text-on-surface-variant mt-0.5">signés</p>
       </div>
-      <div class="bg-surface-container-lowest rounded-2xl p-4 soft-shadow">
-        <p class="text-[10px] uppercase tracking-[0.12em] text-on-surface-variant font-semibold mb-1">Streak</p>
+      <div class="card-premium p-5">
+        <p class="text-[9px] uppercase tracking-[0.2em] text-on-surface-variant font-bold mb-2" style="color:var(--gold)">Streak</p>
         <div class="flex items-center gap-1.5">
           <span class="material-symbols-outlined filled flame" style="font-size:20px;color:#f97316;font-variation-settings:'FILL' 1">local_fire_department</span>
           <p class="font-headline font-extrabold text-xl text-on-surface metric-num" id="kpiStreak">0</p>
@@ -429,7 +434,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
       </div>
     </div>
   </section>
-  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(226,190,188,0.5) 50%,transparent);margin:0 8px"></div>
+  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.25) 50%,transparent);margin:0 4px"></div>
   <!-- OFFRE DE LA SEMAINE -->
   <section class="reveal" style="animation-delay:0.13s">
     <div class="flex items-center gap-2 mb-3">
@@ -439,7 +444,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
         <span class="font-mono text-[11px] font-semibold text-on-surface-variant" id="weekCountdown">–</span>
       </div>
     </div>
-    <a href="offres.html" id="weekOfferCard" class="hero-dark rounded-2xl block p-5 hover-lift" style="text-decoration:none">
+    <a href="offres.html" id="weekOfferCard" class="hero-dark rounded-3xl block p-6 hover-lift" style="text-decoration:none">
       <div class="flex items-start justify-between gap-4 mb-4">
         <div>
           <p class="font-mono text-[9px] tracking-[0.16em] uppercase text-white/40 mb-2" id="weekOfferCat">–</p>
@@ -469,7 +474,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
       </div>
     </a>
   </section>
-  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(226,190,188,0.5) 50%,transparent);margin:0 8px"></div>
+  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.25) 50%,transparent);margin:0 4px"></div>
   <!-- RÉCOMPENSES -->
   <section class="reveal" style="animation-delay:0.16s;margin-top:20px">
     <div class="flex items-center justify-between mb-3">
@@ -522,15 +527,15 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
       </div>
     </div>
   </section>
-  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(226,190,188,0.5) 50%,transparent);margin:0 8px"></div>
-  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(226,190,188,0.5) 50%,transparent);margin:0 8px"></div>
+  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.25) 50%,transparent);margin:0 4px"></div>
+  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.25) 50%,transparent);margin:0 4px"></div>
 
   <!-- CITATION -->
   <section class="reveal" style="animation-delay:0.2s;padding:8px 4px">
     <p class="font-headline font-extrabold text-on-surface leading-snug mb-2" style="font-size:20px;letter-spacing:-0.025em;max-width:520px" id="motivText">–</p>
     <p class="font-mono text-[10px] font-bold tracking-[0.18em] uppercase text-on-surface-variant" id="motivAuthor"></p>
   </section>
-  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(226,190,188,0.5) 50%,transparent);margin:0 8px"></div>
+  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.25) 50%,transparent);margin:0 4px"></div>
 
   <!-- STACKER ELITE BANNER -->
   <section class="reveal" style="animation-delay:0.23s">
@@ -553,7 +558,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
       </div>
     </div>
   </section>
-  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(226,190,188,0.5) 50%,transparent);margin:0 8px"></div>
+  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.25) 50%,transparent);margin:0 4px"></div>
 
 
   <!-- BANNIÈRE OFFRES -->
@@ -581,11 +586,11 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
       </div>
     </a>
   </section>
-  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(226,190,188,0.5) 50%,transparent);margin:0 8px"></div>
+  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.25) 50%,transparent);margin:0 4px"></div>
 
   <!-- ACC&#200;S RAPIDES -->
   <section class="reveal" style="animation-delay:0.22s">
-    <p class="text-[10px] uppercase tracking-[0.25em] text-on-surface-variant font-bold mb-3">Accès rapides</p>
+    <div class="eyebrow-gold mb-3"><span>Accès rapides</span></div>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
       <a href="offres.html" class="explore-card"><p class="explore-label">Nos offres</p><p class="explore-meta">13 produits · scripts</p></a>
       <a href="#" onclick="openCoach();return false" class="explore-card"><p class="explore-label">Coach IA</p><p class="explore-meta">Objections en live</p></a>
