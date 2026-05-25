@@ -356,7 +356,7 @@
   <div id="detailPage" style="display:none">
 
     <!-- Breadcrumb -->
-    <nav class="flex items-center gap-2 text-xs text-on-surface-variant mb-6 reveal">
+    <nav class="flex items-center gap-2 text-xs text-on-surface-variant mb-5 reveal">
       <a href="#" onclick="goBack();return false;" class="hover:text-on-surface transition flex items-center gap-1">
         <span class="material-symbols-outlined" style="font-size:14px">arrow_back</span>
         Nos offres
@@ -365,364 +365,310 @@
       <span class="font-semibold text-on-surface" id="breadcrumbName"></span>
     </nav>
 
-    <!-- ═══════════════════════════════════════════
-         PARTIE 1 — KIT DE VENTE RAPIDE (scroll)
-    ════════════════════════════════════════════ -->
+    <!-- ═══ PAGE 1 — RÉSUMÉ RAPIDE ═══ -->
+    <div id="quickView">
 
-    <!-- Hero -->
-    <div class="hero-dark rounded-2xl overflow-hidden relative mb-3 reveal" style="animation-delay:0.05s">
-      <div class="p-7 relative z-10">
-        <div class="flex items-start justify-between gap-4 mb-4">
-          <div class="flex-1 min-w-0">
-            <p class="font-mono text-[9px] tracking-[0.16em] uppercase text-white/40 mb-2" id="heroCategory"></p>
-            <h2 class="font-headline font-extrabold text-2xl md:text-3xl display-tight text-white mb-2 leading-tight" id="heroName"></h2>
-            <p class="text-sm text-white/55 leading-relaxed" id="heroTagline"></p>
+      <!-- Hero -->
+      <div class="hero-dark rounded-2xl overflow-hidden relative mb-3 reveal" style="animation-delay:0.05s">
+        <div class="p-6 relative z-10">
+          <div class="flex items-start justify-between gap-4 mb-4">
+            <div class="flex-1 min-w-0">
+              <p class="font-mono text-[9px] tracking-[0.16em] uppercase text-white/40 mb-2" id="heroCategory"></p>
+              <h2 class="font-headline font-extrabold text-2xl display-tight text-white mb-2 leading-tight" id="heroName"></h2>
+              <p class="text-sm text-white/55 leading-relaxed" id="heroTagline"></p>
+            </div>
+            <div class="w-12 h-12 rounded-2xl bg-primary/20 border border-primary/25 flex items-center justify-center flex-shrink-0">
+              <span class="material-symbols-outlined text-white filled" id="heroIcon" style="font-size:24px;font-variation-settings:'FILL' 1"></span>
+            </div>
           </div>
-          <div class="w-12 h-12 rounded-2xl bg-primary/20 border border-primary/25 flex items-center justify-center flex-shrink-0">
-            <span class="material-symbols-outlined text-white filled" id="heroIcon" style="font-size:24px;font-variation-settings:'FILL' 1"></span>
-          </div>
-        </div>
-        <!-- Com rapide -->
-        <div class="flex items-center gap-4 flex-wrap">
-          <div class="flex items-center gap-2 px-3 py-2 rounded-xl" style="background:rgba(0,108,76,0.25);border:1px solid rgba(120,250,196,0.2)">
-            <span class="material-symbols-outlined filled text-tertiary-fixed" style="font-size:16px;font-variation-settings:'FILL' 1">payments</span>
-            <span class="font-headline font-extrabold text-sm text-tertiary-fixed" id="heroComRate"></span>
-            <span class="text-[11px] text-white/50">commission récurrente</span>
-          </div>
-          <div id="heroPriceWrap" class="flex items-center gap-2 px-3 py-2 rounded-xl" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1)">
-            <span class="font-headline font-extrabold text-sm text-white/80" id="heroPrice"></span>
-            <span class="text-[11px] text-white/40" id="heroPriceLabel"></span>
+          <div class="flex items-center gap-3 flex-wrap">
+            <div class="flex items-center gap-2 px-3 py-2 rounded-xl" style="background:rgba(0,108,76,0.25);border:1px solid rgba(120,250,196,0.2)">
+              <span class="material-symbols-outlined filled text-tertiary-fixed" style="font-size:15px;font-variation-settings:'FILL' 1">payments</span>
+              <span class="font-headline font-extrabold text-sm text-tertiary-fixed">25%</span>
+              <span class="text-[11px] text-white/50">commission</span>
+            </div>
+            <div class="flex items-center gap-2 px-3 py-2 rounded-xl" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1)">
+              <span class="font-headline font-extrabold text-sm text-white/80" id="heroPrice"></span>
+              <span class="text-[11px] text-white/40" id="heroPriceLabel"></span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- 1. C'est quoi -->
-    <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5 mb-3 reveal" style="animation-delay:0.1s">
-      <div class="flex items-center gap-2 mb-3">
-        <div class="w-6 h-6 rounded-full bg-on-surface flex items-center justify-center flex-shrink-0">
-          <span class="font-mono font-bold text-white" style="font-size:10px">1</span>
-        </div>
-        <p class="font-headline font-bold text-sm text-on-surface">C'est quoi en 3 lignes</p>
-      </div>
-      <p class="text-[13.5px] text-on-surface leading-relaxed" id="quickDesc"></p>
-    </div>
-
-    <!-- 2. À qui tu vends -->
-    <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5 mb-3 reveal" style="animation-delay:0.15s">
-      <div class="flex items-center gap-2 mb-3">
-        <div class="w-6 h-6 rounded-full bg-on-surface flex items-center justify-center flex-shrink-0">
-          <span class="font-mono font-bold text-white" style="font-size:10px">2</span>
-        </div>
-        <p class="font-headline font-bold text-sm text-on-surface">À qui tu vends</p>
-      </div>
-      <p class="text-[13.5px] text-on-surface leading-relaxed" id="quickTarget"></p>
-      <div class="flex gap-2 flex-wrap mt-3" id="heroTags"></div>
-    </div>
-
-    <!-- 3. Comment tu l'approches -->
-    <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5 mb-3 reveal" style="animation-delay:0.18s">
-      <div class="flex items-center gap-2 mb-3">
-        <div class="w-6 h-6 rounded-full bg-on-surface flex items-center justify-center flex-shrink-0">
-          <span class="font-mono font-bold text-white" style="font-size:10px">3</span>
-        </div>
-        <p class="font-headline font-bold text-sm text-on-surface">Comment tu l'approches</p>
-      </div>
-      <div class="grid grid-cols-2 gap-2" id="quickChannels"></div>
-    </div>
-
-    <!-- ═══════════════════════════════════════════
-         PARTIE 2 — ONGLETS AVANCÉS
-    ════════════════════════════════════════════ -->
-    <div class="mb-3 reveal" style="animation-delay:0.22s">
-      <div class="flex items-center gap-3 mb-4">
-        <div class="flex-1 h-px bg-outline-variant/40"></div>
-        <p class="font-mono text-[9px] tracking-[0.2em] uppercase text-on-surface-variant font-medium whitespace-nowrap">Pour aller plus loin</p>
-        <div class="flex-1 h-px bg-outline-variant/40"></div>
-      </div>
-    </div>
-
-    <div class="tabs-wrap mb-5 reveal" style="animation-delay:0.25s">
-      <button class="tab-btn active" onclick="showPane('kit')" id="tbtn-kit">Kit de vente</button>
-      <button class="tab-btn" onclick="showPane('pitch')" id="tbtn-pitch">Pitch complet</button>
-      <button class="tab-btn" onclick="showPane('scripts')" id="tbtn-scripts">Scripts canal</button>
-      <button class="tab-btn" onclick="showPane('tarifs')" id="tbtn-tarifs">Tarifs & com.</button>
-      <button class="tab-btn" onclick="showPane('fidelisation')" id="tbtn-fidelisation">Fidélisation</button>
-      <button class="tab-btn" onclick="showPane('contrat')" id="tbtn-contrat">Contrat</button>
-    </div>
-
-    <!-- Pane: Kit de vente -->
-    <div class="pane active" id="pane-kit">
-
-      <!-- Script rapide -->
-      <div class="bg-surface-container-lowest rounded-2xl soft-shadow overflow-hidden mb-3">
-        <div class="flex items-center gap-2 px-5 pt-5 pb-3 border-b border-outline-variant/20">
+      <!-- 1. C'est quoi -->
+      <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5 mb-3 reveal" style="animation-delay:0.08s">
+        <div class="flex items-center gap-2 mb-3">
           <div class="w-6 h-6 rounded-full bg-on-surface flex items-center justify-center flex-shrink-0">
-            <span class="font-mono font-bold text-white" style="font-size:10px">4</span>
+            <span class="font-mono font-bold text-white" style="font-size:10px">1</span>
           </div>
-          <p class="font-headline font-bold text-sm text-on-surface">Ce que tu dis — script rapide</p>
+          <p class="font-headline font-bold text-sm text-on-surface">C'est quoi en 3 lignes</p>
         </div>
-        <div id="quickScript" class="divide-y divide-outline-variant/20"></div>
+        <p class="text-[13.5px] text-on-surface leading-relaxed" id="quickDesc"></p>
       </div>
 
-      <!-- Objections -->
-      <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5 mb-3">
-        <div class="flex items-center gap-2 mb-4">
+      <!-- 2. À qui tu vends -->
+      <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5 mb-3 reveal" style="animation-delay:0.11s">
+        <div class="flex items-center gap-2 mb-3">
           <div class="w-6 h-6 rounded-full bg-on-surface flex items-center justify-center flex-shrink-0">
-            <span class="font-mono font-bold text-white" style="font-size:10px">5</span>
+            <span class="font-mono font-bold text-white" style="font-size:10px">2</span>
           </div>
-          <p class="font-headline font-bold text-sm text-on-surface">Quand ça résiste</p>
+          <p class="font-headline font-bold text-sm text-on-surface">À qui tu vends</p>
         </div>
-        <div class="flex flex-col gap-2" id="quickObjections"></div>
+        <p class="text-[13.5px] text-on-surface leading-relaxed mb-3" id="quickTarget"></p>
+        <div class="flex gap-2 flex-wrap" id="heroTags"></div>
       </div>
 
-      <!-- Ce que tu gagnes -->
-      <div class="rounded-2xl p-5 mb-3" style="background:linear-gradient(135deg,#006c4c 0%,#00a879 100%);box-shadow:0 8px 28px rgba(0,108,76,0.22)">
-        <div class="flex items-center gap-2 mb-4">
+      <!-- 3. Ce que tu gagnes -->
+      <div class="rounded-2xl p-5 mb-3 reveal" style="animation-delay:0.14s;background:linear-gradient(135deg,#006c4c,#00a879);box-shadow:0 8px 28px rgba(0,108,76,0.22)">
+        <div class="flex items-center gap-2 mb-3">
           <div class="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style="background:rgba(255,255,255,0.15)">
-            <span class="font-mono font-bold text-white" style="font-size:10px">6</span>
+            <span class="font-mono font-bold text-white" style="font-size:10px">3</span>
           </div>
           <p class="font-headline font-bold text-sm text-white">Ce que tu gagnes</p>
         </div>
-        <div class="grid grid-cols-3 gap-3" id="quickEarnings"></div>
-        <p class="text-[11px] text-white/50 mt-3 text-center">Commission versée sous 7 jours · Récurrente tant que le client est abonné</p>
+        <div class="grid grid-cols-3 gap-3 mb-2" id="quickEarnings"></div>
+        <p class="text-[11px] text-white/50 text-center">Versé sous 7 jours · Récurrent tant que le client est abonné</p>
       </div>
 
-      <!-- Leads B2B -->
-      <div id="leadsSection" style="display:none">
-        <div class="bg-surface-container-lowest rounded-2xl soft-shadow overflow-hidden">
-          <div class="flex items-center gap-3 px-5 pt-5 pb-4 border-b border-outline-variant/20">
-            <div class="w-6 h-6 rounded-full bg-on-surface flex items-center justify-center flex-shrink-0">
-              <span class="font-mono font-bold text-white" style="font-size:10px">7</span>
+      <!-- BOUTON J'AI COMPRIS -->
+      <div class="reveal mb-6" style="animation-delay:0.17s">
+        <button onclick="showKitComplet()" class="w-full py-4 rounded-2xl font-headline font-bold text-base text-white flex items-center justify-center gap-2 hover:opacity-95 transition active:scale-[0.99]" style="background:linear-gradient(135deg,#b52330,#ff5a5f);box-shadow:0 8px 28px rgba(181,35,48,0.25)">
+          <span class="material-symbols-outlined" style="font-size:20px">bolt</span>
+          J'ai compris — je prospecte maintenant
+        </button>
+        <p class="text-center text-xs text-on-surface-variant mt-2">Scripts · Prospects · Contrat — tout est prêt</p>
+      </div>
+
+    </div><!-- /quickView -->
+
+    <!-- ═══ PAGE 2 — KIT COMPLET ═══ -->
+    <div id="kitComplet" style="display:none">
+
+      <!-- Header kit -->
+      <div class="flex items-center gap-3 mb-5">
+        <button onclick="hideKitComplet()" class="flex items-center gap-1 text-sm text-on-surface-variant hover:text-on-surface transition">
+          <span class="material-symbols-outlined" style="font-size:16px">arrow_back</span>
+          Résumé
+        </button>
+        <div class="flex-1 h-px bg-outline-variant/40"></div>
+        <p class="font-headline font-bold text-sm text-on-surface" id="kitTitle"></p>
+      </div>
+
+      <!-- Lien de tracking -->
+      <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-4 mb-5 border border-outline-variant/40">
+        <div class="flex items-center gap-3 mb-2">
+          <span class="material-symbols-outlined filled text-primary flex-shrink-0" style="font-size:18px;font-variation-settings:'FILL' 1">link</span>
+          <p class="font-headline font-bold text-sm text-on-surface">Ton lien tracké</p>
+        </div>
+        <p class="text-[12px] text-on-surface-variant mb-3">Partage ce lien — chaque client qui signe via ce lien te crédite automatiquement la commission.</p>
+        <div class="flex items-center gap-2">
+          <div class="flex-1 bg-surface-container rounded-xl px-3 py-2.5 font-mono text-[12px] text-on-surface truncate border border-outline-variant/40" id="trackingLink">stacker.fr/ref/–</div>
+          <button onclick="copyTrackingLink()" class="flex items-center gap-1.5 px-3 py-2.5 rounded-xl bg-on-surface text-white text-[12px] font-bold hover:opacity-90 transition flex-shrink-0">
+            <span class="material-symbols-outlined" style="font-size:14px">content_copy</span>
+            Copier
+          </button>
+        </div>
+      </div>
+
+      <!-- 4 Canaux -->
+      <div class="space-y-3 mb-5">
+
+        <!-- PAP -->
+        <div class="bg-surface-container-lowest rounded-2xl soft-shadow overflow-hidden border border-outline-variant/30">
+          <button onclick="toggleChannel('pap')" class="w-full flex items-center gap-3 px-5 py-4 hover:bg-surface-container-low transition text-left">
+            <div class="w-9 h-9 rounded-xl bg-on-surface flex items-center justify-center flex-shrink-0">
+              <span class="material-symbols-outlined text-white" style="font-size:18px">directions_walk</span>
             </div>
-            <div class="flex-1 min-w-0">
-              <p class="font-headline font-bold text-sm text-on-surface">Trouve tes prospects</p>
-              <p class="text-[11px] text-on-surface-variant">Génère une liste de contacts qualifiés pour cette offre.</p>
+            <div class="flex-1">
+              <p class="font-headline font-bold text-sm text-on-surface">Porte-à-porte</p>
+              <p class="text-[11px] text-on-surface-variant">Script + trouver des commerces près de toi</p>
             </div>
-            <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container">
-              <span class="material-symbols-outlined text-on-surface-variant" style="font-size:13px">hub</span>
-              <span class="text-[10px] font-semibold text-on-surface-variant">Stacker Leads</span>
-            </div>
-          </div>
-          <div class="px-5 py-4">
-            <div class="grid grid-cols-2 gap-3 mb-3">
+            <span class="material-symbols-outlined text-on-surface-variant" style="font-size:18px" id="chevron-pap">expand_more</span>
+          </button>
+          <div id="channel-pap" class="hidden border-t border-outline-variant/20">
+            <div class="px-5 py-4 space-y-4">
+              <!-- Script -->
               <div>
-                <label class="block text-[10.5px] font-semibold text-on-surface-variant uppercase tracking-[0.06em] mb-1.5">Ville ou département</label>
-                <input type="text" id="leadsVille" placeholder="Paris, Lyon, 13..." class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm text-on-surface outline-none focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/10 transition" oninput="resetLeads()">
+                <p class="font-mono text-[9.5px] tracking-[0.12em] uppercase text-on-surface-variant mb-2 flex items-center gap-2">Script PAP <span class="flex-1 h-px bg-outline-variant/40"></span></p>
+                <div id="script-pap" class="space-y-3"></div>
               </div>
-              <div>
-                <label class="block text-[10.5px] font-semibold text-on-surface-variant uppercase tracking-[0.06em] mb-1.5">Secteur / Profession</label>
-                <input type="text" id="leadsProfession" placeholder="Restaurant, Hôtel..." class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm text-on-surface outline-none focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/10 transition" oninput="resetLeads()">
-              </div>
-            </div>
-            <div class="flex gap-2 flex-wrap mb-4" id="leadsSuggestions"></div>
-            <button onclick="generateLeads()" id="leadsBtn" class="w-full py-3.5 rounded-xl bg-on-surface text-white font-headline font-bold text-sm flex items-center justify-center gap-2 hover:opacity-90 transition active:scale-[0.99]">
-              <span class="material-symbols-outlined" style="font-size:18px">search</span>
-              Générer la liste de prospects
-            </button>
-          </div>
-          <div id="leadsLoading" style="display:none" class="px-5 py-6 flex flex-col items-center gap-3 border-t border-outline-variant/20">
-            <div class="w-7 h-7 border-2 border-outline-variant border-t-primary rounded-full" style="animation:spin 0.8s linear infinite"></div>
-            <p class="text-sm text-on-surface-variant">Recherche en cours...</p>
-          </div>
-          <div id="leadsResults" style="display:none" class="border-t border-outline-variant/20">
-            <div class="px-5 pt-4 pb-2 flex items-center justify-between">
-              <p class="font-mono text-[9.5px] tracking-[0.12em] uppercase text-on-surface-variant">Prospects trouvés</p>
-              <div class="flex items-center gap-2">
-                <button onclick="showFollowUp()" class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-surface-container text-on-surface-variant text-[11px] font-semibold hover:bg-surface-container-high transition">
-                  <span class="material-symbols-outlined" style="font-size:13px">history</span>Suivi
-                </button>
-                <span class="font-headline font-bold text-sm text-primary" id="leadsCount">0</span>
-              </div>
-            </div>
-            <div id="leadsList" class="divide-y divide-outline-variant/15 pb-2"></div>
-            <div class="px-5 pb-4 pt-2">
-              <button onclick="exportLeads()" class="w-full py-3 rounded-xl border border-outline-variant text-sm font-semibold text-on-surface flex items-center justify-center gap-2 hover:bg-surface-container transition">
-                <span class="material-symbols-outlined" style="font-size:16px">download</span>
-                Exporter en CSV
+              <!-- Action -->
+              <button onclick="findNearbySpots()" class="w-full py-3 rounded-xl bg-on-surface text-white font-bold text-sm flex items-center justify-center gap-2 hover:opacity-90 transition">
+                <span class="material-symbols-outlined" style="font-size:17px">near_me</span>
+                Trouver des commerces près de moi
               </button>
+              <div id="nearbyResults" class="hidden"></div>
             </div>
           </div>
         </div>
-      </div>
 
-    </div>
-
-    <!-- Pane: Pitch -->
-    <div class="pane active" id="pane-pitch">
-      <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5 mb-2">
-        <div class="info-label">Description complète</div>
-        <p class="text-[13.5px] text-on-surface leading-relaxed" id="pitchDesc"></p>
-      </div>
-      <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5 mb-2">
-        <div class="info-label">Problèmes résolus</div>
-        <ul class="check-list con" id="pitchProblems"></ul>
-      </div>
-      <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5 mb-2">
-        <div class="info-label">Arguments clés</div>
-        <ul class="check-list pro" id="pitchArgs"></ul>
-      </div>
-      <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5">
-        <div class="info-label">Cible idéale</div>
-        <p class="text-[13.5px] text-on-surface leading-relaxed" id="pitchTarget"></p>
-      </div>
-    </div>
-
-    <!-- Pane: Scripts -->
-    <div class="pane" id="pane-scripts">
-      <div class="flex gap-2 flex-wrap mb-4">
-        <button class="ch-pill active" onclick="showChannel('tel')" id="ch-tel"><span class="material-symbols-outlined">call</span>Téléphone</button>
-        <button class="ch-pill" onclick="showChannel('pap')" id="ch-pap"><span class="material-symbols-outlined">directions_walk</span>PAP</button>
-        <button class="ch-pill" onclick="showChannel('rdv')" id="ch-rdv"><span class="material-symbols-outlined">handshake</span>RDV</button>
-        <button class="ch-pill" onclick="showChannel('social')" id="ch-social"><span class="material-symbols-outlined">thumb_up</span>Réseaux</button>
-      </div>
-      <div id="scriptContent"></div>
-      <p class="font-mono text-[9.5px] tracking-[0.12em] uppercase text-on-surface-variant flex items-center gap-2 mt-5 mb-3">
-        Gestion des objections <span class="flex-1 h-px bg-outline-variant/50"></span>
-      </p>
-      <div id="objectionsList"></div>
-    </div>
-
-    <!-- Pane: Tarifs -->
-    <div class="pane" id="pane-tarifs">
-      <div class="grid grid-cols-1 gap-2 mb-3" id="planCards"></div>
-      <div class="rounded-2xl p-5 flex items-center justify-between" style="background:linear-gradient(135deg,#006c4c 0%,#00a879 100%);box-shadow:0 8px 28px rgba(0,108,76,0.22)" id="comBanner">
-        <div>
-          <p class="text-[11.5px] text-white/65 font-medium mb-1">Ta com. mensuelle récurrente</p>
-          <p class="font-headline font-extrabold text-2xl text-white" style="letter-spacing:-0.035em" id="comVal">–</p>
-          <p class="text-[10.5px] text-white/50 mt-1">Commission versée sous 7 jours après confirmation du deal</p>
-        </div>
-        <div class="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 ml-4" style="background:rgba(255,255,255,0.13)">
-          <span class="material-symbols-outlined text-white filled" style="font-size:22px;font-variation-settings:'FILL' 1">payments</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Pane: Fidélisation -->
-    <div class="pane" id="pane-fidelisation">
-      <div class="hero-dark rounded-2xl p-6 mb-2">
-        <p class="font-mono text-[9px] tracking-[0.16em] uppercase text-white/40 mb-2">Programme de rétention</p>
-        <h3 class="font-headline font-extrabold text-xl text-white mb-2" style="letter-spacing:-0.03em">Tu gagnes plus si ton client reste.</h3>
-        <p class="text-[13px] text-white/55 leading-relaxed">Ta commission de base continue tant que le client est abonné. En plus, des primes progressives récompensent chaque palier de fidélisation atteint.</p>
-      </div>
-      <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5 mb-2">
-        <div class="info-label">Primes de fidélisation</div>
-        <div class="flex items-start gap-4 py-4 border-b border-outline-variant/30">
-          <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(0,108,76,0.1)">
-            <span class="material-symbols-outlined filled" style="font-size:22px;color:#006c4c;font-variation-settings:'FILL' 1">verified</span>
-          </div>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center justify-between gap-2 mb-1">
-              <p class="font-headline font-bold text-sm text-on-surface">Client actif à 3 mois</p>
-              <span class="font-headline font-extrabold text-sm text-tertiary whitespace-nowrap">+1 mois offert</span>
+        <!-- CALL -->
+        <div class="bg-surface-container-lowest rounded-2xl soft-shadow overflow-hidden border border-outline-variant/30">
+          <button onclick="toggleChannel('call')" class="w-full flex items-center gap-3 px-5 py-4 hover:bg-surface-container-low transition text-left">
+            <div class="w-9 h-9 rounded-xl bg-on-surface flex items-center justify-center flex-shrink-0">
+              <span class="material-symbols-outlined text-white" style="font-size:18px">call</span>
             </div>
-            <p class="text-[12px] text-on-surface-variant leading-snug">Bonus équivalent à un mois de commission versé en une fois.</p>
-          </div>
-        </div>
-        <div class="flex items-start gap-4 py-4 border-b border-outline-variant/30">
-          <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(0,108,76,0.15)">
-            <span class="material-symbols-outlined filled" style="font-size:22px;color:#006c4c;font-variation-settings:'FILL' 1">trending_up</span>
-          </div>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center justify-between gap-2 mb-1">
-              <p class="font-headline font-bold text-sm text-on-surface">Client actif à 6 mois</p>
-              <span class="font-headline font-extrabold text-sm text-tertiary whitespace-nowrap">+5% de commission</span>
+            <div class="flex-1">
+              <p class="font-headline font-bold text-sm text-on-surface">Cold Call</p>
+              <p class="text-[11px] text-on-surface-variant">Script + générer une liste de numéros</p>
             </div>
-            <p class="text-[12px] text-on-surface-variant leading-snug">Ton taux augmente de 5 points et reste à ce niveau tant qu'il est abonné.</p>
-          </div>
-        </div>
-        <div class="flex items-start gap-4 pt-4">
-          <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(255,197,0,0.12);border:1px solid rgba(255,197,0,0.25)">
-            <span class="material-symbols-outlined filled" style="font-size:22px;color:#b8860b;font-variation-settings:'FILL' 1">workspace_premium</span>
-          </div>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center justify-between gap-2 mb-1">
-              <p class="font-headline font-bold text-sm text-on-surface">Client actif à 12 mois</p>
-              <span class="font-headline font-extrabold text-sm whitespace-nowrap" style="color:#b8860b">Prime + statut Elite</span>
+            <span class="material-symbols-outlined text-on-surface-variant" style="font-size:18px" id="chevron-call">expand_more</span>
+          </button>
+          <div id="channel-call" class="hidden border-t border-outline-variant/20">
+            <div class="px-5 py-4 space-y-4">
+              <div>
+                <p class="font-mono text-[9.5px] tracking-[0.12em] uppercase text-on-surface-variant mb-2 flex items-center gap-2">Script Call <span class="flex-1 h-px bg-outline-variant/40"></span></p>
+                <div id="script-call" class="space-y-3"></div>
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label class="block text-[10.5px] font-semibold text-on-surface-variant uppercase tracking-[0.06em] mb-1.5">Ville</label>
+                  <input type="text" id="callVille" placeholder="Lyon, Paris..." class="w-full px-3 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition">
+                </div>
+                <div>
+                  <label class="block text-[10.5px] font-semibold text-on-surface-variant uppercase tracking-[0.06em] mb-1.5">Secteur</label>
+                  <input type="text" id="callSecteur" placeholder="Restaurant..." class="w-full px-3 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition">
+                </div>
+              </div>
+              <button onclick="generateCallList()" class="w-full py-3 rounded-xl bg-on-surface text-white font-bold text-sm flex items-center justify-center gap-2 hover:opacity-90 transition">
+                <span class="material-symbols-outlined" style="font-size:17px">phone_in_talk</span>
+                Générer ma liste d'appels
+              </button>
+              <div id="callLoading" style="display:none" class="flex flex-col items-center gap-2 py-4">
+                <div class="w-6 h-6 border-2 border-outline-variant border-t-primary rounded-full" style="animation:spin 0.8s linear infinite"></div>
+                <p class="text-sm text-on-surface-variant">Recherche en cours...</p>
+              </div>
+              <div id="callResults" style="display:none">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="font-mono text-[9.5px] uppercase tracking-[0.12em] text-on-surface-variant">Prospects trouvés</span>
+                  <div class="flex items-center gap-2">
+                    <span class="font-headline font-bold text-sm text-primary" id="callCount">0</span>
+                    <button onclick="exportCallCSV()" class="text-[11px] font-semibold text-on-surface-variant hover:text-on-surface flex items-center gap-1"><span class="material-symbols-outlined" style="font-size:13px">download</span>CSV</button>
+                  </div>
+                </div>
+                <div id="callList" class="divide-y divide-outline-variant/20 rounded-xl overflow-hidden border border-outline-variant/30"></div>
+              </div>
             </div>
-            <p class="text-[12px] text-on-surface-variant leading-snug">Prime exceptionnelle + accès Closer Elite : leads prioritaires, badge, classement dédié.</p>
           </div>
         </div>
-      </div>
-      <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5 mb-2">
-        <div class="info-label">Simulateur de gains sur 12 mois</div>
-        <div class="flex items-center gap-3 mb-4">
-          <label class="text-sm text-on-surface flex-shrink-0">Abonnement client :</label>
-          <select id="fidSimPlan" onchange="calcFidelisation()" class="flex-1 px-3 py-2 rounded-xl border border-outline-variant bg-surface-container-low text-sm font-semibold text-on-surface outline-none focus:border-primary transition"></select>
-        </div>
-        <div class="grid grid-cols-3 gap-2 mb-4">
-          <div class="text-center p-3 rounded-xl border border-outline-variant/40">
-            <p class="font-mono text-[9px] uppercase tracking-[0.1em] text-on-surface-variant mb-2">Mois 1–3</p>
-            <p class="font-headline font-extrabold text-lg text-on-surface" id="fidM3">–</p>
-            <p class="text-[10px] text-on-surface-variant mt-1">base</p>
-          </div>
-          <div class="text-center p-3 rounded-xl border border-tertiary/30" style="background:rgba(0,108,76,0.04)">
-            <p class="font-mono text-[9px] uppercase tracking-[0.1em] text-tertiary mb-2">Mois 4–6</p>
-            <p class="font-headline font-extrabold text-lg text-tertiary" id="fidM6">–</p>
-            <p class="text-[10px] text-on-surface-variant mt-1">+ prime 3 mois</p>
-          </div>
-          <div class="text-center p-3 rounded-xl" style="background:rgba(255,197,0,0.08);border:1px solid rgba(255,197,0,0.25)">
-            <p class="font-mono text-[9px] uppercase tracking-[0.1em] mb-2" style="color:#b8860b">Mois 7–12</p>
-            <p class="font-headline font-extrabold text-lg" style="color:#b8860b" id="fidM12">–</p>
-            <p class="text-[10px] text-on-surface-variant mt-1">taux augmenté</p>
-          </div>
-        </div>
-        <div class="flex items-center justify-between p-4 rounded-xl" style="background:linear-gradient(135deg,#006c4c,#00a879)">
-          <div>
-            <p class="text-[11px] text-white/65 mb-1">Total généré sur 12 mois — 1 client</p>
-            <p class="font-headline font-extrabold text-2xl text-white" style="letter-spacing:-0.035em" id="fidTotal">–</p>
-          </div>
-          <div class="text-right">
-            <p class="text-[11px] text-white/65 mb-1">Dont prime Elite</p>
-            <p class="font-headline font-extrabold text-lg text-white" id="fidPrime">–</p>
-          </div>
-        </div>
-      </div>
-      <div class="rounded-2xl p-5" style="background:linear-gradient(135deg,#1f1d18,#2a2620);border:1px solid rgba(255,197,0,0.2)">
-        <div class="flex items-start gap-3 mb-4">
-          <span class="material-symbols-outlined filled" style="font-size:22px;color:#ffd700;font-variation-settings:'FILL' 1">crisis_alert</span>
-          <div>
-            <p class="font-headline font-bold text-base" style="color:#ffd700">Statut Closer Elite</p>
-            <p class="text-[12px] mt-0.5" style="color:rgba(255,255,255,0.5)">Débloqué au premier client fidélisé 12 mois</p>
-          </div>
-        </div>
-        <div class="space-y-2">
-          <div class="flex items-center gap-2.5"><span class="material-symbols-outlined filled" style="font-size:14px;color:#ffd700;font-variation-settings:'FILL' 1">check</span><span class="text-[12.5px]" style="color:rgba(255,255,255,0.75)">Accès prioritaire aux meilleurs leads Stacker</span></div>
-          <div class="flex items-center gap-2.5"><span class="material-symbols-outlined filled" style="font-size:14px;color:#ffd700;font-variation-settings:'FILL' 1">check</span><span class="text-[12.5px]" style="color:rgba(255,255,255,0.75)">Badge Elite visible sur ton profil Stacker</span></div>
-          <div class="flex items-center gap-2.5"><span class="material-symbols-outlined filled" style="font-size:14px;color:#ffd700;font-variation-settings:'FILL' 1">check</span><span class="text-[12.5px]" style="color:rgba(255,255,255,0.75)">Classement dédié Closer Elite — top 50 national</span></div>
-          <div class="flex items-center gap-2.5"><span class="material-symbols-outlined filled" style="font-size:14px;color:#ffd700;font-variation-settings:'FILL' 1">check</span><span class="text-[12.5px]" style="color:rgba(255,255,255,0.75)">Commission parrainage majorée à +10%</span></div>
-        </div>
-      </div>
-    </div>
 
-    <!-- Pane: Contrat -->
-    <div class="pane" id="pane-contrat">
-      <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-6 mb-2">
-        <div class="info-label">Informations client</div>
-        <div class="grid grid-cols-2 gap-3 mb-3">
-          <div><label class="block text-[10.5px] font-semibold text-on-surface-variant uppercase tracking-[0.05em] mb-1.5">Prénom</label><input type="text" id="cPrenom" placeholder="Marie" class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm text-on-surface outline-none focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/10 transition"></div>
-          <div><label class="block text-[10.5px] font-semibold text-on-surface-variant uppercase tracking-[0.05em] mb-1.5">Nom</label><input type="text" id="cNom" placeholder="Dupont" class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm text-on-surface outline-none focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/10 transition"></div>
+        <!-- COLD DM -->
+        <div class="bg-surface-container-lowest rounded-2xl soft-shadow overflow-hidden border border-outline-variant/30">
+          <button onclick="toggleChannel('dm')" class="w-full flex items-center gap-3 px-5 py-4 hover:bg-surface-container-low transition text-left">
+            <div class="w-9 h-9 rounded-xl bg-on-surface flex items-center justify-center flex-shrink-0">
+              <span class="material-symbols-outlined text-white" style="font-size:18px">chat</span>
+            </div>
+            <div class="flex-1">
+              <p class="font-headline font-bold text-sm text-on-surface">Cold DM & Réseaux sociaux</p>
+              <p class="text-[11px] text-on-surface-variant">Instagram · Facebook · LinkedIn · WhatsApp</p>
+            </div>
+            <span class="material-symbols-outlined text-on-surface-variant" style="font-size:18px" id="chevron-dm">expand_more</span>
+          </button>
+          <div id="channel-dm" class="hidden border-t border-outline-variant/20">
+            <div class="px-5 py-4 space-y-4">
+
+              <!-- DM Tabs -->
+              <div class="flex gap-2 overflow-x-auto hide-scrollbar">
+                <button onclick="showDmPlatform('instagram',this)" class="dm-tab px-3 py-1.5 rounded-full text-[11px] font-bold bg-on-surface text-white whitespace-nowrap">Instagram</button>
+                <button onclick="showDmPlatform('facebook',this)" class="dm-tab px-3 py-1.5 rounded-full text-[11px] font-bold bg-surface-container-high text-on-surface-variant whitespace-nowrap">Facebook</button>
+                <button onclick="showDmPlatform('linkedin',this)" class="dm-tab px-3 py-1.5 rounded-full text-[11px] font-bold bg-surface-container-high text-on-surface-variant whitespace-nowrap">LinkedIn</button>
+                <button onclick="showDmPlatform('whatsapp',this)" class="dm-tab px-3 py-1.5 rounded-full text-[11px] font-bold bg-surface-container-high text-on-surface-variant whitespace-nowrap">WhatsApp</button>
+              </div>
+
+              <!-- DM Text -->
+              <div class="bg-surface-container rounded-xl p-4 border border-outline-variant/30">
+                <p class="font-mono text-[9.5px] tracking-[0.12em] uppercase text-on-surface-variant mb-2" id="dmPlatformLabel">Message Instagram</p>
+                <p class="text-[13px] text-on-surface leading-relaxed" id="dmText"></p>
+              </div>
+
+              <!-- Post réseaux -->
+              <div class="bg-surface-container rounded-xl p-4 border border-outline-variant/30">
+                <p class="font-mono text-[9.5px] tracking-[0.12em] uppercase text-on-surface-variant mb-2">Post / Caption</p>
+                <p class="text-[13px] text-on-surface leading-relaxed" id="postText"></p>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2">
+                <button onclick="copyDM()" class="py-3 rounded-xl bg-on-surface text-white font-bold text-sm flex items-center justify-center gap-1.5 hover:opacity-90 transition">
+                  <span class="material-symbols-outlined" style="font-size:16px">content_copy</span>
+                  Copier le DM
+                </button>
+                <button onclick="copyPost()" class="py-3 rounded-xl border border-outline-variant text-on-surface font-bold text-sm flex items-center justify-center gap-1.5 hover:bg-surface-container transition">
+                  <span class="material-symbols-outlined" style="font-size:16px">content_copy</span>
+                  Copier le Post
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="mb-3"><label class="block text-[10.5px] font-semibold text-on-surface-variant uppercase tracking-[0.05em] mb-1.5">Email</label><input type="email" id="cEmail" placeholder="marie@exemple.fr" class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm text-on-surface outline-none focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/10 transition"></div>
-        <div class="grid grid-cols-2 gap-3 mb-3">
-          <div><label class="block text-[10.5px] font-semibold text-on-surface-variant uppercase tracking-[0.05em] mb-1.5">Téléphone</label><input type="tel" id="cTel" placeholder="06 00 00 00 00" class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm text-on-surface outline-none focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/10 transition"></div>
-          <div><label class="block text-[10.5px] font-semibold text-on-surface-variant uppercase tracking-[0.05em] mb-1.5">Ville</label><input type="text" id="cVille" placeholder="Paris" class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm text-on-surface outline-none focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/10 transition"></div>
+
+        <!-- RDV -->
+        <div class="bg-surface-container-lowest rounded-2xl soft-shadow overflow-hidden border border-outline-variant/30">
+          <button onclick="toggleChannel('rdv')" class="w-full flex items-center gap-3 px-5 py-4 hover:bg-surface-container-low transition text-left">
+            <div class="w-9 h-9 rounded-xl bg-on-surface flex items-center justify-center flex-shrink-0">
+              <span class="material-symbols-outlined text-white" style="font-size:18px">handshake</span>
+            </div>
+            <div class="flex-1">
+              <p class="font-headline font-bold text-sm text-on-surface">Rendez-vous</p>
+              <p class="text-[11px] text-on-surface-variant">Script RDV + générer le contrat à faire signer</p>
+            </div>
+            <span class="material-symbols-outlined text-on-surface-variant" style="font-size:18px" id="chevron-rdv">expand_more</span>
+          </button>
+          <div id="channel-rdv" class="hidden border-t border-outline-variant/20">
+            <div class="px-5 py-4 space-y-4">
+              <div>
+                <p class="font-mono text-[9.5px] tracking-[0.12em] uppercase text-on-surface-variant mb-2 flex items-center gap-2">Script RDV <span class="flex-1 h-px bg-outline-variant/40"></span></p>
+                <div id="script-rdv" class="space-y-3"></div>
+              </div>
+              <!-- Comment faire signer -->
+              <div class="bg-surface-container rounded-xl p-4">
+                <p class="font-headline font-bold text-sm text-on-surface mb-3">Comment faire signer</p>
+                <div class="space-y-2.5">
+                  <div class="flex items-start gap-3">
+                    <div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center flex-shrink-0 mt-0.5"><span class="text-white font-mono font-bold" style="font-size:10px">1</span></div>
+                    <p class="text-[13px] text-on-surface leading-snug">Présente le produit et confirme l'intérêt du client</p>
+                  </div>
+                  <div class="flex items-start gap-3">
+                    <div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center flex-shrink-0 mt-0.5"><span class="text-white font-mono font-bold" style="font-size:10px">2</span></div>
+                    <p class="text-[13px] text-on-surface leading-snug">Génère le contrat ci-dessous avec ses infos</p>
+                  </div>
+                  <div class="flex items-start gap-3">
+                    <div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center flex-shrink-0 mt-0.5"><span class="text-white font-mono font-bold" style="font-size:10px">3</span></div>
+                    <p class="text-[13px] text-on-surface leading-snug">Envoie-lui le lien de signature YouSign par SMS/email</p>
+                  </div>
+                  <div class="flex items-start gap-3">
+                    <div class="w-6 h-6 rounded-full bg-tertiary flex items-center justify-center flex-shrink-0 mt-0.5"><span class="material-symbols-outlined text-white filled" style="font-size:13px;font-variation-settings:'FILL' 1">check</span></div>
+                    <p class="text-[13px] text-on-surface leading-snug font-semibold">Commission créditée automatiquement dès la signature</p>
+                  </div>
+                </div>
+              </div>
+              <!-- Contrat rapide -->
+              <div class="space-y-3">
+                <div class="grid grid-cols-2 gap-3">
+                  <div><label class="block text-[10.5px] font-semibold text-on-surface-variant uppercase tracking-[0.06em] mb-1.5">Prénom client</label><input type="text" id="rdvPrenom" placeholder="Marie" class="w-full px-3 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm outline-none focus:border-primary transition"></div>
+                  <div><label class="block text-[10.5px] font-semibold text-on-surface-variant uppercase tracking-[0.06em] mb-1.5">Nom client</label><input type="text" id="rdvNom" placeholder="Dupont" class="w-full px-3 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm outline-none focus:border-primary transition"></div>
+                </div>
+                <div><label class="block text-[10.5px] font-semibold text-on-surface-variant uppercase tracking-[0.06em] mb-1.5">Email client</label><input type="email" id="rdvEmail" placeholder="marie@email.fr" class="w-full px-3 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm outline-none focus:border-primary transition"></div>
+                <button onclick="generateContratRapide()" class="w-full py-3 rounded-xl font-bold text-sm text-white flex items-center justify-center gap-2 hover:opacity-90 transition active:scale-[0.99]" style="background:#b52330">
+                  <span class="material-symbols-outlined filled" style="font-size:17px;font-variation-settings:'FILL' 1">picture_as_pdf</span>
+                  Générer le contrat PDF
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-        <div><label class="block text-[10.5px] font-semibold text-on-surface-variant uppercase tracking-[0.05em] mb-1.5">Société (optionnel)</label><input type="text" id="cSociete" placeholder="Nom de l'entreprise" class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm text-on-surface outline-none focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/10 transition"></div>
+
+      </div><!-- /4 canaux -->
+
+      <!-- Objections -->
+      <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5 mb-5">
+        <p class="font-headline font-bold text-sm text-on-surface mb-4 flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary" style="font-size:18px">quiz</span>
+          Quand ça résiste
+        </p>
+        <div class="flex flex-col gap-2" id="kitObjections"></div>
       </div>
-      <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-6 mb-3">
-        <div class="info-label">Offre sélectionnée</div>
-        <select id="cPlan" class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm text-on-surface outline-none focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/10 transition"><option value="">Choisir un pack...</option></select>
-      </div>
-      <button onclick="generatePDF()" class="w-full py-4 rounded-2xl cta-gradient text-white font-headline font-bold text-base flex items-center justify-center gap-2 hover:opacity-95 transition active:scale-[0.99]" style="box-shadow:0 8px 28px rgba(181,35,48,0.22)">
-        <span class="material-symbols-outlined filled" style="font-size:18px;font-variation-settings:'FILL' 1">picture_as_pdf</span>
-        Générer le contrat PDF
-      </button>
-      <div class="flex items-start gap-2.5 px-4 py-3 rounded-xl mt-2.5" style="background:rgba(0,108,76,0.08)">
-        <span class="material-symbols-outlined filled flex-shrink-0 mt-0.5" style="font-size:15px;color:#006c4c;font-variation-settings:'FILL' 1">verified</span>
-        <span class="text-[12px] font-medium leading-snug" style="color:#006c4c">Contrat généré instantanément · Prêt à envoyer pour signature légale</span>
-      </div>
-    </div>
+
+    </div><!-- /kitComplet -->
 
   </div><!-- /detailPage -->
 </main>
@@ -738,29 +684,29 @@
 <script>
 const PRODUCTS = [
  {
- id:'seoia', name:'Seoia Partners', category:'SEO & Marketing Digital',
- tagline:'Visibilité Google garantie pour les commerçants locaux',
+ id:'seoia', name:'Seoia Partners', category:'SEO Traditionnel & SEO IA',
+ tagline:'Référencement sur Google ET sur les moteurs de recherche IA',
  icon:'travel_explore', color:'#b52330',
- tags:['SEO','Intelligence Artificielle','Commerçants'],
- desc:"Seoia Partners propulse les commerçants en tête de Google grâce au SEO traditionnel combiné à l'intelligence artificielle. Audit complet, optimisation continue, génération de contenu IA et reporting mensuel clair et actionnable.",
- problems:["Le commerçant est invisible sur Google face à ses concurrents directs","Il perd des clients chaque jour qui cherchent en ligne sans le trouver","Il n'a ni le temps ni les compétences pour gérer son référencement"],
- args:["Résultats de positionnement visibles dès le 1er mois","IA qui optimise le contenu 24h/24 sans intervention","Reporting simplifié et compréhensible chaque mois","Spécialisé exclusivement pour les commerçants locaux"],
- target:"Commerçants locaux (restaurant, boutique, salon, artisan, cabinet) possédant un site internet et voulant être trouvés en priorité sur Google dans leur zone géographique.",
+ tags:['SEO','IA','Commerçants','ChatGPT','Perplexity'],
+ desc:"Seoia Partners positionne les commerçants en tête de Google ET sur les nouveaux moteurs de recherche IA comme ChatGPT, Perplexity et Google AI Overview. Double stratégie : SEO traditionnel pour Google classique + optimisation IA pour être cité quand un client pose une question à une IA. Le premier service qui couvre les deux.",
+ problems:["Le commerçant est invisible sur Google face à ses concurrents","Les clients utilisent de plus en plus les IA pour trouver des services locaux — et n'y apparaît pas","Il n'a ni le temps ni les compétences pour gérer son référencement sur ces nouvelles plateformes"],
+ args:["Visible sur Google classique ET sur ChatGPT, Perplexity, Google AI Overview","SEO traditionnel + optimisation contenu IA en une seule stratégie","Résultats de positionnement visibles dès le 1er mois","On gère tout de A à Z — aucune action requise de sa part"],
+ target:"Tout commerçant local avec un site internet — restaurant, boutique, salon, artisan, cabinet, hôtel. Peu importe le secteur, peu importe la taille. Si le client a un site et des concurrents, on peut l'aider.",
  plans:[
- {name:'Starter',price:199,engagement:'6 mois',comRate:0.25,features:['Audit SEO complet du site','Optimisation on-page complète','Rapport mensuel détaillé','Support email sous 48h'],rec:false},
- {name:'Pro',price:349,engagement:'9 mois',comRate:0.25,features:['Tout Starter inclus','Contenu IA publié chaque semaine','SEO local Google My Business','Support prioritaire sous 24h'],rec:true},
- {name:'Premium',price:490,engagement:'12 mois',comRate:0.25,features:['Tout Pro inclus','Stratégie IA sur mesure','Session stratégique mensuelle 1h','Manager SEO dédié'],rec:false},
+ {name:'Starter',price:199,engagement:'6 mois',comRate:0.25,features:['Audit SEO complet du site','Optimisation on-page et technique','Référencement IA de base (ChatGPT)','Rapport mensuel détaillé'],rec:false},
+ {name:'Pro',price:349,engagement:'9 mois',comRate:0.25,features:['Tout Starter inclus','Contenu IA publié chaque semaine','Optimisation Google AI Overview + Perplexity','SEO local Google My Business','Support prioritaire 24h'],rec:true},
+ {name:'Premium',price:490,engagement:'12 mois',comRate:0.25,features:['Tout Pro inclus','Stratégie IA sur mesure multi-plateformes','Session stratégique mensuelle 1h','Manager SEO dédié'],rec:false},
  ],
  scripts:{
- tel:{intro:"Bonjour, je suis [Prénom] de Seoia Partners. Je vous appelle car j'ai analysé votre présence Google et j'ai remarqué que vous n'apparaissez pas dans les premiers résultats quand un client cherche [métier] à [ville]. Concrètement, ça représente des clients qui vont chez vos concurrents chaque semaine.",arg:"On accompagne des commerçants comme vous avec une stratégie SEO + IA qui fait remonter dans Google en moins de 30 jours. Le résultat ? Plus de visites en boutique, plus d'appels entrants, plus de clients. Et vous n'avez rien à faire — on gère tout.",close:"Je vous propose un audit gratuit cette semaine pour vous montrer exactement ce qui bloque votre visibilité. On se fait ça quand ?"},
- pap:{intro:"Bonjour ! Je m'appelle [Prénom], je travaille avec Seoia Partners. On accompagne les commerces locaux à être mieux trouvés sur Google. J'ai remarqué votre boutique en passant et j'aimerais vous montrer quelque chose rapidement — ça ne prend que 2 minutes.",arg:"Regardez — si je tape '[métier] [ville]' sur Google maintenant, vos concurrents apparaissent en premier. Ça, c'est des clients perdus chaque jour. Notre solution SEO IA règle ça durablement.",close:"Je peux vous faire l'analyse gratuitement maintenant, sur place. Vous avez un instant ?"},
- rdv:{intro:"Merci de me recevoir. J'ai préparé une analyse rapide et personnalisée de votre présence en ligne actuelle — vous allez voir, c'est assez parlant.",arg:"Voici votre position Google actuelle comparée à vos 3 concurrents directs. Avec Seoia Partners, on comble cet écart en 30 jours grâce à notre combinaison SEO + contenu généré par IA. Nos clients voient en moyenne +40% de visites organiques dès le 2ème mois.",close:"Je vous propose de démarrer sur le Pack Pro aujourd'hui. Je prépare le contrat maintenant et vous êtes opérationnel dès lundi. Ça vous convient ?"},
- social:{intro:"Tu gères un commerce et tu te demandes pourquoi tes concurrents sont en haut de Google et pas toi ? On a exactement la solution.",arg:"Seoia Partners combine SEO classique + IA pour booster ta visibilité Google durablement. Nos clients voient les premiers résultats dès le 1er mois. Audit gratuit disponible cette semaine — places limitées.",close:"Envoie-moi l'URL de ton site en DM et je te dis exactement ce qui bloque ta visibilité. C'est offert."}
+ tel:{intro:"Bonjour, je suis [Prénom] de Seoia Partners. Je vous appelle car aujourd'hui quand quelqu'un cherche [métier] à [ville] — que ce soit sur Google ou en posant une question à ChatGPT — vous n'apparaissez pas. Ça représente des clients perdus chaque jour.",arg:"On a développé une stratégie qui combine le SEO Google classique avec le référencement sur les moteurs de recherche IA — ChatGPT, Perplexity, Google AI Overview. On est les seuls à faire les deux en même temps. Résultats visibles dès le premier mois, vous n'avez rien à faire.",close:"Je vous propose un audit gratuit cette semaine pour vous montrer exactement ce qui bloque votre visibilité sur Google et sur les IA. On se fait ça quand ?"},
+ pap:{intro:"Bonjour ! Je travaille avec Seoia Partners. On aide les commerçants à être visibles non seulement sur Google, mais aussi quand un client demande à ChatGPT ou Perplexity de lui recommander un [métier] dans le coin. Vous avez 2 minutes ?",arg:"Regardez — si je demande à ChatGPT 'meilleur [métier] à [ville]', vos concurrents apparaissent et pas vous. C'est le futur de la recherche et ça se passe maintenant. On règle ça avec une stratégie SEO traditionnel + IA.",close:"Audit gratuit sur place maintenant. Je vous montre exactement où vous en êtes. Ça prend 5 minutes."},
+ rdv:{intro:"Merci de me recevoir. J'ai préparé une analyse de votre visibilité — sur Google classique et sur les moteurs de recherche IA comme ChatGPT et Perplexity.",arg:"Voici votre position actuelle comparée à vos concurrents sur Google et sur les IA. Nos clients qui combinent les deux stratégies voient en moyenne +40% de visites organiques dès le 2ème mois — et commencent à apparaître dans les réponses IA dès le 1er mois.",close:"Je vous propose de démarrer sur le Pack Pro. Je prépare le contrat maintenant, vous êtes opérationnel dès lundi."},
+ social:{intro:"Ton commerce est visible sur Google ? Et sur ChatGPT quand quelqu'un demande le meilleur [métier] de ta ville ?",arg:"Seoia Partners positionne les commerçants sur Google ET sur les moteurs de recherche IA — ChatGPT, Perplexity, Google AI Overview. Double visibilité, un seul abonnement. Premiers résultats dès le 1er mois.",close:"Envoie-moi l'URL de ton site en DM — audit gratuit, je te dis exactement où tu en es."}
  },
  objections:[
- {q:"J'ai déjà quelqu'un pour mon site",a:"Parfait — notre service est 100% complémentaire. On s'occupe uniquement du référencement et de la visibilité Google, pas du site lui-même. Votre prestataire actuel continue son travail normalement."},
- {q:"C'est trop cher",a:"Un seul client supplémentaire par semaine rembourse largement l'abonnement. L'audit gratuit vous montrera exactement combien de clients vous perdez actuellement — c'est souvent une vraie surprise."},
- {q:"J'ai pas le temps de m'en occuper",a:"C'est exactement pour ça qu'on existe. Vous n'avez absolument rien à faire — on gère tout de A à Z. Vous recevez un rapport mensuel et vous voyez les résultats."},
+ {q:"J'ai déjà quelqu'un pour mon référencement",a:"Notre service couvre quelque chose que votre prestataire actuel ne fait probablement pas : le référencement sur les moteurs IA comme ChatGPT et Perplexity. C'est complémentaire, pas concurrent."},
+ {q:"C'est quoi les moteurs de recherche IA ?",a:"ChatGPT, Perplexity, Google AI Overview — des millions de personnes posent maintenant leurs questions à ces outils plutôt qu'à Google classique. 'Quel restaurant recommandes-tu à Lyon ?' — si vous n'y êtes pas référencé, vous perdez ces clients."},
+ {q:"C'est trop cher",a:"Un seul client supplémentaire par semaine rembourse largement l'abonnement. Et l'audit gratuit vous montrera combien vous en perdez actuellement sur Google et sur les IA."},
  ]
  },
  {
@@ -1430,33 +1376,356 @@ function applyFilters() {
 }
 
 
+function showKitComplet() {
+  document.getElementById('quickView').style.display = 'none';
+  document.getElementById('kitComplet').style.display = 'block';
+  renderKitComplet();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function hideKitComplet() {
+  document.getElementById('kitComplet').style.display = 'none';
+  document.getElementById('quickView').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderKitComplet() {
+  const p = current;
+  document.getElementById('kitTitle').textContent = p.name;
+
+  // Tracking link
+  const refCode = localStorage.getItem('stacker_ref') || generateRef();
+  document.getElementById('trackingLink').textContent = 'stacker.fr/ref/' + refCode + '/' + p.id;
+
+  // Scripts par canal
+  renderChannelScript('pap', p.scripts.pap);
+  renderChannelScript('call', p.scripts.tel);
+  renderChannelScript('rdv', p.scripts.rdv);
+
+  // DM
+  renderDM('instagram');
+
+  // Objections
+  document.getElementById('kitObjections').innerHTML = p.objections.map(o => `
+    <div class="bg-surface-container rounded-xl p-4">
+      <p class="font-semibold text-[12px] text-on-surface mb-1.5 flex items-start gap-2">
+        <span class="material-symbols-outlined flex-shrink-0 mt-0.5" style="font-size:13px;color:#b52330">help</span>
+        "${o.q}"
+      </p>
+      <p class="text-[13px] text-on-surface-variant leading-relaxed pl-5">${o.a}</p>
+    </div>
+  `).join('');
+}
+
+function generateRef() {
+  const ref = Math.random().toString(36).substring(2, 8).toUpperCase();
+  localStorage.setItem('stacker_ref', ref);
+  return ref;
+}
+
+function copyTrackingLink() {
+  const link = document.getElementById('trackingLink').textContent;
+  navigator.clipboard.writeText('https://' + link).then(() => showToast('Lien copié !'));
+}
+
+function showToast(msg) {
+  const el = document.createElement('div');
+  el.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1b1c1c;color:#fff;padding:10px 20px;border-radius:99px;font-size:13px;font-weight:600;z-index:999;box-shadow:0 4px 16px rgba(0,0,0,0.2)';
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 2500);
+}
+
+function renderChannelScript(channelId, script) {
+  if (!script) return;
+  const container = document.getElementById('script-' + channelId);
+  if (!container) return;
+  const steps = [
+    { label: 'Accroche', text: script.intro },
+    { label: 'Argument', text: script.arg },
+    { label: 'Closing', text: script.close },
+  ];
+  container.innerHTML = steps.map((s, i) => `
+    <div class="bg-surface-container rounded-xl p-3.5">
+      <div class="flex items-center gap-2 mb-2">
+        <div class="w-5 h-5 rounded-full bg-on-surface flex items-center justify-center flex-shrink-0">
+          <span class="font-mono font-bold text-white" style="font-size:9px">${i+1}</span>
+        </div>
+        <span class="text-[10px] font-bold uppercase tracking-[0.1em] text-on-surface-variant">${s.label}</span>
+      </div>
+      <p class="text-[13px] text-on-surface leading-relaxed italic pl-7">${s.text}</p>
+    </div>
+  `).join('');
+}
+
+function toggleChannel(id) {
+  const panel = document.getElementById('channel-' + id);
+  const chevron = document.getElementById('chevron-' + id);
+  const isOpen = !panel.classList.contains('hidden');
+  // Ferme tous
+  ['pap','call','dm','rdv'].forEach(c => {
+    document.getElementById('channel-' + c)?.classList.add('hidden');
+    const ch = document.getElementById('chevron-' + c);
+    if (ch) ch.textContent = 'expand_more';
+  });
+  if (!isOpen) {
+    panel.classList.remove('hidden');
+    chevron.textContent = 'expand_less';
+  }
+}
+
+// DM platforms
+const DM_TEMPLATES = {
+  instagram: { label: 'Message Instagram' },
+  facebook: { label: 'Message Facebook' },
+  linkedin: { label: 'Message LinkedIn' },
+  whatsapp: { label: 'Message WhatsApp' },
+};
+
+let currentDmPlatform = 'instagram';
+
+function showDmPlatform(platform, el) {
+  currentDmPlatform = platform;
+  document.querySelectorAll('.dm-tab').forEach(b => {
+    b.classList.remove('bg-on-surface', 'text-white');
+    b.classList.add('bg-surface-container-high', 'text-on-surface-variant');
+  });
+  el.classList.add('bg-on-surface', 'text-white');
+  el.classList.remove('bg-surface-container-high', 'text-on-surface-variant');
+  renderDM(platform);
+}
+
+function renderDM(platform) {
+  if (!current) return;
+  const ref = localStorage.getItem('stacker_ref') || generateRef();
+  const link = 'https://stacker.fr/ref/' + ref + '/' + current.id;
+  const p = current;
+
+  const dms = {
+    instagram: `Bonjour ! Je tombe sur votre profil et je voulais vous partager quelque chose qui pourrait vous intéresser — ${p.tagline.toLowerCase()}. C'est simple, rapide à mettre en place et des dizaines de commerçants l'utilisent déjà. Je vous en dis plus ? ${link}`,
+    facebook: `Bonjour ! J'ai vu votre page et je voulais vous parler de ${p.name} — ${p.tagline.toLowerCase()}. Ça prend 5 minutes à comprendre et le résultat est immédiat. Intéressé(e) ? ${link}`,
+    linkedin: `Bonjour [Prénom], je travaille avec des professionnels comme vous sur ${p.tagline.toLowerCase()}. Les résultats sont concrets et rapides. Je serais ravi d'en discuter 5 minutes. ${link}`,
+    whatsapp: `Bonjour ! Je vous contacte car je pense que ${p.name} pourrait vraiment vous intéresser — ${p.tagline.toLowerCase()}. Plus d'infos ici : ${link}`,
+  };
+
+  const posts = {
+    instagram: `Tu es commerçant et tu veux ${p.tagline.toLowerCase()} ?\n\nOn a exactement la solution.\n\n${p.name} — résultats dès la première semaine.\n\nLien en bio ou DM directement.\n\n#commerce #commerçant #${p.id}`,
+    facebook: `Commerçants — vous cherchez à ${p.tagline.toLowerCase()} ?\n\n${p.name} est fait pour vous. Simple, rapide, efficace.\n\nPlus d'infos : ${link}`,
+    linkedin: `${p.name} — ${p.tagline}.\n\nNous accompagnons les professionnels avec une solution clé en main. Résultats mesurables dès le premier mois.\n\nEn savoir plus : ${link}`,
+    whatsapp: `Bonjour ! ${p.name} — ${p.tagline.toLowerCase()}. Simple à mettre en place, résultats rapides. ${link}`,
+  };
+
+  document.getElementById('dmPlatformLabel').textContent = DM_TEMPLATES[platform]?.label || 'Message';
+  document.getElementById('dmText').textContent = dms[platform] || dms.instagram;
+  document.getElementById('postText').textContent = posts[platform] || posts.instagram;
+}
+
+function copyDM() {
+  navigator.clipboard.writeText(document.getElementById('dmText').textContent).then(() => showToast('DM copié !'));
+}
+
+function copyPost() {
+  navigator.clipboard.writeText(document.getElementById('postText').textContent).then(() => showToast('Post copié !'));
+}
+
+// PAP - nearby spots
+function findNearbySpots() {
+  const btn = event.currentTarget;
+  btn.disabled = true;
+  btn.textContent = 'Localisation en cours...';
+
+  if (!navigator.geolocation) {
+    showNearbyManual();
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(pos => {
+    const { latitude, longitude } = pos.coords;
+    searchNearbyPlaces(latitude, longitude);
+    btn.textContent = 'Trouver des commerces près de moi';
+    btn.disabled = false;
+  }, () => {
+    showNearbyManual();
+    btn.textContent = 'Trouver des commerces près de moi';
+    btn.disabled = false;
+  });
+}
+
+function showNearbyManual() {
+  const results = document.getElementById('nearbyResults');
+  results.classList.remove('hidden');
+  results.innerHTML = `
+    <div class="bg-surface-container rounded-xl p-4 mt-2">
+      <p class="text-[13px] text-on-surface font-semibold mb-2">Géolocalisation non disponible</p>
+      <p class="text-[12px] text-on-surface-variant mb-3">Entre ta ville pour trouver des prospects PAP.</p>
+      <div class="flex gap-2">
+        <input type="text" id="papVille" placeholder="Ta ville..." class="flex-1 px-3 py-2 rounded-xl border border-outline-variant bg-surface text-sm outline-none focus:border-primary transition">
+        <button onclick="searchNearbyByCity()" class="px-4 py-2 bg-on-surface text-white rounded-xl text-sm font-bold">Chercher</button>
+      </div>
+      <div id="papResults" class="mt-3"></div>
+    </div>
+  `;
+}
+
+function searchNearbyByCity() {
+  const ville = document.getElementById('papVille')?.value.trim();
+  if (!ville) return;
+  // Redirige vers l'outil de leads avec la ville pré-remplie
+  document.getElementById('leadsVille').value = ville;
+  if (current && B2B_IDS.includes(current.id)) {
+    showPane('kit');
+  }
+  showToast('Ville pré-remplie dans l\'outil de leads !');
+}
+
+function searchNearbyPlaces(lat, lng) {
+  if (!googleMapsReady) { showNearbyManual(); return; }
+  const results = document.getElementById('nearbyResults');
+  results.classList.remove('hidden');
+  results.innerHTML = '<p class="text-[12px] text-on-surface-variant text-center py-3">Recherche en cours...</p>';
+
+  const service = new google.maps.places.PlacesService(document.createElement('div'));
+  const query = (current?.tags?.[0] || 'commerce') + ' ' + (current?.id === 'inroom' ? 'hôtel' : 'restaurant boutique');
+
+  service.nearbySearch({ location: { lat, lng }, radius: 1000, type: 'establishment' }, (res, status) => {
+    if (status !== google.maps.places.PlacesServiceStatus.OK || !res?.length) {
+      results.innerHTML = '<p class="text-[12px] text-on-surface-variant text-center py-3">Aucun résultat à proximité.</p>';
+      return;
+    }
+    results.innerHTML = '<p class="font-mono text-[9.5px] uppercase tracking-[0.12em] text-on-surface-variant mb-2">Commerces à moins d\'1km</p>' +
+      res.slice(0, 10).map(p => `
+        <div class="flex items-center justify-between py-2.5 border-b border-outline-variant/20 last:border-0">
+          <div class="flex-1 min-w-0">
+            <p class="font-semibold text-sm text-on-surface truncate">${p.name}</p>
+            <p class="text-[11px] text-on-surface-variant truncate">${p.vicinity||''}</p>
+          </div>
+          <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.name + ' ' + (p.vicinity||''))}" target="_blank" class="flex-shrink-0 ml-3 px-2.5 py-1.5 rounded-lg bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition">
+            <span class="material-symbols-outlined" style="font-size:14px">near_me</span>
+          </a>
+        </div>
+      `).join('');
+  });
+}
+
+// Call list (reuse Huntlist/Google Places)
+let callLeadsData = [];
+
+function generateCallList() {
+  const ville = document.getElementById('callVille').value.trim();
+  const secteur = document.getElementById('callSecteur').value.trim();
+  if (!ville && !secteur) { showToast('Entre au moins la ville ou le secteur'); return; }
+
+  document.getElementById('callLoading').style.display = 'flex';
+  document.getElementById('callResults').style.display = 'none';
+
+  if (!googleMapsReady) { setTimeout(generateCallList, 600); return; }
+
+  const service = new google.maps.places.PlacesService(document.createElement('div'));
+  const query = [secteur, ville].filter(Boolean).join(' ');
+  let allResults = [];
+
+  service.textSearch({ query, language: 'fr', region: 'fr' }, async function cb(res, status, pagination) {
+    if (status === google.maps.places.PlacesServiceStatus.OK && res) {
+      allResults = allResults.concat(res);
+      if (allResults.length < 40 && pagination?.hasNextPage) {
+        setTimeout(() => pagination.nextPage(), 300);
+      } else {
+        // Enrich
+        const enriched = await Promise.all(allResults.slice(0,40).map(p => new Promise(resolve => {
+          service.getDetails({ placeId: p.place_id, fields: ['formatted_phone_number','international_phone_number'] }, (place, s) => {
+            resolve({ name: p.name, address: p.formatted_address||p.vicinity||'', phone: place?.formatted_phone_number||place?.international_phone_number||null, place_id: p.place_id });
+          });
+        })));
+        callLeadsData = enriched;
+        renderCallResults(enriched);
+      }
+    } else {
+      document.getElementById('callLoading').style.display = 'none';
+      showToast('Aucun résultat. Essaie une autre ville.');
+    }
+  });
+}
+
+function renderCallResults(data) {
+  document.getElementById('callLoading').style.display = 'none';
+  document.getElementById('callResults').style.display = 'block';
+  const withPhone = data.filter(d => d.phone).length;
+  document.getElementById('callCount').textContent = data.length + ' · ' + withPhone + ' numéros';
+  document.getElementById('callList').innerHTML = data.map((l, i) => `
+    <div class="flex items-center justify-between px-4 py-3 hover:bg-surface-container-low transition">
+      <div class="flex-1 min-w-0">
+        <p class="font-semibold text-sm text-on-surface truncate">${l.name}</p>
+        <p class="text-[11px] text-on-surface-variant truncate">${l.address}</p>
+      </div>
+      ${l.phone
+        ? `<a href="tel:${l.phone}" onclick="markCalled(${i})" class="flex-shrink-0 ml-3 flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[11px] font-bold transition" style="background:rgba(0,108,76,0.1);color:#006c4c">
+            <span class="material-symbols-outlined" style="font-size:13px">call</span>${l.phone}
+           </a>`
+        : `<span class="flex-shrink-0 ml-3 text-[11px] text-on-surface-variant">Pas de numéro</span>`
+      }
+    </div>
+  `).join('');
+}
+
+function markCalled(idx) {
+  const l = callLeadsData[idx];
+  if (!l) return;
+  const contacts = JSON.parse(localStorage.getItem('stacker_contacts')||'{}');
+  contacts[l.place_id||l.name] = { ...l, status: 'encours', updatedAt: new Date().toISOString() };
+  localStorage.setItem('stacker_contacts', JSON.stringify(contacts));
+}
+
+function exportCallCSV() {
+  if (!callLeadsData.length) return;
+  const csv = 'Nom,Adresse,Téléphone\n' + callLeadsData.map(l => `"${l.name}","${l.address}","${l.phone||''}"`).join('\n');
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv'})); a.download = 'appels_stacker.csv'; a.click();
+}
+
+// Contrat rapide depuis RDV
+function generateContratRapide() {
+  const prenom = document.getElementById('rdvPrenom').value.trim();
+  const nom = document.getElementById('rdvNom').value.trim();
+  const email = document.getElementById('rdvEmail').value.trim();
+  if (!prenom || !nom || !email) { showToast('Remplis prénom, nom et email'); return; }
+
+  // Pré-remplir le contrat dans l'onglet contrat et générer
+  document.getElementById('cPrenom').value = prenom;
+  document.getElementById('cNom').value = nom;
+  document.getElementById('cEmail').value = email;
+
+  // Auto-sélectionner le premier plan
+  const sel = document.getElementById('cPlan');
+  if (sel && sel.options.length > 1) sel.selectedIndex = 1;
+
+  generatePDF();
+}
+
 function openProduct(id) {
   current = PRODUCTS.find(p => p.id === id);
   if (!current) return;
   document.getElementById('listPage').style.display = 'none';
   document.getElementById('detailPage').style.display = 'block';
+  document.getElementById('quickView').style.display = 'block';
+  document.getElementById('kitComplet').style.display = 'none';
+
+  const p = current;
+  const isTradebot = p.id === 'tradebot';
+  const isVariable = p.plans.some(pl => pl.variable);
 
   // Breadcrumb
-  document.getElementById('breadcrumbName').textContent = current.name;
+  document.getElementById('breadcrumbName').textContent = p.name;
 
   // Hero
-  document.getElementById('heroCategory').textContent = current.category;
-  document.getElementById('heroName').textContent = current.name;
-  document.getElementById('heroTagline').textContent = current.tagline;
-  document.getElementById('heroIcon').textContent = current.icon;
-
-  // Com rate in hero
-  const isTradebot = current.id === 'tradebot';
-  const isVariable = current.plans.some(p => p.variable);
-  const comRate = isTradebot ? '2% + 8% + 25%' : (Math.round(current.plans[0].comRate * 100) + '%');
-  document.getElementById('heroComRate').textContent = comRate;
+  document.getElementById('heroCategory').textContent = p.category;
+  document.getElementById('heroName').textContent = p.name;
+  document.getElementById('heroTagline').textContent = p.tagline;
+  document.getElementById('heroIcon').textContent = p.icon;
 
   // Price in hero
-  if (isVariable && current.plans[0].priceLabel2) {
-    document.getElementById('heroPrice').textContent = current.plans[0].priceLabel2;
+  if (isVariable && p.plans[0].priceLabel2) {
+    document.getElementById('heroPrice').textContent = p.plans[0].priceLabel2;
     document.getElementById('heroPriceLabel').textContent = 'par dossier';
   } else if (!isVariable) {
-    const prices = current.plans.filter(p => p.price).map(p => p.price);
+    const prices = p.plans.filter(pl => pl.price).map(pl => pl.price);
     document.getElementById('heroPrice').textContent = 'Dès ' + Math.min(...prices) + ' €/mois';
     document.getElementById('heroPriceLabel').textContent = 'abonnement client';
   } else {
@@ -1465,12 +1734,8 @@ function openProduct(id) {
   }
 
   renderQuickKit();
-  showLeadsSection();
-  showPane('pitch');
-  renderPitch();
-  renderTarifs();
+  renderEarnings();
   renderContrat();
-  showChannel('tel');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -1479,122 +1744,40 @@ function renderQuickKit() {
 
   // 1. Desc
   document.getElementById('quickDesc').textContent = p.desc.split('.').slice(0, 2).join('.') + '.';
-
-  // 2. Target
   document.getElementById('quickTarget').textContent = p.target;
-
-  // Tags
   document.getElementById('heroTags').innerHTML = p.tags.map(t =>
     `<span class="text-[10.5px] font-semibold px-2.5 py-1 rounded-full bg-surface-container text-on-surface-variant">${t}</span>`
   ).join('');
-
-  // 3. Channels
-  const channels = [
-    { id: 'tel', icon: 'call', label: 'Téléphone', desc: 'Cold call direct' },
-    { id: 'pap', icon: 'directions_walk', label: 'Porte-à-porte', desc: 'Prospection terrain' },
-    { id: 'rdv', icon: 'handshake', label: 'Rendez-vous', desc: 'Présentation en face' },
-    { id: 'social', icon: 'thumb_up', label: 'Réseaux', desc: 'DM et contenu' },
-  ];
-  const level = LEVEL_MAP[p.id] || 'debutant';
-  const recommended = level === 'debutant' ? ['tel', 'pap', 'social'] : ['rdv', 'tel'];
-  document.getElementById('quickChannels').innerHTML = channels.map(c => {
-    const isRec = recommended.includes(c.id);
-    return `<div class="flex items-center gap-3 p-3 rounded-xl ${isRec ? 'bg-tertiary-fixed border border-tertiary/20' : 'bg-surface-container border border-outline-variant/30'}">
-      <span class="material-symbols-outlined ${isRec ? 'text-tertiary' : 'text-on-surface-variant'}" style="font-size:18px">${c.icon}</span>
-      <div class="min-w-0">
-        <p class="font-semibold text-xs ${isRec ? 'text-tertiary' : 'text-on-surface'}">${c.label} ${isRec ? '· Recommandé' : ''}</p>
-        <p class="text-[11px] text-on-surface-variant">${c.desc}</p>
-      </div>
-    </div>`;
-  }).join('');
-
-  // 4. Script rapide — canal par défaut tel
-  renderQuickScript('tel');
-
-  // 5. Objections — les 3
-  const obs = p.objections.slice(0, 3);
-  document.getElementById('quickObjections').innerHTML = obs.map(o => `
-    <div class="bg-surface-container rounded-xl p-4">
-      <p class="font-semibold text-[12px] text-on-surface mb-1.5 flex items-center gap-2">
-        <span class="material-symbols-outlined flex-shrink-0" style="font-size:13px;color:#b52330">help</span>
-        "${o.q}"
-      </p>
-      <p class="text-[12.5px] text-on-surface-variant leading-relaxed pl-5">${o.a}</p>
-    </div>
-  `).join('');
-
-  // 6. Earnings
-  renderQuickEarnings();
 }
 
-function renderQuickScript(ch) {
-  const s = current.scripts[ch];
-  const labels = { tel: 'Accroche', pap: 'Accroche PAP', rdv: 'Ouverture RDV', social: 'Message' };
-  const labels2 = { tel: 'Argument', pap: 'Démonstration', rdv: 'Présentation', social: 'Pitch' };
-  const labels3 = { tel: 'Closing', pap: 'Closing', rdv: 'Closing', social: 'Call to action' };
-  document.getElementById('quickScript').innerHTML = `
-    <div class="px-5 py-4 border-b border-outline-variant/20">
-      <div class="flex items-center gap-2 mb-2">
-        <span class="w-5 h-5 rounded-full bg-on-surface flex items-center justify-center text-white font-mono font-bold" style="font-size:9px">1</span>
-        <span class="text-[10px] font-bold uppercase tracking-[0.1em] text-on-surface-variant">${labels[ch]}</span>
-      </div>
-      <p class="text-[13px] text-on-surface leading-relaxed italic">${s.intro}</p>
-    </div>
-    <div class="px-5 py-4 border-b border-outline-variant/20">
-      <div class="flex items-center gap-2 mb-2">
-        <span class="w-5 h-5 rounded-full bg-on-surface flex items-center justify-center text-white font-mono font-bold" style="font-size:9px">2</span>
-        <span class="text-[10px] font-bold uppercase tracking-[0.1em] text-on-surface-variant">${labels2[ch]}</span>
-      </div>
-      <p class="text-[13px] text-on-surface leading-relaxed italic">${s.arg}</p>
-    </div>
-    <div class="px-5 py-4">
-      <div class="flex items-center gap-2 mb-2">
-        <span class="w-5 h-5 rounded-full bg-primary flex items-center justify-center text-white font-mono font-bold" style="font-size:9px">3</span>
-        <span class="text-[10px] font-bold uppercase tracking-[0.1em] text-primary">${labels3[ch]}</span>
-      </div>
-      <p class="text-[13px] text-on-surface leading-relaxed italic">${s.close}</p>
-    </div>
-  `;
-}
-
-function renderQuickEarnings() {
+function renderEarnings() {
   const p = current;
+  if (!p) return;
   const isTradebot = p.id === 'tradebot';
   const isVariable = p.plans.some(pl => pl.variable);
   let items = [];
   if (isTradebot) {
-    items = [
-      { val: '2%', label: 'du dépôt initial' },
-      { val: '8%', label: 'des profits nets' },
-      { val: '25%', label: 'de l\'abonnement' },
-    ];
+    items = [{ val: '2%', label: 'dépôt initial' }, { val: '8%', label: 'profits nets' }, { val: '25%', label: 'abonnement' }];
   } else if (isVariable && p.plans[0]?.priceLabel2) {
-    const [min, max] = p.plans[0].priceLabel2.replace(/[^0-9–]/g, '').split('–');
-    items = [
-      { val: min + '€', label: 'commission min.' },
-      { val: max + '€', label: 'commission max.' },
-      { val: Math.round(p.plans[0].comRate * 100) + '%', label: 'taux apporteur' },
-    ];
+    const parts = p.plans[0].priceLabel2.replace(/[^0-9–]/g, '').split('–');
+    items = [{ val: parts[0] + '€', label: 'com. min.' }, { val: (parts[1]||parts[0]) + '€', label: 'com. max.' }, { val: '25%', label: 'taux' }];
   } else {
     const prices = p.plans.filter(pl => pl.price).map(pl => pl.price);
-    const rate = p.plans[0].comRate;
-    const minCom = Math.round(Math.min(...prices) * rate);
-    const maxCom = Math.round(Math.max(...prices) * rate);
-    items = [
-      { val: minCom + '€', label: 'com. min./mois' },
-      { val: maxCom + '€', label: 'com. max./mois' },
-      { val: Math.round(rate * 100) + '%', label: 'taux récurrent' },
-    ];
+    const minCom = Math.round(Math.min(...prices) * 0.25);
+    const maxCom = Math.round(Math.max(...prices) * 0.25);
+    items = [{ val: minCom + '€', label: 'com. min./mois' }, { val: maxCom + '€', label: 'com. max./mois' }, { val: '25%', label: 'taux récurrent' }];
   }
-  document.getElementById('quickEarnings').innerHTML = items.map(item => `
+  const el = document.getElementById('quickEarnings');
+  if (el) el.innerHTML = items.map(i => `
     <div class="text-center">
-      <p class="font-headline font-extrabold text-2xl text-white mb-0.5" style="letter-spacing:-0.04em">${item.val}</p>
-      <p class="text-[10.5px] text-white/55">${item.label}</p>
+      <p class="font-headline font-extrabold text-2xl text-white mb-0.5" style="letter-spacing:-0.04em">${i.val}</p>
+      <p class="text-[10.5px] text-white/55">${i.label}</p>
     </div>
   `).join('');
 }
 
-
+function renderQuickScript(ch) {}
+function renderQuickEarnings() { renderEarnings(); }
 
 function goBack() {
   document.getElementById('listPage').style.display = 'block';
@@ -1814,13 +1997,17 @@ function calcFidelisation() {
 
 function renderContrat() {
   const sel = document.getElementById('cPlan');
+  if (!sel) return;
   if (current.id === 'inroom') {
     sel.innerHTML = '<option value="variable|InRoom|Sans engagement">InRoom — 5€ par chambre / mois</option>';
   } else {
     sel.innerHTML = '<option value="">Choisir un pack...</option>' +
-      current.plans.map(pl => `<option value="${pl.price}|${pl.name}|${pl.engagement}">${pl.name} — ${pl.price}€/mois (${pl.engagement})</option>`).join('');
+      current.plans.map(pl => `<option value="${pl.price}|${pl.name}|${pl.engagement}">${pl.name} — ${pl.price ? pl.price+'€/mois' : pl.priceLabel||'Variable'} (${pl.engagement})</option>`).join('');
   }
-  ['cPrenom','cNom','cEmail','cTel','cVille','cSociete'].forEach(id => document.getElementById(id).value = '');
+  ['cPrenom','cNom','cEmail','cTel','cVille','cSociete'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
 }
 
 function generatePDF() {
