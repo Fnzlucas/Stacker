@@ -710,10 +710,8 @@ let flash1 = 120, flash2 = 2700;
 
 // ─── INIT ────────────────────────────────────────────
 function init() {
-  // Redirect
-  // if (!localStorage.getItem('stacker_onboarded')) { window.location.href = 'onboarding.html'; return; }
-  localStorage.setItem('stacker_onboarded', '1');
-  localStorage.setItem('stacker_prenom', localStorage.getItem('stacker_prenom') || 'Lucas');
+  // Redirect vers onboarding si pas encore fait
+  if (!localStorage.getItem('stacker_onboarded')) { window.location.href = 'onboarding.html'; return; }
 
   // IBAN
   if (localStorage.getItem('stacker_iban_set') === '0') document.getElementById('ibanBanner').classList.remove('hidden');
