@@ -189,7 +189,7 @@
       <div class="w-9 h-9 rounded-lg bg-primary-fixed flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-primary filled" style="font-size:18px">inventory_2</span></div>
       <div class="flex-1 min-w-0">
         <p class="nav-item-label text-sm font-semibold">Nos offres</p>
-        <p class="text-[11px] text-on-surface-variant truncate">8 produits · scripts + contrats</p>
+        <p class="text-[11px] text-on-surface-variant truncate">9 produits · scripts + contrats</p>
       </div>
     </a>
     <a href="pipeline.html" class="nav-item" data-page="pipeline">
@@ -444,7 +444,7 @@
     <!-- ═══ PAGE 2 — KIT COMPLET ═══ -->
     <div id="kitComplet" style="display:none">
 
-      <!-- Header kit -->
+      <!-- Header -->
       <div class="flex items-center gap-3 mb-5">
         <button onclick="hideKitComplet()" class="flex items-center gap-1 text-sm text-on-surface-variant hover:text-on-surface transition">
           <span class="material-symbols-outlined" style="font-size:16px">arrow_back</span>
@@ -454,219 +454,64 @@
         <p class="font-headline font-bold text-sm text-on-surface" id="kitTitle"></p>
       </div>
 
-      <!-- Lien de tracking -->
-      <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-4 mb-5 border border-outline-variant/40">
-        <div class="flex items-center gap-3 mb-2">
-          <span class="material-symbols-outlined filled text-primary flex-shrink-0" style="font-size:18px;font-variation-settings:'FILL' 1">link</span>
-          <p class="font-headline font-bold text-sm text-on-surface">Ton lien tracké</p>
-        </div>
-        <p class="text-[12px] text-on-surface-variant mb-3">Partage ce lien — chaque client qui signe via ce lien te crédite automatiquement la commission.</p>
-        <div class="flex items-center gap-2">
-          <div class="flex-1 bg-surface-container rounded-xl px-3 py-2.5 font-mono text-[12px] text-on-surface truncate border border-outline-variant/40" id="trackingLink">stacker.fr/ref/–</div>
-          <button onclick="copyTrackingLink()" class="flex items-center gap-1.5 px-3 py-2.5 rounded-xl bg-on-surface text-white text-[12px] font-bold hover:opacity-90 transition flex-shrink-0">
-            <span class="material-symbols-outlined" style="font-size:14px">content_copy</span>
-            Copier
+      <!-- Sélecteur canal -->
+      <div class="mb-5">
+        <p class="text-[10px] uppercase tracking-[0.25em] text-on-surface-variant font-bold mb-3">Comment tu prospectes ?</p>
+        <div class="grid grid-cols-2 gap-2">
+          <button onclick="selectKitCanal('pap')" id="kbtn-pap" class="kit-canal-btn flex items-center gap-3 px-4 py-3.5 rounded-2xl border-2 border-outline-variant/40 bg-surface-container-lowest hover:border-on-surface transition text-left">
+            <div class="w-9 h-9 rounded-xl bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface-variant" style="font-size:18px">directions_walk</span></div>
+            <div><p class="font-headline font-bold text-sm text-on-surface">Porte-à-porte</p><p class="text-[10px] text-on-surface-variant">Tu vas sur le terrain</p></div>
+          </button>
+          <button onclick="selectKitCanal('call')" id="kbtn-call" class="kit-canal-btn flex items-center gap-3 px-4 py-3.5 rounded-2xl border-2 border-outline-variant/40 bg-surface-container-lowest hover:border-on-surface transition text-left">
+            <div class="w-9 h-9 rounded-xl bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface-variant" style="font-size:18px">call</span></div>
+            <div><p class="font-headline font-bold text-sm text-on-surface">Cold Call</p><p class="text-[10px] text-on-surface-variant">Tu appelles</p></div>
+          </button>
+          <button onclick="selectKitCanal('rdv')" id="kbtn-rdv" class="kit-canal-btn flex items-center gap-3 px-4 py-3.5 rounded-2xl border-2 border-outline-variant/40 bg-surface-container-lowest hover:border-on-surface transition text-left">
+            <div class="w-9 h-9 rounded-xl bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface-variant" style="font-size:18px">handshake</span></div>
+            <div><p class="font-headline font-bold text-sm text-on-surface">Rendez-vous</p><p class="text-[10px] text-on-surface-variant">Tu as un RDV en cours</p></div>
+          </button>
+          <button onclick="selectKitCanal('dm')" id="kbtn-dm" class="kit-canal-btn flex items-center gap-3 px-4 py-3.5 rounded-2xl border-2 border-outline-variant/40 bg-surface-container-lowest hover:border-on-surface transition text-left">
+            <div class="w-9 h-9 rounded-xl bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface-variant" style="font-size:18px">chat</span></div>
+            <div><p class="font-headline font-bold text-sm text-on-surface">Réseaux / DM</p><p class="text-[10px] text-on-surface-variant">Tu envoies des messages</p></div>
           </button>
         </div>
       </div>
 
-      <!-- 4 Canaux -->
-      <div class="space-y-3 mb-5">
+      <!-- Contenu canal -->
+      <div id="kitCanalContent" style="display:none" class="space-y-4">
+        <div id="kcanal-pap" style="display:none" class="space-y-4"></div>
+        <div id="kcanal-call" style="display:none" class="space-y-4"></div>
+        <div id="kcanal-rdv" style="display:none" class="space-y-4"></div>
 
-        <!-- PAP -->
-        <div class="bg-surface-container-lowest rounded-2xl soft-shadow overflow-hidden border border-outline-variant/30">
-          <button onclick="toggleChannel('pap')" class="w-full flex items-center gap-3 px-5 py-4 hover:bg-surface-container-low transition text-left">
-            <div class="w-9 h-9 rounded-xl bg-on-surface flex items-center justify-center flex-shrink-0">
-              <span class="material-symbols-outlined text-white" style="font-size:18px">directions_walk</span>
-            </div>
-            <div class="flex-1">
-              <p class="font-headline font-bold text-sm text-on-surface">Porte-à-porte</p>
-              <p class="text-[11px] text-on-surface-variant">Script + trouver des commerces près de toi</p>
-            </div>
-            <span class="material-symbols-outlined text-on-surface-variant" style="font-size:18px" id="chevron-pap">expand_more</span>
-          </button>
-          <div id="channel-pap" class="hidden border-t border-outline-variant/20">
-            <div class="px-5 py-4 space-y-4">
-              <!-- Script -->
-              <div>
-                <p class="font-mono text-[9.5px] tracking-[0.12em] uppercase text-on-surface-variant mb-2 flex items-center gap-2">Script PAP <span class="flex-1 h-px bg-outline-variant/40"></span></p>
-                <div id="script-pap" class="space-y-3"></div>
-              </div>
-              <!-- Action -->
-              <button onclick="findNearbySpots()" class="w-full py-3 rounded-xl bg-on-surface text-white font-bold text-sm flex items-center justify-center gap-2 hover:opacity-90 transition">
-                <span class="material-symbols-outlined" style="font-size:17px">near_me</span>
-                Trouver des commerces près de moi
-              </button>
-              <div id="nearbyResults" class="hidden"></div>
-            </div>
+        <!-- DM reste statique -->
+        <div id="kcanal-dm" style="display:none" class="space-y-4">
+          <div class="flex gap-2 overflow-x-auto">
+            <button onclick="showDmPlatform('instagram',this)" class="dm-tab px-3 py-1.5 rounded-full text-[11px] font-bold bg-on-surface text-white whitespace-nowrap">Instagram</button>
+            <button onclick="showDmPlatform('facebook',this)" class="dm-tab px-3 py-1.5 rounded-full text-[11px] font-bold bg-surface-container-high text-on-surface-variant whitespace-nowrap">Facebook</button>
+            <button onclick="showDmPlatform('linkedin',this)" class="dm-tab px-3 py-1.5 rounded-full text-[11px] font-bold bg-surface-container-high text-on-surface-variant whitespace-nowrap">LinkedIn</button>
+            <button onclick="showDmPlatform('whatsapp',this)" class="dm-tab px-3 py-1.5 rounded-full text-[11px] font-bold bg-surface-container-high text-on-surface-variant whitespace-nowrap">WhatsApp</button>
+          </div>
+          <div class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/30">
+            <p class="font-mono text-[9.5px] tracking-[0.12em] uppercase text-on-surface-variant mb-2" id="dmPlatformLabel">Message Instagram</p>
+            <p class="text-[13px] text-on-surface leading-relaxed" id="dmText"></p>
+          </div>
+          <div class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/30">
+            <p class="font-mono text-[9.5px] tracking-[0.12em] uppercase text-on-surface-variant mb-2">Post / Caption</p>
+            <p class="text-[13px] text-on-surface leading-relaxed" id="postText"></p>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="copyDM()" class="py-3 rounded-xl bg-on-surface text-white font-bold text-sm flex items-center justify-center gap-1.5 hover:opacity-90 transition">
+              <span class="material-symbols-outlined" style="font-size:16px">content_copy</span>Copier le DM
+            </button>
+            <button onclick="copyPost()" class="py-3 rounded-xl border border-outline-variant text-on-surface font-bold text-sm flex items-center justify-center gap-1.5 hover:bg-surface-container transition">
+              <span class="material-symbols-outlined" style="font-size:16px">content_copy</span>Copier le Post
+            </button>
           </div>
         </div>
 
-        <!-- CALL -->
-        <div class="bg-surface-container-lowest rounded-2xl soft-shadow overflow-hidden border border-outline-variant/30">
-          <button onclick="toggleChannel('call')" class="w-full flex items-center gap-3 px-5 py-4 hover:bg-surface-container-low transition text-left">
-            <div class="w-9 h-9 rounded-xl bg-on-surface flex items-center justify-center flex-shrink-0">
-              <span class="material-symbols-outlined text-white" style="font-size:18px">call</span>
-            </div>
-            <div class="flex-1">
-              <p class="font-headline font-bold text-sm text-on-surface">Cold Call</p>
-              <p class="text-[11px] text-on-surface-variant">Script + générer une liste de numéros</p>
-            </div>
-            <span class="material-symbols-outlined text-on-surface-variant" style="font-size:18px" id="chevron-call">expand_more</span>
-          </button>
-          <div id="channel-call" class="hidden border-t border-outline-variant/20">
-            <div class="px-5 py-4 space-y-4">
-              <div>
-                <p class="font-mono text-[9.5px] tracking-[0.12em] uppercase text-on-surface-variant mb-2 flex items-center gap-2">Script Call <span class="flex-1 h-px bg-outline-variant/40"></span></p>
-                <div id="script-call" class="space-y-3"></div>
-              </div>
-              <div class="grid grid-cols-2 gap-2">
-                <div>
-                  <label class="block text-[10.5px] font-semibold text-on-surface-variant uppercase tracking-[0.06em] mb-1.5">Ville</label>
-                  <input type="text" id="callVille" placeholder="Lyon, Paris..." class="w-full px-3 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition">
-                </div>
-                <div>
-                  <label class="block text-[10.5px] font-semibold text-on-surface-variant uppercase tracking-[0.06em] mb-1.5">Secteur</label>
-                  <input type="text" id="callSecteur" placeholder="Restaurant..." class="w-full px-3 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition">
-                </div>
-              </div>
-              <button onclick="generateCallList()" class="w-full py-3 rounded-xl bg-on-surface text-white font-bold text-sm flex items-center justify-center gap-2 hover:opacity-90 transition">
-                <span class="material-symbols-outlined" style="font-size:17px">phone_in_talk</span>
-                Générer ma liste d'appels
-              </button>
-              <div id="callLoading" style="display:none" class="flex flex-col items-center gap-2 py-4">
-                <div class="w-6 h-6 border-2 border-outline-variant border-t-primary rounded-full" style="animation:spin 0.8s linear infinite"></div>
-                <p class="text-sm text-on-surface-variant">Recherche en cours...</p>
-              </div>
-              <div id="callResults" style="display:none">
-                <div class="flex items-center justify-between mb-2">
-                  <span class="font-mono text-[9.5px] uppercase tracking-[0.12em] text-on-surface-variant">Prospects trouvés</span>
-                  <div class="flex items-center gap-2">
-                    <span class="font-headline font-bold text-sm text-primary" id="callCount">0</span>
-                    <button onclick="exportCallCSV()" class="text-[11px] font-semibold text-on-surface-variant hover:text-on-surface flex items-center gap-1"><span class="material-symbols-outlined" style="font-size:13px">download</span>CSV</button>
-                  </div>
-                </div>
-                <div id="callList" class="divide-y divide-outline-variant/20 rounded-xl overflow-hidden border border-outline-variant/30"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- COLD DM -->
-        <div class="bg-surface-container-lowest rounded-2xl soft-shadow overflow-hidden border border-outline-variant/30">
-          <button onclick="toggleChannel('dm')" class="w-full flex items-center gap-3 px-5 py-4 hover:bg-surface-container-low transition text-left">
-            <div class="w-9 h-9 rounded-xl bg-on-surface flex items-center justify-center flex-shrink-0">
-              <span class="material-symbols-outlined text-white" style="font-size:18px">chat</span>
-            </div>
-            <div class="flex-1">
-              <p class="font-headline font-bold text-sm text-on-surface">Cold DM & Réseaux sociaux</p>
-              <p class="text-[11px] text-on-surface-variant">Instagram · Facebook · LinkedIn · WhatsApp</p>
-            </div>
-            <span class="material-symbols-outlined text-on-surface-variant" style="font-size:18px" id="chevron-dm">expand_more</span>
-          </button>
-          <div id="channel-dm" class="hidden border-t border-outline-variant/20">
-            <div class="px-5 py-4 space-y-4">
-
-              <!-- DM Tabs -->
-              <div class="flex gap-2 overflow-x-auto hide-scrollbar">
-                <button onclick="showDmPlatform('instagram',this)" class="dm-tab px-3 py-1.5 rounded-full text-[11px] font-bold bg-on-surface text-white whitespace-nowrap">Instagram</button>
-                <button onclick="showDmPlatform('facebook',this)" class="dm-tab px-3 py-1.5 rounded-full text-[11px] font-bold bg-surface-container-high text-on-surface-variant whitespace-nowrap">Facebook</button>
-                <button onclick="showDmPlatform('linkedin',this)" class="dm-tab px-3 py-1.5 rounded-full text-[11px] font-bold bg-surface-container-high text-on-surface-variant whitespace-nowrap">LinkedIn</button>
-                <button onclick="showDmPlatform('whatsapp',this)" class="dm-tab px-3 py-1.5 rounded-full text-[11px] font-bold bg-surface-container-high text-on-surface-variant whitespace-nowrap">WhatsApp</button>
-              </div>
-
-              <!-- DM Text -->
-              <div class="bg-surface-container rounded-xl p-4 border border-outline-variant/30">
-                <p class="font-mono text-[9.5px] tracking-[0.12em] uppercase text-on-surface-variant mb-2" id="dmPlatformLabel">Message Instagram</p>
-                <p class="text-[13px] text-on-surface leading-relaxed" id="dmText"></p>
-              </div>
-
-              <!-- Post réseaux -->
-              <div class="bg-surface-container rounded-xl p-4 border border-outline-variant/30">
-                <p class="font-mono text-[9.5px] tracking-[0.12em] uppercase text-on-surface-variant mb-2">Post / Caption</p>
-                <p class="text-[13px] text-on-surface leading-relaxed" id="postText"></p>
-              </div>
-
-              <div class="grid grid-cols-2 gap-2">
-                <button onclick="copyDM()" class="py-3 rounded-xl bg-on-surface text-white font-bold text-sm flex items-center justify-center gap-1.5 hover:opacity-90 transition">
-                  <span class="material-symbols-outlined" style="font-size:16px">content_copy</span>
-                  Copier le DM
-                </button>
-                <button onclick="copyPost()" class="py-3 rounded-xl border border-outline-variant text-on-surface font-bold text-sm flex items-center justify-center gap-1.5 hover:bg-surface-container transition">
-                  <span class="material-symbols-outlined" style="font-size:16px">content_copy</span>
-                  Copier le Post
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- RDV -->
-        <div class="bg-surface-container-lowest rounded-2xl soft-shadow overflow-hidden border border-outline-variant/30">
-          <button onclick="toggleChannel('rdv')" class="w-full flex items-center gap-3 px-5 py-4 hover:bg-surface-container-low transition text-left">
-            <div class="w-9 h-9 rounded-xl bg-on-surface flex items-center justify-center flex-shrink-0">
-              <span class="material-symbols-outlined text-white" style="font-size:18px">handshake</span>
-            </div>
-            <div class="flex-1">
-              <p class="font-headline font-bold text-sm text-on-surface">Rendez-vous</p>
-              <p class="text-[11px] text-on-surface-variant">Script RDV + générer le contrat à faire signer</p>
-            </div>
-            <span class="material-symbols-outlined text-on-surface-variant" style="font-size:18px" id="chevron-rdv">expand_more</span>
-          </button>
-          <div id="channel-rdv" class="hidden border-t border-outline-variant/20">
-            <div class="px-5 py-4 space-y-4">
-              <div>
-                <p class="font-mono text-[9.5px] tracking-[0.12em] uppercase text-on-surface-variant mb-2 flex items-center gap-2">Script RDV <span class="flex-1 h-px bg-outline-variant/40"></span></p>
-                <div id="script-rdv" class="space-y-3"></div>
-              </div>
-              <!-- Comment faire signer -->
-              <div class="bg-surface-container rounded-xl p-4">
-                <p class="font-headline font-bold text-sm text-on-surface mb-3">Comment faire signer</p>
-                <div class="space-y-2.5">
-                  <div class="flex items-start gap-3">
-                    <div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center flex-shrink-0 mt-0.5"><span class="text-white font-mono font-bold" style="font-size:10px">1</span></div>
-                    <p class="text-[13px] text-on-surface leading-snug">Présente le produit et confirme l'intérêt du client</p>
-                  </div>
-                  <div class="flex items-start gap-3">
-                    <div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center flex-shrink-0 mt-0.5"><span class="text-white font-mono font-bold" style="font-size:10px">2</span></div>
-                    <p class="text-[13px] text-on-surface leading-snug">Génère le contrat ci-dessous avec ses infos</p>
-                  </div>
-                  <div class="flex items-start gap-3">
-                    <div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center flex-shrink-0 mt-0.5"><span class="text-white font-mono font-bold" style="font-size:10px">3</span></div>
-                    <p class="text-[13px] text-on-surface leading-snug">Envoie-lui le lien de signature YouSign par SMS/email</p>
-                  </div>
-                  <div class="flex items-start gap-3">
-                    <div class="w-6 h-6 rounded-full bg-tertiary flex items-center justify-center flex-shrink-0 mt-0.5"><span class="material-symbols-outlined text-white filled" style="font-size:13px;font-variation-settings:'FILL' 1">check</span></div>
-                    <p class="text-[13px] text-on-surface leading-snug font-semibold">Commission créditée automatiquement dès la signature</p>
-                  </div>
-                </div>
-              </div>
-              <!-- Contrat rapide -->
-              <div class="space-y-3">
-                <div class="grid grid-cols-2 gap-3">
-                  <div><label class="block text-[10.5px] font-semibold text-on-surface-variant uppercase tracking-[0.06em] mb-1.5">Prénom client</label><input type="text" id="rdvPrenom" placeholder="Marie" class="w-full px-3 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm outline-none focus:border-primary transition"></div>
-                  <div><label class="block text-[10.5px] font-semibold text-on-surface-variant uppercase tracking-[0.06em] mb-1.5">Nom client</label><input type="text" id="rdvNom" placeholder="Dupont" class="w-full px-3 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm outline-none focus:border-primary transition"></div>
-                </div>
-                <div><label class="block text-[10.5px] font-semibold text-on-surface-variant uppercase tracking-[0.06em] mb-1.5">Email client</label><input type="email" id="rdvEmail" placeholder="marie@email.fr" class="w-full px-3 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm outline-none focus:border-primary transition"></div>
-                <button onclick="generateContratRapide()" class="w-full py-3 rounded-xl font-bold text-sm text-white flex items-center justify-center gap-2 hover:opacity-90 transition active:scale-[0.99]" style="background:#b52330">
-                  <span class="material-symbols-outlined filled" style="font-size:17px;font-variation-settings:'FILL' 1">picture_as_pdf</span>
-                  Générer le contrat PDF
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div><!-- /4 canaux -->
-
-      <!-- Objections -->
-      <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5 mb-5">
-        <p class="font-headline font-bold text-sm text-on-surface mb-4 flex items-center gap-2">
-          <span class="material-symbols-outlined text-primary" style="font-size:18px">quiz</span>
-          Quand ça résiste
-        </p>
-        <div class="flex flex-col gap-2" id="kitObjections"></div>
-      </div>
+        <!-- Objections placeholder (utilisé pour DM uniquement maintenant) -->
+        <div id="kitObjections" style="display:none"></div>
+      </div><!-- /kitCanalContent -->
 
     </div><!-- /kitComplet -->
 
@@ -683,6 +528,33 @@
 
 <script>
 const PRODUCTS = [
+ {
+ id:'qrvitrine', name:'QR Avis Google', category:'Collecte d\'avis Google instantanée',
+ tagline:'Un QR code physique — le client scanne, il laisse un avis en 10 secondes',
+ icon:'qr_code_2', color:'#006c4c',
+ tags:['Commerce','PAP','Closing direct','Débutant'],
+ desc:"QR Avis Google c'est un QR code physique livré chez le commerçant en 48h. Le client scanne depuis la caisse ou la vitrine et tombe directement sur la fiche Google du commerce pour laisser un avis — sans chercher, sans taper. Zéro friction. Les commerçants qui le posent voient leurs avis exploser dès la première semaine.",
+ problems:["Ses clients sont satisfaits mais ne laissent jamais d'avis — trop de friction","Sa fiche Google est vide face à des concurrents mieux notés","Il perd des clients chaque jour à cause d'un manque de visibilité sur Google"],
+ args:["QR code physique livré en 48h — sticker ou plaquette à poser en caisse","Redirection directe vers sa fiche Google Reviews — zéro friction pour le client","Page trackée : il voit combien de clients ont scanné ce mois","Les commerçants qui l'utilisent voient +30 avis dès le premier mois"],
+ target:"N'importe quel commerçant local avec une vitrine ou un comptoir — restaurant, boulangerie, coiffeur, pharmacie, garagiste, hôtel. Tout commerce qui veut plus d'avis Google sans effort.",
+ plans:[
+ {name:'QR Avis Solo',price:9,engagement:'Mensuel',comRate:0.25,features:['1 QR code physique livré en 48h','Redirection directe fiche Google Reviews','Page trackée — compteur de scans mensuel','Mise à jour du lien si Google change'],rec:false},
+ {name:'QR Avis Pro',price:19,engagement:'Mensuel',comRate:0.25,features:['3 QR codes physiques (caisse, vitrine, table)','Tout Solo inclus','Rapport mensuel : scans + avis gagnés','Relance automatique par SMS après passage'],rec:true},
+ {name:'QR Avis Max',price:39,engagement:'Mensuel',comRate:0.25,features:['10 QR codes physiques','Tout Pro inclus','Multi-établissements','Réponses aux avis rédigées par IA','Support prioritaire 7j/7'],rec:false},
+ ],
+ scripts:{
+ tel:{intro:"Bonjour, je suis [Prénom] de QR Avis Google. Question directe — combien d'avis Google vous avez en ce moment ?",arg:"Vos clients sont contents mais ils laissent jamais d'avis parce que c'est trop long à trouver. On règle ça avec un QR code physique à poser en caisse — le client scanne, il est directement sur votre fiche Google pour noter. 10 secondes, c'est fait. Neuf euros par mois.",close:"Je vous envoie le sticker sous 48h. Vous le posez en caisse et vous regardez vos avis monter. On y va ?"},
+ pap:{intro:"Bonjour ! Combien d'avis Google vous avez là ? Et vos concurrents ?",arg:"Je vais vous montrer quelque chose. Là je scanne ce QR code — vous voyez ? Je suis directement sur votre fiche Google pour noter. Vos clients font pareil depuis la caisse. Plus besoin de chercher votre nom, plus besoin de rien. C'est 19€ par mois et je vous livre le sticker sous 48h.",close:"Je vous pose le sticker maintenant si vous voulez — j'en ai dans ma sacoche. Vous signez sur mon téléphone, c'est réglé."},
+ rdv:{intro:"Merci de me recevoir. J'ai regardé votre fiche Google avant de venir — vous avez [X] avis, vos concurrents directs en ont [Y]. C'est ça le problème qu'on règle.",arg:"Nos clients qui posent le QR code en caisse gagnent en moyenne 30 nouveaux avis le premier mois. Pas parce que leurs clients sont plus contents qu'avant — mais parce qu'on supprime toute la friction. Un scan, un avis, dix secondes.",close:"On part sur le Pro à 19€ — 3 QR codes, caisse, vitrine et une table. Je génère la commande maintenant."},
+ social:{intro:"Tu as combien d'avis Google ? Tes concurrents en ont combien ?",arg:"Un QR code posé en caisse — le client scanne, il note en 10 secondes. Pas de recherche, pas de friction. Nos commerçants gagnent +30 avis le premier mois. 9€/mois, sticker livré en 48h.",close:"Tu veux le lien ? Je t'envoie en DM."}
+ },
+ objections:[
+ {q:"Mes clients laissent déjà des avis parfois",a:"'Parfois' c'est le problème. Avec le QR code en caisse, c'est systématique. Chaque client qui repart content a l'occasion de noter en 10 secondes. Vous allez passer de 2-3 avis par mois à 20-30."},
+ {q:"J'ai pas le temps de m'en occuper",a:"Vous n'avez rien à faire. On livre le sticker, vous le posez en caisse, c'est terminé. Le lien Google est configuré par nous. Vous touchez plus à rien."},
+ {q:"9€ par mois c'est pour quoi exactement ?",a:"Pour que le lien reste actif et à jour — Google change parfois ses URLs, on gère ça automatiquement. Et pour le rapport mensuel qui vous dit combien de clients ont scanné. Si vous arrêtez, le QR code ne fonctionne plus."},
+ {q:"Je peux faire ça tout seul avec un QR code gratuit",a:"Vous pouvez oui — mais il faudra retrouver votre lien Google Reviews, créer le QR code, l'imprimer, le plastifier. Et si Google change le lien, votre QR code est mort. On s'occupe de tout ça pour 9€/mois."},
+ ]
+ },
  {
  id:'seoia', name:'Seoia Partners', category:'SEO Traditionnel & SEO IA',
  tagline:'Référencement sur Google ET sur les moteurs de recherche IA',
@@ -1031,14 +903,14 @@ let activeLevel = 'all';
 function renderGrid() { buildRows(PRODUCTS); }
 
 const TAG_MAP = {
-  seoia: ['Commerce','SEO'], fastfood: ['Commerce','Restauration'],
+  qrvitrine: ['Commerce','PAP'], seoia: ['Commerce','SEO'], fastfood: ['Commerce','Restauration'],
   huntlist: ['B2B'], rhpme: ['B2B'], fidelite: ['Commerce'],
   alma: ['Commerce','B2B'], inroom: ['Hôtellerie'], tradebot: ['Crypto'],
   avis: ['Commerce'], gmb: ['Commerce'], social: ['Commerce'],
   energie: ['Particuliers'], rachat: ['Particuliers','Finance']
 };
 const LEVEL_MAP = {
-  seoia: 'experimente', fastfood: 'debutant', huntlist: 'experimente',
+  qrvitrine: 'debutant', seoia: 'experimente', fastfood: 'debutant', huntlist: 'experimente',
   rhpme: 'experimente', fidelite: 'debutant', alma: 'debutant',
   inroom: 'experimente', tradebot: 'experimente',
   avis: 'debutant', gmb: 'debutant', social: 'debutant',
@@ -1048,6 +920,7 @@ const LEVEL_MAP = {
 const B2B_IDS = ['seoia','fastfood','huntlist','rhpme','alma','inroom'];
 
 const LEADS_SUGGESTIONS = {
+  qrvitrine: ['Restaurant','Boulangerie','Coiffeur','Pharmacie','Garagiste','Pizzeria','Bar','Fleuriste','Hôtel','Kebab'],
   seoia: ['Restaurant','Boulangerie','Salon de coiffure','Plombier','Dentiste'],
   fastfood: ['Fast-food','Kebab','Pizzeria','Food truck','Restauration rapide'],
   huntlist: ['Directeur commercial','Responsable RH','CEO startup','Gérant PME'],
@@ -1319,8 +1192,8 @@ function buildRows(products) {
     const isVariable = p.plans.some(pl => pl.variable);
     const level = LEVEL_MAP[p.id] || 'debutant';
     let comDisplay;
-    if (p.plans[0]?.priceLabel2) comDisplay = p.plans[0].priceLabel2;
-    else if (isTradebot) comDisplay = '2%+8%+25%';
+    if (isTradebot) comDisplay = '2%+8%+25%';
+    else if (isVariable) comDisplay = '25% com.';
     else {
       const prices = p.plans.filter(pl => pl.price).map(pl => pl.price);
       const minC = Math.round(Math.min(...prices) * p.plans[0].comRate);
@@ -1330,7 +1203,9 @@ function buildRows(products) {
     const levelBadge = level === 'debutant'
       ? `<span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-tertiary-fixed text-tertiary uppercase tracking-[0.08em]">Débutant</span>`
       : `<span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant uppercase tracking-[0.08em]">Expérimenté</span>`;
-    const minPrice = isVariable ? '5 €/ch.' : ('Dès ' + Math.min(...p.plans.filter(pl=>pl.price).map(pl=>pl.price)) + ' €');
+    const minPrice = isVariable
+      ? (p.plans[0]?.priceLabel2 || p.plans[0]?.priceLabel || '5 €/ch.')
+      : ('Dès ' + Math.min(...p.plans.filter(pl=>pl.price).map(pl=>pl.price)) + ' €');
     return `<a href="#" onclick="openProduct('${p.id}'); return false;"
       class="bg-surface-container-lowest rounded-2xl p-4 soft-shadow border border-transparent hover:border-outline-variant/50 hover-lift cursor-pointer block card-anim"
       style="animation-delay:${i*35}ms;text-decoration:none">
@@ -1392,19 +1267,13 @@ function hideKitComplet() {
 function renderKitComplet() {
   const p = current;
   document.getElementById('kitTitle').textContent = p.name;
-
-  // Tracking link
-  const refCode = localStorage.getItem('stacker_ref') || generateRef();
-  document.getElementById('trackingLink').textContent = 'stacker.fr/ref/' + refCode + '/' + p.id;
-
-  // Scripts par canal
-  renderChannelScript('pap', p.scripts.pap);
-  renderChannelScript('call', p.scripts.tel);
-  renderChannelScript('rdv', p.scripts.rdv);
-
-  // DM
-  renderDM('instagram');
-
+  // Reset canal
+  document.getElementById('kitCanalContent').style.display = 'none';
+  ['pap','call','rdv','dm'].forEach(c => {
+    document.getElementById('kcanal-' + c).style.display = 'none';
+    const btn = document.getElementById('kbtn-' + c);
+    if (btn) { btn.style.borderColor = ''; btn.style.background = ''; }
+  });
   // Objections
   document.getElementById('kitObjections').innerHTML = p.objections.map(o => `
     <div class="bg-surface-container rounded-xl p-4">
@@ -1415,6 +1284,258 @@ function renderKitComplet() {
       <p class="text-[13px] text-on-surface-variant leading-relaxed pl-5">${o.a}</p>
     </div>
   `).join('');
+}
+
+function selectKitCanal(canal) {
+  const p = current;
+
+  // Highlight bouton sélectionné
+  ['pap','call','rdv','dm'].forEach(c => {
+    const btn = document.getElementById('kbtn-' + c);
+    if (!btn) return;
+    if (c === canal) {
+      btn.style.borderColor = '#1b1c1c';
+      btn.style.background = '#f6f3f2';
+      btn.querySelector('.material-symbols-outlined').style.color = '#1b1c1c';
+    } else {
+      btn.style.borderColor = '';
+      btn.style.background = '';
+      btn.querySelector('.material-symbols-outlined').style.color = '';
+    }
+    document.getElementById('kcanal-' + c).style.display = 'none';
+  });
+
+  document.getElementById('kitCanalContent').style.display = 'block';
+  document.getElementById('kcanal-' + canal).style.display = 'block';
+
+  const scriptMap = { pap: 'pap', call: 'tel', rdv: 'rdv', dm: 'social' };
+  const scriptKey = scriptMap[canal];
+  const script = p.scripts[scriptKey];
+
+  // ── Scripts enrichis par canal ──
+  const SCRIPTS_ENRICHIS = {
+    pap: [
+      { label: 'Entrée — accroche', tip: 'Souris, ralentis, regarde le gérant dans les yeux', text: script.intro },
+      { label: 'Si le prospect dit "oui j\'ai 2 minutes"', tip: 'Reste debout, sors ton téléphone', text: script.arg },
+      { label: 'Si le prospect hésite ou dit "pas le temps"', tip: 'Baisse le ton, souris', text: `"Je comprends totalement — ça prend 30 secondes. Laissez-moi juste vous montrer une chose. [Montre le téléphone]. Vous voyez ? C'est exactement ce que ça donne. Je vous laisse ma carte et je reviens demain matin si vous préférez ?"` },
+      { label: 'Démonstration live', tip: 'Montre le produit en direct sur ton téléphone', text: `"Regardez — concrètement voilà ce que vos clients voient. ${p.args[0]}. Et ça se met en place en moins d'une journée, vous n'avez rien à faire."` },
+      { label: 'Closing', tip: 'Direct, sans hésiter, stylo en main', text: script.close },
+      { label: 'Si le prospect dit "je réfléchis"', tip: 'Ne pars pas — reste calme', text: `"Je comprends. La plupart de mes clients me disent ça et me rappellent 2 semaines plus tard. Le problème c'est que pendant ces 2 semaines vos concurrents avancent. Vous voulez qu'on démarre aujourd'hui et si ça ne vous convient pas dans 30 jours je vous rembourse intégralement ?"` },
+    ],
+    tel: [
+      { label: 'Ouverture — accroche directe', tip: 'Voix posée, pas précipitée', text: script.intro },
+      { label: 'Si le prospect répond favorablement', tip: 'Écoute, note, relance', text: script.arg },
+      { label: 'Si le prospect dit "j\'ai pas le temps là"', tip: 'Ne raccroche pas, propose une alternative', text: `"Je vous prends 45 secondes chrono. Je vous envoie par SMS un exemple concret — vous regardez ça entre deux appels et vous me dites si ça vous intéresse. Je vous l'envoie maintenant ?"` },
+      { label: 'Traitement du doute', tip: 'Parle lentement, laisse le silence travailler', text: `"Ce que je vous propose c'est simple — ${p.args[1] || p.args[0]}. Nos clients voient les résultats dès le premier mois."` },
+      { label: 'Closing téléphonique', tip: 'Propose une date précise, pas "quand vous voulez"', text: script.close },
+      { label: 'Si hésitation sur le prix', tip: 'Ramène à la valeur, pas au coût', text: `"${p.plans[0] ? p.plans[0].price : ''}€ par mois — si ça vous génère même un seul client supplémentaire ce mois, c'est largement amorti. Et nos clients en gagnent en moyenne bien plus que ça."` },
+    ],
+    rdv: [
+      { label: 'Ouverture du rendez-vous', tip: 'Sors tes supports, poignée de main ferme', text: script.intro },
+      { label: 'Présentation de la solution', tip: 'Montre des chiffres, des exemples concrets', text: script.arg },
+      { label: 'Démonstration live', tip: 'Ouvre le produit en direct, fais-le voir', text: `"Regardez concrètement — voilà ce que ça donne pour un client similaire au vôtre. ${p.args[0]}. Et ça c'est dès le premier mois."` },
+      { label: 'Traitement des dernières résistances', tip: 'Écoute tout avant de répondre', text: `"C'est une question légitime. Ce que je vous propose : on démarre sur un mois, vous regardez les résultats, et si vous n'êtes pas satisfait dans 30 jours je vous rembourse. C'est ma garantie personnelle."` },
+      { label: 'Closing RDV — signature', tip: 'Pose le contrat sur la table, stylo dessus', text: script.close },
+    ],
+  };
+
+  const steps = SCRIPTS_ENRICHIS[canal] || [
+    { label: 'Accroche', tip: '', text: script?.intro || '' },
+    { label: 'Argument', tip: '', text: script?.arg || '' },
+    { label: 'Closing', tip: '', text: script?.close || '' },
+  ];
+
+  // ── Explication produit ──
+  const explHtml = `
+    <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5 border border-outline-variant/30">
+      <p class="font-headline font-bold text-sm text-on-surface mb-3 flex items-center gap-2">
+        <span class="material-symbols-outlined text-primary" style="font-size:18px">info</span>
+        Ce que tu vends — explication complète
+      </p>
+      <p class="text-[13.5px] text-on-surface leading-relaxed mb-4">${p.desc}</p>
+      <div class="divider-soft mb-4"></div>
+      <p class="text-[10px] font-bold uppercase tracking-[0.15em] text-on-surface-variant mb-2">Pourquoi ça marche</p>
+      <ul class="space-y-2">
+        ${p.args.map(a => `<li class="flex items-start gap-2 text-[13px] text-on-surface"><span class="material-symbols-outlined filled flex-shrink-0 mt-0.5" style="font-size:14px;color:#006c4c;font-variation-settings:'FILL' 1">check_circle</span>${a}</li>`).join('')}
+      </ul>
+      <div class="divider-soft mt-4 mb-4"></div>
+      <p class="text-[10px] font-bold uppercase tracking-[0.15em] text-on-surface-variant mb-2">Les problèmes que tu règles</p>
+      <ul class="space-y-2">
+        ${p.problems.map(pb => `<li class="flex items-start gap-2 text-[13px] text-on-surface"><span class="material-symbols-outlined filled flex-shrink-0 mt-0.5" style="font-size:14px;color:#b52330;font-variation-settings:'FILL' 1">cancel</span>${pb}</li>`).join('')}
+      </ul>
+    </div>`;
+
+  // ── Script enrichi ──
+  const scriptHtml = `
+    <div class="bg-surface-container-lowest rounded-2xl soft-shadow overflow-hidden border border-outline-variant/30">
+      <div class="px-5 pt-4 pb-3 border-b border-outline-variant/20 flex items-center gap-2">
+        <span class="material-symbols-outlined text-primary" style="font-size:16px">record_voice_over</span>
+        <p class="font-headline font-bold text-sm text-on-surface">Script complet — mot pour mot</p>
+      </div>
+      <div class="divide-y divide-outline-variant/15">
+        ${steps.map((s, i) => `
+          <div class="px-5 py-4">
+            <div class="flex items-start gap-3 mb-2">
+              <div class="w-6 h-6 rounded-full bg-on-surface flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span class="font-mono font-bold text-white" style="font-size:9px">${i+1}</span>
+              </div>
+              <div class="flex-1">
+                <p class="font-bold text-[11px] text-on-surface uppercase tracking-[0.08em]">${s.label}</p>
+                ${s.tip ? `<p class="text-[10px] text-primary font-semibold mt-0.5">→ ${s.tip}</p>` : ''}
+              </div>
+            </div>
+            <p class="text-[13.5px] text-on-surface leading-[1.8] italic pl-9">${s.text}</p>
+          </div>
+        `).join('')}
+      </div>
+    </div>`;
+
+  // ── Objections ──
+  const objHtml = `
+    <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5 border border-outline-variant/30">
+      <p class="font-headline font-bold text-sm text-on-surface mb-4 flex items-center gap-2">
+        <span class="material-symbols-outlined text-primary" style="font-size:18px">quiz</span>
+        Quand ça résiste — réponses mot pour mot
+      </p>
+      <div class="flex flex-col gap-3" id="kitObjections">
+        ${p.objections.map(o => `
+          <div class="bg-surface-container rounded-xl p-4">
+            <p class="font-semibold text-[12px] text-on-surface mb-2 flex items-start gap-2">
+              <span class="material-symbols-outlined flex-shrink-0 mt-0.5" style="font-size:13px;color:#b52330">help</span>
+              "${o.q}"
+            </p>
+            <p class="text-[13px] text-on-surface leading-relaxed pl-5 italic">"${o.a}"</p>
+          </div>
+        `).join('')}
+      </div>
+    </div>`;
+
+  // ── Contrat ──
+  const contratHtml = canal !== 'dm' ? `
+    <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5 border border-outline-variant/30">
+      <p class="font-headline font-bold text-sm text-on-surface mb-4 flex items-center gap-2">
+        <span class="material-symbols-outlined text-primary" style="font-size:18px">description</span>
+        Générer le contrat à faire signer
+      </p>
+      <div class="space-y-3">
+        <div class="grid grid-cols-2 gap-3">
+          <div><label class="block text-[10.5px] font-semibold text-on-surface-variant uppercase tracking-[0.06em] mb-1.5">Prénom client</label>
+          <input type="text" id="cPrenom_${canal}" placeholder="Marie" class="w-full px-3 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm outline-none focus:border-primary transition"></div>
+          <div><label class="block text-[10.5px] font-semibold text-on-surface-variant uppercase tracking-[0.06em] mb-1.5">Nom client</label>
+          <input type="text" id="cNom_${canal}" placeholder="Dupont" class="w-full px-3 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm outline-none focus:border-primary transition"></div>
+        </div>
+        <div><label class="block text-[10.5px] font-semibold text-on-surface-variant uppercase tracking-[0.06em] mb-1.5">Email client</label>
+        <input type="email" id="cEmail_${canal}" placeholder="marie@restaurant.fr" class="w-full px-3 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm outline-none focus:border-primary transition"></div>
+        <div><label class="block text-[10.5px] font-semibold text-on-surface-variant uppercase tracking-[0.06em] mb-1.5">Pack choisi</label>
+        <select id="cPlan_${canal}" class="w-full px-3 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm outline-none focus:border-primary transition">
+          <option value="">Choisir...</option>
+          ${p.plans.filter(pl => pl.price).map(pl => `<option value="${pl.price}|${pl.name}|${pl.engagement}">${pl.name} — ${pl.price}€/mois</option>`).join('')}
+        </select></div>
+        <button onclick="generateContratCanal('${canal}')" class="w-full py-3.5 rounded-2xl font-bold text-sm text-white flex items-center justify-center gap-2 hover:opacity-90 transition active:scale-[0.99]" style="background:linear-gradient(135deg,#b52330,#ff5a5f);box-shadow:0 6px 20px rgba(181,35,48,0.2)">
+          <span class="material-symbols-outlined filled" style="font-size:17px;font-variation-settings:'FILL' 1">picture_as_pdf</span>
+          Télécharger le contrat PDF
+        </button>
+        <button onclick="envoyerContratEmail('${canal}')" class="w-full py-3 rounded-2xl font-bold text-sm border-2 border-on-surface text-on-surface flex items-center justify-center gap-2 hover:bg-surface-container transition">
+          <span class="material-symbols-outlined" style="font-size:17px">mail</span>
+          Envoyer par email au client
+        </button>
+      </div>
+    </div>` : '';
+
+  // ── Injection dans le bon canal ──
+  if (canal !== 'dm') {
+    document.getElementById('kcanal-' + canal).innerHTML = explHtml + scriptHtml + objHtml + contratHtml;
+    // Pour le canal call, rajouter les outils de recherche
+    if (canal === 'call') {
+      document.getElementById('kcanal-call').innerHTML += `
+        <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5 border border-outline-variant/30">
+          <p class="font-headline font-bold text-sm text-on-surface mb-3 flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary" style="font-size:18px">phone_in_talk</span>
+            Générer ta liste d'appels
+          </p>
+          <div class="grid grid-cols-2 gap-2 mb-3">
+            <div><label class="block text-[10.5px] font-semibold text-on-surface-variant uppercase tracking-[0.06em] mb-1.5">Ville</label>
+            <input type="text" id="callVille" placeholder="Lyon, Paris..." class="w-full px-3 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm outline-none focus:border-primary transition"></div>
+            <div><label class="block text-[10.5px] font-semibold text-on-surface-variant uppercase tracking-[0.06em] mb-1.5">Secteur</label>
+            <input type="text" id="callSecteur" placeholder="Restaurant..." class="w-full px-3 py-2.5 rounded-xl border border-outline-variant bg-surface-container-low text-sm outline-none focus:border-primary transition"></div>
+          </div>
+          <button onclick="generateCallList()" id="callBtn" class="w-full py-3 rounded-xl bg-on-surface text-white font-bold text-sm flex items-center justify-center gap-2 hover:opacity-90 transition">
+            <span class="material-symbols-outlined" style="font-size:17px">phone_in_talk</span>Générer ma liste d'appels
+          </button>
+          <div id="callLoading" style="display:none" class="flex flex-col items-center gap-2 py-4 mt-3">
+            <div class="w-6 h-6 border-2 border-outline-variant border-t-primary rounded-full" style="animation:spin 0.8s linear infinite"></div>
+            <p class="text-sm text-on-surface-variant">Recherche en cours...</p>
+          </div>
+          <div id="callResults" style="display:none" class="mt-3">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-mono text-[9.5px] uppercase tracking-[0.12em] text-on-surface-variant">Prospects trouvés</span>
+              <div class="flex items-center gap-2">
+                <span class="font-headline font-bold text-sm text-primary" id="callCount">0</span>
+                <button onclick="exportCallCSV()" class="text-[11px] font-semibold text-on-surface-variant hover:text-on-surface flex items-center gap-1"><span class="material-symbols-outlined" style="font-size:13px">download</span>CSV</button>
+              </div>
+            </div>
+            <div id="callList" class="divide-y divide-outline-variant/20 rounded-xl overflow-hidden border border-outline-variant/30"></div>
+          </div>
+        </div>`;
+    }
+    // Pour PAP rajouter la géoloc
+    if (canal === 'pap') {
+      document.getElementById('kcanal-pap').innerHTML += `
+        <button onclick="findNearbySpots()" class="w-full py-3.5 rounded-2xl bg-on-surface text-white font-bold text-sm flex items-center justify-center gap-2 hover:opacity-90 transition">
+          <span class="material-symbols-outlined" style="font-size:17px">near_me</span>
+          Trouver des commerces près de moi
+        </button>
+        <div id="nearbyResults" class="hidden"></div>`;
+    }
+  } else {
+    renderDM('instagram');
+  }
+
+  window.scrollTo({ top: 300, behavior: 'smooth' });
+}
+
+function generateContratCanal(canal) {
+  const prenom = document.getElementById('cPrenom_' + canal)?.value.trim();
+  const nom = document.getElementById('cNom_' + canal)?.value.trim();
+  const email = document.getElementById('cEmail_' + canal)?.value.trim();
+  const planRaw = document.getElementById('cPlan_' + canal)?.value;
+  if (!prenom || !nom || !email || !planRaw) { showToast('Remplis tous les champs'); return; }
+  // Copier vers les champs du generatePDF original
+  ['cPrenom','cNom','cEmail'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = id === 'cPrenom' ? prenom : id === 'cNom' ? nom : email;
+  });
+  const sel = document.getElementById('cPlan');
+  if (sel) {
+    sel.innerHTML = `<option value="${planRaw}">${planRaw.split('|')[1]}</option>`;
+    sel.value = planRaw;
+  }
+  generatePDF();
+}
+
+function envoyerContratEmail(canal) {
+  const prenom = document.getElementById('cPrenom_' + canal)?.value.trim();
+  const nom = document.getElementById('cNom_' + canal)?.value.trim();
+  const email = document.getElementById('cEmail_' + canal)?.value.trim();
+  const planRaw = document.getElementById('cPlan_' + canal)?.value;
+  if (!email) { showToast('Remplis l\'email du client'); return; }
+  const planName = planRaw ? planRaw.split('|')[1] : current.name;
+  const planPrice = planRaw ? planRaw.split('|')[0] : '–';
+  const subject = encodeURIComponent(`Votre contrat ${current.name} — ${planName}`);
+  const body = encodeURIComponent(
+    `Bonjour ${prenom || ''},\n\nSuite à notre échange, veuillez trouver ci-joint votre contrat pour ${current.name} (${planName} — ${planPrice}€/mois).\n\nPour signer, téléchargez d'abord le contrat PDF depuis l'application, puis répondez à cet email avec le document signé.\n\nCordialement`
+  );
+  // Générer le PDF d'abord
+  generateContratCanal(canal);
+  // Puis ouvrir le mail
+  setTimeout(() => { window.location.href = `mailto:${email}?subject=${subject}&body=${body}`; }, 800);
+}
+
+function generateContratRapide() {
+  const prenom = document.getElementById('cPrenom_rdv')?.value.trim() || '';
+  const nom = document.getElementById('cNom_rdv')?.value.trim() || '';
+  const email = document.getElementById('cEmail_rdv')?.value.trim() || '';
+  generateContratCanal('rdv');
 }
 
 function generateRef() {
@@ -1686,17 +1807,12 @@ function generateContratRapide() {
   const nom = document.getElementById('rdvNom').value.trim();
   const email = document.getElementById('rdvEmail').value.trim();
   if (!prenom || !nom || !email) { showToast('Remplis prénom, nom et email'); return; }
-
-  // Pré-remplir le contrat dans l'onglet contrat et générer
   document.getElementById('cPrenom').value = prenom;
   document.getElementById('cNom').value = nom;
   document.getElementById('cEmail').value = email;
-
-  // Auto-sélectionner le premier plan
   const sel = document.getElementById('cPlan');
   if (sel && sel.options.length > 1) sel.selectedIndex = 1;
-
-  generatePDF();
+  generatePDF(email, prenom);
 }
 
 function openProduct(id) {
@@ -1724,13 +1840,13 @@ function openProduct(id) {
   if (isVariable && p.plans[0].priceLabel2) {
     document.getElementById('heroPrice').textContent = p.plans[0].priceLabel2;
     document.getElementById('heroPriceLabel').textContent = 'par dossier';
-  } else if (!isVariable) {
+  } else if (p.id === 'inroom') {
+    document.getElementById('heroPrice').textContent = '5 €/chambre';
+    document.getElementById('heroPriceLabel').textContent = '/mois';
+  } else {
     const prices = p.plans.filter(pl => pl.price).map(pl => pl.price);
     document.getElementById('heroPrice').textContent = 'Dès ' + Math.min(...prices) + ' €/mois';
     document.getElementById('heroPriceLabel').textContent = 'abonnement client';
-  } else {
-    document.getElementById('heroPrice').textContent = '5 €/chambre';
-    document.getElementById('heroPriceLabel').textContent = '/mois';
   }
 
   renderQuickKit();
