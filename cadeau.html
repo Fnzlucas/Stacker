@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Récompense · Stacker</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: { extend: { colors: {
+    "primary":"#b52330","primary-container":"#ff5a5f","primary-fixed":"#ffdad8","on-primary":"#ffffff",
+    "tertiary":"#006c4c","tertiary-container":"#00a879","tertiary-fixed":"#78fac4",
+    "background":"#fcf9f8","surface-container-lowest":"#ffffff","surface-container-low":"#f6f3f2",
+    "surface-container":"#f0eded","surface-container-high":"#eae7e7","surface-container-highest":"#e5e2e1",
+    "on-surface":"#1b1c1c","on-surface-variant":"#5a403f","outline-variant":"#e2bebc"
+  }, fontFamily: { "headline":["Plus Jakarta Sans"],"body":["Inter"],"mono":["JetBrains Mono"] } } }
+}
+</script>
+<style>
+body{font-family:'Inter',sans-serif}
+.font-headline{font-family:'Plus Jakarta Sans',sans-serif}
+.font-mono{font-family:'JetBrains Mono',monospace}
+.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.filled{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24 !important}
+.glass-nav{backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:rgba(252,249,248,0.88);border-bottom:1px solid rgba(226,190,188,0.2)}
+.soft-shadow{box-shadow:0 8px 24px -8px rgba(27,28,28,0.06)}
+.display-tight{letter-spacing:-0.03em}
+.metric-num{letter-spacing:-0.045em;font-feature-settings:"tnum"}
+.cta-gradient{background:linear-gradient(135deg,#b52330 0%,#ff5a5f 100%)}
+.gold-gradient{background:linear-gradient(135deg,#1f1d18 0%,#2a2620 50%,#1f1d18 100%)}
+.gold-text{background:linear-gradient(135deg,#ffd700 0%,#ffed4a 50%,#b8860b 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+@keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.reveal{animation:slideUp 0.5s cubic-bezier(0.22,1,0.36,1) both}
+.step-circle{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'JetBrains Mono';font-size:12px;font-weight:700}
+.reward-fill{transition:width 1.2s cubic-bezier(0.22,1,0.36,1)}
+</style>
+</head>
+<body class="bg-background text-on-surface font-body antialiased">
+
+<!-- NAV -->
+<header class="sticky top-0 w-full z-50 px-5 py-4 glass-nav">
+  <nav class="flex items-center gap-3 max-w-[680px] mx-auto">
+    <a href="index.html" class="p-2 rounded-full hover:bg-surface-container-high transition flex-shrink-0">
+      <span class="material-symbols-outlined">arrow_back</span>
+    </a>
+    <span class="text-xl font-black text-primary tracking-tighter font-headline">Stacker</span>
+    <span class="w-1 h-1 bg-on-surface mb-0.5 inline-block"></span>
+    <span class="text-sm font-semibold text-on-surface-variant ml-1" id="navTitle">Récompense</span>
+  </nav>
+</header>
+
+<main class="max-w-[680px] mx-auto px-5 py-6">
+
+  <!-- PHOTO HERO -->
+  <section class="reveal mb-5" style="animation-delay:0.05s">
+    <div class="w-full rounded-3xl overflow-hidden bg-surface-container-high flex items-center justify-center" style="height:280px" id="photoContainer">
+      <img id="rewardPhoto" src="" alt="" class="w-full h-full object-contain p-6" onerror="this.style.display='none';document.getElementById('rewardIconFallback').style.display='flex'">
+      <div id="rewardIconFallback" style="display:none" class="flex-col items-center justify-center gap-3 w-full h-full">
+        <span class="material-symbols-outlined filled text-on-surface-variant" id="rewardIconSymbol" style="font-size:64px;font-variation-settings:'FILL' 1">card_giftcard</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- TITRE + STATUT -->
+  <section class="reveal mb-5" style="animation-delay:0.08s">
+    <div id="eliteBadge" class="hidden mb-3">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold" style="background:rgba(255,197,0,0.12);color:#b8860b;border:1px solid rgba(255,197,0,0.3)">
+        <span class="material-symbols-outlined filled" style="font-size:13px;color:#ffd700;font-variation-settings:'FILL' 1">emoji_events</span>
+        Récompense Elite
+      </span>
+    </div>
+    <h1 class="font-headline font-extrabold text-3xl text-on-surface display-tight mb-1" id="rewardName">–</h1>
+    <p class="text-on-surface-variant text-sm mb-4" id="rewardSubtitle">–</p>
+
+    <!-- Barre de progression -->
+    <div class="bg-surface-container-lowest rounded-2xl p-4 soft-shadow border border-outline-variant/40">
+      <div class="flex items-center justify-between mb-2">
+        <p class="text-sm font-semibold text-on-surface">Ta progression</p>
+        <p class="font-headline font-extrabold text-sm metric-num"><span id="caActuel">0</span> € / <span id="caTarget">–</span> €</p>
+      </div>
+      <div class="h-2.5 rounded-full bg-surface-container-high overflow-hidden mb-2">
+        <div class="reward-fill h-full rounded-full" id="progressBar" style="width:0%"></div>
+      </div>
+      <p class="text-[11px] text-on-surface-variant" id="progressLabel">–</p>
+    </div>
+  </section>
+
+  <!-- IMPORTANT — EN PLUS DE TA COMMISSION -->
+  <section class="reveal mb-5" style="animation-delay:0.11s">
+    <div class="rounded-2xl p-5" style="background:linear-gradient(135deg,#006c4c,#00a879);box-shadow:0 8px 28px rgba(0,108,76,0.2)">
+      <div class="flex items-start gap-3">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(255,255,255,0.15)">
+          <span class="material-symbols-outlined filled text-white" style="font-size:20px;font-variation-settings:'FILL' 1">payments</span>
+        </div>
+        <div>
+          <p class="font-headline font-bold text-white text-sm mb-1">En plus de ta commission — pas à la place</p>
+          <p class="text-white/75 text-[13px] leading-relaxed">Chaque deal que tu signes te rapporte ta commission (25% du CA). Ce cadeau est un bonus supplémentaire offert par Stacker quand tu atteins le palier. Tu touches les deux.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMENT LE GAGNER -->
+  <section class="reveal mb-5" style="animation-delay:0.14s">
+    <div class="bg-surface-container-lowest rounded-2xl soft-shadow overflow-hidden border border-outline-variant/30">
+      <div class="px-5 pt-5 pb-3 border-b border-outline-variant/20">
+        <p class="font-headline font-bold text-base text-on-surface">Comment gagner ce cadeau</p>
+      </div>
+      <div class="divide-y divide-outline-variant/15" id="stepsContainer"></div>
+    </div>
+  </section>
+
+  <!-- RÈGLES & CONDITIONS -->
+  <section class="reveal mb-5" style="animation-delay:0.17s">
+    <div class="bg-surface-container-lowest rounded-2xl soft-shadow p-5 border border-outline-variant/30">
+      <p class="font-headline font-bold text-sm text-on-surface mb-4 flex items-center gap-2">
+        <span class="material-symbols-outlined text-on-surface-variant" style="font-size:18px">gavel</span>
+        Règles du programme
+      </p>
+      <div class="space-y-3" id="rulesContainer"></div>
+    </div>
+  </section>
+
+  <!-- AUTRES RÉCOMPENSES -->
+  <section class="reveal mb-6" style="animation-delay:0.2s">
+    <p class="text-[10px] uppercase tracking-[0.25em] text-on-surface-variant font-bold mb-3">Les autres récompenses</p>
+    <div class="grid grid-cols-3 gap-2" id="otherRewards"></div>
+  </section>
+
+  <!-- CTA -->
+  <section class="reveal pb-10" style="animation-delay:0.22s">
+    <a href="offres.html" class="w-full py-4 rounded-2xl cta-gradient text-white font-headline font-bold text-base flex items-center justify-center gap-2 hover:opacity-95 transition active:scale-[0.99]" style="box-shadow:0 8px 28px rgba(181,35,48,0.25)">
+      <span class="material-symbols-outlined" style="font-size:20px">inventory_2</span>
+      Commencer à vendre maintenant
+    </a>
+    <p class="text-center text-xs text-on-surface-variant mt-3">Chaque deal signé = commission immédiate + progression vers ce cadeau</p>
+  </section>
+
+</main>
+
+<script>
+const REWARDS = [
+  {
+    id: 1,
+    name: 'AirPods Pro',
+    subtitle: 'Palier 500 € de CA généré',
+    img: 'assets/cadeaux/airpods-pro.jpg',
+    icon: 'headphones',
+    target: 500,
+    color: '#1b1c1c',
+    barColor: 'linear-gradient(90deg,#006c4c,#00a879)',
+    elite: false,
+    desc: 'Les AirPods Pro sont offerts dès que tu génères 500 € de chiffre d\'affaires cumulé pour Stacker. C\'est l\'équivalent d\'environ 5 à 6 deals signés selon les produits.',
+    steps: [
+      { n:'1', title:'Génère 500 € de CA', desc:'Signe des deals, chaque contrat compte. Le CA se cumule tous produits confondus.' },
+      { n:'2', title:'Stacker valide ton palier', desc:'Dès que les 500 € sont atteints et validés (délai de rétractation passé), tu reçois une notification.' },
+      { n:'3', title:'Tu renseignes ton adresse', desc:'On t\'envoie un formulaire pour récupérer ton adresse de livraison.' },
+      { n:'4', title:'Livraison sous 7 jours ouvrés', desc:'Les AirPods Pro sont expédiés directement chez toi. Neufs, sous emballage officiel Apple.' },
+    ],
+    rules: [
+      { icon:'check_circle', color:'#006c4c', text:'Le cadeau est offert en plus de ta commission — tu touches les deux.' },
+      { icon:'check_circle', color:'#006c4c', text:'Le CA pris en compte est le CA net encaissé (après délai de rétractation de 30 jours).' },
+      { icon:'check_circle', color:'#006c4c', text:'Le palier est cumulatif — chaque euro de CA compte, peu importe le produit.' },
+      { icon:'info', color:'#5a403f', text:'En cas de résiliation client dans les 30 jours, le CA correspondant est retiré du cumul.' },
+    ]
+  },
+  {
+    id: 2,
+    name: 'Apple Watch',
+    subtitle: 'Palier 1 500 € de CA généré',
+    img: 'assets/cadeaux/apple-watch.jpg',
+    icon: 'watch',
+    target: 1500,
+    color: '#1b1c1c',
+    barColor: 'linear-gradient(90deg,#006c4c,#00a879)',
+    elite: false,
+    desc: 'L\'Apple Watch est ta récompense pour 1 500 € de CA cumulé. Tu y es déjà si tu as débloqué les AirPods Pro — le CA se cumule et chaque palier offre son propre cadeau.',
+    steps: [
+      { n:'1', title:'Atteins 1 500 € de CA cumulé', desc:'Le CA des AirPods Pro compte aussi. Si tu as déjà 500 €, il t\'en reste 1 000 € à générer.' },
+      { n:'2', title:'Validation automatique', desc:'Stacker valide dès que le palier est franchi. Tu reçois un email de confirmation.' },
+      { n:'3', title:'Choix du coloris', desc:'On te propose de choisir ton coloris préféré avant l\'expédition.' },
+      { n:'4', title:'Livraison sous 7 jours ouvrés', desc:'Apple Watch neuve, emballage officiel, livrée directement chez toi.' },
+    ],
+    rules: [
+      { icon:'check_circle', color:'#006c4c', text:'Le cadeau est offert en plus de ta commission — tu touches les deux.' },
+      { icon:'check_circle', color:'#006c4c', text:'Le CA se cumule — si tu as déjà les AirPods Pro, ton compteur continue.' },
+      { icon:'check_circle', color:'#006c4c', text:'Les deux cadeaux sont indépendants — tu peux les avoir tous les deux.' },
+      { icon:'info', color:'#5a403f', text:'En cas de résiliation client dans les 30 jours, le CA correspondant est retiré du cumul.' },
+    ]
+  },
+  {
+    id: 3,
+    name: 'iPhone 17 Pro Max',
+    subtitle: 'Palier 5 000 € de CA généré',
+    img: 'assets/cadeaux/iphone-17-pro-max.jpg',
+    icon: 'smartphone',
+    target: 5000,
+    color: '#1b1c1c',
+    barColor: 'linear-gradient(90deg,#b52330,#ff5a5f)',
+    elite: false,
+    desc: 'L\'iPhone 17 Pro Max pour 5 000 € de CA cumulé. À ce stade tu as déjà généré des commissions significatives — ce cadeau c\'est la reconnaissance de ton niveau de performance.',
+    steps: [
+      { n:'1', title:'Atteins 5 000 € de CA cumulé', desc:'Tous tes deals signés depuis le début comptent. À 25% de commission, tu as déjà touché 1 250 € pour toi.' },
+      { n:'2', title:'Validation et contact Stacker', desc:'Un manager Stacker te contacte personnellement pour confirmer et organiser la livraison.' },
+      { n:'3', title:'Choix de la capacité et du coloris', desc:'On te laisse choisir ta configuration préférée avant commande.' },
+      { n:'4', title:'Livraison sous 10 jours ouvrés', desc:'iPhone 17 Pro Max neuf, emballage officiel Apple, livré chez toi.' },
+    ],
+    rules: [
+      { icon:'check_circle', color:'#006c4c', text:'Le cadeau est offert en plus de ta commission — tu touches les deux.' },
+      { icon:'check_circle', color:'#006c4c', text:'Le CA se cumule depuis ton inscription — tous tes deals comptent.' },
+      { icon:'check_circle', color:'#006c4c', text:'Tu peux avoir l\'iPhone même si tu as déjà reçu les cadeaux précédents.' },
+      { icon:'info', color:'#5a403f', text:'Palier soumis à vérification manuelle — délai de contact sous 48h après validation.' },
+    ]
+  },
+  {
+    id: 4,
+    name: 'Rolex Daytona',
+    subtitle: 'Palier Elite — 15 000 € de CA généré',
+    img: 'assets/cadeaux/rolex-daytona.jpg',
+    icon: 'watch',
+    target: 15000,
+    color: '#b8860b',
+    barColor: 'linear-gradient(90deg,#ffd700,#b8860b)',
+    elite: true,
+    desc: 'La Rolex Daytona est la récompense ultime de Stacker. 15 000 € de CA cumulé, c\'est le top 1% des commerciaux Stacker. À ce niveau, tes commissions personnelles dépassent 3 750 € — la Rolex c\'est juste le symbole de ce que tu as accompli.',
+    steps: [
+      { n:'1', title:'Atteins 15 000 € de CA cumulé', desc:'Le parcours au complet. À 25% tu as touché 3 750 € de commissions pour toi, en plus de tous les cadeaux précédents.' },
+      { n:'2', title:'Cérémonie de remise', desc:'Stacker organise une remise officielle — en personne ou en visio selon ta préférence. Moment marquant.' },
+      { n:'3', title:'Choix du modèle', desc:'Plusieurs références Daytona disponibles. Tu choisis avec notre équipe.' },
+      { n:'4', title:'Livraison sécurisée', desc:'Rolex neuve avec certificat d\'authenticité, boîte officielle, assurée pendant le transport.' },
+    ],
+    rules: [
+      { icon:'check_circle', color:'#006c4c', text:'Le cadeau est offert en plus de ta commission et de tous les cadeaux précédents.' },
+      { icon:'check_circle', color:'#006c4c', text:'Le CA se cumule depuis ton inscription — chaque deal depuis le début compte.' },
+      { icon:'check_circle', color:'#006c4c', text:'Remise personnelle organisée par l\'équipe Stacker — tu mérites la reconnaissance.' },
+      { icon:'info', color:'#5a403f', text:'Palier soumis à validation complète du CA net sur 12 mois glissants.' },
+      { icon:'star', color:'#b8860b', text:'Moins de 1% des commerciaux Stacker atteignent ce palier. Tu ferais partie de l\'élite.' },
+    ]
+  }
+];
+
+function init() {
+  const params = new URLSearchParams(window.location.search);
+  const id = parseInt(params.get('id')) || 1;
+  const r = REWARDS.find(x => x.id === id) || REWARDS[0];
+  const ca = parseInt(localStorage.getItem('stacker_ca') || '0');
+
+  // Photo + fallback
+  document.getElementById('rewardPhoto').src = r.img;
+  document.getElementById('rewardPhoto').alt = r.name;
+  document.getElementById('rewardIconSymbol').textContent = r.icon;
+  document.title = r.name + ' · Stacker';
+  document.getElementById('navTitle').textContent = r.name;
+
+  // Elite badge
+  if (r.elite) document.getElementById('eliteBadge').classList.remove('hidden');
+
+  // Titre
+  document.getElementById('rewardName').textContent = r.name;
+  if (r.elite) {
+    document.getElementById('rewardName').style.cssText = 'background:linear-gradient(135deg,#ffd700,#b8860b);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.03em';
+  }
+  document.getElementById('rewardSubtitle').textContent = r.subtitle;
+
+  // Progress bar
+  const pct = Math.min(100, Math.round((ca / r.target) * 100));
+  document.getElementById('caActuel').textContent = ca.toLocaleString('fr-FR');
+  document.getElementById('caTarget').textContent = r.target.toLocaleString('fr-FR');
+  document.getElementById('progressBar').style.background = r.barColor;
+  setTimeout(() => { document.getElementById('progressBar').style.width = pct + '%'; }, 100);
+
+  const restant = Math.max(0, r.target - ca);
+  if (restant === 0) {
+    document.getElementById('progressLabel').textContent = '🎉 Palier atteint — cadeau en cours d\'envoi !';
+    document.getElementById('progressLabel').style.color = '#006c4c';
+    document.getElementById('progressLabel').style.fontWeight = '700';
+  } else {
+    document.getElementById('progressLabel').textContent = 'Plus que ' + restant.toLocaleString('fr-FR') + ' € pour débloquer ' + r.name;
+  }
+
+  // Steps
+  document.getElementById('stepsContainer').innerHTML = r.steps.map(s => `
+    <div class="flex items-start gap-4 px-5 py-4">
+      <div class="step-circle flex-shrink-0 mt-0.5" style="background:${r.elite ? 'rgba(255,197,0,0.12)' : 'rgba(181,35,48,0.08)'};color:${r.elite ? '#b8860b' : '#b52330'}">${s.n}</div>
+      <div>
+        <p class="font-headline font-bold text-sm text-on-surface mb-0.5">${s.title}</p>
+        <p class="text-[12.5px] text-on-surface-variant leading-relaxed">${s.desc}</p>
+      </div>
+    </div>
+  `).join('');
+
+  // Rules
+  document.getElementById('rulesContainer').innerHTML = r.rules.map(rule => `
+    <div class="flex items-start gap-3">
+      <span class="material-symbols-outlined filled flex-shrink-0 mt-0.5" style="font-size:16px;color:${rule.color};font-variation-settings:'FILL' 1">${rule.icon}</span>
+      <p class="text-[13px] text-on-surface leading-relaxed">${rule.text}</p>
+    </div>
+  `).join('');
+
+  // Autres récompenses
+  const others = REWARDS.filter(x => x.id !== id);
+  document.getElementById('otherRewards').innerHTML = others.map(o => {
+    const opct = Math.min(100, Math.round((ca / o.target) * 100));
+    return `
+      <a href="cadeau.html?id=${o.id}" class="bg-surface-container-lowest rounded-2xl p-3 soft-shadow border border-outline-variant/30 hover:border-outline-variant transition block">
+        <div class="w-full h-16 rounded-xl bg-surface-container-high flex items-center justify-center mb-2 overflow-hidden">
+          <img src="${o.img}" alt="${o.name}" class="w-full h-full object-contain p-1" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+          <span class="material-symbols-outlined filled text-on-surface-variant" style="font-size:22px;display:none;font-variation-settings:'FILL' 1">${o.icon}</span>
+        </div>
+        <p class="font-headline font-bold text-[11px] text-on-surface mb-1 leading-tight">${o.name}</p>
+        <div class="h-1 rounded-full bg-surface-container-high">
+          <div class="h-full rounded-full" style="width:${opct}%;background:${o.barColor};transition:width 1s ease"></div>
+        </div>
+      </a>`;
+  }).join('');
+}
+
+init();
+</script>
+</body>
+</html>
