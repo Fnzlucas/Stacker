@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Statuts & Avantages · Stacker</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --dark:#1b1c1c;--surface:#faf7f4;--cream:#f5f0e8;
+  --muted:#6b5550;--border:rgba(226,190,188,0.45);
+  --red:#b52330;--red2:#ff5a5f;
+  --gold:#c9a84c;--gold2:#e8c96a;--gold-bg:rgba(201,168,76,0.08);
+  --green:#006c4c;--green2:#00a879;
+}
+html,body{min-height:100%;background:var(--surface);color:var(--dark);font-family:'Inter',sans-serif}
+.fi{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;line-height:1;font-family:'Material Symbols Outlined'}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;background:rgba(250,247,244,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Plus Jakarta Sans';font-weight:900;font-size:17px;color:var(--dark);letter-spacing:-0.03em;display:flex;align-items:center;gap:3px;text-decoration:none}
+.nav-logo-dot{width:5px;height:5px;background:var(--red);border-radius:50%;margin-bottom:3px}
+.nav-back{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;transition:color 0.2s}
+.nav-back:hover{color:var(--dark)}
+
+/* HERO */
+.hero{padding:48px 20px 40px;max-width:680px;margin:0 auto;text-align:center}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;margin-bottom:20px}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';width:20px;height:1px;background:var(--gold)}
+.hero-eyebrow span{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold)}
+.hero-title{font-family:'Plus Jakarta Sans';font-weight:900;font-size:clamp(30px,7vw,48px);letter-spacing:-0.04em;line-height:1;color:var(--dark);margin-bottom:14px}
+.hero-sub{font-size:15px;color:var(--muted);line-height:1.7;max-width:440px;margin:0 auto}
+
+/* CURRENT STATUS CARD */
+.current-wrap{max-width:680px;margin:0 auto 0;padding:0 20px 40px}
+.current-card{border-radius:24px;padding:24px;border:1px solid var(--border);background:#fff;box-shadow:0 2px 20px -6px rgba(27,28,28,0.08);display:flex;align-items:center;gap:16px}
+.current-avatar{width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.current-info{flex:1}
+.current-label{font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.current-name{font-family:'Plus Jakarta Sans';font-weight:900;font-size:18px;letter-spacing:-0.03em;color:var(--dark)}
+.current-bar-wrap{margin-top:10px}
+.current-bar-bg{height:5px;border-radius:99px;background:#ede8e8;overflow:hidden;margin-bottom:5px}
+.current-bar-fill{height:100%;border-radius:99px;transition:width 1s cubic-bezier(0.22,1,0.36,1)}
+.current-bar-label{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);font-weight:500}
+
+/* STATUTS GRID */
+.statuts{max-width:680px;margin:0 auto;padding:0 20px 60px;display:flex;flex-direction:column;gap:16px}
+
+/* STATUT CARD */
+.statut-card{border-radius:24px;overflow:hidden;border:1px solid var(--border);background:#fff;box-shadow:0 2px 16px -6px rgba(27,28,28,0.07);transition:transform 0.2s,box-shadow 0.2s}
+.statut-card:hover{transform:translateY(-2px);box-shadow:0 8px 32px -8px rgba(27,28,28,0.12)}
+.statut-card.active-status{border-color:rgba(181,35,48,0.3);box-shadow:0 4px 24px -6px rgba(181,35,48,0.12)}
+.statut-header{padding:24px 24px 20px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.statut-icon-wrap{width:48px;height:48px;border-radius:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.statut-icon-wrap .material-symbols-outlined{font-size:22px}
+.statut-badge{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;padding:4px 10px;border-radius:99px}
+.statut-title{font-family:'Plus Jakarta Sans';font-weight:900;font-size:22px;letter-spacing:-0.04em;color:var(--dark);margin-bottom:4px;margin-top:14px}
+.statut-desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:4px}
+.statut-condition{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--dark);letter-spacing:0.05em}
+
+/* AVANTAGES LIST */
+.avantages-list{border-top:1px solid var(--border);padding:20px 24px;display:flex;flex-direction:column;gap:0}
+.avantage-row{display:flex;align-items:flex-start;gap:14px;padding:13px 0;border-bottom:1px solid rgba(226,190,188,0.2)}
+.avantage-row:last-child{border-bottom:none}
+.avantage-dot{width:22px;height:22px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.avantage-dot .material-symbols-outlined{font-size:13px}
+.avantage-text p{font-size:13px;font-weight:600;color:var(--dark);line-height:1.3;margin-bottom:2px}
+.avantage-text span{font-size:12px;color:var(--muted);line-height:1.4}
+
+/* COM HIGHLIGHT */
+.com-highlight{margin:0 24px 20px;border-radius:16px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.com-highlight-label{font-size:12px;color:var(--muted);font-weight:500}
+.com-highlight-val{font-family:'Plus Jakarta Sans';font-weight:900;font-size:24px;letter-spacing:-0.04em}
+
+/* EGERIE SPECIFIQUE */
+.egerie-perks{margin:0 24px 20px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.egerie-perk{padding:14px;border-radius:14px;background:var(--surface);border:1px solid var(--border);text-align:center}
+.egerie-perk .material-symbols-outlined{font-size:20px;margin-bottom:6px;display:block}
+.egerie-perk-val{font-family:'Plus Jakarta Sans';font-weight:800;font-size:15px;letter-spacing:-0.03em;color:var(--dark);margin-bottom:1px}
+.egerie-perk-label{font-size:10px;color:var(--muted)}
+
+/* PARRAINAGE SECTION */
+.parrainage{max-width:680px;margin:0 auto;padding:0 20px 32px}
+.parrainage-card{border-radius:24px;background:var(--dark);padding:28px;position:relative;overflow:hidden}
+.parrainage-card::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:rgba(181,35,48,0.12);pointer-events:none}
+.parrainage-eyebrow{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:10px}
+.parrainage-title{font-family:'Plus Jakarta Sans';font-weight:900;font-size:22px;letter-spacing:-0.04em;color:#fff;margin-bottom:8px;line-height:1.1}
+.parrainage-sub{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.6;margin-bottom:24px}
+.parrainage-steps{display:flex;flex-direction:column;gap:12px;margin-bottom:24px}
+.parrainage-step{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.07)}
+.parrainage-step-num{font-family:'Plus Jakarta Sans';font-weight:900;font-size:20px;letter-spacing:-0.04em;color:var(--red2);flex-shrink:0;width:28px}
+.parrainage-step-text p{font-size:13px;font-weight:600;color:#fff;margin-bottom:2px}
+.parrainage-step-text span{font-size:11px;color:rgba(255,255,255,0.35)}
+.parrainage-cta{width:100%;padding:16px;border-radius:16px;border:none;background:linear-gradient(135deg,var(--red),var(--red2));color:#fff;font-family:'Plus Jakarta Sans';font-weight:800;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;box-shadow:0 6px 20px rgba(181,35,48,0.3)}
+.parrainage-cta:hover{transform:translateY(-1px);box-shadow:0 10px 28px rgba(181,35,48,0.4)}
+
+/* FAQ */
+.faq{max-width:680px;margin:0 auto;padding:0 20px 80px}
+.faq-title{font-family:'Plus Jakarta Sans';font-weight:900;font-size:22px;letter-spacing:-0.04em;color:var(--dark);margin-bottom:16px}
+.faq-item{border-radius:16px;background:#fff;border:1px solid var(--border);margin-bottom:8px;overflow:hidden}
+.faq-q{padding:16px 20px;font-size:14px;font-weight:600;color:var(--dark);cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;transition:background 0.15s}
+.faq-q:hover{background:var(--cream)}
+.faq-q .material-symbols-outlined{font-size:18px;color:var(--muted);transition:transform 0.2s;flex-shrink:0}
+.faq-q.open .material-symbols-outlined{transform:rotate(180deg)}
+.faq-a{display:none;padding:0 20px 16px;font-size:13px;color:var(--muted);line-height:1.7}
+.faq-a.open{display:block}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{opacity:0;transform:translateY(20px);transition:opacity 0.6s cubic-bezier(0.22,1,0.36,1),transform 0.6s cubic-bezier(0.22,1,0.36,1)}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="nav-back">
+    <span class="material-symbols-outlined" style="font-size:17px">arrow_back</span>
+    Accueil
+  </a>
+  <a href="index.html" class="nav-logo">Stacker<div class="nav-logo-dot"></div></a>
+</nav>
+
+<!-- HERO -->
+<div class="hero fade-up">
+  <div class="hero-eyebrow"><span>Statuts & Avantages</span></div>
+  <h1 class="hero-title">Plus tu vends,<br>plus tu gagnes.</h1>
+  <p class="hero-sub">Trois niveaux. Des avantages qui s'accumulent. Une seule règle : performer.</p>
+</div>
+
+<!-- MON STATUT ACTUEL -->
+<div class="current-wrap fade-up">
+  <div class="current-card">
+    <div class="current-avatar" id="currentAvatar" style="background:rgba(181,35,48,0.1)">
+      <span class="material-symbols-outlined fi" id="currentIcon" style="font-size:24px;color:var(--red)">bolt</span>
+    </div>
+    <div class="current-info">
+      <p class="current-label">Mon statut actuel</p>
+      <p class="current-name" id="currentStatusName">Closer Standard</p>
+      <div class="current-bar-wrap">
+        <div class="current-bar-bg">
+          <div class="current-bar-fill" id="currentBarFill" style="width:0%;background:linear-gradient(90deg,var(--red),var(--red2))"></div>
+        </div>
+        <div class="current-bar-label">
+          <span id="currentBarLeft">0 € de CA</span>
+          <span id="currentBarRight">→ Closer Elite à 150 000 €</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STATUTS -->
+<div class="statuts">
+
+  <!-- CLOSER STANDARD -->
+  <div class="statut-card fade-up" id="card-standard">
+    <div class="statut-header">
+      <div>
+        <div class="statut-icon-wrap" style="background:rgba(181,35,48,0.1)">
+          <span class="material-symbols-outlined fi" style="color:var(--red)">bolt</span>
+        </div>
+        <p class="statut-title">Closer Standard</p>
+        <p class="statut-desc">Tu démarres, tu prospectes, tu construis tes premières commissions récurrentes.</p>
+        <p class="statut-condition">Dès l'inscription · Automatique</p>
+      </div>
+      <span class="statut-badge" style="background:rgba(181,35,48,0.1);color:var(--red)">Gratuit</span>
+    </div>
+    <div class="com-highlight" style="background:rgba(181,35,48,0.06);border:1px solid rgba(181,35,48,0.12)">
+      <span class="com-highlight-label">Commission standard</span>
+      <span class="com-highlight-val" style="color:var(--red)">Jusqu'à 40%</span>
+    </div>
+    <div class="avantages-list">
+      <div class="avantage-row">
+        <div class="avantage-dot" style="background:rgba(181,35,48,0.1)"><span class="material-symbols-outlined fi" style="color:var(--red)">inventory_2</span></div>
+        <div class="avantage-text"><p>Accès au catalogue complet</p><span>13 offres disponibles avec scripts et fiches</span></div>
+      </div>
+      <div class="avantage-row">
+        <div class="avantage-dot" style="background:rgba(181,35,48,0.1)"><span class="material-symbols-outlined fi" style="color:var(--red)">headset_mic</span></div>
+        <div class="avantage-text"><p>Coach IA en call</p><span>Réponses aux objections en temps réel</span></div>
+      </div>
+      <div class="avantage-row">
+        <div class="avantage-dot" style="background:rgba(181,35,48,0.1)"><span class="material-symbols-outlined fi" style="color:var(--red)">local_fire_department</span></div>
+        <div class="avantage-text"><p>Système de streak & missions</p><span>+2€/jour de bonus cumulable pour chaque journée validée</span></div>
+      </div>
+      <div class="avantage-row">
+        <div class="avantage-dot" style="background:rgba(181,35,48,0.1)"><span class="material-symbols-outlined fi" style="color:var(--red)">card_giftcard</span></div>
+        <div class="avantage-text"><p>Programme récompenses</p><span>AirPods → Apple Watch → iPhone → Rolex</span></div>
+      </div>
+      <div class="avantage-row">
+        <div class="avantage-dot" style="background:rgba(181,35,48,0.1)"><span class="material-symbols-outlined fi" style="color:var(--red)">payments</span></div>
+        <div class="avantage-text"><p>Commissions versées sous 7 jours</p><span>Dès confirmation du deal</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLOSER ELITE -->
+  <div class="statut-card fade-up" id="card-elite" style="border-color:rgba(201,168,76,0.35)">
+    <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold2) 40%,var(--gold) 70%,transparent);border-radius:24px 24px 0 0"></div>
+    <div class="statut-header" style="position:relative">
+      <div>
+        <div class="statut-icon-wrap" style="background:rgba(201,168,76,0.12)">
+          <span class="material-symbols-outlined fi" style="color:var(--gold)">workspace_premium</span>
+        </div>
+        <p class="statut-title" style="background:linear-gradient(135deg,#c9a84c,#e8c96a);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">Closer Elite</p>
+        <p class="statut-desc">Tu as prouvé ta valeur. Les avantages s'accumulent, l'accès au Gathering s'ouvre.</p>
+        <p class="statut-condition">150 000 € de CA annuel</p>
+      </div>
+      <span class="statut-badge" style="background:rgba(201,168,76,0.12);color:var(--gold);border:1px solid rgba(201,168,76,0.3)">Top 5%</span>
+    </div>
+    <div class="com-highlight" style="background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2)">
+      <span class="com-highlight-label">Commission boostée</span>
+      <span class="com-highlight-val" style="background:linear-gradient(135deg,var(--gold2),var(--gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">Jusqu'à 48%</span>
+    </div>
+    <div class="avantages-list">
+      <div class="avantage-row">
+        <div class="avantage-dot" style="background:rgba(201,168,76,0.12)"><span class="material-symbols-outlined fi" style="color:var(--gold)">check</span></div>
+        <div class="avantage-text"><p>Tout du Closer Standard</p><span>Plus tous les avantages ci-dessous</span></div>
+      </div>
+      <div class="avantage-row">
+        <div class="avantage-dot" style="background:rgba(201,168,76,0.12)"><span class="material-symbols-outlined fi" style="color:var(--gold)">trending_up</span></div>
+        <div class="avantage-text"><p>+8% sur toutes les commissions</p><span>Automatiquement appliqué à chaque deal signé</span></div>
+      </div>
+      <div class="avantage-row">
+        <div class="avantage-dot" style="background:rgba(201,168,76,0.12)"><span class="material-symbols-outlined fi" style="color:var(--gold)">event</span></div>
+        <div class="avantage-text"><p>Invitation au Stacker Elite Gathering</p><span>8 & 9 Juin 2027 · Domaine privé en Provence</span></div>
+      </div>
+      <div class="avantage-dot" style="background:rgba(201,168,76,0.12);margin:0"><span class="material-symbols-outlined fi" style="color:var(--gold);display:none">x</span></div>
+      <div class="avantage-row">
+        <div class="avantage-dot" style="background:rgba(201,168,76,0.12)"><span class="material-symbols-outlined fi" style="color:var(--gold)">directions_car</span></div>
+        <div class="avantage-text"><p>Inscription au tirage Mercedes Classe A 2026</p><span>Tirage en direct le soir du gala</span></div>
+      </div>
+      <div class="avantage-row">
+        <div class="avantage-dot" style="background:rgba(201,168,76,0.12)"><span class="material-symbols-outlined fi" style="color:var(--gold)">book</span></div>
+        <div class="avantage-text"><p>Carnet de contacts officiel Stacker</p><span>Les coordonnées directes de tous les participants</span></div>
+      </div>
+      <div class="avantage-row">
+        <div class="avantage-dot" style="background:rgba(201,168,76,0.12)"><span class="material-symbols-outlined fi" style="color:var(--gold)">support_agent</span></div>
+        <div class="avantage-text"><p>Support prioritaire</p><span>Accès direct à l'équipe Stacker</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ÉGÉRIE -->
+  <div class="statut-card fade-up" id="card-egerie" style="border-color:rgba(99,102,241,0.25);position:relative">
+    <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#818cf8 40%,#6366f1 70%,transparent);border-radius:24px 24px 0 0"></div>
+    <div class="statut-header" style="position:relative">
+      <div>
+        <div class="statut-icon-wrap" style="background:rgba(99,102,241,0.1)">
+          <span class="material-symbols-outlined fi" style="color:#6366f1">star</span>
+        </div>
+        <p class="statut-title" style="background:linear-gradient(135deg,#818cf8,#6366f1);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">Égérie Stacker</p>
+        <p class="statut-desc">Tu as une audience, tu deviens le visage de Stacker. 1 post minimum par semaine obligatoire — chaque post supplémentaire est rémunéré.</p>
+        <p class="statut-condition">10 000 abonnés min. sur TikTok, Instagram ou Snap · Sur sélection</p>
+      </div>
+      <span class="statut-badge" style="background:rgba(99,102,241,0.1);color:#6366f1;border:1px solid rgba(99,102,241,0.25)">Influenceur</span>
+    </div>
+    <!-- CONDITIONS EGERIE -->
+    <div style="margin:0 24px 16px;border-radius:16px;background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.2);padding:16px 18px">
+      <p style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:#6366f1;margin-bottom:10px">Conditions d'accès</p>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="material-symbols-outlined fi" style="font-size:16px;color:#6366f1">people</span>
+          <span style="font-size:13px;font-weight:600;color:#1b1c1c">10 000 abonnés minimum</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="material-symbols-outlined fi" style="font-size:16px;color:#6366f1">smartphone</span>
+          <span style="font-size:13px;color:#6b5550">TikTok, Instagram ou Snapchat</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="material-symbols-outlined fi" style="font-size:16px;color:#6366f1">calendar_month</span>
+          <span style="font-size:13px;color:#6b5550">1 vidéo Stacker / semaine · 30 sec min · Validée par Stacker</span>
+        </div>
+      </div>
+    </div>
+    <!-- REMUNERATION POSTS -->
+    <div style="margin:0 24px 16px;border-radius:16px;background:#fff;border:1px solid rgba(226,190,188,0.5);overflow:hidden">
+      <div style="padding:14px 18px;border-bottom:1px solid rgba(226,190,188,0.3);background:rgba(99,102,241,0.04)">
+        <p style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:#6366f1">Rémunération des posts</p>
+      </div>
+      <div style="padding:14px 18px;border-bottom:1px solid rgba(226,190,188,0.3);display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <p style="font-size:13px;font-weight:600;color:#1b1c1c">1 vidéo / semaine minimum</p>
+          <p style="font-size:11px;color:#6b5550">30 sec min · Validée par Stacker avant publication</p>
+        </div>
+        <span style="font-family:'Plus Jakarta Sans';font-weight:900;font-size:15px;color:#6366f1">Inclus</span>
+      </div>
+      <div style="padding:14px 18px;border-bottom:1px solid rgba(226,190,188,0.3);display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <p style="font-size:13px;font-weight:600;color:#1b1c1c">Vidéo supplémentaire validée</p>
+          <p style="font-size:11px;color:#6b5550">30 sec min · Validée par Stacker · Max 4/semaine</p>
+        </div>
+        <div style="text-align:right"><span style="font-family:'Plus Jakarta Sans';font-weight:900;font-size:15px;color:#6366f1">+10 €</span></div>
+      </div>
+      <div style="padding:14px 18px;border-bottom:1px solid rgba(226,190,188,0.3);display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <p style="font-size:13px;font-weight:600;color:#1b1c1c">4 vidéos validées dans la semaine</p>
+          <p style="font-size:11px;color:#6b5550">Maximum hebdo atteint · Bonus régularité</p>
+        </div>
+        <span style="font-family:'Plus Jakarta Sans';font-weight:900;font-size:15px;color:#6366f1">+1,5% com.</span>
+      </div>
+      <div style="padding:14px 18px;display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <p style="font-size:13px;font-weight:600;color:#1b1c1c">Vidéo virale +50K vues</p>
+          <p style="font-size:11px;color:#6b5550">Bonus performance · Validé automatiquement</p>
+        </div>
+        <span style="font-family:'Plus Jakarta Sans';font-weight:900;font-size:15px;color:#6366f1">+3% com.</span>
+      </div>
+    </div>
+    <div class="egerie-perks">
+      <div class="egerie-perk">
+        <span class="material-symbols-outlined fi" style="color:#6366f1">trending_up</span>
+        <p class="egerie-perk-val">Jusqu'à 45%</p>
+        <p class="egerie-perk-label">De commission</p>
+      </div>
+      <div class="egerie-perk">
+        <span class="material-symbols-outlined fi" style="color:#6366f1">group_add</span>
+        <p class="egerie-perk-val">5% / filleul</p>
+        <p class="egerie-perk-label">Pendant 6 mois</p>
+      </div>
+      <div class="egerie-perk">
+        <span class="material-symbols-outlined fi" style="color:#6366f1">photo_camera</span>
+        <p class="egerie-perk-val">Mis en avant</p>
+        <p class="egerie-perk-label">Sur @Stacker</p>
+      </div>
+      <div class="egerie-perk">
+        <span class="material-symbols-outlined fi" style="color:#6366f1">workspace_premium</span>
+        <p class="egerie-perk-val">Badge vérifié</p>
+        <p class="egerie-perk-label">Profil Égérie</p>
+      </div>
+    </div>
+    <div class="avantages-list">
+      <div class="avantage-row">
+        <div class="avantage-dot" style="background:rgba(99,102,241,0.1)"><span class="material-symbols-outlined fi" style="color:#6366f1">check</span></div>
+        <div class="avantage-text"><p>Tout du Closer Elite</p><span>Plus tous les avantages ci-dessous</span></div>
+      </div>
+      <div class="avantage-row">
+        <div class="avantage-dot" style="background:rgba(99,102,241,0.1)"><span class="material-symbols-outlined fi" style="color:#6366f1">smartphone</span></div>
+        <div class="avantage-text"><p>Contenu co-créé avec Stacker</p><span>Reels, stories, posts — tu fournis ta vie de closer, on produit</span></div>
+      </div>
+      <div class="avantage-row">
+        <div class="avantage-dot" style="background:rgba(99,102,241,0.1)"><span class="material-symbols-outlined fi" style="color:#6366f1">group_add</span></div>
+        <div class="avantage-text"><p>Commission de parrainage</p><span>5% sur les commissions de chaque closer recruté pendant 6 mois</span></div>
+      </div>
+      <div class="avantage-row">
+        <div class="avantage-dot" style="background:rgba(99,102,241,0.1)"><span class="material-symbols-outlined fi" style="color:#6366f1">sell</span></div>
+        <div class="avantage-text"><p>Accès aux offres en avant-première</p><span>Tu es le premier à vendre les nouveaux produits Stacker</span></div>
+      </div>
+      <div class="avantage-row">
+        <div class="avantage-dot" style="background:rgba(99,102,241,0.1)"><span class="material-symbols-outlined fi" style="color:#6366f1">mic</span></div>
+        <div class="avantage-text"><p>Speaker potentiel au Gathering</p><span>Les meilleures égéries prennent la parole sur scène</span></div>
+      </div>
+    </div>
+    <div style="padding:0 24px 24px">
+      <button onclick="applyEgerie()" class="parrainage-cta" style="background:linear-gradient(135deg,#6366f1,#818cf8);box-shadow:0 6px 20px rgba(99,102,241,0.3)">
+        <span class="material-symbols-outlined" style="font-size:18px">star</span>
+        Candidater comme Égérie
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- PARRAINAGE -->
+<div class="parrainage fade-up">
+  <div class="parrainage-card">
+    <p class="parrainage-eyebrow">Programme de parrainage</p>
+    <h2 class="parrainage-title">Recrute.<br>Gagne sans vendre.</h2>
+    <p class="parrainage-sub">Chaque closer que tu ramènes te rapporte 5% de ses commissions pendant 6 mois. Sans plafond. Sans limite de filleuls.</p>
+    <div class="parrainage-steps">
+      <div class="parrainage-step">
+        <span class="parrainage-step-num">01</span>
+        <div class="parrainage-step-text"><p>Partage ton lien de parrainage</p><span>Disponible dans ton profil Stacker</span></div>
+      </div>
+      <div class="parrainage-step">
+        <span class="parrainage-step-num">02</span>
+        <div class="parrainage-step-text"><p>Ton filleul s'inscrit et commence à vendre</p><span>Son premier deal déclenche ton bonus</span></div>
+      </div>
+      <div class="parrainage-step">
+        <span class="parrainage-step-num">03</span>
+        <div class="parrainage-step-text"><p>Tu touches 5% de ses commissions</p><span>Pendant 6 mois, versé avec tes commissions normales</span></div>
+      </div>
+    </div>
+    <button class="parrainage-cta">
+      <span class="material-symbols-outlined" style="font-size:18px">share</span>
+      Copier mon lien de parrainage
+    </button>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="faq fade-up" style="margin-top:40px">
+  <h2 class="faq-title">Questions fréquentes</h2>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">Comment je passe au statut Elite ?<span class="material-symbols-outlined">expand_more</span></div>
+    <div class="faq-a">Automatiquement dès que ton CA annuel atteint 150 000 €. Aucune démarche à faire — tu reçois une notification et ton invitation au Gathering.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">Le boost de commission s'applique comment ?<span class="material-symbols-outlined">expand_more</span></div>
+    <div class="faq-a">Dès que tu passes Elite, les +8% s'appliquent sur tous tes deals signés à partir de cette date. Ça ne s'applique pas rétroactivement sur les deals passés.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">Comment candidater comme Égérie ?<span class="material-symbols-outlined">expand_more</span></div>
+    <div class="faq-a">Le statut Égérie est indépendant du statut Elite. La seule condition : avoir au minimum 10 000 abonnés sur TikTok, Instagram ou Snapchat. Tu cliques sur "Candidater", on vérifie ton profil et on revient vers toi sous 48h. L'engagement minimum est 1 post Stacker par semaine.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">Y a-t-il un plafond sur le parrainage ?<span class="material-symbols-outlined">expand_more</span></div>
+    <div class="faq-a">Non. Tu peux recruter autant de closers que tu veux. Les 5% s'appliquent sur chacun pendant 6 mois. Si un filleul génère 10 000 € de commissions, tu touches 500 € sans rien faire.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">Que se passe-t-il si je descends sous 150K€ ?<span class="material-symbols-outlined">expand_more</span></div>
+    <div class="faq-a">Le statut Elite est annuel. Si ton CA de l'année suivante ne dépasse pas 150K€, tu repasses Standard. Tu gardes tes commissions passées, les contacts du Gathering et tes filleuls actifs.</div>
+  </div>
+</div>
+
+<script>
+// Scroll reveal
+const observer = new IntersectionObserver(e => e.forEach(el => { if(el.isIntersecting){el.target.classList.add('visible');observer.unobserve(el.target)} }), {threshold:0.08});
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+// Load user status
+const ca = parseFloat(localStorage.getItem('stacker_ca_annuel') || '0');
+const prenom = localStorage.getItem('stacker_prenom') || '';
+
+function updateStatus() {
+  const fill = document.getElementById('currentBarFill');
+  const name = document.getElementById('currentStatusName');
+  const icon = document.getElementById('currentIcon');
+  const avatar = document.getElementById('currentAvatar');
+  const barLeft = document.getElementById('currentBarLeft');
+  const barRight = document.getElementById('currentBarRight');
+
+  if (ca >= 150000) {
+    name.textContent = 'Closer Elite';
+    name.style.background = 'linear-gradient(135deg,#c9a84c,#e8c96a)';
+    name.style.webkitBackgroundClip = 'text';
+    name.style.webkitTextFillColor = 'transparent';
+    icon.textContent = 'workspace_premium';
+    icon.style.color = '#c9a84c';
+    avatar.style.background = 'rgba(201,168,76,0.12)';
+    fill.style.width = '100%';
+    fill.style.background = 'linear-gradient(90deg,#c9a84c,#e8c96a)';
+    barLeft.textContent = ca.toLocaleString('fr-FR') + ' € de CA';
+    barRight.textContent = '✦ Statut Elite atteint';
+    document.getElementById('card-elite').classList.add('active-status');
+  } else {
+    const pct = Math.min((ca / 150000) * 100, 100);
+    fill.style.width = pct + '%';
+    barLeft.textContent = ca.toLocaleString('fr-FR') + ' € de CA';
+    const reste = (150000 - ca).toLocaleString('fr-FR');
+    barRight.textContent = `→ Elite à ${reste} € de plus`;
+    document.getElementById('card-standard').classList.add('active-status');
+  }
+}
+updateStatus();
+
+// FAQ toggle
+function toggleFaq(el) {
+  const answer = el.nextElementSibling;
+  const isOpen = el.classList.contains('open');
+  document.querySelectorAll('.faq-q').forEach(q => { q.classList.remove('open'); q.nextElementSibling.classList.remove('open'); });
+  if (!isOpen) { el.classList.add('open'); answer.classList.add('open'); }
+}
+
+// Égérie apply
+function applyEgerie() {
+  const ca = parseFloat(localStorage.getItem('stacker_ca_annuel') || '0');
+  alert('Pour candidater comme Égérie, tu dois avoir au minimum 10 000 abonnés sur TikTok, Instagram ou Snapchat. Envoie ton profil à egerie@stacker.fr');
+  return;
+  alert('Candidature envoyée ! L\'équipe Stacker revient vers toi sous 48h.');
+}
+
+// Copy referral link
+document.querySelector('.parrainage-cta').addEventListener('click', () => {
+  const prenom = localStorage.getItem('stacker_prenom') || 'closer';
+  const link = `https://stacker.fr/rejoindre?ref=${prenom.toLowerCase()}`;
+  navigator.clipboard.writeText(link).then(() => {
+    const btn = document.querySelector('.parrainage-cta');
+    const orig = btn.innerHTML;
+    btn.innerHTML = '<span class="material-symbols-outlined" style="font-size:18px">check</span> Lien copié !';
+    setTimeout(() => btn.innerHTML = orig, 2000);
+  });
+});
+</script>
+</body>
+</html>
