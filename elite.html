@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stacker Elite Gathering · 8 Juin</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--dark:#1b1c1c;--surface:#fcf9f8;--muted:#5a403f;--border:rgba(226,190,188,0.4);--gold:#c9a84c;--gold2:#ffd700;--red:#b52330}
+html,body{min-height:100%;background:#fcf9f8;color:#1b1c1c;font-family:'Inter',sans-serif}
+.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;line-height:1;font-family:'Material Symbols Outlined'}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(to bottom,rgba(252,249,248,0.97),transparent)}
+.nav-logo{font-family:'Plus Jakarta Sans';font-weight:900;font-size:18px;color:#1b1c1c;letter-spacing:-0.03em;display:flex;align-items:center;gap:4px}
+.nav-logo .dot{width:5px;height:5px;background:var(--red);border-radius:50%;margin-bottom:3px}
+.nav-back{display:flex;align-items:center;gap:6px;font-size:13px;color:#5a403f;cursor:pointer;text-decoration:none;transition:color 0.2s}
+.nav-back:hover{color:#1b1c1c}
+
+/* HERO */
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;overflow:hidden}
+.hero-img{position:absolute;inset:0;object-fit:cover;width:100%;height:100%;opacity:0.45}
+.hero-img-placeholder{position:absolute;inset:0;background:linear-gradient(135deg,#0a0a0a 0%,#1b1c1c 100%)}
+.hero-gradient{position:absolute;inset:0;background:linear-gradient(to top,rgba(27,28,28,1) 0%,rgba(27,28,28,0.6) 40%,transparent 100%)}
+.hero-content{position:relative;padding:0 20px 40px;max-width:680px;margin:0 auto;width:100%;padding-top:80px}
+
+.hero-title{font-family:'Plus Jakarta Sans';font-weight:900;font-size:clamp(36px,8vw,64px);letter-spacing:-0.04em;line-height:0.95;margin-bottom:16px;color:#fff}
+.hero-title em{font-style:normal;display:block;background:linear-gradient(135deg,var(--gold2),var(--gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sub{font-size:16px;color:rgba(255,255,255,0.55);line-height:1.6;margin-bottom:32px;max-width:480px}
+.hero-meta{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.hero-meta-item{display:flex;align-items:center;gap:8px}
+.hero-meta-item .material-symbols-outlined{font-size:16px;color:var(--gold)}
+.hero-meta-item span{font-size:13px;color:rgba(255,255,255,0.6);font-weight:500}
+.hero-meta-item strong{color:#fff}
+
+/* SCROLL INDICATOR */
+.scroll-hint{position:absolute;bottom:20px;right:20px;display:flex;flex-direction:column;align-items:center;gap:4px;opacity:0.4}
+.scroll-hint span{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;writing-mode:vertical-rl}
+.scroll-hint .material-symbols-outlined{font-size:16px;animation:bounce 1.5s infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+
+/* SECTIONS */
+.section{max-width:680px;margin:0 auto;padding:60px 20px}
+.section-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.section-title{font-family:'Plus Jakarta Sans';font-weight:900;font-size:clamp(24px,5vw,36px);letter-spacing:-0.04em;line-height:1.05;margin-bottom:20px;color:#1b1c1c}
+.section-body{font-size:15px;color:#5a403f;line-height:1.75}
+
+/* DIVIDER */
+.divider{max-width:680px;margin:0 auto 0;padding:0 20px}
+.divider-line{height:1px;background:linear-gradient(90deg,transparent,rgba(226,190,188,0.6) 50%,transparent)}
+
+/* AVANTAGES */
+.avantages-grid{display:flex;flex-direction:column;gap:16px;margin-top:32px}
+.avantage-card{display:flex;align-items:flex-start;gap:16px;padding:20px;border-radius:20px;border:1px solid rgba(226,190,188,0.5);background:#fff;transition:all 0.3s;box-shadow:0 2px 12px rgba(27,28,28,0.05)}
+.avantage-card:hover{background:#fffbf0;border-color:rgba(201,168,76,0.4)}
+.avantage-icon{width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.2)}
+.avantage-icon .material-symbols-outlined{font-size:20px;color:var(--gold)}
+.avantage-title{font-family:'Plus Jakarta Sans';font-weight:700;font-size:15px;color:#1b1c1c;margin-bottom:4px}
+.avantage-desc{font-size:13px;color:#5a403f;line-height:1.6}
+
+/* TIRAGE AU SORT */
+.tirage-card{margin-top:32px;border-radius:24px;overflow:hidden;border:1px solid rgba(201,168,76,0.25);position:relative;background:linear-gradient(135deg,#0f0d00,#1a1800)}
+.tirage-top{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold2) 50%,transparent)}
+.tirage-content{padding:28px}
+.tirage-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:99px;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.25);margin-bottom:16px}
+.tirage-badge span{font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:0.15em;font-family:'JetBrains Mono',monospace}
+.tirage-title{font-family:'Plus Jakarta Sans';font-weight:900;font-size:28px;letter-spacing:-0.04em;line-height:1.1;margin-bottom:8px;background:linear-gradient(135deg,var(--gold2),var(--gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.tirage-sub{font-size:13px;color:rgba(255,255,255,0.4);line-height:1.6;margin-bottom:20px}
+.tirage-car{width:100%;height:180px;object-fit:cover;border-radius:14px;background:rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:center}
+.tirage-note{margin-top:16px;font-size:11px;color:rgba(255,255,255,0.35);text-align:center;font-style:italic}
+
+/* CONDITIONS */
+.conditions-card{margin-top:32px;padding:28px;border-radius:20px;background:#fff;border:1px solid rgba(226,190,188,0.5);box-shadow:0 2px 12px rgba(27,28,28,0.05)}
+.condition-row{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid rgba(226,190,188,0.3)}
+.condition-row:last-child{border-bottom:none}
+.condition-label{font-size:13px;color:#5a403f}
+.condition-val{font-family:'Plus Jakarta Sans';font-weight:800;font-size:15px;color:#1b1c1c}
+.condition-val.gold{background:linear-gradient(135deg,var(--gold2),var(--gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+
+/* INTERVENANTS */
+.intervenants-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:32px}
+.intervenant-card{padding:20px;border-radius:18px;border:1px solid rgba(226,190,188,0.5);background:#fff;text-align:center;box-shadow:0 2px 8px rgba(27,28,28,0.04)}
+.intervenant-avatar{width:56px;height:56px;border-radius:50%;background:rgba(201,168,76,0.15);border:2px solid rgba(201,168,76,0.3);display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.intervenant-avatar .material-symbols-outlined{font-size:24px;color:var(--gold)}
+.intervenant-name{font-family:'Plus Jakarta Sans';font-weight:700;font-size:14px;color:#1b1c1c;margin-bottom:3px}
+.intervenant-role{font-size:11px;color:#5a403f}
+
+/* CTA FIXE */
+.cta-bar{position:fixed;bottom:0;left:0;right:0;padding:16px 20px 32px;background:linear-gradient(to top,rgba(252,249,248,1) 60%,transparent);z-index:100}
+.cta-inner{max-width:680px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.cta-info{flex:1}
+.cta-info-label{font-size:10px;color:#5a403f;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:2px}
+.cta-info-val{font-family:'Plus Jakarta Sans';font-weight:800;font-size:15px;color:#1b1c1c}
+.cta-btn{padding:16px 28px;border-radius:16px;border:none;font-family:'Plus Jakarta Sans';font-weight:800;font-size:14px;cursor:pointer;background:linear-gradient(135deg,var(--gold2),var(--gold));color:#1b1c1c;letter-spacing:-0.01em;white-space:nowrap;transition:all 0.2s;box-shadow:0 8px 24px rgba(201,168,76,0.3)}
+.cta-btn:hover{transform:translateY(-1px);box-shadow:0 12px 32px rgba(201,168,76,0.4)}
+.cta-btn:active{transform:scale(0.98)}
+.cta-locked{padding:16px 28px;border-radius:16px;border:1px solid rgba(201,168,76,0.4);font-family:'Plus Jakarta Sans';font-weight:800;font-size:14px;color:#b8860b;background:rgba(201,168,76,0.1);white-space:nowrap;display:flex;align-items:center;gap:8px;cursor:default}
+
+/* AMBIENT */
+.ambient{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse at 80% 20%,rgba(201,168,76,0.06) 0%,transparent 50%)}
+body>*:not(.ambient){position:relative;z-index:1}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) both}
+</style>
+</head>
+<body>
+
+<div class="ambient"></div>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="nav-back">
+    <span class="material-symbols-outlined" style="font-size:18px">arrow_back</span>
+    Accueil
+  </a>
+  <div class="nav-logo">
+    Stacker<div class="dot"></div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <img src="assets/banners/elite.jpg" alt="Stacker Elite Gathering" class="hero-img" onerror="this.style.display='none'">
+  <div class="hero-img-placeholder"></div>
+  <div class="hero-gradient"></div>
+  <div class="hero-content fade-up">
+    <h1 class="hero-title">
+      La soirée<br>où il faut
+      <em>être.</em>
+    </h1>
+    <p class="hero-sub">Un soir par an. Les meilleurs closers de France. Des connexions qui changent une carrière. Tu y seras ou tu regarderas les autres.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">calendar_month</span>
+        <span><strong>8 Juin 2027</strong></span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">location_on</span>
+        <span><strong>À confirmer</strong></span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">group</span>
+        <span>Top closers Stacker uniquement</span>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span class="material-symbols-outlined">expand_more</span>
+    <span>Scroll</span>
+  </div>
+</div>
+
+<!-- AMBIANCE -->
+<div class="section" style="padding-top:48px;padding-bottom:32px">
+  <p class="section-label">L'événement</p>
+  <h2 class="section-title">Ce n'est pas<br>une soirée comme les autres.</h2>
+  <p class="section-body">C'est la nuit où les meilleurs closers de France se retrouvent dans la même pièce. Pas de grand public, pas de spectateurs. Que des performeurs. Chaque personne présente a prouvé qu'elle appartient à l'élite — et tu le sais dès que tu passes la porte.</p>
+</div>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- AVANTAGES -->
+<div class="section">
+  <p class="section-label">Au programme</p>
+  <h2 class="section-title">Ce qui t'attend cette nuit-là.</h2>
+  <div class="avantages-grid">
+    <div class="avantage-card">
+      <div class="avantage-icon">
+        <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">groups</span>
+      </div>
+      <div>
+        <p class="avantage-title">Networking d'élite</p>
+        <p class="avantage-desc">Un carnet de contacts que tu ne peux pas construire ailleurs. Des closers qui génèrent des dizaines de milliers d'euros par mois, dans la même salle que toi.</p>
+      </div>
+    </div>
+    <div class="avantage-card">
+      <div class="avantage-icon">
+        <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">mic</span>
+      </div>
+      <div>
+        <p class="avantage-title">Interventions exclusives</p>
+        <p class="avantage-desc">Les meilleurs closers français prennent la parole. Techniques avancées, mindset, stratégies que tu ne trouveras pas sur YouTube. Du concret, du brut.</p>
+      </div>
+    </div>
+    <div class="avantage-card">
+      <div class="avantage-icon">
+        <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">book</span>
+      </div>
+      <div>
+        <p class="avantage-title">Carnet de contact Stacker</p>
+        <p class="avantage-desc">Chaque participant reçoit le carnet de contact officiel de l'événement — les coordonnées de tous les présents. Un réseau que tu gardes à vie.</p>
+      </div>
+    </div>
+    <div class="avantage-card">
+      <div class="avantage-icon">
+        <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">inventory_2</span>
+      </div>
+      <div>
+        <p class="avantage-title">Offres & partenariats exclusifs</p>
+        <p class="avantage-desc">Des offres que seuls les participants voient. Partenariats, deals, opportunités — réservés à ceux qui ont mérité leur place dans la salle.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- TIRAGE AU SORT -->
+<div class="section">
+  <p class="section-label">Le grand tirage</p>
+  <h2 class="section-title">Une voiture à gagner.</h2>
+  <p class="section-body">Chaque participant est automatiquement inscrit au tirage au sort. Un seul gagnant. Une voiture. C'est tout.</p>
+  <div class="tirage-card">
+    <div class="tirage-top"></div>
+    <div class="tirage-content">
+      <div class="tirage-badge">
+        <span class="material-symbols-outlined filled" style="font-size:12px;color:var(--gold);font-variation-settings:'FILL' 1">stars</span>
+        <span>Tirage au sort · 8 Juin 2027</span>
+      </div>
+      <p class="tirage-title">1 voiture<br>à remporter.</p>
+      <p class="tirage-sub">Tous les participants présents sont automatiquement inscrits. Aucune condition supplémentaire. Tu es là, tu joues.</p>
+      <div class="tirage-car" style="overflow:hidden;border-radius:14px;background:#0d0d0d;height:180px;display:flex;align-items:center;justify-content:center">
+        <img src="assets/voiture/mercedes" alt="Mercedes Classe A 2026" style="width:100%;height:100%;object-fit:cover;border-radius:14px" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div style="display:none;flex-direction:column;align-items:center;gap:8px;opacity:0.3">
+          <span class="material-symbols-outlined" style="font-size:48px">directions_car</span>
+          <p style="font-size:13px;font-weight:600">Mercedes Classe A 2026</p>
+        </div>
+      </div>
+      <p class="tirage-note">Tirage réalisé en direct le soir de l'événement devant tous les participants.</p>
+    </div>
+  </div>
+</div>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- INTERVENANTS -->
+<div class="section">
+  <p class="section-label">Sur scène</p>
+  <h2 class="section-title">Les meilleurs closers<br>français prennent la parole.</h2>
+  <p class="section-body">Pas des théoriciens. Des gens qui vendent, chaque jour, des sommes que la plupart n'imaginent pas. Ils partagent ce qui marche vraiment.</p>
+  <div class="intervenants-grid">
+    <div class="intervenant-card">
+      <div class="intervenant-avatar">
+        <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">person</span>
+      </div>
+      <p class="intervenant-name">À confirmer</p>
+      <p class="intervenant-role">Closer · Top 1% France</p>
+    </div>
+    <div class="intervenant-card">
+      <div class="intervenant-avatar">
+        <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">person</span>
+      </div>
+      <p class="intervenant-name">À confirmer</p>
+      <p class="intervenant-role">Closer · Top 1% France</p>
+    </div>
+    <div class="intervenant-card">
+      <div class="intervenant-avatar">
+        <span class="material-symbols-outlined filled" style="font-variation-settings:'FILL' 1">person</span>
+      </div>
+      <p class="intervenant-name">À confirmer</p>
+      <p class="intervenant-role">Closer · Top 1% France</p>
+    </div>
+    <div class="intervenant-card" style="border:1px dashed rgba(201,168,76,0.2);background:transparent">
+      <div class="intervenant-avatar" style="border-style:dashed">
+        <span class="material-symbols-outlined" style="font-size:20px;color:rgba(201,168,76,0.4)">add</span>
+      </div>
+      <p class="intervenant-name" style="color:rgba(255,255,255,0.3)">+ d'autres</p>
+      <p class="intervenant-role">Annonces à venir</p>
+    </div>
+  </div>
+</div>
+
+<div class="divider"><div class="divider-line"></div></div>
+
+<!-- CONDITIONS -->
+<div class="section">
+  <p class="section-label">Comment y accéder</p>
+  <h2 class="section-title">L'invitation se mérite.</h2>
+  <p class="section-body">Pas de candidature. Pas de favoritisme. Un seul critère objectif : ton CA annuel. Tu l'atteins, tu es invité. C'est aussi simple que ça.</p>
+  <div class="conditions-card">
+    <div class="condition-row">
+      <span class="condition-label">CA annuel requis</span>
+      <span class="condition-val gold">150 000 €</span>
+    </div>
+    <div class="condition-row">
+      <span class="condition-label">Date de l'événement</span>
+      <span class="condition-val">8 Juin 2027</span>
+    </div>
+    <div class="condition-row">
+      <span class="condition-label">Accès</span>
+      <span class="condition-val">Sur invitation uniquement</span>
+    </div>
+    <div class="condition-row">
+      <span class="condition-label">Places disponibles</span>
+      <span class="condition-val">Limitées</span>
+    </div>
+    <div class="condition-row">
+      <span class="condition-label">Tirage au sort</span>
+      <span class="condition-val">Automatique si présent</span>
+    </div>
+  </div>
+  <p style="font-size:12px;color:#8e706f;margin-top:16px;line-height:1.6;text-align:center">Les participants éligibles reçoivent leur invitation par email dès la validation de leur CA. Aucune démarche supplémentaire n'est nécessaire.</p>
+</div>
+
+<!-- ESPACE POUR LE CTA FIXE -->
+<div style="height:120px"></div>
+
+<!-- CTA FIXE -->
+<div class="cta-bar">
+  <div class="cta-inner">
+    <div class="cta-info">
+      <p class="cta-info-label">Objectif pour être invité</p>
+      <p class="cta-info-val">150 000 € de CA annuel</p>
+    </div>
+    <div class="cta-locked">
+      <span class="material-symbols-outlined" style="font-size:16px">lock</span>
+      Invitation à débloquer
+    </div>
+  </div>
+</div>
+
+<script>
+// Déverouiller le CTA si l'utilisateur a le CA requis
+const ca = parseFloat(localStorage.getItem('stacker_ca_annuel') || '0');
+if (ca >= 150000) {
+  const btn = document.querySelector('.cta-locked');
+  if (btn) {
+    btn.outerHTML = '<button class="cta-btn">Confirmer ma présence</button>';
+  }
+}
+
+// Reveal au scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.style.opacity = '1'; e.target.style.transform = 'translateY(0)'; } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.avantage-card, .intervenant-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'all 0.5s cubic-bezier(0.22,1,0.36,1)';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
