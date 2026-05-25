@@ -202,6 +202,14 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
       <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface" style="font-size:18px">trending_up</span></div>
       <div class="flex-1 min-w-0"><p class="nav-item-label text-sm font-semibold">Performance</p><p class="text-[11px] text-on-surface-variant" id="navPerf">0 € ce mois</p></div>
     </a>
+    <a href="deals.html" class="nav-item">
+      <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface" style="font-size:18px">handshake</span></div>
+      <div class="flex-1 min-w-0"><p class="nav-item-label text-sm font-semibold">Mes deals</p><p class="text-[11px] text-on-surface-variant">Commissions & historique</p></div>
+    </a>
+    <a href="pipeline.html" class="nav-item">
+      <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface" style="font-size:18px">account_tree</span></div>
+      <div class="flex-1 min-w-0"><p class="nav-item-label text-sm font-semibold">Pipeline</p><p class="text-[11px] text-on-surface-variant">Mes prospects</p></div>
+    </a>
     <a href="statut.html" class="nav-item">
       <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface" style="font-size:18px">workspace_premium</span></div>
       <div class="flex-1 min-w-0"><p class="nav-item-label text-sm font-semibold">Statuts & Avantages</p><p class="text-[11px] text-on-surface-variant">Standard · Elite · Égérie</p></div>
@@ -214,7 +222,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
   <div class="px-5 py-4 border-t border-outline-variant/30 flex items-center justify-between">
     <div class="flex items-center gap-2">
       <div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-white text-[10px] font-bold" id="navAvatar">?</div>
-      <div><p class="text-xs font-bold text-on-surface" id="navName">Mon profil</p><p class="text-[10px] text-on-surface-variant" id="navLevel">Rookie</p></div>
+      <a href="profil.html" style="text-decoration:none"><div><p class="text-xs font-bold text-on-surface" id="navName">Mon profil</p><p class="text-[10px] text-on-surface-variant" id="navLevel">Rookie</p></div></a>
     </div>
     <div class="flex items-center gap-1 px-2 py-1 rounded-full bg-surface-container">
       <span class="material-symbols-outlined filled flame" style="font-size:18px;color:#f97316;font-variation-settings:'FILL' 1">local_fire_department</span>
@@ -589,6 +597,15 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
         </div>
       </div>
     </a>
+  </section>
+  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.25) 50%,transparent);margin:0 4px"></div>
+
+  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.25) 50%,transparent);margin:0 4px"></div>
+
+  <!-- FEED LIVE -->
+  <section class="reveal">
+    <div class="eyebrow-gold mb-3"><span>Deals en direct</span></div>
+    <div id="liveFeed" style="display:flex;flex-direction:column;gap:8px"></div>
   </section>
   <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.25) 50%,transparent);margin:0 4px"></div>
 
@@ -1206,6 +1223,103 @@ window.closeHamburger = function() {
   document.getElementById('hamburgerPanel').classList.remove('open');
   document.getElementById('hamburgerBackdrop').classList.remove('open');
 };
+
+
+// ─── FEED LIVE ───────────────────────────────────────
+const FEED_DEALS = [
+  {city:'Lyon',product:'Carte Fidélité',com:80,icon:'loyalty',color:'#006c4c'},
+  {city:'Marseille',product:'E-Réputation Google',com:120,icon:'reviews',color:'#f4b400'},
+  {city:'Bordeaux',product:'Réduction Énergie',com:95,icon:'bolt',color:'#f97316'},
+  {city:'Paris',product:'Seoia SEO',com:280,icon:'travel_explore',color:'#b52330'},
+  {city:'Toulouse',product:'Google My Business',com:75,icon:'location_on',color:'#0f9d58'},
+  {city:'Nantes',product:'Site web Alma',com:190,icon:'web',color:'#0d47a1'},
+  {city:'Lille',product:'Carte Fidélité',com:80,icon:'loyalty',color:'#006c4c'},
+  {city:'Nice',product:'Contenu Réseaux',com:110,icon:'thumb_up',color:'#e1306c'},
+  {city:'Strasbourg',product:'Rachat de Crédit',com:340,icon:'account_balance',color:'#1565c0'},
+  {city:'Rennes',product:'E-Réputation Google',com:120,icon:'reviews',color:'#f4b400'},
+  {city:'Montpellier',product:'Réduction Énergie',com:95,icon:'bolt',color:'#f97316'},
+  {city:'Grenoble',product:'Site web Alma',com:190,icon:'web',color:'#0d47a1'},
+  {city:'Avignon',product:'Carte Fidélité',com:80,icon:'loyalty',color:'#006c4c'},
+  {city:'Dijon',product:'Google My Business',com:75,icon:'location_on',color:'#0f9d58'},
+  {city:'Rouen',product:'Seoia SEO',com:280,icon:'travel_explore',color:'#b52330'},
+];
+
+const CLOSER_NAMES = ['Un closer','Un closer','Un closer','Un closer Elite','Un Égérie Stacker'];
+
+function getRandomDelay() {
+  // Random between 4 and 18 minutes in ms
+  return (Math.floor(Math.random() * 840) + 240) * 1000;
+}
+
+function isBusinessHours() {
+  const now = new Date();
+  const h = now.getHours();
+  const m = now.getMinutes();
+  const totalMin = h * 60 + m;
+  return totalMin >= 9*60+20 && totalMin <= 18*60+40;
+}
+
+function timeAgo(date) {
+  const diff = Math.floor((Date.now() - date) / 60000);
+  if (diff < 1) return 'à l'instant';
+  if (diff < 60) return `il y a ${diff} min`;
+  return `il y a ${Math.floor(diff/60)}h`;
+}
+
+let feedItems = JSON.parse(sessionStorage.getItem('stacker_feed') || '[]');
+
+function addFeedItem() {
+  if (!isBusinessHours()) { scheduleFeed(); return; }
+  const deal = FEED_DEALS[Math.floor(Math.random() * FEED_DEALS.length)];
+  const closer = CLOSER_NAMES[Math.floor(Math.random() * CLOSER_NAMES.length)];
+  feedItems.unshift({ deal, closer, time: Date.now() });
+  if (feedItems.length > 5) feedItems = feedItems.slice(0, 5);
+  sessionStorage.setItem('stacker_feed', JSON.stringify(feedItems));
+  renderFeed();
+  scheduleFeed();
+}
+
+function renderFeed() {
+  const el = document.getElementById('liveFeed');
+  if (!el) return;
+  if (feedItems.length === 0) {
+    el.innerHTML = '<p style="font-size:13px;color:#8e706f;text-align:center;padding:16px 0">Les deals du jour apparaîtront ici dès 9h20.</p>';
+    return;
+  }
+  el.innerHTML = feedItems.map((item, i) => {
+    const d = item.deal;
+    const ago = timeAgo(item.time);
+    const isNew = i === 0 && (Date.now() - item.time) < 5000;
+    return `<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:#fff;border-radius:16px;border:1px solid rgba(226,190,188,0.45);box-shadow:0 2px 8px -3px rgba(27,28,28,0.05);${isNew?'animation:slideUp 0.4s cubic-bezier(0.22,1,0.36,1) both':''}">
+      <div style="width:36px;height:36px;border-radius:11px;background:${d.color}15;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <span class="material-symbols-outlined filled" style="font-size:16px;color:${d.color};font-variation-settings:'FILL' 1">${d.icon}</span>
+      </div>
+      <div style="flex:1;min-width:0">
+        <p style="font-size:13px;font-weight:600;color:#1b1c1c;margin-bottom:1px">${item.closer} à <strong>${d.city}</strong> vient de signer</p>
+        <p style="font-size:11px;color:#6b5550">${d.product} · <span style="color:#006c4c;font-weight:700">+${d.com} €/mois</span></p>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0">
+        ${isNew ? '<span style="width:6px;height:6px;border-radius:50%;background:#b52330;animation:pulse-dot 2s ease-in-out infinite;display:block"></span>' : ''}
+        <span style="font-size:10px;color:#8e706f;white-space:nowrap">${ago}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function scheduleFeed() {
+  setTimeout(addFeedItem, getRandomDelay());
+}
+
+// Init feed
+renderFeed();
+if (isBusinessHours()) {
+  setTimeout(addFeedItem, Math.random() * 30000 + 5000); // premier deal entre 5 et 35s
+} else {
+  scheduleFeed();
+}
+
+// Refresh timeAgo every minute
+setInterval(renderFeed, 60000);
 
 // ─── RUN ─────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
