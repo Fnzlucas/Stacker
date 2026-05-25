@@ -109,7 +109,19 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
 <!-- Toast -->
 <div id="toastContainer" class="fixed top-20 right-4 z-[90] flex flex-col gap-2 pointer-events-none w-80"></div>
 
-<!-- Coach backdrop -->
+<!-- Citation du jour -->
+<div id="quoteModal" class="hidden fixed inset-0 z-[200] flex items-center justify-center p-6" style="background:rgba(27,28,28,0.6);backdrop-filter:blur(8px)">
+  <div class="bg-surface-container-lowest rounded-2xl soft-shadow w-full max-w-sm p-7 text-center" style="animation:fadeUp 0.4s cubic-bezier(0.22,1,0.36,1) both">
+    <div class="w-12 h-12 rounded-full cta-gradient flex items-center justify-center mx-auto mb-5" style="box-shadow:0 6px 20px rgba(181,35,48,0.25)">
+      <span class="material-symbols-outlined filled text-white" style="font-size:22px;font-variation-settings:'FILL' 1">format_quote</span>
+    </div>
+    <p class="font-headline font-bold text-lg text-on-surface leading-snug mb-3 display-tight" id="quoteText" style="letter-spacing:-0.02em"></p>
+    <p class="font-mono text-[11px] text-on-surface-variant tracking-[0.08em] mb-6" id="quoteAuthor"></p>
+    <button onclick="closeQuote()" class="w-full py-3.5 rounded-xl cta-gradient text-white font-headline font-bold text-sm hover:opacity-95 transition active:scale-[0.99]" style="box-shadow:0 6px 20px rgba(181,35,48,0.2)">
+      Allons-y
+    </button>
+  </div>
+</div>
 <div id="coachBackdrop" class="coach-backdrop" onclick="closeCoach()"></div>
 
 <!-- Coach IA modal -->
@@ -662,6 +674,51 @@ function init() {
 
   // IBAN
   if (localStorage.getItem('stacker_iban_set') === '0') document.getElementById('ibanBanner').classList.remove('hidden');
+
+  // Citation du jour
+  const QUOTES = [
+    { text:"Le succès, c'est d'aller d'échec en échec sans perdre son enthousiasme.", author:"Winston Churchill" },
+    { text:"La vente commence quand le client dit non.", author:"Proverbe commercial" },
+    { text:"Chaque appel passé est une chance. Chaque porte frappée est une opportunité.", author:"Stacker" },
+    { text:"Les gens n'achètent pas ce que vous faites, ils achètent pourquoi vous le faites.", author:"Simon Sinek" },
+    { text:"Le meilleur moment pour prospecter était hier. Le deuxième meilleur moment, c'est maintenant.", author:"Stacker" },
+    { text:"Un commercial qui a peur du refus n'a pas encore compris que le refus est le chemin vers le oui.", author:"Stacker" },
+    { text:"Votre revenu est directement proportionnel au nombre de personnes que vous aidez.", author:"Zig Ziglar" },
+    { text:"La discipline est le pont entre les objectifs et les résultats.", author:"Jim Rohn" },
+    { text:"Un deal signé aujourd'hui, c'est une commission récurrente demain, après-demain, et le mois prochain.", author:"Stacker" },
+    { text:"Chaque non que tu entends te rapproche du oui que tu cherches.", author:"Stacker" },
+    { text:"Vendre, c'est transférer son enthousiasme à quelqu'un d'autre.", author:"Frank Bettger" },
+    { text:"La différence entre un rêve et un objectif, c'est une date et un plan d'action.", author:"Stacker" },
+    { text:"Faites ce que vous devez faire jusqu'à ce que vous puissiez faire ce que vous voulez faire.", author:"Oprah Winfrey" },
+    { text:"Un prospect n'est pas un ennemi à convaincre, c'est quelqu'un que tu aides à prendre une bonne décision.", author:"Stacker" },
+    { text:"Chaque matin tu as le choix : excuses ou résultats. Pas les deux.", author:"Stacker" },
+    { text:"Le secret de ta réussite se trouve dans ton agenda de la semaine.", author:"Jim Rohn" },
+    { text:"Ne comptez pas les jours. Faites que les jours comptent.", author:"Muhammad Ali" },
+    { text:"Prospecter quand tu n'en as pas envie, c'est exactement ce qui te distingue des autres.", author:"Stacker" },
+    { text:"Ton lien de commission tourne 24h/24. Toi aussi tu devrais.", author:"Stacker" },
+    { text:"La commission récurrente, c'est te payer pour un travail que tu as fait une seule fois.", author:"Stacker" },
+    { text:"Le succès n'est pas final, l'échec n'est pas fatal : c'est le courage de continuer qui compte.", author:"Winston Churchill" },
+    { text:"Traite chaque prospect comme s'il allait devenir ton meilleur client — parce que c'est peut-être le cas.", author:"Stacker" },
+  ];
+  function showDailyQuote() {
+    const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(),0,0)) / 86400000);
+    const q = QUOTES[dayOfYear % QUOTES.length];
+    document.getElementById('quoteText').textContent = '\u201c' + q.text + '\u201d';
+    document.getElementById('quoteAuthor').textContent = '— ' + q.author.toUpperCase();
+    document.getElementById('quoteModal').classList.remove('hidden');
+  }
+  window.closeQuote = function() {
+    const m = document.getElementById('quoteModal');
+    m.style.transition = 'opacity 0.3s ease';
+    m.style.opacity = '0';
+    setTimeout(() => m.classList.add('hidden'), 300);
+  };
+  const lastQuote = localStorage.getItem('stacker_last_quote');
+  const todayStr = new Date().toDateString();
+  if (lastQuote !== todayStr) {
+    localStorage.setItem('stacker_last_quote', todayStr);
+    setTimeout(showDailyQuote, 800);
+  }
 
   // Checklist
   if (!localStorage.getItem('stacker_checklist_done') && !localStorage.getItem('stacker_checklist_dismissed')) {
