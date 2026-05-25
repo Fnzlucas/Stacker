@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mes Deals · Stacker</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--dark:#1b1c1c;--surface:#faf7f4;--muted:#6b5550;--border:rgba(226,190,188,0.45);--red:#b52330;--red2:#ff5a5f;--green:#006c4c;--gold:#c9a84c}
+html,body{min-height:100%;background:var(--surface);color:var(--dark);font-family:'Inter',sans-serif}
+.fi{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;line-height:1;font-family:'Material Symbols Outlined'}
+.nav{position:sticky;top:0;z-index:100;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;background:rgba(250,247,244,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Plus Jakarta Sans';font-weight:900;font-size:17px;color:var(--dark);letter-spacing:-0.03em;display:flex;align-items:center;gap:3px;text-decoration:none}
+.nav-logo-dot{width:5px;height:5px;background:var(--red);border-radius:50%;margin-bottom:3px}
+.nav-back{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none}
+.nav-back:hover{color:var(--dark)}
+.wrap{max-width:680px;margin:0 auto;padding:24px 20px 100px}
+.eyebrow{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.eyebrow::before{content:'';width:18px;height:1px;background:var(--gold)}
+.eyebrow span{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold)}
+h1{font-family:'Plus Jakarta Sans';font-weight:900;font-size:28px;letter-spacing:-0.04em;color:var(--dark);margin-bottom:4px}
+.subtitle{font-size:14px;color:var(--muted);margin-bottom:24px}
+
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px}
+.kpi{background:#fff;border-radius:18px;padding:16px;border:1px solid var(--border);box-shadow:0 2px 12px -4px rgba(27,28,28,0.06)}
+.kpi-label{font-size:9px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+.kpi-val{font-family:'Plus Jakarta Sans';font-weight:900;font-size:22px;letter-spacing:-0.04em;color:var(--dark)}
+.kpi-sub{font-size:10px;color:var(--muted);margin-top:2px}
+
+/* DEAL FORM */
+.add-btn{width:100%;padding:15px;border-radius:16px;background:var(--dark);border:none;color:#fff;font-family:'Plus Jakarta Sans';font-weight:800;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:20px;transition:all 0.2s}
+.add-btn:hover{opacity:0.9}
+.form-card{background:#fff;border-radius:20px;border:1px solid var(--border);padding:20px;margin-bottom:20px;display:none}
+.form-card.open{display:block}
+.form-title{font-family:'Plus Jakarta Sans';font-weight:800;font-size:16px;letter-spacing:-0.02em;color:var(--dark);margin-bottom:16px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.field input,.field select{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:12px;font-family:'Inter';font-size:14px;color:var(--dark);background:var(--surface);outline:none;transition:all 0.18s}
+.field input:focus,.field select:focus{border-color:var(--dark);background:#fff}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-actions{display:flex;gap:10px;margin-top:4px}
+.btn-save{flex:1;padding:13px;border-radius:14px;background:var(--dark);border:none;color:#fff;font-family:'Plus Jakarta Sans';font-weight:800;font-size:13px;cursor:pointer;transition:all 0.2s}
+.btn-cancel{padding:13px 18px;border-radius:14px;background:var(--surface);border:1px solid var(--border);color:var(--muted);font-family:'Plus Jakarta Sans';font-weight:700;font-size:13px;cursor:pointer}
+
+/* DEALS LIST */
+.section-label{font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.deals-list{display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+.deal-card{background:#fff;border-radius:18px;border:1px solid var(--border);padding:16px 18px;display:flex;align-items:center;gap:14px;box-shadow:0 2px 10px -4px rgba(27,28,28,0.05);transition:all 0.2s}
+.deal-card:hover{box-shadow:0 6px 20px -6px rgba(27,28,28,0.1)}
+.deal-icon{width:40px;height:40px;border-radius:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.deal-icon .material-symbols-outlined{font-size:18px}
+.deal-info{flex:1;min-width:0}
+.deal-client{font-family:'Plus Jakarta Sans';font-weight:700;font-size:14px;color:var(--dark);margin-bottom:2px}
+.deal-product{font-size:12px;color:var(--muted)}
+.deal-right{text-align:right;flex-shrink:0}
+.deal-com{font-family:'Plus Jakarta Sans';font-weight:900;font-size:16px;letter-spacing:-0.03em;color:var(--dark)}
+.deal-status{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:99px;font-size:10px;font-weight:700;margin-top:3px}
+.status-pending{background:rgba(181,35,48,0.08);color:var(--red)}
+.status-confirmed{background:rgba(0,108,76,0.08);color:var(--green)}
+.status-paid{background:rgba(0,108,76,0.15);color:var(--green)}
+.empty-state{text-align:center;padding:48px 20px;color:var(--muted)}
+.empty-state .material-symbols-outlined{font-size:48px;display:block;margin:0 auto 12px;opacity:0.3}
+.empty-state p{font-size:14px}
+
+/* CTA FIXE */
+.cta-bar{position:fixed;bottom:0;left:0;right:0;padding:16px 20px 32px;background:linear-gradient(to top,var(--surface) 60%,transparent)}
+.cta-inner{max-width:680px;margin:0 auto}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-back"><span class="material-symbols-outlined" style="font-size:17px">arrow_back</span> Accueil</a>
+  <a href="index.html" class="nav-logo">Stacker<div class="nav-logo-dot"></div></a>
+</nav>
+<div class="wrap">
+  <div class="eyebrow"><span>Mes deals</span></div>
+  <h1>Mes deals signés</h1>
+  <p class="subtitle">Chaque deal logué déclenche le suivi de ta commission.</p>
+
+  <div class="kpi-row">
+    <div class="kpi"><p class="kpi-label">Ce mois</p><p class="kpi-val" id="kpiMonth">0 €</p><p class="kpi-sub">commissions</p></div>
+    <div class="kpi"><p class="kpi-label">Total</p><p class="kpi-val" id="kpiTotal">0</p><p class="kpi-sub">deals signés</p></div>
+    <div class="kpi"><p class="kpi-label">En attente</p><p class="kpi-val" id="kpiPending">0 €</p><p class="kpi-sub">à confirmer</p></div>
+  </div>
+
+  <button class="add-btn" onclick="toggleForm()">
+    <span class="material-symbols-outlined" style="font-size:18px">add</span>
+    Logger un nouveau deal
+  </button>
+
+  <div class="form-card" id="dealForm">
+    <p class="form-title">Nouveau deal</p>
+    <div class="field"><label>Nom du client / entreprise</label><input type="text" id="fClient" placeholder="Ex: Boulangerie Dupont"></div>
+    <div class="field-row">
+      <div class="field"><label>Produit vendu</label>
+        <select id="fProduct">
+          <option value="">Choisir...</option>
+          <option value="Carte Fidélité">Carte Fidélité</option>
+          <option value="E-Réputation Google">E-Réputation Google</option>
+          <option value="Google My Business">Google My Business</option>
+          <option value="Contenu Réseaux Sociaux">Contenu Réseaux</option>
+          <option value="Site web Alma">Site web Alma</option>
+          <option value="Réduction Énergie">Réduction Énergie</option>
+          <option value="Seoia Partners">Seoia SEO</option>
+          <option value="Rachat de Crédit">Rachat de Crédit</option>
+        </select>
+      </div>
+      <div class="field"><label>Commission (€/mois)</label><input type="number" id="fCom" placeholder="Ex: 80" min="0"></div>
+    </div>
+    <div class="field"><label>Notes (optionnel)</label><input type="text" id="fNotes" placeholder="Ex: RDV le 15, client très motivé"></div>
+    <div class="form-actions">
+      <button class="btn-cancel" onclick="toggleForm()">Annuler</button>
+      <button class="btn-save" onclick="saveDeal()">Enregistrer le deal</button>
+    </div>
+  </div>
+
+  <div id="dealsConfirmed" style="display:none">
+    <p class="section-label">Confirmés & Payés</p>
+    <div class="deals-list" id="listConfirmed"></div>
+  </div>
+  <div id="dealsPending">
+    <p class="section-label">En attente de confirmation</p>
+    <div class="deals-list" id="listPending"></div>
+    <div class="empty-state" id="emptyState">
+      <span class="material-symbols-outlined">handshake</span>
+      <p>Aucun deal pour l'instant.<br>Log ton premier deal après chaque signature.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const PRODUCTS = {
+  'Carte Fidélité':'loyalty','E-Réputation Google':'reviews','Google My Business':'location_on',
+  'Contenu Réseaux Sociaux':'thumb_up','Site web Alma':'web','Réduction Énergie':'bolt',
+  'Seoia Partners':'travel_explore','Rachat de Crédit':'account_balance'
+};
+const COLORS = {
+  'Carte Fidélité':'rgba(0,108,76,0.12)','E-Réputation Google':'rgba(244,180,0,0.12)',
+  'Google My Business':'rgba(15,157,88,0.12)','Contenu Réseaux Sociaux':'rgba(225,48,108,0.12)',
+  'Site web Alma':'rgba(13,71,161,0.12)','Réduction Énergie':'rgba(249,171,0,0.12)',
+  'Seoia Partners':'rgba(181,35,48,0.12)','Rachat de Crédit':'rgba(21,101,192,0.12)'
+};
+
+let deals = JSON.parse(localStorage.getItem('stacker_deals') || '[]');
+
+function toggleForm() {
+  document.getElementById('dealForm').classList.toggle('open');
+}
+
+function saveDeal() {
+  const client = document.getElementById('fClient').value.trim();
+  const product = document.getElementById('fProduct').value;
+  const com = parseFloat(document.getElementById('fCom').value) || 0;
+  const notes = document.getElementById('fNotes').value.trim();
+  if (!client || !product || !com) { alert('Merci de remplir client, produit et commission.'); return; }
+  const deal = { id: Date.now(), client, product, com, notes, status: 'pending', date: new Date().toISOString() };
+  deals.unshift(deal);
+  localStorage.setItem('stacker_deals', JSON.stringify(deals));
+  document.getElementById('fClient').value = '';
+  document.getElementById('fProduct').value = '';
+  document.getElementById('fCom').value = '';
+  document.getElementById('fNotes').value = '';
+  toggleForm();
+  render();
+}
+
+function confirmDeal(id) {
+  deals = deals.map(d => d.id === id ? {...d, status:'confirmed'} : d);
+  localStorage.setItem('stacker_deals', JSON.stringify(deals));
+  render();
+}
+
+function deleteDeal(id) {
+  if (!confirm('Supprimer ce deal ?')) return;
+  deals = deals.filter(d => d.id !== id);
+  localStorage.setItem('stacker_deals', JSON.stringify(deals));
+  render();
+}
+
+function render() {
+  const pending = deals.filter(d => d.status === 'pending');
+  const confirmed = deals.filter(d => d.status !== 'pending');
+  const monthCom = deals.filter(d => {
+    const date = new Date(d.date);
+    const now = new Date();
+    return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
+  }).reduce((s, d) => s + d.com, 0);
+  const pendingCom = pending.reduce((s, d) => s + d.com, 0);
+
+  document.getElementById('kpiMonth').textContent = monthCom.toLocaleString('fr-FR') + ' €';
+  document.getElementById('kpiTotal').textContent = deals.length;
+  document.getElementById('kpiPending').textContent = pendingCom.toLocaleString('fr-FR') + ' €';
+
+  document.getElementById('emptyState').style.display = deals.length === 0 ? 'block' : 'none';
+  document.getElementById('dealsConfirmed').style.display = confirmed.length > 0 ? 'block' : 'none';
+
+  document.getElementById('listPending').innerHTML = pending.map(d => dealHTML(d)).join('');
+  document.getElementById('listConfirmed').innerHTML = confirmed.map(d => dealHTML(d)).join('');
+}
+
+function dealHTML(d) {
+  const icon = PRODUCTS[d.product] || 'handshake';
+  const color = COLORS[d.product] || 'rgba(27,28,28,0.08)';
+  const date = new Date(d.date).toLocaleDateString('fr-FR', {day:'numeric',month:'short'});
+  const statusHTML = d.status === 'pending'
+    ? `<span class="deal-status status-pending"><span class="material-symbols-outlined fi" style="font-size:10px">schedule</span> En attente</span>`
+    : `<span class="deal-status status-confirmed"><span class="material-symbols-outlined fi" style="font-size:10px">check_circle</span> Confirmé</span>`;
+  const actions = d.status === 'pending'
+    ? `<button onclick="confirmDeal(${d.id})" style="margin-top:10px;width:100%;padding:8px;border-radius:10px;background:rgba(0,108,76,0.1);border:1px solid rgba(0,108,76,0.2);color:#006c4c;font-size:12px;font-weight:700;cursor:pointer">✓ Marquer comme confirmé</button>`
+    : '';
+  return `<div class="deal-card" style="flex-direction:column;align-items:stretch">
+    <div style="display:flex;align-items:center;gap:14px">
+      <div class="deal-icon" style="background:${color}"><span class="material-symbols-outlined fi" style="color:var(--dark)">${icon}</span></div>
+      <div class="deal-info">
+        <p class="deal-client">${d.client}</p>
+        <p class="deal-product">${d.product} · ${date}</p>
+        ${d.notes ? `<p style="font-size:11px;color:var(--muted);margin-top:2px;font-style:italic">${d.notes}</p>` : ''}
+      </div>
+      <div class="deal-right">
+        <p class="deal-com">+${d.com} €</p>
+        <p style="font-size:10px;color:var(--muted)">/mois</p>
+        ${statusHTML}
+      </div>
+    </div>
+    ${actions}
+  </div>`;
+}
+
+render();
+</script>
+</body>
+</html>
