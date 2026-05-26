@@ -67,6 +67,20 @@ body{font-family:'Inter',sans-serif;background:#faf7f4}
 .countdown-ring{animation:countdown linear forwards}
 /* Reward bar */
 .reward-fill{transition:width 1.2s cubic-bezier(0.22,1,0.36,1)}
+/* DEAL POPUP */
+.deal-popup{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);z-index:150;opacity:0;pointer-events:none;transition:all 0.4s cubic-bezier(0.22,1,0.36,1);width:calc(100% - 40px);max-width:400px}
+.deal-popup.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+.deal-popup-inner{background:#fff;border-radius:20px;border:1px solid rgba(226,190,188,0.5);box-shadow:0 16px 48px -8px rgba(27,28,28,0.18);padding:14px 16px;display:flex;align-items:center;gap:12px}
+.deal-popup-icon{width:38px;height:38px;border-radius:11px;background:rgba(27,28,28,0.06);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.deal-popup-icon .material-symbols-outlined{font-size:18px;color:#1b1c1c;font-variation-settings:'FILL' 1}
+.deal-popup-text{flex:1;min-width:0}
+.deal-popup-title{font-size:13px;font-weight:700;color:#1b1c1c;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.deal-popup-sub{font-size:11px;color:#6b5550}
+.deal-popup-com{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:14px;color:#006c4c;letter-spacing:-0.02em;flex-shrink:0}
+.deal-popup-live{display:flex;align-items:center;gap:3px;margin-bottom:2px;justify-content:flex-end}
+.deal-popup-live span.dot{width:5px;height:5px;border-radius:50%;background:#b52330;display:block;animation:pulse-dot 2s ease-in-out infinite}
+.deal-popup-live span.label{font-size:9px;font-weight:700;color:#b52330;letter-spacing:0.08em;text-transform:uppercase}
+
 /* Coach modal */
 .coach-modal{position:fixed;inset:0;z-index:80;display:flex;align-items:flex-end;justify-content:center;padding:0}
 .coach-panel{width:100%;max-width:680px;background:#fff;border-radius:24px 24px 0 0;box-shadow:0 -20px 60px rgba(27,28,28,0.15);transform:translateY(100%);transition:transform 0.4s cubic-bezier(0.22,1,0.36,1);max-height:85vh;overflow-y:auto}
@@ -524,7 +538,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
           <span class="material-symbols-outlined filled text-on-surface-variant" style="font-size:36px;display:none;font-variation-settings:'FILL' 1">smartphone</span>
         </div>
         <p class="font-headline font-bold text-sm text-on-surface mb-0.5">iPhone 17 Pro</p>
-        <p class="text-[11px] text-on-surface-variant mb-2">5 000 € de CA</p>
+        <p class="text-[11px] text-on-surface-variant mb-2">7 500 € de CA</p>
         <div class="h-1 rounded-full bg-surface-container-high"><div class="reward-fill h-full rounded-full bg-tertiary" id="rbar-3" style="width:0%"></div></div>
       </div>
       <div class="reward-card cursor-pointer relative overflow-hidden" id="reward-4" onclick="window.location.href='cadeau.html?id=4'" style="background:#ffffff;border:1.5px solid rgba(255,197,0,0.5)">
@@ -534,7 +548,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
           <span class="material-symbols-outlined filled" style="font-size:36px;display:none;color:#b8860b;font-variation-settings:'FILL' 1">watch</span>
         </div>
         <p class="font-headline font-bold text-sm mb-0.5" style="color:#b8860b">Rolex Daytona</p>
-        <p class="text-[11px] text-on-surface-variant mb-2">15 000 € de CA</p>
+        <p class="text-[11px] text-on-surface-variant mb-2">40 000 € de CA</p>
         <div class="h-1 rounded-full bg-surface-container-high"><div class="reward-fill h-full rounded-full" style="background:linear-gradient(90deg,#ffd700,#b8860b)" id="rbar-4"></div></div>
       </div>
     </div>
@@ -1261,21 +1275,36 @@ function isBusinessHours() {
 
 function timeAgo(date) {
   const diff = Math.floor((Date.now() - date) / 60000);
-  if (diff < 1) return 'à l'instant';
+  if (diff < 1) return `à l'instant`;
   if (diff < 60) return `il y a ${diff} min`;
   return `il y a ${Math.floor(diff/60)}h`;
 }
 
-let feedItems = JSON.parse(sessionStorage.getItem('stacker_feed') || '[]');
+const today = new Date().toDateString();
+const feedKey = 'stacker_feed_' + today;
+// Clear old feed keys
+Object.keys(localStorage).filter(k => k.startsWith('stacker_feed_') && k !== feedKey).forEach(k => localStorage.removeItem(k));
+let feedItems = JSON.parse(localStorage.getItem(feedKey) || '[]');
+
+function showDealPopup(deal, closer) {
+  const popup = document.getElementById('dealPopup');
+  const isElite = closer.includes('Elite') || closer.includes('Égérie');
+  document.getElementById('popupTitle').textContent = (isElite ? '⭐ ' : '') + closer + ' · ' + deal.city;
+  document.getElementById('popupSub').textContent = deal.product;
+  document.getElementById('popupCom').textContent = '+' + deal.com + ' €/mois';
+  popup.classList.add('show');
+  setTimeout(() => popup.classList.remove('show'), 4500);
+}
 
 function addFeedItem() {
   if (!isBusinessHours()) { scheduleFeed(); return; }
   const deal = FEED_DEALS[Math.floor(Math.random() * FEED_DEALS.length)];
   const closer = CLOSER_NAMES[Math.floor(Math.random() * CLOSER_NAMES.length)];
   feedItems.unshift({ deal, closer, time: Date.now() });
-  if (feedItems.length > 5) feedItems = feedItems.slice(0, 5);
-  sessionStorage.setItem('stacker_feed', JSON.stringify(feedItems));
+  if (feedItems.length > 60) feedItems = feedItems.slice(0, 60);
+  localStorage.setItem(feedKey, JSON.stringify(feedItems));
   renderFeed();
+  showDealPopup(deal, closer);
   scheduleFeed();
 }
 
@@ -1283,37 +1312,69 @@ function renderFeed() {
   const el = document.getElementById('liveFeed');
   if (!el) return;
   if (feedItems.length === 0) {
-    el.innerHTML = '<p style="font-size:13px;color:#8e706f;text-align:center;padding:16px 0">Les deals du jour apparaîtront ici dès 9h20.</p>';
+    el.innerHTML = '';
     return;
   }
-  el.innerHTML = feedItems.map((item, i) => {
+  const cardHTML = (item, i) => {
     const d = item.deal;
     const ago = timeAgo(item.time);
     const isNew = i === 0 && (Date.now() - item.time) < 5000;
-    return `<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:#fff;border-radius:16px;border:1px solid rgba(226,190,188,0.45);box-shadow:0 2px 8px -3px rgba(27,28,28,0.05);${isNew?'animation:slideUp 0.4s cubic-bezier(0.22,1,0.36,1) both':''}">
-      <div style="width:36px;height:36px;border-radius:11px;background:${d.color}15;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-        <span class="material-symbols-outlined filled" style="font-size:16px;color:${d.color};font-variation-settings:'FILL' 1">${d.icon}</span>
-      </div>
-      <div style="flex:1;min-width:0">
-        <p style="font-size:13px;font-weight:600;color:#1b1c1c;margin-bottom:1px">${item.closer} à <strong>${d.city}</strong> vient de signer</p>
-        <p style="font-size:11px;color:#6b5550">${d.product} · <span style="color:#006c4c;font-weight:700">+${d.com} €/mois</span></p>
-      </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0">
-        ${isNew ? '<span style="width:6px;height:6px;border-radius:50%;background:#b52330;animation:pulse-dot 2s ease-in-out infinite;display:block"></span>' : ''}
-        <span style="font-size:10px;color:#8e706f;white-space:nowrap">${ago}</span>
-      </div>
-    </div>`;
-  }).join('');
+    const isElite = item.closer.includes('Elite') || item.closer.includes('Égérie');
+    const inner = `<div style="display:flex;align-items:center;gap:14px;padding:14px 16px;background:#fff;border-radius:18px;border:1px solid rgba(226,190,188,0.4);box-shadow:0 1px 12px -4px rgba(27,28,28,0.07);${isNew?'animation:slideUp 0.4s cubic-bezier(0.22,1,0.36,1) both;':''}">
+        <div style="width:40px;height:40px;border-radius:12px;background:rgba(27,28,28,0.06);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <span class="material-symbols-outlined" style="font-size:20px;color:#1b1c1c;font-variation-settings:'FILL' 1">handshake</span>
+        </div>
+        <div style="flex:1;min-width:0">
+          <p style="font-size:13px;font-weight:700;color:#1b1c1c;margin-bottom:3px">${isElite ? '⭐ ' : ''}${item.closer} · <span style="color:#b52330">${d.city}</span></p>
+          <div style="display:flex;align-items:center;gap:6px">
+            <span style="font-size:11px;color:#6b5550">${d.product}</span>
+            <span style="width:3px;height:3px;border-radius:50%;background:#e2bebc;display:inline-block"></span>
+            <span style="font-size:12px;font-weight:800;color:#006c4c;font-family:'Plus Jakarta Sans',sans-serif;letter-spacing:-0.02em">+${d.com} €<span style="font-size:10px;font-weight:500;color:#6b5550">/mois</span></span>
+          </div>
+        </div>
+        <div style="flex-shrink:0;text-align:right">
+          ${isNew ? `<div style="display:flex;align-items:center;gap:4px;justify-content:flex-end;margin-bottom:3px"><span style="width:5px;height:5px;border-radius:50%;background:#b52330;display:block;animation:pulse-dot 2s ease-in-out infinite"></span><span style="font-size:9px;font-weight:700;color:#b52330;letter-spacing:0.08em;text-transform:uppercase">Live</span></div>` : ''}
+          <span style="font-size:10px;color:#8e706f;white-space:nowrap">${ago}</span>
+        </div>
+      </div>`;
+    if (i === 2) {
+      return `<div style="position:relative;border-radius:18px;overflow:hidden">
+        <div style="filter:blur(2px);opacity:0.55;pointer-events:none">${inner}</div>
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(250,247,244,0) 0%,rgba(250,247,244,0.95) 100%);pointer-events:none;border-radius:18px"></div>
+      </div>`;
+    }
+    return inner;
+  };
+
+  el.innerHTML = `<div style="display:flex;flex-direction:column;gap:8px;max-height:270px;overflow-y:scroll;-webkit-overflow-scrolling:touch;scrollbar-width:none">
+    ${feedItems.map((item, i) => cardHTML(item, i)).join('')}
+  </div>`;
 }
 
 function scheduleFeed() {
   setTimeout(addFeedItem, getRandomDelay());
 }
 
-// Init feed
+// Init feed — charge des deals "de la veille" au démarrage
+function loadYesterdayDeals() {
+  // 30 deals étalés sur hier (entre -9h et -33h)
+  const offsets = [33,31,29,27.5,26,25,24,23,22,21,20,19,18.5,18,17,16.5,16,15.5,15,14.5,14,13,12,11.5,11,10.5,10,9.5,9.2,9];
+  const yesterday = offsets.map((h, i) => ({
+    deal: FEED_DEALS[i % FEED_DEALS.length],
+    closer: CLOSER_NAMES[i % CLOSER_NAMES.length],
+    time: Date.now() - 1000*60*60*h
+  }));
+  if (feedItems.length === 0) {
+    feedItems = yesterday;
+    localStorage.setItem(feedKey, JSON.stringify(feedItems));
+  }
+}
+
+loadYesterdayDeals();
 renderFeed();
+// Nouveaux deals à partir de 9h20
 if (isBusinessHours()) {
-  setTimeout(addFeedItem, Math.random() * 30000 + 5000); // premier deal entre 5 et 35s
+  setTimeout(addFeedItem, Math.random() * 30000 + 5000);
 } else {
   scheduleFeed();
 }
@@ -1328,5 +1389,22 @@ document.addEventListener('DOMContentLoaded', function() {
   init();
 });
 </script>
+
+<!-- DEAL POPUP -->
+<div class="deal-popup" id="dealPopup">
+  <div class="deal-popup-inner">
+    <div class="deal-popup-icon">
+      <span class="material-symbols-outlined">handshake</span>
+    </div>
+    <div class="deal-popup-text">
+      <p class="deal-popup-title" id="popupTitle">–</p>
+      <p class="deal-popup-sub" id="popupSub">–</p>
+    </div>
+    <div style="text-align:right;flex-shrink:0">
+      <div class="deal-popup-live"><span class="dot"></span><span class="label">Live</span></div>
+      <p class="deal-popup-com" id="popupCom">–</p>
+    </div>
+  </div>
+</div>
 </body>
 </html>
