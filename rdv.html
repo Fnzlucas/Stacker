@@ -132,21 +132,12 @@ html,body{min-height:100%;background:var(--surface);color:var(--dark);font-famil
       <div class="hero-eyebrow-line"></div>
       <span class="hero-eyebrow-text">Section phare · Cold Call</span>
     </div>
-    <h1 class="hero-title">Tu appelles.<br>Tu prends le RDV.<br>On s'occupe du reste.</h1>
-    <p class="hero-sub">Chaque RDV validé par un commercial sur place te rapporte <strong style="color:#fff">5 €</strong>. Pas de vente, pas de déplacement — juste le téléphone.</p>
+    <h1 class="hero-title">Contrôles réglementaires.<br>Déperdition thermique.<br>Tu fixes le RDV.</h1>
+    <p class="hero-sub">Tu appelles des particuliers propriétaires pour fixer un contrôle réglementaire gratuit sur la déperdition thermique de leur logement. Chaque RDV validé = <strong style="color:#fff">5 €</strong>.</p>
     <div class="hero-pills">
-      <div class="hero-pill">
-        <span class="material-symbols-outlined fi">call</span>
-        <span>Tu appelles en cold call</span>
-      </div>
-      <div class="hero-pill">
-        <span class="material-symbols-outlined fi">event</span>
-        <span>Tu fixes le créneau</span>
-      </div>
-      <div class="hero-pill">
-        <span class="material-symbols-outlined fi">payments</span>
-        <span><strong>+5 € dès l'entrée</strong></span>
-      </div>
+      <div class="hero-pill"><span class="material-symbols-outlined fi">call</span><span>Cold call particuliers propriétaires</span></div>
+      <div class="hero-pill"><span class="material-symbols-outlined fi">home</span><span>Contrôle à domicile gratuit</span></div>
+      <div class="hero-pill"><span class="material-symbols-outlined fi">payments</span><span><strong>+5 € dès l'entrée</strong></span></div>
     </div>
   </div>
 </div>
@@ -177,7 +168,7 @@ html,body{min-height:100%;background:var(--surface);color:var(--dark);font-famil
     <div class="info-box-icon"><span class="material-symbols-outlined fi">info</span></div>
     <div>
       <p class="info-box-title">Comment fonctionne la validation ?</p>
-      <p class="info-box-sub">Un commercial Stacker se déplace au créneau fixé. Dès qu'il entre dans le logement ou l'établissement, ton RDV est marqué "Validé" et tes 5 € sont déclenchés automatiquement.</p>
+      <p class="info-box-sub">Un technicien Stacker se déplace au créneau fixé pour réaliser le contrôle de déperdition thermique. Dès qu'il entre dans le logement, ton RDV est marqué "Validé" et tes 5 € sont déclenchés automatiquement. Le contrôle est entièrement gratuit pour le particulier.</p>
     </div>
   </div>
 
@@ -192,11 +183,117 @@ html,body{min-height:100%;background:var(--surface);color:var(--dark);font-famil
       <p style="font-size:12px;color:#6b5550;line-height:1.65"><strong>3 RDV faux — personne sur place, adresse incorrecte ou contact inexistant — et tu ne touches aucune commission. Ton compte est définitivement banni de la plateforme.</strong></p>
     </div>
   </div>
+
+  <!-- SCRIPTS RDV -->
+  <div style="background:#fff;border-radius:22px;border:1px solid rgba(226,190,188,0.45);box-shadow:0 2px 16px -4px rgba(27,28,28,0.08);overflow:hidden;margin-bottom:24px">
+    <div style="padding:18px 22px 16px;border-bottom:1px solid rgba(226,190,188,0.3);display:flex;align-items:center;gap:10px">
+      <span class="material-symbols-outlined fi" style="font-size:18px;color:#b52330">menu_book</span>
+      <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:16px;color:#1b1c1c;letter-spacing:-0.02em">Scripts de prise de RDV</h2>
+    </div>
+    <!-- TABS SCRIPTS -->
+    <div style="display:flex;border-bottom:1px solid rgba(226,190,188,0.3);overflow-x:auto;scrollbar-width:none">
+      <button onclick="showScript('tel')" id="stab-tel" style="padding:12px 20px;font-size:12px;font-weight:700;border:none;background:none;cursor:pointer;white-space:nowrap;border-bottom:2px solid #b52330;color:#b52330">Téléphone</button>
+      <button onclick="showScript('pap')" id="stab-pap" style="padding:12px 20px;font-size:12px;font-weight:700;border:none;background:none;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;color:#6b5550">Porte-à-porte</button>
+      <button onclick="showScript('objections')" id="stab-objections" style="padding:12px 20px;font-size:12px;font-weight:700;border:none;background:none;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;color:#6b5550">Objections</button>
+    </div>
+    <!-- SCRIPT TEL -->
+    <div id="script-tel" style="padding:20px 22px">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div style="background:#faf7f4;border-radius:14px;padding:16px">
+          <p style="font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#6b5550;margin-bottom:8px">Accroche — les 10 premières secondes</p>
+          <p style="font-size:14px;color:#1b1c1c;line-height:1.7">"Bonjour, je suis <strong>[Prénom]</strong>, je vous appelle de la part de notre organisme agréé. Suite aux nouvelles normes thermiques et environnementales qui sont entrées en vigueur, les propriétaires de logements ont l'obligation de faire contrôler la déperdition énergétique de leur bien. Est-ce que vous êtes bien propriétaire de votre logement ?"</p>
+        </div>
+        <div style="background:#faf7f4;border-radius:14px;padding:16px">
+          <p style="font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#6b5550;margin-bottom:8px">Présentation du contrôle</p>
+          <p style="font-size:14px;color:#1b1c1c;line-height:1.7">"Ce contrôle est entièrement gratuit et prend environ 45 minutes. Un de nos techniciens se déplace directement chez vous pour évaluer la déperdition thermique de votre logement et vous remettre un rapport officiel. C'est important pour être en conformité, notamment si vous envisagez de louer ou vendre votre bien."</p>
+        </div>
+        <div style="background:#faf7f4;border-radius:14px;padding:16px">
+          <p style="font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#6b5550;margin-bottom:8px">Prise du créneau</p>
+          <p style="font-size:14px;color:#1b1c1c;line-height:1.7">"Je peux vous proposer un créneau cette semaine ou la semaine prochaine — notre technicien s'adapte à vos disponibilités. Vous êtes plutôt disponible en matinée ou en après-midi ?"</p>
+        </div>
+        <div style="background:#faf7f4;border-radius:14px;padding:16px">
+          <p style="font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#6b5550;margin-bottom:8px">Confirmation</p>
+          <p style="font-size:14px;color:#1b1c1c;line-height:1.7">"Parfait. Je note votre nom <strong>[Prénom Nom]</strong>, adresse <strong>[adresse complète]</strong>, le <strong>[date]</strong> à <strong>[heure]</strong>. Notre technicien sera là à l'heure. Vous avez un numéro de téléphone direct en cas d'empêchement ?"</p>
+        </div>
+        <div style="background:rgba(0,108,76,0.06);border:1px solid rgba(0,108,76,0.15);border-radius:14px;padding:14px;display:flex;align-items:flex-start;gap:10px">
+          <span class="material-symbols-outlined fi" style="font-size:16px;color:#006c4c;flex-shrink:0;margin-top:1px">tips_and_updates</span>
+          <p style="font-size:13px;color:#006c4c;line-height:1.6"><strong>Tips :</strong> Cible les propriétaires uniquement — locataires inutiles. Insiste sur le caractère gratuit et réglementaire. Ne parle jamais de vente ou de solution commerciale au téléphone.</p>
+        </div>
+      </div>
+    </div>
+    <!-- SCRIPT PAP -->
+    <div id="script-pap" style="padding:20px 22px;display:none">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div style="background:#faf7f4;border-radius:14px;padding:16px">
+          <p style="font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#6b5550;margin-bottom:8px">Entrée en contact (boîte aux lettres / interphone)</p>
+          <p style="font-size:14px;color:#1b1c1c;line-height:1.7">"Bonjour ! Je suis <strong>[Prénom]</strong>, technicien agréé. On passe dans votre secteur pour informer les propriétaires des nouvelles obligations de contrôle thermique. Vous êtes propriétaire de ce logement ?"</p>
+        </div>
+        <div style="background:#faf7f4;border-radius:14px;padding:16px">
+          <p style="font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#6b5550;margin-bottom:8px">Explication rapide</p>
+          <p style="font-size:14px;color:#1b1c1c;line-height:1.7">"Suite aux nouvelles normes thermiques 2024-2025, tous les propriétaires doivent faire évaluer la déperdition énergétique de leur logement. Ce bilan est gratuit, ça prend 45 minutes chez vous, et vous repartez avec un rapport officiel. On peut passer dès cette semaine si vous voulez."</p>
+        </div>
+        <div style="background:#faf7f4;border-radius:14px;padding:16px">
+          <p style="font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#6b5550;margin-bottom:8px">Prise du RDV</p>
+          <p style="font-size:14px;color:#1b1c1c;line-height:1.7">"Je note votre prénom, votre adresse et le créneau qui vous convient — notre technicien sera là à l'heure. Vous préférez matin ou après-midi ?"</p>
+        </div>
+        <div style="background:rgba(0,108,76,0.06);border:1px solid rgba(0,108,76,0.15);border-radius:14px;padding:14px;display:flex;align-items:flex-start;gap:10px">
+          <span class="material-symbols-outlined fi" style="font-size:16px;color:#006c4c;flex-shrink:0;margin-top:1px">tips_and_updates</span>
+          <p style="font-size:13px;color:#006c4c;line-height:1.6"><strong>Tips :</strong> Cible les maisons individuelles et appartements en copropriété. Zones pavillonnaires = mines d'or. Évite les locataires, ils ne peuvent pas décider.</p>
+        </div>
+      </div>
+    </div>
+    <!-- OBJECTIONS -->
+    <div id="script-objections" style="padding:20px 22px;display:none">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="border-radius:14px;border:1px solid rgba(226,190,188,0.45);overflow:hidden">
+          <div style="padding:14px 16px;background:#faf7f4;border-bottom:1px solid rgba(226,190,188,0.3)">
+            <p style="font-size:13px;font-weight:700;color:#1b1c1c">"C'est quoi exactement ce contrôle ?"</p>
+          </div>
+          <div style="padding:14px 16px;background:#fff">
+            <p style="font-size:13px;color:#6b5550;line-height:1.6">"C'est un bilan de déperdition thermique — notre technicien évalue les pertes de chaleur de votre logement liées aux murs, fenêtres, toiture et système de chauffage. Vous recevez un rapport officiel avec les résultats. C'est gratuit et sans engagement."</p>
+          </div>
+        </div>
+        <div style="border-radius:14px;border:1px solid rgba(226,190,188,0.45);overflow:hidden">
+          <div style="padding:14px 16px;background:#faf7f4;border-bottom:1px solid rgba(226,190,188,0.3)">
+            <p style="font-size:13px;font-weight:700;color:#1b1c1c">"J'ai déjà un DPE"</p>
+          </div>
+          <div style="padding:14px 16px;background:#fff">
+            <p style="font-size:13px;color:#6b5550;line-height:1.6">"Le DPE et le bilan de déperdition thermique sont deux choses différentes. Le DPE donne une note globale, notre bilan va plus loin : il identifie précisément où votre logement perd de l'énergie et ce que vous pouvez faire pour réduire vos factures. Et c'est gratuit."</p>
+          </div>
+        </div>
+        <div style="border-radius:14px;border:1px solid rgba(226,190,188,0.45);overflow:hidden">
+          <div style="padding:14px 16px;background:#faf7f4;border-bottom:1px solid rgba(226,190,188,0.3)">
+            <p style="font-size:13px;font-weight:700;color:#1b1c1c">"C'est pour vendre quelque chose ?"</p>
+          </div>
+          <div style="padding:14px 16px;background:#fff">
+            <p style="font-size:13px;color:#6b5550;line-height:1.6">"Le contrôle en lui-même est gratuit et sans engagement — notre technicien vient uniquement évaluer votre logement et vous remettre le rapport. Si à l'issue du bilan vous souhaitez qu'on vous aide à améliorer les points identifiés, il pourra vous présenter des options, mais rien n'est obligatoire."</p>
+          </div>
+        </div>
+        <div style="border-radius:14px;border:1px solid rgba(226,190,188,0.45);overflow:hidden">
+          <div style="padding:14px 16px;background:#faf7f4;border-bottom:1px solid rgba(226,190,188,0.3)">
+            <p style="font-size:13px;font-weight:700;color:#1b1c1c">"Je n'ai pas le temps"</p>
+          </div>
+          <div style="padding:14px 16px;background:#fff">
+            <p style="font-size:13px;color:#6b5550;line-height:1.6">"Notre technicien s'adapte complètement à vous — matin, soir, weekend. Vous n'avez rien à préparer, il apporte tout son matériel. C'est 45 minutes que vous faites autre chose pendant qu'il travaille. Quand êtes-vous le plus disponible ?"</p>
+          </div>
+        </div>
+        <div style="border-radius:14px;border:1px solid rgba(226,190,188,0.45);overflow:hidden">
+          <div style="padding:14px 16px;background:#faf7f4;border-bottom:1px solid rgba(226,190,188,0.3)">
+            <p style="font-size:13px;font-weight:700;color:#1b1c1c">"Je suis locataire"</p>
+          </div>
+          <div style="padding:14px 16px;background:#fff">
+            <p style="font-size:13px;color:#6b5550;line-height:1.6">"Pas de problème, ce contrôle s'adresse aux propriétaires. Merci quand même, bonne journée !" <em style="color:#b52330">[Raccrocher poliment — ne perdez pas de temps]</em></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- FORMULAIRE -->
   <div class="form-card">
     <div class="form-header">
       <span class="material-symbols-outlined fi">add_call</span>
-      <h2>Enregistrer un RDV</h2>
+      <h2>Enregistrer un contrôle thermique</h2>
     </div>
     <div class="form-body">
       <div class="field-row">
@@ -224,7 +321,7 @@ html,body{min-height:100%;background:var(--surface);color:var(--dark);font-famil
       <div class="field"><label>Téléphone du contact</label><input type="tel" id="fTel" placeholder="06 00 00 00 00"></div>
       <button class="submit-btn" onclick="saveRdv()">
         <span class="material-symbols-outlined" style="font-size:18px">event_available</span>
-        Enregistrer le RDV — +5 € en attente
+        Enregistrer le contrôle — +5 € en attente
       </button>
     </div>
   </div>
@@ -248,6 +345,16 @@ html,body{min-height:100%;background:var(--surface);color:var(--dark);font-famil
 </div>
 
 <script>
+
+function showScript(tab) {
+  ['tel','pap','objections'].forEach(t => {
+    document.getElementById('script-' + t).style.display = t === tab ? 'block' : 'none';
+    const btn = document.getElementById('stab-' + t);
+    btn.style.borderBottom = t === tab ? '2px solid #b52330' : '2px solid transparent';
+    btn.style.color = t === tab ? '#b52330' : '#6b5550';
+  });
+}
+
 let rdvs = JSON.parse(localStorage.getItem('stacker_rdvs') || '[]');
 let activeTab = 'all';
 
