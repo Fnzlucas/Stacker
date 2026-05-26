@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stacker Admin · Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --dark:#1b1c1c;--surface:#faf7f4;--cream:#f5f0e8;
+  --muted:#6b5550;--border:rgba(226,190,188,0.45);
+  --red:#b52330;--red2:#ff5a5f;--red-soft:rgba(181,35,48,0.08);
+  --green:#006c4c;--green-soft:rgba(0,108,76,0.08);
+  --gold:#c9a84c;--amber:#f59e0b;--amber-soft:rgba(245,158,11,0.1);
+}
+html,body{height:100%;background:var(--surface);color:var(--dark);font-family:'Inter',sans-serif;overflow:hidden}
+.fi{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;line-height:1;font-family:'Material Symbols Outlined'}
+
+/* LAYOUT */
+.app{display:grid;grid-template-columns:220px 1fr;grid-template-rows:56px 1fr;height:100vh}
+.topbar{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;padding:0 16px;background:#fff;border-bottom:1px solid var(--border);z-index:100;gap:10px}
+.sidebar{background:#fff;border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.main{overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:16px}
+@media(max-width:768px){
+  .app{display:flex;flex-direction:column;height:100vh}
+  .topbar{flex-shrink:0}
+  .sidebar{flex-shrink:0;border-right:none;border-bottom:1px solid var(--border)}
+  .sidebar-inner{flex-direction:row!important;padding:6px 10px;gap:2px;overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap!important;flex:none}
+  .sidebar-inner::-webkit-scrollbar{display:none}
+  .sidebar-group{display:none}
+  .nav-item{flex-direction:row;gap:6px;padding:8px 12px;font-size:12px;white-space:nowrap;flex-shrink:0}
+  .nav-item .material-symbols-outlined{font-size:15px}
+  .sidebar-bottom{display:none}
+  .main{flex:1;overflow-y:auto;padding:12px;gap:12px}
+  .kpi-grid{grid-template-columns:1fr 1fr!important;gap:8px}
+  .kpi-card{padding:14px}
+  .kpi-val{font-size:20px!important}
+  .quota-zones{grid-template-columns:1fr 1fr!important;gap:8px}
+  .quota-global{flex-wrap:wrap;gap:10px;padding:14px}
+  .quota-global-sep{display:none}
+  .quota-global-item{min-width:70px}
+  .admin-badge span{display:none}
+  table{font-size:11px;display:block;overflow-x:auto;white-space:nowrap}
+  th,td{padding:8px 12px}
+  .field-row{grid-template-columns:1fr!important}
+  .modal{width:calc(100vw - 24px)}
+  .modal-bg{padding:12px}
+  .section-title{font-size:17px}
+}
+
+/* TOPBAR */
+.logo{display:flex;align-items:center;gap:8px}
+.logo-text{font-family:'Plus Jakarta Sans';font-weight:900;font-size:17px;color:var(--dark);letter-spacing:-0.04em}
+.logo-admin{font-family:'JetBrains Mono';font-size:9px;font-weight:600;color:#fff;background:var(--red);padding:2px 7px;border-radius:4px;letter-spacing:0.1em}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.admin-badge{display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:8px;background:var(--red-soft);border:1px solid rgba(181,35,48,0.2)}
+.admin-badge span{font-size:11px;font-weight:700;color:var(--red)}
+
+/* SIDEBAR */
+.sidebar-inner{padding:16px 12px;display:flex;flex-direction:column;gap:2px;flex:1;overflow-y:auto}
+.sidebar-group{font-size:9px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);padding:0 10px;margin:14px 0 6px}
+.sidebar-group:first-child{margin-top:0}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;cursor:pointer;transition:all 0.15s;color:var(--muted);font-size:13px;font-weight:500}
+.nav-item:hover{background:var(--surface);color:var(--dark)}
+.nav-item.active{background:var(--red-soft);color:var(--red)}
+.nav-item .material-symbols-outlined{font-size:17px;flex-shrink:0}
+
+/* SECTIONS */
+.section-title{font-family:'Plus Jakarta Sans';font-weight:900;font-size:20px;letter-spacing:-0.04em;color:var(--dark)}
+.section-sub{font-size:13px;color:var(--muted);margin-top:2px}
+
+/* KPI GRID */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.kpi-card{background:#fff;border-radius:18px;border:1px solid var(--border);padding:18px;box-shadow:0 2px 12px -4px rgba(27,28,28,0.06)}
+.kpi-label{font-size:9px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.kpi-val{font-family:'Plus Jakarta Sans';font-weight:900;font-size:26px;letter-spacing:-0.05em;color:var(--dark);line-height:1;margin-bottom:3px}
+.kpi-sub{font-size:11px;color:var(--muted)}
+.kpi-delta{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:700;padding:2px 6px;border-radius:99px;margin-top:4px}
+.delta-up{background:var(--green-soft);color:var(--green)}
+.delta-down{background:var(--red-soft);color:var(--red)}
+
+/* QUOTA CONTROL — LA PIÈCE MAÎTRESSE */
+.quota-card{background:#fff;border-radius:20px;border:1.5px solid var(--border);box-shadow:0 2px 16px -4px rgba(27,28,28,0.08);overflow:hidden}
+.quota-header{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.quota-header-left{display:flex;align-items:center;gap:10px}
+.quota-header-left .material-symbols-outlined{font-size:18px;color:var(--red)}
+.quota-header-title{font-family:'Plus Jakarta Sans';font-weight:800;font-size:15px;color:var(--dark);letter-spacing:-0.02em}
+.quota-header-sub{font-size:11px;color:var(--muted);margin-top:1px}
+.quota-toggle{display:flex;align-items:center;gap:8px}
+.toggle-label{font-size:12px;font-weight:600;color:var(--muted)}
+.toggle{width:44px;height:24px;border-radius:99px;background:var(--green);border:none;cursor:pointer;position:relative;transition:background 0.2s;flex-shrink:0}
+.toggle.off{background:#e2bebc}
+.toggle::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:left 0.2s;box-shadow:0 1px 4px rgba(0,0,0,0.15)}
+.toggle.off::after{left:3px}
+.toggle:not(.off)::after{left:23px}
+.quota-body{padding:22px}
+.quota-zones{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.quota-zone{background:var(--surface);border-radius:14px;border:1px solid var(--border);padding:16px}
+.quota-zone-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.quota-zone-name{font-family:'JetBrains Mono';font-size:11px;font-weight:700;color:var(--dark);letter-spacing:0.05em}
+.quota-zone-status{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.status-active{background:var(--green);box-shadow:0 0 0 3px rgba(0,108,76,0.15)}
+.status-paused{background:var(--amber)}
+.status-closed{background:#e2bebc}
+.quota-input-wrap{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.quota-input{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:22px;color:var(--dark);background:#fff;outline:none;text-align:center;transition:all 0.18s;-moz-appearance:textfield;appearance:textfield}
+.quota-input::-webkit-outer-spin-button,.quota-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.quota-input:focus{border-color:var(--dark);box-shadow:0 0 0 3px rgba(27,28,28,0.06)}
+.quota-btn{width:28px;height:28px;border-radius:8px;border:1px solid var(--border);background:#fff;cursor:pointer;font-size:16px;font-weight:700;color:var(--dark);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s}
+.quota-btn:hover{background:var(--dark);color:#fff;border-color:var(--dark)}
+.quota-zone-meta{font-size:10px;color:var(--muted);text-align:center}
+.quota-progress{height:4px;border-radius:99px;background:rgba(226,190,188,0.5);overflow:hidden;margin-top:8px}
+.quota-progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--green),#00c896);transition:width 0.5s}
+.quota-progress-fill.warn{background:linear-gradient(90deg,var(--amber),#fbbf24)}
+.quota-progress-fill.full{background:linear-gradient(90deg,var(--red),var(--red2))}
+.quota-global{display:flex;align-items:center;gap:16px;padding:16px 20px;background:var(--dark);border-radius:14px}
+.quota-global-item{text-align:center;flex:1}
+.quota-global-val{font-family:'Plus Jakarta Sans';font-weight:900;font-size:20px;letter-spacing:-0.04em;color:#fff;line-height:1}
+.quota-global-label{font-size:10px;color:rgba(255,255,255,0.4);margin-top:2px;text-transform:uppercase;letter-spacing:0.1em}
+.quota-global-sep{width:1px;height:32px;background:rgba(255,255,255,0.1)}
+
+/* TABLES */
+.table-card{background:#fff;border-radius:20px;border:1px solid var(--border);box-shadow:0 2px 12px -4px rgba(27,28,28,0.06);overflow:hidden}
+.table-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.table-title{font-family:'Plus Jakarta Sans';font-weight:800;font-size:14px;color:var(--dark);letter-spacing:-0.02em}
+.table-action{padding:7px 14px;border-radius:8px;background:var(--dark);border:none;color:#fff;font-family:'Plus Jakarta Sans';font-weight:700;font-size:12px;cursor:pointer;transition:all 0.2s}
+.table-action:hover{opacity:0.85}
+.table-action.red{background:var(--red)}
+table{width:100%;border-collapse:collapse}
+thead tr{border-bottom:1px solid var(--border)}
+th{padding:10px 20px;font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);text-align:left;white-space:nowrap}
+td{padding:12px 20px;font-size:13px;color:var(--dark);border-bottom:1px solid rgba(226,190,188,0.25)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--surface)}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:99px;font-size:10px;font-weight:700;font-family:'JetBrains Mono';white-space:nowrap}
+.badge-active{background:var(--green-soft);color:var(--green)}
+.badge-paused{background:var(--amber-soft);color:var(--amber)}
+.badge-banned{background:var(--red-soft);color:var(--red)}
+.badge-pending{background:rgba(201,168,76,0.1);color:#9a7a28}
+.action-btn{padding:5px 10px;border-radius:7px;border:1px solid var(--border);background:#fff;font-size:11px;font-weight:600;cursor:pointer;color:var(--muted);transition:all 0.15s;margin-right:4px}
+.action-btn:hover{border-color:var(--dark);color:var(--dark)}
+.action-btn.danger{color:var(--red);border-color:rgba(181,35,48,0.2)}
+.action-btn.danger:hover{background:var(--red);color:#fff;border-color:var(--red)}
+.action-btn.success{color:var(--green);border-color:rgba(0,108,76,0.2)}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;z-index:300;background:var(--dark);color:#fff;border-radius:14px;padding:13px 18px;display:flex;align-items:center;gap:10px;box-shadow:0 16px 40px rgba(27,28,28,0.25);transform:translateY(20px);opacity:0;transition:all 0.35s cubic-bezier(0.22,1,0.36,1);pointer-events:none;min-width:240px}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* MODAL */
+.modal-bg{position:fixed;inset:0;background:rgba(27,28,28,0.5);backdrop-filter:blur(6px);z-index:200;display:none;align-items:center;justify-content:center}
+.modal-bg.open{display:flex}
+.modal{background:#fff;border-radius:20px;border:1px solid var(--border);width:460px;overflow:hidden;box-shadow:0 24px 64px -12px rgba(27,28,28,0.2)}
+.modal-head{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.modal-title{font-family:'Plus Jakarta Sans';font-weight:900;font-size:16px;letter-spacing:-0.03em;color:var(--dark)}
+.modal-close{width:28px;height:28px;border-radius:8px;background:var(--surface);border:1px solid var(--border);cursor:pointer;font-size:14px;color:var(--muted);display:flex;align-items:center;justify-content:center}
+.modal-body{padding:20px 24px;display:flex;flex-direction:column;gap:14px}
+.field label{display:block;font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.field input,.field select{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:12px;font-family:'Inter';font-size:14px;color:var(--dark);background:var(--surface);outline:none;transition:all 0.18s}
+.field input:focus,.field select:focus{border-color:var(--dark);background:#fff}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn-primary{width:100%;padding:14px;border-radius:12px;background:var(--dark);border:none;color:#fff;font-family:'Plus Jakarta Sans';font-weight:800;font-size:14px;cursor:pointer;transition:all 0.2s}
+.btn-primary:hover{opacity:0.9}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="logo">
+      <span class="logo-text">Stacker</span>
+      <span class="logo-admin">ADMIN</span>
+    </div>
+    <div class="topbar-right">
+      <div class="admin-badge">
+        <span class="material-symbols-outlined fi" style="font-size:14px;color:var(--red)">shield</span>
+        <span>Lucas — Super Admin</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <div class="sidebar-group">Vue globale</div>
+      <div class="nav-item active" onclick="showSection('dashboard')">
+        <span class="material-symbols-outlined fi">space_dashboard</span>
+        Dashboard
+      </div>
+      <div class="sidebar-group">Côté Callers</div>
+      <div class="nav-item" onclick="showSection('callers')">
+        <span class="material-symbols-outlined fi">headset_mic</span>
+        Callers
+      </div>
+      <div class="nav-item" onclick="showSection('rdvs')">
+        <span class="material-symbols-outlined fi">event</span>
+        RDV générés
+      </div>
+      <div class="nav-item" onclick="showSection('quotas')">
+        <span class="material-symbols-outlined fi">tune</span>
+        Quotas & zones
+      </div>
+      <div class="sidebar-group">Côté Pro</div>
+      <div class="nav-item" onclick="showSection('clients')">
+        <span class="material-symbols-outlined fi">business</span>
+        Clients Pro
+      </div>
+      <div class="nav-item" onclick="showSection('ventes')">
+        <span class="material-symbols-outlined fi">payments</span>
+        Ventes RDV
+      </div>
+      <div class="sidebar-group">Finances</div>
+      <div class="nav-item" onclick="showSection('finances')">
+        <span class="material-symbols-outlined fi">account_balance</span>
+        Trésorerie
+      </div>
+      <div class="nav-item" onclick="showSection('paiements')">
+        <span class="material-symbols-outlined fi">send_money</span>
+        Paiements callers
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main" id="mainContent">
+
+    <!-- DASHBOARD -->
+    <div id="section-dashboard">
+      <div style="margin-bottom:20px">
+        <p class="section-title">Vue d'ensemble</p>
+        <p class="section-sub">Aujourd'hui — <span id="todayDate"></span></p>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <p class="kpi-label">RDV aujourd'hui</p>
+          <p class="kpi-val" id="kpiRdvDay" style="color:var(--dark)">0</p>
+          <p class="kpi-sub">générés par les callers</p>
+          <span class="kpi-delta delta-up" id="kpiRdvDelta">+0%</span>
+        </div>
+        <div class="kpi-card">
+          <p class="kpi-label">RDV vendus</p>
+          <p class="kpi-val" id="kpiRdvSold" style="color:var(--green)">0</p>
+          <p class="kpi-sub">confirmés par les Pro</p>
+          <span class="kpi-delta delta-up">Taux: <span id="kpiConvRate">0%</span></span>
+        </div>
+        <div class="kpi-card">
+          <p class="kpi-label">Marge nette</p>
+          <p class="kpi-val" id="kpiMargin" style="color:var(--dark)">0 €</p>
+          <p class="kpi-sub">18 € × RDV vendus</p>
+          <span class="kpi-delta delta-up" id="kpiMarginMonth">0 € ce mois</span>
+        </div>
+        <div class="kpi-card">
+          <p class="kpi-label">Callers actifs</p>
+          <p class="kpi-val" id="kpiCallers" style="color:var(--dark)">0</p>
+          <p class="kpi-sub">sur <span id="kpiCallersTotal">0</span> inscrits</p>
+          <span class="kpi-delta delta-up" id="kpiClientsPro">0 clients Pro</span>
+        </div>
+      </div>
+
+      <!-- QUOTA CONTROL -->
+      <div class="quota-card">
+        <div class="quota-header">
+          <div class="quota-header-left">
+            <span class="material-symbols-outlined fi">tune</span>
+            <div>
+              <p class="quota-header-title">Contrôle des quotas</p>
+              <p class="quota-header-sub">Ajuste le nombre de RDV max par jour et par zone</p>
+            </div>
+          </div>
+          <div class="quota-toggle">
+            <span class="toggle-label" id="toggleLabel">Ouvert</span>
+            <button class="toggle" id="globalToggle" onclick="toggleGlobal()"></button>
+          </div>
+        </div>
+        <div class="quota-body">
+          <div class="quota-zones" id="quotaZones"></div>
+          <div class="quota-global">
+            <div class="quota-global-item">
+              <p class="quota-global-val" id="globalTotal">0</p>
+              <p class="quota-global-label">Quota total / jour</p>
+            </div>
+            <div class="quota-global-sep"></div>
+            <div class="quota-global-item">
+              <p class="quota-global-val" id="globalUsed">0</p>
+              <p class="quota-global-label">RDV générés aujourd'hui</p>
+            </div>
+            <div class="quota-global-sep"></div>
+            <div class="quota-global-item">
+              <p class="quota-global-val" id="globalRemaining">0</p>
+              <p class="quota-global-label">Restants disponibles</p>
+            </div>
+            <div class="quota-global-sep"></div>
+            <div class="quota-global-item">
+              <p class="quota-global-val" id="globalRevenue">0 €</p>
+              <p class="quota-global-label">Marge potentielle / jour</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ALERTES -->
+      <div class="table-card">
+        <div class="table-header">
+          <p class="table-title">Alertes & actions requises</p>
+        </div>
+        <table>
+          <thead><tr><th>Type</th><th>Message</th><th>Action</th></tr></thead>
+          <tbody id="alertsTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CALLERS -->
+    <div id="section-callers" style="display:none">
+      <div style="margin-bottom:20px;display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <p class="section-title">Callers</p>
+          <p class="section-sub">Gère les comptes, statuts et performances</p>
+        </div>
+        <button class="table-action" onclick="openModal('addCaller')">+ Ajouter un caller</button>
+      </div>
+      <div class="table-card">
+        <div class="table-header">
+          <p class="table-title">Tous les callers</p>
+          <div style="display:flex;gap:8px">
+            <select onchange="filterCallers(this.value)" style="padding:6px 10px;border-radius:8px;border:1px solid var(--border);font-size:12px;background:#fff;color:var(--dark)">
+              <option value="all">Tous</option>
+              <option value="active">Actifs</option>
+              <option value="paused">En pause</option>
+              <option value="banned">Bannis</option>
+            </select>
+          </div>
+        </div>
+        <table>
+          <thead><tr><th>Caller</th><th>Zone</th><th>RDV aujourd'hui</th><th>RDV total</th><th>À payer</th><th>Statut</th><th>Actions</th></tr></thead>
+          <tbody id="callersTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- QUOTAS -->
+    <div id="section-quotas" style="display:none">
+      <div style="margin-bottom:20px">
+        <p class="section-title">Quotas & Zones</p>
+        <p class="section-sub">Configure les limites par zone géographique</p>
+      </div>
+      <div class="quota-card">
+        <div class="quota-header">
+          <div class="quota-header-left">
+            <span class="material-symbols-outlined fi">location_on</span>
+            <div>
+              <p class="quota-header-title">Zones actives</p>
+              <p class="quota-header-sub">Modifie les quotas en temps réel — effect immédiat sur l'app caller</p>
+            </div>
+          </div>
+          <button class="table-action" onclick="openModal('addZone')">+ Nouvelle zone</button>
+        </div>
+        <div class="quota-body">
+          <div class="quota-zones" id="quotaZonesFull"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLIENTS PRO -->
+    <div id="section-clients" style="display:none">
+      <div style="margin-bottom:20px;display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <p class="section-title">Clients StackersPro</p>
+          <p class="section-sub">Entreprises abonnées et leurs capacités d'absorption</p>
+        </div>
+        <button class="table-action" onclick="openModal('addClient')">+ Ajouter un client</button>
+      </div>
+      <div class="table-card">
+        <div class="table-header"><p class="table-title">Tous les clients Pro</p></div>
+        <table>
+          <thead><tr><th>Entreprise</th><th>Zone</th><th>Capacité/jour</th><th>RDV ce mois</th><th>CA généré</th><th>Crédits restants</th><th>Statut</th><th>Actions</th></tr></thead>
+          <tbody id="clientsTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- FINANCES -->
+    <div id="section-finances" style="display:none">
+      <div style="margin-bottom:20px">
+        <p class="section-title">Trésorerie</p>
+        <p class="section-sub">Vue financière globale de la plateforme</p>
+      </div>
+      <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);gap:10px">
+        <div class="kpi-card">
+          <p class="kpi-label">Encaissé clients Pro</p>
+          <p class="kpi-val" style="color:var(--green)" id="finEncaisse">0 €</p>
+          <p class="kpi-sub">RDV × 25 €</p>
+        </div>
+        <div class="kpi-card">
+          <p class="kpi-label">Versé aux callers</p>
+          <p class="kpi-val" style="color:var(--red)" id="finVerse">0 €</p>
+          <p class="kpi-sub">RDV validés × 7 €</p>
+        </div>
+        <div class="kpi-card">
+          <p class="kpi-label">Marge nette</p>
+          <p class="kpi-val" id="finMarge">0 €</p>
+          <p class="kpi-sub">18 € par RDV vendu</p>
+        </div>
+      </div>
+      <div class="table-card" style="margin-top:0">
+        <div class="table-header"><p class="table-title">Historique des transactions</p></div>
+        <table>
+          <thead><tr><th>Date</th><th>Type</th><th>Montant</th><th>Détail</th></tr></thead>
+          <tbody id="finTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PAIEMENTS CALLERS -->
+    <div id="section-paiements" style="display:none">
+      <div style="margin-bottom:20px">
+        <p class="section-title">Paiements callers</p>
+        <p class="section-sub">Valide et verse les commissions</p>
+      </div>
+      <div class="table-card">
+        <div class="table-header">
+          <p class="table-title">En attente de versement</p>
+          <button class="table-action red" onclick="payAll()">Tout verser</button>
+        </div>
+        <table>
+          <thead><tr><th>Caller</th><th>RDV validés</th><th>Montant dû</th><th>IBAN</th><th>Action</th></tr></thead>
+          <tbody id="paiementsTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- RDV -->
+    <div id="section-rdvs" style="display:none">
+      <div style="margin-bottom:20px">
+        <p class="section-title">RDV générés</p>
+        <p class="section-sub">Tous les RDV pris par les callers</p>
+      </div>
+      <div class="table-card">
+        <div class="table-header">
+          <p class="table-title">Historique complet</p>
+          <select onchange="filterRdvs(this.value)" style="padding:6px 10px;border-radius:8px;border:1px solid var(--border);font-size:12px;background:#fff">
+            <option value="all">Tous</option>
+            <option value="pending">En attente</option>
+            <option value="confirmed">Confirmés</option>
+            <option value="refused">Refusés</option>
+          </select>
+        </div>
+        <table>
+          <thead><tr><th>Prospect</th><th>Adresse</th><th>Type</th><th>Date RDV</th><th>Caller</th><th>Client Pro</th><th>Statut</th></tr></thead>
+          <tbody id="rdvsTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- VENTES -->
+    <div id="section-ventes" style="display:none">
+      <div style="margin-bottom:20px">
+        <p class="section-title">Ventes RDV</p>
+        <p class="section-sub">RDV vendus aux clients StackersPro</p>
+      </div>
+      <div class="table-card">
+        <div class="table-header"><p class="table-title">RDV confirmés par les Pro</p></div>
+        <table>
+          <thead><tr><th>RDV</th><th>Type</th><th>Client Pro</th><th>Prix</th><th>Commission caller</th><th>Marge</th><th>Date</th></tr></thead>
+          <tbody id="ventesTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <div class="modal-head">
+      <span class="modal-title" id="modalTitle">–</span>
+      <div class="modal-close" onclick="closeModal()">✕</div>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="material-symbols-outlined fi" id="toastIcon" style="font-size:18px"></span>
+  <div>
+    <p style="font-size:13px;font-weight:700" id="toastTitle">–</p>
+    <p style="font-size:11px;color:rgba(255,255,255,0.5)" id="toastSub">–</p>
+  </div>
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────
+let zones = JSON.parse(localStorage.getItem('admin_zones') || 'null') || [
+  {id:1, name:'Vaucluse', dept:'84', quota:40, used:23, status:'active'},
+  {id:2, name:'Drôme', dept:'26', quota:30, used:18, status:'active'},
+  {id:3, name:'Var', dept:'83', quota:35, used:35, status:'active'},
+  {id:4, name:'Bouches-du-Rhône', dept:'13', quota:0, used:0, status:'paused'},
+];
+
+let callers = JSON.parse(localStorage.getItem('admin_callers') || 'null') || [
+  {id:1, prenom:'Karim', nom:'B.', zone:'84', rdvDay:8, rdvTotal:47, iban:'FR76 ****', status:'active'},
+  {id:2, prenom:'Sarah', nom:'M.', zone:'26', rdvDay:5, rdvTotal:31, iban:'FR76 ****', status:'active'},
+  {id:3, prenom:'Julien', nom:'T.', zone:'83', rdvDay:9, rdvTotal:62, iban:'FR76 ****', status:'active'},
+  {id:4, prenom:'Amina', nom:'K.', zone:'84', rdvDay:0, rdvTotal:12, iban:'Non renseigné', status:'paused'},
+  {id:5, prenom:'Marc', nom:'D.', zone:'83', rdvDay:0, rdvTotal:8, iban:'FR76 ****', status:'banned'},
+];
+
+let clientsPro = JSON.parse(localStorage.getItem('admin_clients') || 'null') || [
+  {id:1, name:'Rénov Sud PACA', zone:'83/84', capacite:20, rdvMois:67, credits:33, status:'active'},
+  {id:2, name:'Thermik Expert', zone:'26', capacite:15, rdvMois:42, credits:8, status:'active'},
+  {id:3, name:'EcoHabitat 84', zone:'84', capacite:10, rdvMois:28, credits:2, status:'active'},
+];
+
+let rdvs = JSON.parse(localStorage.getItem('admin_rdvs') || 'null') || [
+  {id:1, prospect:'M. Bernard', adresse:'Avignon 84000', type:'thermique', date:'2026-05-27 09:30', caller:'Karim B.', client:'Rénov Sud PACA', status:'confirmed'},
+  {id:2, prospect:'Mme Martin', adresse:'Carpentras 84200', type:'electrique', date:'2026-05-27 10:00', caller:'Sarah M.', client:'EcoHabitat 84', status:'confirmed'},
+  {id:3, prospect:'M. Dubois', adresse:'Valence 26000', type:'vmc', date:'2026-05-27 14:00', caller:'Sarah M.', client:'Thermik Expert', status:'pending'},
+  {id:4, prospect:'Mme Petit', adresse:'Orange 84100', type:'amiante', date:'2026-05-28 09:00', caller:'Karim B.', client:'–', status:'pending'},
+  {id:5, prospect:'M. Laurent', adresse:'Toulon 83000', type:'thermique', date:'2026-05-27 15:30', caller:'Julien T.', client:'Rénov Sud PACA', status:'confirmed'},
+  {id:6, prospect:'Mme Moreau', adresse:'Montélimar 26200', type:'electrique', date:'2026-05-28 11:00', caller:'Sarah M.', client:'Thermik Expert', status:'refused'},
+  {id:7, prospect:'M. Simon', adresse:'Draguignan 83300', type:'vmc', date:'2026-05-29 10:30', caller:'Julien T.', client:'–', status:'pending'},
+];
+
+let globalOpen = true;
+let activeSection = 'dashboard';
+let filterCaller = 'all';
+let filterRdv = 'all';
+
+function save(){
+  localStorage.setItem('admin_zones', JSON.stringify(zones));
+  localStorage.setItem('admin_callers', JSON.stringify(callers));
+  localStorage.setItem('admin_clients', JSON.stringify(clientsPro));
+  localStorage.setItem('admin_rdvs', JSON.stringify(rdvs));
+}
+
+// ── NAVIGATION ────────────────────────────────────────
+function showSection(name) {
+  document.querySelectorAll('[id^="section-"]').forEach(s => s.style.display = 'none');
+  document.getElementById('section-' + name).style.display = 'block';
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  activeSection = name;
+  renderSection(name);
+}
+
+function renderSection(name) {
+  if (name === 'dashboard') renderDashboard();
+  if (name === 'callers') renderCallers();
+  if (name === 'quotas') renderQuotasFull();
+  if (name === 'clients') renderClients();
+  if (name === 'finances') renderFinances();
+  if (name === 'paiements') renderPaiements();
+  if (name === 'rdvs') renderRdvs();
+  if (name === 'ventes') renderVentes();
+}
+
+// ── DASHBOARD ─────────────────────────────────────────
+function renderDashboard() {
+  document.getElementById('todayDate').textContent = new Date().toLocaleDateString('fr-FR', {weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  const rdvDay = rdvs.filter(r => r.date.startsWith('2026-05-27')).length;
+  const rdvSold = rdvs.filter(r => r.status === 'confirmed').length;
+  const margin = rdvSold * 18;
+  const activeCallers = callers.filter(c => c.status === 'active').length;
+  document.getElementById('kpiRdvDay').textContent = rdvDay;
+  document.getElementById('kpiRdvSold').textContent = rdvSold;
+  document.getElementById('kpiMargin').textContent = margin.toLocaleString('fr-FR') + ' €';
+  document.getElementById('kpiMarginMonth').textContent = (margin * 20).toLocaleString('fr-FR') + ' € ce mois (proj.)';
+  document.getElementById('kpiConvRate').textContent = rdvDay ? Math.round(rdvSold/rdvDay*100)+'%' : '0%';
+  document.getElementById('kpiCallers').textContent = activeCallers;
+  document.getElementById('kpiCallersTotal').textContent = callers.length;
+  document.getElementById('kpiClientsPro').textContent = clientsPro.length + ' clients Pro';
+  renderQuotaCards('quotaZones');
+  renderAlerts();
+}
+
+function renderAlerts() {
+  const alerts = [];
+  const fullZones = zones.filter(z => z.used >= z.quota && z.quota > 0);
+  const lowCredits = clientsPro.filter(c => c.credits <= 3);
+  const bannedCallers = callers.filter(c => c.status === 'banned');
+  fullZones.forEach(z => alerts.push({type:'⚠️ Quota', msg:`Zone ${z.name} (${z.dept}) — quota atteint`, action:`<button class="action-btn success" onclick="increaseQuota(${z.id})">+10 RDV</button>`}));
+  lowCredits.forEach(c => alerts.push({type:'💳 Crédits', msg:`${c.name} — plus que ${c.credits} crédits restants`, action:`<button class="action-btn" onclick="">Contacter</button>`}));
+  bannedCallers.forEach(c => alerts.push({type:'🚫 Banni', msg:`${c.prenom} ${c.nom} — compte banni`, action:`<button class="action-btn" onclick="">Voir</button>`}));
+  if (alerts.length === 0) alerts.push({type:'✅ OK', msg:'Aucune alerte — tout fonctionne normalement', action:''});
+  document.getElementById('alertsTable').innerHTML = alerts.map(a => `
+    <tr><td><span style="font-size:12px;font-weight:600;color:var(--muted)">${a.type}</span></td>
+    <td style="font-size:13px">${a.msg}</td>
+    <td>${a.action}</td></tr>`).join('');
+}
+
+// ── QUOTA CARDS ───────────────────────────────────────
+function renderQuotaCards(containerId) {
+  const total = zones.reduce((s,z) => s + z.quota, 0);
+  const used = zones.reduce((s,z) => s + z.used, 0);
+  document.getElementById('globalTotal').textContent = total;
+  document.getElementById('globalUsed').textContent = used;
+  document.getElementById('globalRemaining').textContent = Math.max(0, total - used);
+  document.getElementById('globalRevenue').textContent = (Math.max(0, total - used) * 18).toLocaleString('fr-FR') + ' €';
+
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  el.innerHTML = zones.map(z => {
+    const pct = z.quota > 0 ? Math.min(100, Math.round(z.used/z.quota*100)) : 0;
+    const fillClass = pct >= 100 ? 'full' : pct >= 80 ? 'warn' : '';
+    const statusClass = z.status === 'active' ? 'status-active' : z.status === 'paused' ? 'status-paused' : 'status-closed';
+    return `<div class="quota-zone">
+      <div class="quota-zone-header">
+        <span class="quota-zone-name">Dept. ${z.dept} — ${z.name}</span>
+        <div class="quota-zone-status ${statusClass}"></div>
+      </div>
+      <div class="quota-input-wrap">
+        <button class="quota-btn" onclick="adjustQuota(${z.id},-5)">−</button>
+        <input class="quota-input" type="number" value="${z.quota}" min="0" onchange="setQuota(${z.id},this.value)" id="qi-${z.id}">
+        <button class="quota-btn" onclick="adjustQuota(${z.id},5)">+</button>
+      </div>
+      <div class="quota-progress"><div class="quota-progress-fill ${fillClass}" style="width:${pct}%"></div></div>
+      <div class="quota-zone-meta">${z.used}/${z.quota} RDV utilisés aujourd'hui (${pct}%)</div>
+    </div>`;
+  }).join('');
+}
+
+function renderQuotasFull() {
+  renderQuotaCards('quotaZonesFull');
+}
+
+function adjustQuota(id, delta) {
+  zones = zones.map(z => z.id === id ? {...z, quota: Math.max(0, z.quota + delta)} : z);
+  save(); renderQuotaCards('quotaZones'); renderQuotaCards('quotaZonesFull');
+  showToast('success', 'Quota mis à jour', 'Effet immédiat sur l\'app caller');
+}
+
+function setQuota(id, val) {
+  zones = zones.map(z => z.id === id ? {...z, quota: Math.max(0, parseInt(val)||0)} : z);
+  save(); renderQuotaCards('quotaZones'); renderQuotaCards('quotaZonesFull');
+  showToast('success', 'Quota mis à jour', 'Effet immédiat sur l\'app caller');
+}
+
+function increaseQuota(id) { adjustQuota(id, 10); }
+
+function toggleGlobal() {
+  globalOpen = !globalOpen;
+  const btn = document.getElementById('globalToggle');
+  const lbl = document.getElementById('toggleLabel');
+  btn.classList.toggle('off', !globalOpen);
+  lbl.textContent = globalOpen ? 'Ouvert' : 'En pause';
+  showToast(globalOpen ? 'success' : 'info', globalOpen ? 'Plateforme ouverte' : 'Plateforme en pause', globalOpen ? 'Les callers peuvent générer des RDV' : 'Aucun RDV ne peut être pris');
+}
+
+// ── CALLERS ───────────────────────────────────────────
+function filterCallers(val) { filterCaller = val; renderCallers(); }
+
+function renderCallers() {
+  const filtered = filterCaller === 'all' ? callers : callers.filter(c => c.status === filterCaller);
+  document.getElementById('callersTable').innerHTML = filtered.map(c => `
+    <tr>
+      <td><strong>${c.prenom} ${c.nom}</strong></td>
+      <td><span class="badge badge-active">Dept. ${c.zone}</span></td>
+      <td style="font-family:'JetBrains Mono';font-weight:700">${c.rdvDay}</td>
+      <td style="font-family:'JetBrains Mono'">${c.rdvTotal}</td>
+      <td style="font-family:'Plus Jakarta Sans';font-weight:700;color:var(--green)">${c.rdvTotal * 7} €</td>
+      <td><span class="badge badge-${c.status}">${c.status === 'active' ? 'Actif' : c.status === 'paused' ? 'En pause' : 'Banni'}</span></td>
+      <td>
+        ${c.status !== 'banned' ? `<button class="action-btn" onclick="toggleCallerStatus(${c.id})">${c.status === 'active' ? 'Mettre en pause' : 'Réactiver'}</button>` : ''}
+        ${c.status !== 'banned' ? `<button class="action-btn danger" onclick="banCaller(${c.id})">Bannir</button>` : `<button class="action-btn success" onclick="unbanCaller(${c.id})">Débannir</button>`}
+      </td>
+    </tr>`).join('');
+}
+
+function toggleCallerStatus(id) {
+  callers = callers.map(c => c.id === id ? {...c, status: c.status === 'active' ? 'paused' : 'active'} : c);
+  save(); renderCallers();
+  showToast('info', 'Statut caller modifié', '');
+}
+
+function banCaller(id) {
+  if (!confirm('Bannir ce caller définitivement ?')) return;
+  callers = callers.map(c => c.id === id ? {...c, status: 'banned'} : c);
+  save(); renderCallers();
+  showToast('error', 'Caller banni', 'Son compte est désactivé');
+}
+
+function unbanCaller(id) {
+  callers = callers.map(c => c.id === id ? {...c, status: 'active'} : c);
+  save(); renderCallers();
+  showToast('success', 'Caller réactivé', '');
+}
+
+// ── CLIENTS PRO ───────────────────────────────────────
+function renderClients() {
+  document.getElementById('clientsTable').innerHTML = clientsPro.map(c => `
+    <tr>
+      <td><strong>${c.name}</strong></td>
+      <td>${c.zone}</td>
+      <td>
+        <div style="display:flex;align-items:center;gap:6px">
+          <button class="quota-btn" style="width:22px;height:22px;font-size:12px" onclick="adjustClientCap(${c.id},-5)">−</button>
+          <span style="font-family:'JetBrains Mono';font-weight:700;min-width:28px;text-align:center">${c.capacite}</span>
+          <button class="quota-btn" style="width:22px;height:22px;font-size:12px" onclick="adjustClientCap(${c.id},5)">+</button>
+          <span style="font-size:10px;color:var(--muted)">/jour</span>
+        </div>
+      </td>
+      <td style="font-family:'JetBrains Mono'">${c.rdvMois}</td>
+      <td style="font-family:'Plus Jakarta Sans';font-weight:700;color:var(--green)">${(c.rdvMois * 25).toLocaleString('fr-FR')} €</td>
+      <td>
+        <span style="font-family:'JetBrains Mono';font-weight:700;color:${c.credits <= 3 ? 'var(--red)' : 'var(--dark)'}">${c.credits}</span>
+        <span style="font-size:10px;color:var(--muted)"> crédits</span>
+      </td>
+      <td><span class="badge badge-${c.status === 'active' ? 'active' : 'paused'}">${c.status === 'active' ? 'Actif' : 'En pause'}</span></td>
+      <td><button class="action-btn" onclick="toggleClientStatus(${c.id})">${c.status === 'active' ? 'Suspendre' : 'Réactiver'}</button></td>
+    </tr>`).join('');
+}
+
+function adjustClientCap(id, delta) {
+  clientsPro = clientsPro.map(c => c.id === id ? {...c, capacite: Math.max(0, c.capacite + delta)} : c);
+  save(); renderClients();
+  showToast('success', 'Capacité mise à jour', '');
+}
+
+function toggleClientStatus(id) {
+  clientsPro = clientsPro.map(c => c.id === id ? {...c, status: c.status === 'active' ? 'paused' : 'active'} : c);
+  save(); renderClients();
+  showToast('info', 'Statut client modifié', '');
+}
+
+// ── FINANCES ──────────────────────────────────────────
+function renderFinances() {
+  const sold = rdvs.filter(r => r.status === 'confirmed').length;
+  document.getElementById('finEncaisse').textContent = (sold * 25).toLocaleString('fr-FR') + ' €';
+  document.getElementById('finVerse').textContent = (sold * 7).toLocaleString('fr-FR') + ' €';
+  document.getElementById('finMarge').textContent = (sold * 18).toLocaleString('fr-FR') + ' €';
+  document.getElementById('finTable').innerHTML = rdvs.filter(r => r.status === 'confirmed').map(r => `
+    <tr>
+      <td>2026-05-27</td>
+      <td><span class="badge badge-active">Vente RDV</span></td>
+      <td style="color:var(--green);font-weight:700">+25 €</td>
+      <td style="color:var(--muted);font-size:12px">${r.prospect} — ${r.type} — ${r.client}</td>
+    </tr>
+    <tr>
+      <td>2026-05-27</td>
+      <td><span class="badge badge-paused">Commission caller</span></td>
+      <td style="color:var(--red);font-weight:700">-7 €</td>
+      <td style="color:var(--muted);font-size:12px">${r.caller}</td>
+    </tr>`).join('');
+}
+
+// ── PAIEMENTS ─────────────────────────────────────────
+function renderPaiements() {
+  document.getElementById('paiementsTable').innerHTML = callers.filter(c => c.rdvTotal > 0 && c.status !== 'banned').map(c => `
+    <tr>
+      <td><strong>${c.prenom} ${c.nom}</strong></td>
+      <td style="font-family:'JetBrains Mono'">${c.rdvTotal}</td>
+      <td style="font-family:'Plus Jakarta Sans';font-weight:900;font-size:15px;color:var(--green)">${(c.rdvTotal * 7).toLocaleString('fr-FR')} €</td>
+      <td style="font-size:12px;color:var(--muted)">${c.iban}</td>
+      <td><button class="action-btn success" onclick="payCaller(${c.id})">Verser</button></td>
+    </tr>`).join('');
+}
+
+function payCaller(id) {
+  const c = callers.find(x => x.id === id);
+  showToast('success', `Virement envoyé — ${c.prenom} ${c.nom}`, `${(c.rdvTotal * 7).toLocaleString('fr-FR')} € → ${c.iban}`);
+}
+
+function payAll() {
+  showToast('success', 'Tous les virements envoyés', `${callers.filter(c=>c.status!=='banned').reduce((s,c)=>s+c.rdvTotal*7,0).toLocaleString('fr-FR')} € versés`);
+}
+
+// ── RDV TABLE ─────────────────────────────────────────
+function filterRdvs(val) { filterRdv = val; renderRdvs(); }
+
+function renderRdvs() {
+  const filtered = filterRdv === 'all' ? rdvs : rdvs.filter(r => r.status === filterRdv);
+  const TYPE_LABELS = {thermique:'Thermique',electrique:'Électrique',amiante:'Amiante',vmc:'VMC'};
+  document.getElementById('rdvsTable').innerHTML = filtered.map(r => `
+    <tr>
+      <td><strong>${r.prospect}</strong></td>
+      <td style="font-size:12px;color:var(--muted)">${r.adresse}</td>
+      <td><span class="badge" style="background:rgba(181,35,48,0.08);color:var(--red)">${TYPE_LABELS[r.type]||r.type}</span></td>
+      <td style="font-size:12px;font-family:'JetBrains Mono'">${r.date}</td>
+      <td>${r.caller}</td>
+      <td style="font-size:12px;color:var(--muted)">${r.client}</td>
+      <td><span class="badge badge-${r.status==='confirmed'?'active':r.status==='refused'?'banned':'pending'}">${r.status==='confirmed'?'Confirmé':r.status==='refused'?'Refusé':'En attente'}</span></td>
+    </tr>`).join('');
+}
+
+// ── VENTES ────────────────────────────────────────────
+function renderVentes() {
+  const TYPE_LABELS = {thermique:'Thermique',electrique:'Électrique',amiante:'Amiante',vmc:'VMC'};
+  document.getElementById('ventesTable').innerHTML = rdvs.filter(r=>r.status==='confirmed').map(r => `
+    <tr>
+      <td><strong>${r.prospect}</strong></td>
+      <td><span class="badge" style="background:rgba(181,35,48,0.08);color:var(--red)">${TYPE_LABELS[r.type]||r.type}</span></td>
+      <td>${r.client}</td>
+      <td style="font-weight:700;color:var(--green)">25 €</td>
+      <td style="color:var(--red)">7 €</td>
+      <td style="font-weight:700">18 €</td>
+      <td style="font-size:12px;font-family:'JetBrains Mono'">2026-05-27</td>
+    </tr>`).join('');
+}
+
+// ── MODALS ────────────────────────────────────────────
+function openModal(type) {
+  const modal = document.getElementById('modal');
+  const title = document.getElementById('modalTitle');
+  const body = document.getElementById('modalBody');
+  if (type === 'addCaller') {
+    title.textContent = 'Ajouter un caller';
+    body.innerHTML = `
+      <div class="field-row">
+        <div class="field"><label>Prénom</label><input type="text" id="mPrenom" placeholder="Marie"></div>
+        <div class="field"><label>Nom</label><input type="text" id="mNom" placeholder="Dupont"></div>
+      </div>
+      <div class="field"><label>Zone (département)</label>
+        <select id="mZone">${zones.map(z=>`<option value="${z.dept}">${z.dept} — ${z.name}</option>`).join('')}</select>
+      </div>
+      <div class="field"><label>IBAN</label><input type="text" id="mIban" placeholder="FR76 ..."></div>
+      <button class="btn-primary" onclick="addCaller()">Ajouter le caller</button>`;
+  }
+  if (type === 'addClient') {
+    title.textContent = 'Ajouter un client Pro';
+    body.innerHTML = `
+      <div class="field"><label>Nom de l'entreprise</label><input type="text" id="mClientName" placeholder="Rénov Expert Sud"></div>
+      <div class="field-row">
+        <div class="field"><label>Zone</label><input type="text" id="mClientZone" placeholder="84/26"></div>
+        <div class="field"><label>Capacité / jour</label><input type="number" id="mClientCap" placeholder="10" value="10"></div>
+      </div>
+      <div class="field"><label>Crédits initiaux</label><input type="number" id="mClientCredits" placeholder="10" value="10"></div>
+      <button class="btn-primary" onclick="addClient()">Ajouter le client</button>`;
+  }
+  if (type === 'addZone') {
+    title.textContent = 'Nouvelle zone';
+    body.innerHTML = `
+      <div class="field-row">
+        <div class="field"><label>Département</label><input type="text" id="mZoneDept" placeholder="13"></div>
+        <div class="field"><label>Nom</label><input type="text" id="mZoneName" placeholder="Bouches-du-Rhône"></div>
+      </div>
+      <div class="field"><label>Quota initial / jour</label><input type="number" id="mZoneQuota" placeholder="20" value="20"></div>
+      <button class="btn-primary" onclick="addZone()">Créer la zone</button>`;
+  }
+  modal.classList.add('open');
+}
+
+function closeModal() { document.getElementById('modal').classList.remove('open'); }
+
+function addCaller() {
+  const prenom = document.getElementById('mPrenom').value.trim();
+  const nom = document.getElementById('mNom').value.trim();
+  const zone = document.getElementById('mZone').value;
+  const iban = document.getElementById('mIban').value.trim() || 'Non renseigné';
+  if (!prenom || !nom) { alert('Prénom et nom requis.'); return; }
+  callers.push({id:Date.now(), prenom, nom, zone, rdvDay:0, rdvTotal:0, iban, status:'active'});
+  save(); closeModal(); renderCallers();
+  showToast('success', 'Caller ajouté', prenom + ' ' + nom + ' — Zone ' + zone);
+}
+
+function addClient() {
+  const name = document.getElementById('mClientName').value.trim();
+  const zone = document.getElementById('mClientZone').value.trim();
+  const cap = parseInt(document.getElementById('mClientCap').value) || 10;
+  const credits = parseInt(document.getElementById('mClientCredits').value) || 10;
+  if (!name) { alert('Nom requis.'); return; }
+  clientsPro.push({id:Date.now(), name, zone, capacite:cap, rdvMois:0, credits, status:'active'});
+  save(); closeModal(); renderClients();
+  showToast('success', 'Client Pro ajouté', name);
+}
+
+function addZone() {
+  const dept = document.getElementById('mZoneDept').value.trim();
+  const name = document.getElementById('mZoneName').value.trim();
+  const quota = parseInt(document.getElementById('mZoneQuota').value) || 20;
+  if (!dept || !name) { alert('Département et nom requis.'); return; }
+  zones.push({id:Date.now(), name, dept, quota, used:0, status:'active'});
+  save(); closeModal(); renderQuotasFull(); renderDashboard();
+  showToast('success', 'Zone créée', 'Dept. ' + dept + ' — ' + name);
+}
+
+// ── TOAST ─────────────────────────────────────────────
+function showToast(type, title, sub) {
+  const icons = {success:'check_circle',error:'cancel',info:'info',warning:'warning'};
+  const colors = {success:'var(--green)',error:'var(--red)',info:'var(--gold)',warning:'var(--amber)'};
+  document.getElementById('toastIcon').textContent = icons[type] || 'info';
+  document.getElementById('toastIcon').style.color = colors[type] || '#fff';
+  document.getElementById('toastTitle').textContent = title;
+  document.getElementById('toastSub').textContent = sub;
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ── INIT ──────────────────────────────────────────────
+renderDashboard();
+</script>
+</body>
+</html>
