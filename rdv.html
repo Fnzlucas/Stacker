@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prise de RDV · Stacker</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--dark:#1b1c1c;--surface:#faf7f4;--muted:#6b5550;--border:rgba(226,190,188,0.45);--red:#b52330;--red2:#ff5a5f;--green:#006c4c;--gold:#c9a84c}
+html,body{min-height:100%;background:var(--surface);color:var(--dark);font-family:'Inter',sans-serif}
+.fi{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;line-height:1;font-family:'Material Symbols Outlined'}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;background:rgba(250,247,244,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Plus Jakarta Sans';font-weight:900;font-size:17px;color:var(--dark);letter-spacing:-0.03em;display:flex;align-items:center;gap:3px;text-decoration:none}
+.nav-logo-dot{width:5px;height:5px;background:var(--red);border-radius:50%;margin-bottom:3px}
+.nav-back{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none}
+
+/* HERO SECTION */
+.hero{background:var(--dark);padding:32px 20px 28px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:rgba(181,35,48,0.12);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-40px;left:30%;width:160px;height:160px;border-radius:50%;background:rgba(255,90,95,0.06);pointer-events:none}
+.hero-inner{max-width:680px;margin:0 auto;position:relative}
+.hero-eyebrow{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.hero-eyebrow-line{width:18px;height:1px;background:var(--red2)}
+.hero-eyebrow-text{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--red2)}
+.hero-title{font-family:'Plus Jakarta Sans';font-weight:900;font-size:28px;letter-spacing:-0.04em;line-height:1.05;color:#fff;margin-bottom:10px}
+.hero-sub{font-size:14px;color:rgba(255,255,255,0.5);line-height:1.6;margin-bottom:20px;max-width:420px}
+.hero-pills{display:flex;gap:8px;flex-wrap:wrap}
+.hero-pill{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:99px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1)}
+.hero-pill .material-symbols-outlined{font-size:14px;color:var(--red2)}
+.hero-pill span{font-size:12px;font-weight:600;color:rgba(255,255,255,0.7)}
+.hero-pill strong{color:#fff}
+
+/* WRAP */
+.wrap{max-width:680px;margin:0 auto;padding:24px 20px 100px}
+
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px}
+.kpi{background:#fff;border-radius:18px;padding:16px;border:1px solid var(--border);box-shadow:0 2px 12px -4px rgba(27,28,28,0.06)}
+.kpi-label{font-size:9px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.kpi-val{font-family:'Plus Jakarta Sans';font-weight:900;font-size:22px;letter-spacing:-0.04em;color:var(--dark)}
+.kpi-sub{font-size:10px;color:var(--muted);margin-top:2px}
+
+/* FORM */
+.form-card{background:#fff;border-radius:22px;border:1px solid var(--border);box-shadow:0 2px 16px -4px rgba(27,28,28,0.08);overflow:hidden;margin-bottom:24px}
+.form-header{padding:18px 22px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.form-header .material-symbols-outlined{font-size:18px;color:var(--red)}
+.form-header h2{font-family:'Plus Jakarta Sans';font-weight:800;font-size:16px;color:var(--dark);letter-spacing:-0.02em}
+.form-body{padding:20px 22px;display:flex;flex-direction:column;gap:14px}
+.field label{display:block;font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.field input,.field select{width:100%;padding:13px 15px;border:1.5px solid var(--border);border-radius:13px;font-family:'Inter';font-size:14px;color:var(--dark);background:var(--surface);outline:none;transition:all 0.18s}
+.field input:focus,.field select:focus{border-color:var(--dark);background:#fff;box-shadow:0 0 0 3px rgba(27,28,28,0.06)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+
+/* SUBMIT BTN */
+.submit-btn{width:100%;padding:16px;border-radius:16px;background:linear-gradient(135deg,var(--red),var(--red2));border:none;color:#fff;font-family:'Plus Jakarta Sans';font-weight:900;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;box-shadow:0 6px 20px rgba(181,35,48,0.25);letter-spacing:-0.01em}
+.submit-btn:hover{transform:translateY(-1px);box-shadow:0 10px 28px rgba(181,35,48,0.35)}
+.submit-btn:active{transform:scale(0.98)}
+
+/* RDV LIST */
+.section-eyebrow{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.section-eyebrow::before{content:'';width:16px;height:1px;background:var(--gold)}
+.section-eyebrow span{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--muted)}
+.tabs{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;scrollbar-width:none}
+.tab{padding:8px 16px;border-radius:99px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;border:1.5px solid var(--border);background:#fff;color:var(--muted);transition:all 0.2s;display:flex;align-items:center;gap:5px}
+.tab.active{background:var(--dark);border-color:var(--dark);color:#fff}
+.tab-badge{background:rgba(255,255,255,0.2);border-radius:99px;padding:1px 6px;font-size:10px}
+.tab:not(.active) .tab-badge{background:rgba(226,190,188,0.4);color:var(--muted)}
+.rdv-list{display:flex;flex-direction:column;gap:10px}
+.rdv-card{background:#fff;border-radius:20px;border:1px solid var(--border);box-shadow:0 2px 10px -4px rgba(27,28,28,0.05);overflow:hidden;transition:all 0.2s}
+.rdv-card:hover{box-shadow:0 6px 20px -6px rgba(27,28,28,0.1)}
+.rdv-card-header{padding:16px 18px 12px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.rdv-name{font-family:'Plus Jakarta Sans';font-weight:800;font-size:15px;color:var(--dark);margin-bottom:3px;letter-spacing:-0.02em}
+.rdv-meta{font-size:12px;color:var(--muted);line-height:1.5}
+.rdv-badge{padding:5px 12px;border-radius:99px;font-size:10px;font-weight:700;white-space:nowrap;flex-shrink:0}
+.badge-pending{background:rgba(201,168,76,0.1);color:#9a7a28;border:1px solid rgba(201,168,76,0.25)}
+.badge-confirmed{background:rgba(0,108,76,0.1);color:var(--green);border:1px solid rgba(0,108,76,0.2)}
+.badge-paid{background:rgba(0,108,76,0.15);color:var(--green);border:1px solid rgba(0,108,76,0.25)}
+.badge-cancelled{background:rgba(90,64,63,0.08);color:var(--muted);border:1px solid rgba(90,64,63,0.1)}
+.rdv-details{padding:0 18px 14px;display:flex;flex-wrap:wrap;gap:12px}
+.rdv-detail{display:flex;align-items:center;gap:5px}
+.rdv-detail .material-symbols-outlined{font-size:13px;color:var(--muted)}
+.rdv-detail span{font-size:12px;color:var(--muted)}
+.rdv-com{padding:12px 18px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:rgba(0,108,76,0.03)}
+.rdv-com-label{font-size:12px;color:var(--muted)}
+.rdv-com-val{font-family:'Plus Jakarta Sans';font-weight:900;font-size:16px;color:var(--green);letter-spacing:-0.03em}
+.rdv-com-val.pending{color:var(--muted)}
+.empty{text-align:center;padding:48px 0;color:var(--muted)}
+.empty .material-symbols-outlined{font-size:48px;display:block;margin:0 auto 12px;opacity:0.25}
+.empty p{font-size:14px;line-height:1.6}
+
+/* INFO BOX */
+.info-box{background:#fff;border-radius:18px;border:1px solid var(--border);padding:18px 20px;margin-bottom:20px;display:flex;align-items:flex-start;gap:14px}
+.info-box-icon{width:36px;height:36px;border-radius:11px;background:rgba(181,35,48,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.info-box-icon .material-symbols-outlined{font-size:17px;color:var(--red)}
+.info-box-title{font-family:'Plus Jakarta Sans';font-weight:700;font-size:13px;color:var(--dark);margin-bottom:3px}
+.info-box-sub{font-size:12px;color:var(--muted);line-height:1.6}
+
+/* CTA FIXE */
+.cta-bar{position:fixed;bottom:0;left:0;right:0;padding:16px 20px 32px;background:linear-gradient(to top,var(--surface) 55%,transparent)}
+.cta-inner{max-width:680px;margin:0 auto}
+.cta-btn{width:100%;padding:16px;border-radius:16px;background:linear-gradient(135deg,var(--red),var(--red2));border:none;color:#fff;font-family:'Plus Jakarta Sans';font-weight:900;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 20px rgba(181,35,48,0.25);transition:all 0.2s}
+.cta-btn:active{transform:scale(0.98)}
+
+/* TOAST */
+.toast{position:fixed;top:80px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;padding:12px 20px;border-radius:14px;font-size:13px;font-weight:700;z-index:200;opacity:0;transition:opacity 0.3s;pointer-events:none;display:flex;align-items:center;gap:8px;box-shadow:0 8px 24px rgba(0,108,76,0.3)}
+.toast.show{opacity:1}
+
+
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-back"><span class="material-symbols-outlined" style="font-size:17px">arrow_back</span> Accueil</a>
+  <a href="index.html" class="nav-logo">Stacker<div class="nav-logo-dot"></div></a>
+</nav>
+
+<div class="toast" id="toast">
+  <span class="material-symbols-outlined fi" style="font-size:16px">check_circle</span>
+  RDV enregistré — 5 € en attente !
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-line"></div>
+      <span class="hero-eyebrow-text">Section phare · Cold Call</span>
+    </div>
+    <h1 class="hero-title">Tu appelles.<br>Tu prends le RDV.<br>On s'occupe du reste.</h1>
+    <p class="hero-sub">Chaque RDV validé par un commercial sur place te rapporte <strong style="color:#fff">5 €</strong>. Pas de vente, pas de déplacement — juste le téléphone.</p>
+    <div class="hero-pills">
+      <div class="hero-pill">
+        <span class="material-symbols-outlined fi">call</span>
+        <span>Tu appelles en cold call</span>
+      </div>
+      <div class="hero-pill">
+        <span class="material-symbols-outlined fi">event</span>
+        <span>Tu fixes le créneau</span>
+      </div>
+      <div class="hero-pill">
+        <span class="material-symbols-outlined fi">payments</span>
+        <span><strong>+5 € dès l'entrée</strong></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- KPI -->
+  <div class="kpi-row">
+    <div class="kpi">
+      <p class="kpi-label">Ce mois</p>
+      <p class="kpi-val" id="kpiMois">0 €</p>
+      <p class="kpi-sub">gagnés</p>
+    </div>
+    <div class="kpi">
+      <p class="kpi-label">RDV pris</p>
+      <p class="kpi-val" id="kpiTotal">0</p>
+      <p class="kpi-sub">au total</p>
+    </div>
+    <div class="kpi">
+      <p class="kpi-label">Validés</p>
+      <p class="kpi-val" id="kpiValidés">0</p>
+      <p class="kpi-sub">confirmés</p>
+    </div>
+  </div>
+
+  <!-- INFO -->
+  <div class="info-box">
+    <div class="info-box-icon"><span class="material-symbols-outlined fi">info</span></div>
+    <div>
+      <p class="info-box-title">Comment fonctionne la validation ?</p>
+      <p class="info-box-sub">Un commercial Stacker se déplace au créneau fixé. Dès qu'il entre dans le logement ou l'établissement, ton RDV est marqué "Validé" et tes 5 € sont déclenchés automatiquement.</p>
+    </div>
+  </div>
+
+
+  <!-- WARNING FAUX RDV -->
+  <div style="background:rgba(181,35,48,0.05);border:1.5px solid rgba(181,35,48,0.2);border-radius:18px;padding:18px 20px;margin-bottom:20px;display:flex;align-items:flex-start;gap:14px">
+    <div style="width:36px;height:36px;border-radius:11px;background:rgba(181,35,48,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+      <span class="material-symbols-outlined fi" style="font-size:17px;color:#b52330">warning</span>
+    </div>
+    <div>
+      <p style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:13px;color:#b52330;margin-bottom:4px">Tolérance zéro sur les faux RDV</p>
+      <p style="font-size:12px;color:#6b5550;line-height:1.65"><strong>3 RDV faux — personne sur place, adresse incorrecte ou contact inexistant — et tu ne touches aucune commission. Ton compte est définitivement banni de la plateforme.</strong></p>
+    </div>
+  </div>
+  <!-- FORMULAIRE -->
+  <div class="form-card">
+    <div class="form-header">
+      <span class="material-symbols-outlined fi">add_call</span>
+      <h2>Enregistrer un RDV</h2>
+    </div>
+    <div class="form-body">
+      <div class="field-row">
+        <div class="field"><label>Prénom</label><input type="text" id="fPrenom" placeholder="Marie" autocomplete="off"></div>
+        <div class="field"><label>Nom</label><input type="text" id="fNom" placeholder="Dupont" autocomplete="off"></div>
+      </div>
+      <div class="field"><label>Adresse complète</label><input type="text" id="fAdresse" placeholder="12 rue de la Paix, 75001 Paris"></div>
+      <div class="field-row">
+        <div class="field"><label>Date du RDV</label><input type="date" id="fDate"></div>
+        <div class="field"><label>Heure du RDV</label><input type="time" id="fHeure"></div>
+      </div>
+      <div class="field"><label>Produit visé</label>
+        <select id="fProduct">
+          <option value="">Choisir un produit...</option>
+          <option>Carte Fidélité</option>
+          <option>E-Réputation Google</option>
+          <option>Google My Business</option>
+          <option>Contenu Réseaux Sociaux</option>
+          <option>Site web Alma</option>
+          <option>Réduction Énergie</option>
+          <option>Seoia SEO</option>
+          <option>Rachat de Crédit</option>
+        </select>
+      </div>
+      <div class="field"><label>Téléphone du contact</label><input type="tel" id="fTel" placeholder="06 00 00 00 00"></div>
+      <button class="submit-btn" onclick="saveRdv()">
+        <span class="material-symbols-outlined" style="font-size:18px">event_available</span>
+        Enregistrer le RDV — +5 € en attente
+      </button>
+    </div>
+  </div>
+
+  <!-- LISTE RDV -->
+  <div class="">
+    <div class="section-eyebrow"><span>Mes RDV</span></div>
+    <div class="tabs" id="tabs">
+      <div class="tab active" onclick="filterTab('all')" id="tab-all">Tous <span class="tab-badge" id="cnt-all">0</span></div>
+      <div class="tab" onclick="filterTab('pending')" id="tab-pending">En attente <span class="tab-badge" id="cnt-pending">0</span></div>
+      <div class="tab" onclick="filterTab('confirmed')" id="tab-confirmed">Validés <span class="tab-badge" id="cnt-confirmed">0</span></div>
+      <div class="tab" onclick="filterTab('cancelled')" id="tab-cancelled">Annulés <span class="tab-badge" id="cnt-cancelled">0</span></div>
+    </div>
+    <div class="rdv-list" id="rdvList"></div>
+    <div class="empty" id="emptyState" style="display:none">
+      <span class="material-symbols-outlined">call</span>
+      <p>Aucun RDV enregistré.<br>Lance tes appels et log chaque RDV pris.</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let rdvs = JSON.parse(localStorage.getItem('stacker_rdvs') || '[]');
+let activeTab = 'all';
+
+// Set default date to today
+document.getElementById('fDate').value = new Date().toISOString().split('T')[0];
+
+function saveRdv() {
+  const prenom = document.getElementById('fPrenom').value.trim();
+  const nom = document.getElementById('fNom').value.trim();
+  const adresse = document.getElementById('fAdresse').value.trim();
+  const date = document.getElementById('fDate').value;
+  const heure = document.getElementById('fHeure').value;
+  const product = document.getElementById('fProduct').value;
+  const tel = document.getElementById('fTel').value.trim();
+  if (!prenom || !nom || !adresse || !date || !heure || !product) {
+    alert('Merci de remplir tous les champs obligatoires.');
+    return;
+  }
+  const rdv = { id:Date.now(), prenom, nom, adresse, date, heure, product, tel, status:'pending', createdAt:new Date().toISOString() };
+  rdvs.unshift(rdv);
+  localStorage.setItem('stacker_rdvs', JSON.stringify(rdvs));
+  ['fPrenom','fNom','fAdresse','fHeure','fTel'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('fProduct').value = '';
+  document.getElementById('fDate').value = new Date().toISOString().split('T')[0];
+  showToast();
+  render();
+}
+
+function showToast() {
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function filterTab(tab) {
+  activeTab = tab;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  render();
+}
+
+function formatDate(dateStr, heureStr) {
+  const d = new Date(dateStr + 'T' + heureStr);
+  return d.toLocaleDateString('fr-FR', {weekday:'short',day:'numeric',month:'short'}) + ' à ' + heureStr;
+}
+
+function statusHTML(status) {
+  const map = {
+    pending: '<span class="rdv-badge badge-pending">En attente</span>',
+    confirmed: '<span class="rdv-badge badge-confirmed">✓ Validé</span>',
+    cancelled: '<span class="rdv-badge badge-cancelled">Annulé</span>'
+  };
+  return map[status] || '';
+}
+
+function render() {
+  const counts = {all:rdvs.length, pending:0, confirmed:0, cancelled:0};
+  rdvs.forEach(r => { if(counts[r.status]!==undefined) counts[r.status]++; });
+  Object.keys(counts).forEach(k => {
+    const el = document.getElementById('cnt-' + k);
+    if(el) el.textContent = counts[k];
+  });
+
+  const totalCom = rdvs.filter(r => r.status === 'confirmed').length * 5;
+  const moisCom = rdvs.filter(r => {
+    const d = new Date(r.createdAt); const n = new Date();
+    return r.status === 'confirmed' && d.getMonth() === n.getMonth() && d.getFullYear() === n.getFullYear();
+  }).length * 5;
+
+  document.getElementById('kpiMois').textContent = moisCom + ' €';
+  document.getElementById('kpiTotal').textContent = rdvs.length;
+  document.getElementById('kpiValidés').textContent = counts.confirmed;
+
+  const filtered = activeTab === 'all' ? rdvs : rdvs.filter(r => r.status === activeTab);
+  document.getElementById('emptyState').style.display = filtered.length === 0 ? 'block' : 'none';
+  document.getElementById('rdvList').innerHTML = filtered.map(r => `
+    <div class="rdv-card">
+      <div class="rdv-card-header">
+        <div>
+          <p class="rdv-name">${r.prenom} ${r.nom}</p>
+          <p class="rdv-meta">${r.adresse}</p>
+        </div>
+        ${statusHTML(r.status)}
+      </div>
+      <div class="rdv-details">
+        <div class="rdv-detail"><span class="material-symbols-outlined fi">calendar_month</span><span>${formatDate(r.date, r.heure)}</span></div>
+        <div class="rdv-detail"><span class="material-symbols-outlined fi">inventory_2</span><span>${r.product}</span></div>
+        ${r.tel ? `<div class="rdv-detail"><span class="material-symbols-outlined fi">call</span><span>${r.tel}</span></div>` : ''}
+      </div>
+      <div class="rdv-com">
+        <span class="rdv-com-label">${r.status === 'confirmed' ? 'Commission versée' : r.status === 'cancelled' ? 'RDV annulé' : 'Commission en attente de validation'}</span>
+        <span class="rdv-com-val ${r.status !== 'confirmed' ? 'pending' : ''}">${r.status === 'cancelled' ? '–' : '+5 €'}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+
+
+render();
+</script>
+</body>
+</html>
