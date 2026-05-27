@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guide Prospection · Stacker</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --dark:#1b1c1c;--surface:#faf7f4;--cream:#f5f0e8;
+  --muted:#6b5550;--border:rgba(226,190,188,0.45);
+  --red:#b52330;--red2:#ff5a5f;--red-soft:rgba(181,35,48,0.08);
+  --green:#006c4c;--green-soft:rgba(0,108,76,0.08);
+  --gold:#c9a84c;
+}
+html,body{background:var(--surface);color:var(--dark);font-family:'Inter',sans-serif;min-height:100%}
+.fi{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;line-height:1;font-family:'Material Symbols Outlined'}
+
+/* HEADER */
+.header{background:var(--dark);padding:20px 20px 24px;position:sticky;top:0;z-index:100}
+.header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.logo{font-family:'Plus Jakarta Sans';font-weight:900;font-size:17px;color:#fff;letter-spacing:-0.04em}
+.logo span{font-family:'JetBrains Mono';font-size:9px;font-weight:600;color:var(--red2);background:rgba(255,90,95,0.15);padding:2px 7px;border-radius:4px;letter-spacing:0.1em;margin-left:8px}
+.nav-back{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.5);text-decoration:none}
+.nav-back:hover{color:#fff}
+.header-title{font-family:'Plus Jakarta Sans';font-weight:900;font-size:22px;letter-spacing:-0.04em;color:#fff;margin-bottom:4px}
+.header-sub{font-size:12px;color:rgba(255,255,255,0.4)}
+
+/* BODY */
+.body{max-width:680px;margin:0 auto;padding:20px 16px 80px}
+
+/* SECTION LABEL */
+.section-label{display:flex;align-items:center;gap:8px;margin:24px 0 12px}
+.section-label::before{content:'';width:16px;height:1px;background:var(--gold)}
+.section-label span{font-family:'JetBrains Mono';font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold)}
+
+/* MÉTHODE CARD */
+.methode{background:#fff;border-radius:20px;border:1px solid var(--border);box-shadow:0 2px 12px -4px rgba(27,28,28,0.06);overflow:hidden;margin-bottom:12px}
+.methode-header{padding:18px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.methode-icon{width:42px;height:42px;border-radius:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.methode-icon .material-symbols-outlined{font-size:20px}
+.methode-title{font-family:'Plus Jakarta Sans';font-weight:800;font-size:15px;letter-spacing:-0.02em;color:var(--dark);margin-bottom:3px}
+.methode-sub{font-size:12px;color:var(--muted);line-height:1.5}
+.badge-gratuit{padding:4px 10px;border-radius:99px;font-size:10px;font-weight:700;font-family:'JetBrains Mono';white-space:nowrap;background:var(--green-soft);color:var(--green);border:1px solid rgba(0,108,76,0.2)}
+.badge-payant{padding:4px 10px;border-radius:99px;font-size:10px;font-weight:700;font-family:'JetBrains Mono';white-space:nowrap;background:rgba(201,168,76,0.1);color:#9a7a28;border:1px solid rgba(201,168,76,0.2)}
+.badge-star{padding:4px 10px;border-radius:99px;font-size:10px;font-weight:700;font-family:'JetBrains Mono';white-space:nowrap;background:var(--red-soft);color:var(--red);border:1px solid rgba(181,35,48,0.2)}
+.methode-body{padding:16px 20px;display:flex;flex-direction:column;gap:10px}
+.methode-step{display:flex;align-items:flex-start;gap:12px}
+.step-num{font-family:'JetBrains Mono';font-size:10px;font-weight:700;color:var(--red);flex-shrink:0;width:20px;margin-top:2px}
+.step-text{font-size:13px;color:var(--muted);line-height:1.6}
+.step-text strong{color:var(--dark);font-weight:600}
+.methode-link{margin:0 20px 16px}
+.link-btn{display:flex;align-items:center;gap:8px;padding:11px 14px;border-radius:12px;background:var(--dark);text-decoration:none;transition:opacity 0.2s}
+.link-btn:hover{opacity:0.85}
+.link-btn-text{flex:1}
+.link-btn-url{font-size:11px;color:rgba(255,255,255,0.4);font-family:'JetBrains Mono';margin-bottom:1px}
+.link-btn-label{font-size:13px;font-weight:700;color:#fff}
+.link-btn .material-symbols-outlined{font-size:16px;color:rgba(255,255,255,0.4)}
+
+/* CONSEIL BOX */
+.conseil{background:var(--green-soft);border:1px solid rgba(0,108,76,0.2);border-radius:14px;padding:14px 16px;display:flex;align-items:flex-start;gap:10px;margin-bottom:12px}
+.conseil .material-symbols-outlined{font-size:16px;color:var(--green);flex-shrink:0;margin-top:1px}
+.conseil-text{font-size:13px;color:var(--green);line-height:1.6;font-weight:500}
+
+/* WARNING */
+.warning{background:var(--red-soft);border:1px solid rgba(181,35,48,0.2);border-radius:14px;padding:14px 16px;display:flex;align-items:flex-start;gap:10px;margin-bottom:12px}
+.warning .material-symbols-outlined{font-size:16px;color:var(--red);flex-shrink:0;margin-top:1px}
+.warning-text{font-size:13px;color:var(--red);line-height:1.6;font-weight:500}
+
+/* FLOW CARD */
+.flow{background:var(--dark);border-radius:18px;padding:20px;margin-bottom:12px;position:relative;overflow:hidden}
+.flow::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:rgba(181,35,48,0.1);pointer-events:none}
+.flow-label{font-family:'JetBrains Mono';font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,90,95,0.7);margin-bottom:10px}
+.flow-title{font-family:'Plus Jakarta Sans';font-weight:900;font-size:16px;letter-spacing:-0.03em;color:#fff;margin-bottom:14px;line-height:1.2}
+.flow-steps{display:flex;flex-direction:column;gap:10px}
+.flow-step{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:rgba(255,255,255,0.06);border-radius:12px;border:1px solid rgba(255,255,255,0.08)}
+.flow-step-arrow{font-family:'Plus Jakarta Sans';font-weight:900;font-size:18px;color:var(--red2);flex-shrink:0;line-height:1.3}
+.flow-step-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:2px}
+.flow-step-sub{font-size:11px;color:rgba(255,255,255,0.4)}
+
+/* OBJECTIF CARD */
+.objectif{background:#fff;border-radius:18px;border:1px solid var(--border);padding:18px 20px;display:flex;align-items:center;gap:16px;margin-bottom:12px}
+.objectif-num{font-family:'Plus Jakarta Sans';font-weight:900;font-size:32px;letter-spacing:-0.06em;color:var(--dark);line-height:1;flex-shrink:0}
+.objectif-label{font-size:12px;color:var(--muted);margin-top:2px}
+.objectif-sep{width:1px;height:40px;background:var(--border);flex-shrink:0}
+.objectif-desc{font-size:13px;color:var(--muted);line-height:1.55}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-top">
+    <a href="rdv.html" class="nav-back">
+      <span class="material-symbols-outlined" style="font-size:17px">arrow_back</span>
+      Retour
+    </a>
+    <div class="logo">Stacker<span>MODULE</span></div>
+  </div>
+  <h1 class="header-title">Guide de prospection</h1>
+  <p class="header-sub">Sources légales pour trouver des numéros de propriétaires</p>
+</div>
+
+<div class="body">
+
+  <!-- FLOW IDÉAL -->
+  <div class="flow">
+    <p class="flow-label">Le flow idéal pour maximiser les RDV</p>
+    <h2 class="flow-title">Cadastre → Pages Blanches → Appel ANAH</h2>
+    <div class="flow-steps">
+      <div class="flow-step">
+        <span class="flow-step-arrow">1</span>
+        <div>
+          <p class="flow-step-title">Cadastre.gouv.fr — identifier les propriétaires</p>
+          <p class="flow-step-sub">Tu cibles une zone, tu vois qui est propriétaire de chaque maison. Nom + parcelle.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <span class="flow-step-arrow">2</span>
+        <div>
+          <p class="flow-step-title">Pages Blanches — trouver le numéro</p>
+          <p class="flow-step-sub">Tu croises le nom du propriétaire avec sa ville. Tu obtiens le numéro direct.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <span class="flow-step-arrow">3</span>
+        <div>
+          <p class="flow-step-title">Script ANAH — décrocher le RDV</p>
+          <p class="flow-step-sub">Tu appelles avec le script. Zéro appel perdu sur un locataire — tu sais déjà que c'est le propriétaire.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="conseil">
+    <span class="material-symbols-outlined fi">tips_and_updates</span>
+    <p class="conseil-text">Ce flow est le plus efficace — tu cibles uniquement des propriétaires de maisons construites avant 1997 dans des zones pavillonnaires. Taux de conversion maximum, zéro perte de temps.</p>
+  </div>
+
+  <!-- SOURCES GRATUITES -->
+  <div class="section-label"><span>Sources gratuites</span></div>
+
+  <!-- CADASTRE -->
+  <div class="methode">
+    <div class="methode-header">
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <div class="methode-icon" style="background:rgba(0,108,76,0.1)"><span class="material-symbols-outlined fi" style="color:var(--green)">map</span></div>
+          <div>
+            <p class="methode-title">Cadastre.gouv.fr</p>
+            <p class="methode-sub">La mine d'or — identifier les propriétaires par parcelle</p>
+          </div>
+        </div>
+      </div>
+      <span class="badge-star">⭐ Priorité 1</span>
+    </div>
+    <div class="methode-body">
+      <div class="methode-step"><span class="step-num">01</span><p class="step-text">Va sur <strong>cadastre.gouv.fr</strong> et recherche une commune ou un code postal</p></div>
+      <div class="methode-step"><span class="step-num">02</span><p class="step-text">Clique sur une parcelle — tu vois le <strong>nom du propriétaire</strong> et le type de bien</p></div>
+      <div class="methode-step"><span class="step-num">03</span><p class="step-text">Cible les <strong>maisons individuelles</strong> dans les zones pavillonnaires des années 60-90</p></div>
+      <div class="methode-step"><span class="step-num">04</span><p class="step-text">Note le nom + l'adresse → croise avec Pages Blanches pour le numéro</p></div>
+    </div>
+    <div class="methode-link">
+      <a href="https://cadastre.gouv.fr" target="_blank" class="link-btn">
+        <div class="link-btn-text">
+          <p class="link-btn-url">cadastre.gouv.fr</p>
+          <p class="link-btn-label">Accéder au cadastre →</p>
+        </div>
+        <span class="material-symbols-outlined">open_in_new</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- PAGES BLANCHES -->
+  <div class="methode">
+    <div class="methode-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="methode-icon" style="background:rgba(181,35,48,0.08)"><span class="material-symbols-outlined fi" style="color:var(--red)">contacts</span></div>
+        <div>
+          <p class="methode-title">Pages Blanches</p>
+          <p class="methode-sub">Recherche par nom et ville — numéro de particulier direct</p>
+        </div>
+      </div>
+      <span class="badge-gratuit">Gratuit</span>
+    </div>
+    <div class="methode-body">
+      <div class="methode-step"><span class="step-num">01</span><p class="step-text">Va sur <strong>pagesjaunes.fr/pagesblanches</strong></p></div>
+      <div class="methode-step"><span class="step-num">02</span><p class="step-text">Entre le <strong>nom du propriétaire</strong> trouvé sur le cadastre + la ville</p></div>
+      <div class="methode-step"><span class="step-num">03</span><p class="step-text">Tu obtiens le numéro fixe ou mobile — <strong>vérifier l'adresse</strong> pour confirmer que c'est le bon</p></div>
+    </div>
+    <div class="methode-link">
+      <a href="https://www.pagesjaunes.fr/pagesblanches" target="_blank" class="link-btn">
+        <div class="link-btn-text">
+          <p class="link-btn-url">pagesjaunes.fr/pagesblanches</p>
+          <p class="link-btn-label">Accéder aux Pages Blanches →</p>
+        </div>
+        <span class="material-symbols-outlined">open_in_new</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 118712 -->
+  <div class="methode">
+    <div class="methode-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="methode-icon" style="background:rgba(201,168,76,0.1)"><span class="material-symbols-outlined fi" style="color:var(--gold)">search</span></div>
+        <div>
+          <p class="methode-title">118712.fr</p>
+          <p class="methode-sub">Annuaire inversé — souvent plus à jour que Pages Blanches</p>
+        </div>
+      </div>
+      <span class="badge-gratuit">Gratuit</span>
+    </div>
+    <div class="methode-body">
+      <div class="methode-step"><span class="step-num">01</span><p class="step-text">Recherche par <strong>nom + ville</strong> ou directement par <strong>numéro inversé</strong></p></div>
+      <div class="methode-step"><span class="step-num">02</span><p class="step-text">Base souvent plus récente que Pages Blanches — <strong>utile en complément</strong> si Pages Blanches ne trouve pas</p></div>
+    </div>
+    <div class="methode-link">
+      <a href="https://www.118712.fr" target="_blank" class="link-btn">
+        <div class="link-btn-text">
+          <p class="link-btn-url">118712.fr</p>
+          <p class="link-btn-label">Accéder à 118712 →</p>
+        </div>
+        <span class="material-symbols-outlined">open_in_new</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- INFOBEL -->
+  <div class="methode">
+    <div class="methode-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="methode-icon" style="background:rgba(181,35,48,0.08)"><span class="material-symbols-outlined fi" style="color:var(--red)">person_search</span></div>
+        <div>
+          <p class="methode-title">Infobel.fr</p>
+          <p class="methode-sub">Base combinée particuliers + entreprises, filtrable par ville</p>
+        </div>
+      </div>
+      <span class="badge-gratuit">Gratuit</span>
+    </div>
+    <div class="methode-body">
+      <div class="methode-step"><span class="step-num">01</span><p class="step-text">Recherche par <strong>nom et code postal</strong> — résultats plus précis qu'un simple annuaire</p></div>
+      <div class="methode-step"><span class="step-num">02</span><p class="step-text">Permet de <strong>filtrer par zone géographique</strong> précise — idéal pour cibler un secteur</p></div>
+    </div>
+    <div class="methode-link">
+      <a href="https://www.infobel.fr" target="_blank" class="link-btn">
+        <div class="link-btn-text">
+          <p class="link-btn-url">infobel.fr</p>
+          <p class="link-btn-label">Accéder à Infobel →</p>
+        </div>
+        <span class="material-symbols-outlined">open_in_new</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- SOURCES PAYANTES -->
+  <div class="section-label"><span>Sources payantes — pour scaler</span></div>
+
+  <!-- SOCIÉTÉ.COM -->
+  <div class="methode">
+    <div class="methode-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="methode-icon" style="background:rgba(201,168,76,0.1)"><span class="material-symbols-outlined fi" style="color:var(--gold)">domain</span></div>
+        <div>
+          <p class="methode-title">Société.com</p>
+          <p class="methode-sub">Identifier les propriétaires avec SCI ou biens déclarés</p>
+        </div>
+      </div>
+      <span class="badge-payant">Payant</span>
+    </div>
+    <div class="methode-body">
+      <div class="methode-step"><span class="step-num">01</span><p class="step-text">Recherche les <strong>SCI et propriétaires de biens immobiliers</strong> déclarés — très efficace pour les multi-propriétaires</p></div>
+      <div class="methode-step"><span class="step-num">02</span><p class="step-text">Tu identifies des propriétaires qui ont <strong>plusieurs logements</strong> — cibles prioritaires car ils ont souvent plusieurs biens à contrôler</p></div>
+    </div>
+    <div class="methode-link">
+      <a href="https://www.societe.com" target="_blank" class="link-btn">
+        <div class="link-btn-text">
+          <p class="link-btn-url">societe.com</p>
+          <p class="link-btn-label">Accéder à Société.com →</p>
+        </div>
+        <span class="material-symbols-outlined">open_in_new</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- KOMPASS -->
+  <div class="methode">
+    <div class="methode-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="methode-icon" style="background:rgba(201,168,76,0.1)"><span class="material-symbols-outlined fi" style="color:var(--gold)">database</span></div>
+        <div>
+          <p class="methode-title">Kompass / Manageo</p>
+          <p class="methode-sub">Bases exportables — ciblage par code postal et profil</p>
+        </div>
+      </div>
+      <span class="badge-payant">Payant</span>
+    </div>
+    <div class="methode-body">
+      <div class="methode-step"><span class="step-num">01</span><p class="step-text">Permet d'<strong>exporter des listes de contacts</strong> filtrées par zone géographique précise</p></div>
+      <div class="methode-step"><span class="step-num">02</span><p class="step-text">Utile quand tu veux <strong>scaler rapidement</strong> sur un nouveau département — liste prête à appeler</p></div>
+    </div>
+    <div class="methode-link">
+      <a href="https://fr.kompass.com" target="_blank" class="link-btn">
+        <div class="link-btn-text">
+          <p class="link-btn-url">fr.kompass.com</p>
+          <p class="link-btn-label">Accéder à Kompass →</p>
+        </div>
+        <span class="material-symbols-outlined">open_in_new</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- OBJECTIFS -->
+  <div class="section-label"><span>Objectifs par session</span></div>
+
+  <div class="objectif">
+    <div>
+      <p class="objectif-num">80</p>
+      <p class="objectif-label">appels / jour</p>
+    </div>
+    <div class="objectif-sep"></div>
+    <p class="objectif-desc">Objectif minimum pour une journée de prospection. Avec un bon rythme et les bonnes sources, 80 appels = 4 à 8 RDV validés.</p>
+  </div>
+
+  <div class="objectif">
+    <div>
+      <p class="objectif-num">1/10</p>
+      <p class="objectif-label">taux RDV</p>
+    </div>
+    <div class="objectif-sep"></div>
+    <p class="objectif-desc">En moyenne 1 RDV décroché pour 10 appels aboutis. Avec le cadastre + Pages Blanches, ce taux monte à 1 pour 6-7 appels car tu cibles uniquement des propriétaires.</p>
+  </div>
+
+
+</div>
+</body>
+</html>
