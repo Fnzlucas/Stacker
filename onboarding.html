@@ -204,11 +204,84 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;heigh
         <p class="s1-perk-text">Scripts, objections et contrats inclus pour chaque produit</p>
       </div>
     </div>
-    <button class="btn-start" onclick="goTo(2)">
+    <button class="btn-start" onclick="goTo('1b')">
       <span class="material-symbols-outlined filled" style="font-size:20px;font-variation-settings:'FILL' 1">bolt</span>
       Créer mon compte
     </button>
     <p class="s1-login">Déjà un compte ? <a href="index.html">Se connecter</a></p>
+  </div>
+
+
+  <!-- S1B — CHOIX DU PROFIL -->
+  <div class="screen" id="s1b">
+    <div class="screen-inner">
+      <p class="screen-label">Étape 1 sur 7 · Ton profil</p>
+      <h2 class="screen-q">Comment tu veux gagner ta vie avec Stacker ?</h2>
+      <p class="screen-hint">Choisis ton profil — tu pourras activer les deux plus tard.</p>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-top:8px">
+
+        <!-- CALLER RDV -->
+        <div class="option-card" id="profil-caller" onclick="selectProfil('caller')">
+          <div class="option-check"><span class="material-symbols-outlined">check</span></div>
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+              <div style="width:32px;height:32px;border-radius:10px;background:rgba(181,35,48,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <span class="material-symbols-outlined filled" style="font-size:16px;color:#b52330">call</span>
+              </div>
+              <p class="option-title">Caller RDV</p>
+              <span style="font-family:'JetBrains Mono';font-size:9px;font-weight:700;color:#b52330;background:rgba(181,35,48,0.08);padding:2px 7px;border-radius:99px">+7 € / RDV</span>
+            </div>
+            <p class="option-desc">Tu appelles des particuliers propriétaires pour fixer des contrôles réglementaires à domicile. Pas de vente, juste le téléphone. Dès que le technicien entre dans le logement, tu touches 7 €.</p>
+            <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
+              <span style="font-size:11px;font-weight:600;padding:3px 8px;border-radius:99px;background:rgba(27,28,28,0.06);color:#6b5550">Depuis chez toi</span>
+              <span style="font-size:11px;font-weight:600;padding:3px 8px;border-radius:99px;background:rgba(27,28,28,0.06);color:#6b5550">40–70 € / jour</span>
+              <span style="font-size:11px;font-weight:600;padding:3px 8px;border-radius:99px;background:rgba(27,28,28,0.06);color:#6b5550">Débutant friendly</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CLOSER OFFRES -->
+        <div class="option-card" id="profil-closer" onclick="selectProfil('closer')">
+          <div class="option-check"><span class="material-symbols-outlined">check</span></div>
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+              <div style="width:32px;height:32px;border-radius:10px;background:rgba(0,108,76,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <span class="material-symbols-outlined filled" style="font-size:16px;color:#006c4c">handshake</span>
+              </div>
+              <p class="option-title">Closer Offres</p>
+              <span style="font-family:'JetBrains Mono';font-size:9px;font-weight:700;color:#006c4c;background:rgba(0,108,76,0.08);padding:2px 7px;border-radius:99px">25–40% / vente</span>
+            </div>
+            <p class="option-desc">Tu vends les produits Stacker aux commerces locaux — carte fidélité, QR code, site web, SEO, réseaux sociaux. Commission récurrente chaque mois tant que le client est abonné.</p>
+            <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
+              <span style="font-size:11px;font-weight:600;padding:3px 8px;border-radius:99px;background:rgba(27,28,28,0.06);color:#6b5550">Terrain ou call</span>
+              <span style="font-size:11px;font-weight:600;padding:3px 8px;border-radius:99px;background:rgba(27,28,28,0.06);color:#6b5550">Revenus récurrents</span>
+              <span style="font-size:11px;font-weight:600;padding:3px 8px;border-radius:99px;background:rgba(27,28,28,0.06);color:#6b5550">Expérience vente</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- LES DEUX -->
+        <div class="option-card" id="profil-both" onclick="selectProfil('both')">
+          <div class="option-check"><span class="material-symbols-outlined">check</span></div>
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+              <div style="width:32px;height:32px;border-radius:10px;background:rgba(201,168,76,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <span class="material-symbols-outlined filled" style="font-size:16px;color:#c9a84c">bolt</span>
+              </div>
+              <p class="option-title">Les deux</p>
+              <span style="font-family:'JetBrains Mono';font-size:9px;font-weight:700;color:#9a7a28;background:rgba(201,168,76,0.1);padding:2px 7px;border-radius:99px">Max revenus</span>
+            </div>
+            <p class="option-desc">Tu combines RDV réglementaires et vente d'offres. Le meilleur des deux mondes — revenus immédiats avec les RDV, revenus récurrents avec les offres.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="screen-bottom">
+      <button class="btn-next cta" id="btnNextProfil" onclick="goTo('1b')" disabled style="opacity:0.4;cursor:not-allowed">
+        Continuer <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span>
+      </button>
+    </div>
   </div>
 
   <!-- S2 — INFOS PERSO -->
@@ -291,7 +364,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;heigh
       <button class="btn-next cta" onclick="validateS3()">
         Continuer <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span>
       </button>
-      <button class="btn-back" onclick="goTo(2)">
+      <button class="btn-back" onclick="goTo('1b')">
         <span class="material-symbols-outlined" style="font-size:14px">arrow_back</span> Retour
       </button>
     </div>
@@ -580,7 +653,7 @@ const OFFERS = [
 ];
 
 function goTo(n) {
-  if (n < 1 || n > TOTAL) return;
+  if (typeof n === 'number' && (n < 1 || n > TOTAL)) return;
   const prev = document.getElementById('s' + cur);
   const next = document.getElementById('s' + n);
   if (!next) return;
@@ -764,6 +837,19 @@ function requestNotifs() {
 }
 
 updateObj();
+
+function selectProfil(type) {
+  ['caller','closer','both'].forEach(p => {
+    document.getElementById('profil-' + p).classList.remove('selected');
+  });
+  document.getElementById('profil-' + type).classList.add('selected');
+  localStorage.setItem('stacker_profil', type);
+  const btn = document.getElementById('btnNextProfil');
+  btn.disabled = false;
+  btn.style.opacity = '1';
+  btn.style.cursor = 'pointer';
+}
+
 </script>
 </body>
 </html>
