@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scripts · Module Call</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+ --dark:#1b1c1c;--surface:#faf7f4;--cream:#f5f0e8;
+ --muted:#6b5550;--border:rgba(226,190,188,0.45);
+ --red:#b52330;--red2:#ff5a5f;--red-soft:rgba(181,35,48,0.08);
+ --green:#006c4c;--green-soft:rgba(0,108,76,0.08);
+ --gold:#c9a84c;
+}
+html,body{background:var(--surface);color:var(--dark);font-family:'Inter',sans-serif;min-height:100%}
+.fi{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;line-height:1;font-family:'Material Symbols Outlined'}
+
+/* HEADER */
+.header{background:var(--dark);padding:20px 20px 0;position:sticky;top:0;z-index:100}
+.header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.logo{font-family:'Plus Jakarta Sans';font-weight:900;font-size:17px;color:#fff;letter-spacing:-0.04em}
+.logo span{font-family:'JetBrains Mono';font-size:9px;font-weight:600;color:var(--red2);background:rgba(255,90,95,0.15);padding:2px 7px;border-radius:4px;letter-spacing:0.1em;margin-left:8px}
+.header-sub{font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px}
+
+/* SCRIPT TABS */
+.tabs{display:flex;gap:0;overflow-x:auto;scrollbar-width:none;border-top:1px solid rgba(255,255,255,0.08);margin-top:4px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:12px 16px;font-size:12px;font-weight:700;color:rgba(255,255,255,0.4);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all 0.2s;display:flex;align-items:center;gap:6px;flex-shrink:0}
+.tab.active{color:#fff;border-bottom-color:var(--red2)}
+.tab-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+
+/* BODY */
+.body{max-width:680px;margin:0 auto;padding:20px 16px 80px}
+
+/* MÉCANIQUE INTRO */
+.mechanique{background:var(--dark);border-radius:18px;padding:20px;margin-bottom:20px;position:relative;overflow:hidden}
+.mechanique::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:rgba(181,35,48,0.1);pointer-events:none}
+.meca-label{font-family:'JetBrains Mono';font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,90,95,0.7);margin-bottom:8px}
+.meca-title{font-family:'Plus Jakarta Sans';font-weight:900;font-size:17px;letter-spacing:-0.03em;color:#fff;margin-bottom:6px;line-height:1.2}
+.meca-sub{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.6}
+
+/* ÉTAPES */
+.etape{margin-bottom:12px}
+.etape-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.etape-num{width:26px;height:26px;border-radius:8px;background:var(--red);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono';font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+.etape-title{font-family:'Plus Jakarta Sans';font-weight:800;font-size:13px;color:var(--dark);letter-spacing:-0.02em}
+.etape-tag{font-size:9px;font-weight:700;font-family:'JetBrains Mono';padding:2px 7px;border-radius:99px;margin-left:auto;flex-shrink:0}
+.tag-ouverture{background:rgba(181,35,48,0.1);color:var(--red)}
+.tag-pivot{background:rgba(201,168,76,0.12);color:#9a7a28}
+.tag-closing{background:var(--green-soft);color:var(--green)}
+.tag-objection{background:rgba(27,28,28,0.07);color:var(--muted)}
+
+/* RÉPLIQUE */
+.replique{background:#fff;border-radius:14px;border:1px solid var(--border);padding:16px;margin-bottom:8px;box-shadow:0 2px 8px -3px rgba(27,28,28,0.06)}
+.replique-role{font-size:9px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:5px}
+.role-caller{color:var(--red)}
+.role-prospect{color:var(--muted)}
+.replique-text{font-size:14px;color:var(--dark);line-height:1.65}
+.replique-text strong{color:var(--red);font-weight:700}
+.replique.prospect{background:var(--cream);border-color:transparent}
+.replique.hint{background:var(--green-soft);border-color:rgba(0,108,76,0.15)}
+.hint-label{font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--green);margin-bottom:5px}
+.hint-text{font-size:12px;color:var(--green);line-height:1.55}
+
+/* OBJECTIONS */
+.objection{border-radius:14px;overflow:hidden;border:1px solid var(--border);margin-bottom:8px}
+.obj-q{background:var(--cream);padding:12px 16px;display:flex;align-items:center;gap:8px;cursor:pointer}
+.obj-q-icon{font-size:13px;color:var(--muted);flex-shrink:0;font-style:italic;font-family:'Plus Jakarta Sans';font-weight:700}
+.obj-q-text{font-size:13px;font-weight:700;color:var(--dark)}
+.obj-q-arrow{margin-left:auto;font-size:16px;color:var(--muted);transition:transform 0.2s;flex-shrink:0}
+.obj-q.open .obj-q-arrow{transform:rotate(180deg)}
+.obj-a{display:none;padding:14px 16px;background:#fff}
+.obj-a.open{display:block}
+.obj-a-text{font-size:13px;color:var(--muted);line-height:1.65}
+.obj-a-text strong{color:var(--dark);font-weight:600}
+
+/* RÈGLES */
+.regles{background:var(--dark);border-radius:16px;padding:16px 18px;margin-bottom:16px}
+.regle-title{font-family:'JetBrains Mono';font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:10px}
+.regle{display:flex;align-items:flex-start;gap:10px;margin-bottom:7px}
+.regle:last-child{margin-bottom:0}
+.regle-num{font-family:'JetBrains Mono';font-size:10px;font-weight:700;color:var(--red2);flex-shrink:0;margin-top:1px}
+.regle-text{font-size:12px;color:rgba(255,255,255,0.55);line-height:1.5}
+
+/* SECTION LABEL */
+.section-label{display:flex;align-items:center;gap:8px;margin:20px 0 10px}
+.section-label::before{content:'';width:16px;height:1px;background:var(--gold)}
+.section-label span{font-family:'JetBrains Mono';font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold)}
+
+/* SCRIPT CONTENT — hidden by default */
+.script-content{display:none}
+.script-content.active{display:block}
+
+/* BADGE IMPORTANT */
+.badge-important{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;background:rgba(181,35,48,0.08);border:1px solid rgba(181,35,48,0.2);margin-bottom:14px}
+.badge-important .material-symbols-outlined{font-size:15px;color:var(--red)}
+.badge-important span{font-size:12px;font-weight:700;color:var(--red)}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+ <div class="header-top">
+ <div>
+ <div class="logo">Scripts Call<span>MODULE</span></div>
+ <div class="header-sub">Ne jamais mentionner Stacker · Toujours se présenter comme le secrétariat de l'ANAH — Agence Nationale de l'Habitat</div>
+ </div>
+ </div>
+ <div class="tabs" id="tabs">
+ <div class="tab active" onclick="showScript('qualif')" id="tab-qualif">
+ <div class="tab-dot" style="background:#fff"></div>
+ Qualification
+ </div>
+ <div class="tab" onclick="showScript('thermique')" id="tab-thermique">
+ <div class="tab-dot" style="background:#ef4444"></div>
+ Thermique
+ </div>
+ <div class="tab" onclick="showScript('électrique')" id="tab-électrique">
+ <div class="tab-dot" style="background:#f59e0b"></div>
+ Électrique
+ </div>
+ <div class="tab" onclick="showScript('amiante')" id="tab-amiante">
+ <div class="tab-dot" style="background:#8b5cf6"></div>
+ Amiante
+ </div>
+ <div class="tab" onclick="showScript('vmc')" id="tab-vmc">
+ <div class="tab-dot" style="background:#10b981"></div>
+ VMC & Air
+ </div>
+ </div>
+</div>
+
+<div class="body">
+
+<!-- ════ SCRIPT 0 — QUALIFICATION ════ -->
+<div class="script-content active" id="script-qualif">
+
+ <div class="mechanique">
+ <p class="meca-label">La mécanique qui change tout</p>
+ <h2 class="meca-title">"Avez-vous reçu le courrier<br>que nous vous avons adressé ?"</h2>
+ <p class="meca-sub">Le prospect dit non. Et c'est exactement ce qu'on veut. À ce moment il pense qu'il a raté quelque chose d'important — pas qu'il est démarché. Le script bascule en mode administratif : dossier en attente, erreur de traitement, technicien qui doit passer chez lui. Il écoute parce qu'il croit avoir un retard à rattraper.</p>
+ </div>
+
+ <div class="regles">
+ <p class="regle-title">Règles absolues — a appliquer sur TOUS les scripts</p>
+ <div class="regle"><span class="regle-num">01</span><span class="regle-text">Ne jamais mentionner Stacker ou le nom de l'employeur</span></div>
+ <div class="regle"><span class="regle-num">02</span><span class="regle-text">Ton administratif et neutre — pas chaleureux, pas commercial</span></div>
+ <div class="regle"><span class="regle-num">03</span><span class="regle-text">Qualifier propriétaire AVANT tout pitch — locataire = raccrocher poliment</span></div>
+ <div class="regle"><span class="regle-num">04</span><span class="regle-text">Toute question du prospect = répondre par une question de créneau</span></div>
+ <div class="regle"><span class="regle-num">05</span><span class="regle-text">Répéter "l'Agence Nationale de l'Habitat" au moins 3 fois dans le call</span></div>
+ <div class="regle"><span class="regle-num">06</span><span class="regle-text">Objectif unique : décrocher le créneau. Rien d'autre.</span></div>
+ </div>
+
+ <div class="section-label"><span>Script d'ouverture universel</span></div>
+
+ <div class="etape">
+ <div class="etape-header">
+ <div class="etape-num">1</div>
+ <span class="etape-title">Le courrier — créer l'urgence administrative</span>
+ <span class="etape-tag tag-ouverture">Ouverture</span>
+ </div>
+ <div class="replique">
+ <div class="replique-role role-caller"><span class="material-symbols-outlined fi" style="font-size:12px">call</span> Caller</div>
+ <div class="replique-text">Bonjour, je suis [Prenom], j'appelle Dans le cadre d'un contrôle émis par l'<strong>ANAH</strong> — l'Agence Nationale de l'Habitat —. Vous avez bien reçu le courrier que nous vous avons adressé concernant votre logement ?</div>
+ </div>
+ <div class="replique prospect">
+ <div class="replique-role role-prospect"><span class="material-symbols-outlined fi" style="font-size:12px">person</span> Prospect — repond non (dans 90% des cas)</div>
+ <div class="replique-text" style="color:var(--muted);font-style:italic">Non, quel courrier ? / Je n'ai rien reçu / Non pas que je sache...</div>
+ </div>
+ </div>
+
+ <div class="etape">
+ <div class="etape-header">
+ <div class="etape-num">2</div>
+ <span class="etape-title">L'erreur administrative — le pivot clé</span>
+ <span class="etape-tag tag-pivot">Pivot</span>
+ </div>
+ <div class="replique">
+ <div class="replique-role role-caller"><span class="material-symbols-outlined fi" style="font-size:12px">call</span> Caller</div>
+ <div class="replique-text">En fait notre technicien nous a signalé qu'il n'arrivait pas à vous joindre pour convenir d'un créneau — votre dossier est donc toujours en attente de traitement à l'ANAH. C'est pour ça que je vous appelle directement aujourd'hui. Vous êtes bien le propriétaire du logement ?</div>
+ </div>
+ <div class="replique hint">
+ <div class="hint-label">Pourquoi ca marche</div>
+ <div class="hint-text">Le prospect pense qu'il a un dossier ouvert a son nom. Il n'est plus en mode "appel commercial" — il est en mode "j'ai un truc en attente". Sa garde est tombee.</div>
+ </div>
+ </div>
+
+ <div class="etape">
+ <div class="etape-header">
+ <div class="etape-num">3</div>
+ <span class="etape-title">Qualification propriétaire</span>
+ <span class="etape-tag tag-pivot">Qualification</span>
+ </div>
+ <div class="replique prospect">
+ <div class="replique-role role-prospect"><span class="material-symbols-outlined fi" style="font-size:12px">person</span> Si propriétaire</div>
+ <div class="replique-text" style="color:var(--muted);font-style:italic">Oui je suis propriétaire</div>
+ </div>
+ <div class="replique">
+ <div class="replique-role role-caller"><span class="material-symbols-outlined fi" style="font-size:12px">call</span> Caller — basculer vers le script du contrôle du jour</div>
+ <div class="replique-text">Très bien. Donc dans le cadre d'un contrôle émis par l'<strong>ANAH</strong> — l'Agence Nationale de l'Habitat — votre logement est programmé pour une vérification réglementaire obligatoire. Un technicien agréé doit passer chez vous — c'est entierement réglementaire et ça ne prend que 45 minutes. [CONTINUER AVEC SCRIPT CONTRÔLE]</div>
+ </div>
+ <div class="replique prospect">
+ <div class="replique-role role-prospect"><span class="material-symbols-outlined fi" style="font-size:12px">person</span> Si locataire</div>
+ <div class="replique-text" style="color:var(--muted);font-style:italic">Non je suis locataire</div>
+ </div>
+ <div class="replique">
+ <div class="replique-role role-caller"><span class="material-symbols-outlined fi" style="font-size:12px">call</span> Caller</div>
+ <div class="replique-text">Je comprends, cette demarche concerne uniquement les propriétaires. Je vais mettre votre dossier de côté. Merci et bonne journee.</div>
+ </div>
+ </div>
+
+ <div class="etape">
+ <div class="etape-header">
+ <div class="etape-num">4</div>
+ <span class="etape-title">Validation du créneau — toujours en dernier</span>
+ <span class="etape-tag tag-closing">Closing</span>
+ </div>
+ <div class="replique">
+ <div class="replique-role role-caller"><span class="material-symbols-outlined fi" style="font-size:12px">call</span> Caller</div>
+ <div class="replique-text">Pour régulariser votre dossier <strong>ANAH</strong>, je vais programmér le passage du technicien. Vous etes disponible plutot en matinee ou en apres-midi cette semaine ?</div>
+ </div>
+ <div class="replique">
+ <div class="replique-role role-caller"><span class="material-symbols-outlined fi" style="font-size:12px">call</span> Une fois le créneau confirme</div>
+ <div class="replique-text">Parfait. Je note votre nom — c'est bien [Prenom NOM] ? Et votre adresse exacte ? [...] Donc le [JOUR] a [HEURE], notre technicien de l'<strong>l'Agence Nationale de l'Habitat</strong> sera chez vous. Vous recevrez une confirmation. Vous avez un numero direct en cas d'imprevu ?</div>
+ </div>
+ <div class="replique hint">
+ <div class="hint-label">Important</div>
+ <div class="hint-text">Toujours répéter l'adresse pour confirmer. Toujours prendre le numero de telephone. Un RDV sans numero de tel = risque de faux RDV.</div>
+ </div>
+ </div>
+
+</div>
+
+<!-- ════ SCRIPT 1 — THERMIQUE ════ -->
+<div class="script-content" id="script-thermique">
+
+ <div class="mechanique">
+ <p class="meca-label">Contrôle thermique & déperdition</p>
+ <h2 class="meca-title">Angle : dossier en attente<br>+ obligation réglementaire</h2>
+ <p class="meca-sub">Après l'ouverture courrier universelle, ce script enfonce le clou sur les nouvelles normes thermiques et l'éligibilité aux aides de l'État. Le réglementaire est mentionne une seule fois — pas plus, ca sonne commercial.</p>
+ </div>
+
+ <div class="badge-important">
+ <span class="material-symbols-outlined fi">info</span>
+ <span>Toujours faire l'ouverture courrier d'abord — puis enchainer ici</span>
+ </div>
+
+ <div class="section-label"><span>Après qualification propriétaire</span></div>
+
+ <div class="etape">
+ <div class="etape-header">
+ <div class="etape-num">1</div>
+ <span class="etape-title">Le dossier en attente</span>
+ <span class="etape-tag tag-ouverture">Pitch</span>
+ </div>
+ <div class="replique">
+ <div class="replique-role role-caller"><span class="material-symbols-outlined fi" style="font-size:12px">call</span> Caller</div>
+ <div class="replique-text">Donc Dans le cadre d'un contrôle émis par l'<strong>ANAH</strong> — l'Agence Nationale de l'Habitat —, votre logement est inscrit pour une verification obligatoire de déperdition thermique. Suite aux nouvelles normes entrées en vigueur, tous les propriétaires de la zone sont concernés. Votre dossier était en attente de traitement depuis plusieurs semaines — c'est pour ça que le technicien n'est pas encore intervenu. Il doit passer évaluer les performances énergétiques de votre logement. Ça prend 45 minutes, et vous recevrez un rapport officiel.</div>
+ </div>
+ </div>
+
+ <div class="etape">
+ <div class="etape-header">
+ <div class="etape-num">2</div>
+ <span class="etape-title">L'argument aides de l'État — à utiliser si besoin</span>
+ <span class="etape-tag tag-pivot">Bonus</span>
+ </div>
+ <div class="replique">
+ <div class="replique-role role-caller"><span class="material-symbols-outlined fi" style="font-size:12px">call</span> Caller</div>
+ <div class="replique-text">Ce bilan permet aussi de determiner si vous etes éligible aux aides de l'État pour les travaux de renovation — certains propriétaires ont obtenu jusqu'à 90% de prise en charge. Le technicien vous explique tout sur place.</div>
+ </div>
+ <div class="replique hint">
+ <div class="hint-label">Conseil</div>
+ <div class="hint-text">Ne pas surcharger. Si le prospect est deja pret a prendre un créneau — ne pas rajouter cet argument. Le mentionner seulement si il hesite.</div>
+ </div>
+ </div>
+
+ <div class="section-label"><span>Objections spécifiques</span></div>
+
+ <div class="objection">
+ <div class="obj-q" onclick="toggleObj(this)">
+ <span class="obj-q-icon">"</span>
+ <span class="obj-q-text">J'ai deja un DPE</span>
+ <span class="material-symbols-outlined obj-q-arrow">expand_more</span>
+ </div>
+ <div class="obj-a">
+ <p class="obj-a-text">Le DPE et le bilan de déperdition thermique sont deux documents distincts dans votre dossier de <strong>l'Agence Nationale de l'Habitat</strong>. Le DPE donne une note globale — notre contrôle identifie precisement les points de perte énergétique. Les deux sont necessaires pour régulariser votre dossier. Le technicien est disponible cette semaine. Matin ou apres-midi ?</p>
+ </div>
+ </div>
+
+ <div class="objection">
+ <div class="obj-q" onclick="toggleObj(this)">
+ <span class="obj-q-icon">"</span>
+ <span class="obj-q-text">Je viens de faire des travaux</span>
+ <span class="material-symbols-outlined obj-q-arrow">expand_more</span>
+ </div>
+ <div class="obj-a">
+ <p class="obj-a-text">C'est parfait — c'est justement après des travaux que le bilan de <strong>l'Agence Nationale de l'Habitat</strong> est le plus important. Il permet de valider officiellement l'impact de vos travaux et de mettre votre dossier a jour. Le technicien passe quand ca vous arrange. Cette semaine ou la semaine prochaine ?</p>
+ </div>
+ </div>
+
+ <div class="objection">
+ <div class="obj-q" onclick="toggleObj(this)">
+ <span class="obj-q-icon">"</span>
+ <span class="obj-q-text">C'est pour vendre quelque chose ?</span>
+ <span class="material-symbols-outlined obj-q-arrow">expand_more</span>
+ </div>
+ <div class="obj-a">
+ <p class="obj-a-text">Non — notre technicien de l'<strong>Agence Nationale de l'Habitat</strong> realise uniquement le bilan réglementaire et vous remet le rapport officiel. Aucune vente, aucune obligation. C'est une demarche administrative. Quel jour vous convient pour le passage ?</p>
+ </div>
+ </div>
+
+</div>
+
+<!-- ════ SCRIPT 2 — ÉLECTRIQUE ════ -->
+<div class="script-content" id="script-électrique">
+
+ <div class="mechanique">
+ <p class="meca-label">Conformité électrique</p>
+ <h2 class="meca-title">Angle : responsabilité legale<br>du propriétaire</h2>
+ <p class="meca-sub">Le levier le plus fort sur ce script c'est la responsabilité civile et penale. Le prospect ne veut pas avoir de problemes juridiques. On ne vend rien — on l'informe d'un risque reel qu'il court.</p>
+ </div>
+
+ <div class="badge-important">
+ <span class="material-symbols-outlined fi">info</span>
+ <span>Toujours faire l'ouverture courrier d'abord — puis enchainer ici</span>
+ </div>
+
+ <div class="section-label"><span>Après qualification propriétaire</span></div>
+
+ <div class="etape">
+ <div class="etape-header">
+ <div class="etape-num">1</div>
+ <span class="etape-title">Le dossier et la responsabilité</span>
+ <span class="etape-tag tag-ouverture">Pitch</span>
+ </div>
+ <div class="replique">
+ <div class="replique-role role-caller"><span class="material-symbols-outlined fi" style="font-size:12px">call</span> Caller</div>
+ <div class="replique-text">Dans le cadre d'un contrôle émis par l'<strong>ANAH</strong> — l'Agence Nationale de l'Habitat — votre logement est programmé pour un diagnostic de conformité électrique obligatoire. Votre dossier était en attente de traitement à l'ANAH — c'est pour ça que personne n'est encore intervenu. Ce contrôle est important car sans ce document, votre responsabilité est engagée en cas d'incident électrique dans le logement — que vous occupiez le bien ou que vous le louiez. Notre électricien certifié CONSUEL passe et vous remet le certificat officiel.</div>
+ </div>
+ </div>
+
+ <div class="etape">
+ <div class="etape-header">
+ <div class="etape-num">2</div>
+ <span class="etape-title">Renforcer si bailleur</span>
+ <span class="etape-tag tag-pivot">Si logement loue</span>
+ </div>
+ <div class="replique">
+ <div class="replique-role role-caller"><span class="material-symbols-outlined fi" style="font-size:12px">call</span> Caller</div>
+ <div class="replique-text">Vous louez ce logement ? Dans ce cas c'est encore plus urgent — la loi ALUR impose ce diagnostic pour les bailleurs. Sans ce document a jour, votre assurance peut refuser de couvrir un sinistre et votre responsabilité penale peut etre engagée. Le technicien de l'<strong>l'Agence Nationale de l'Habitat</strong> peut passer des cette semaine. Matin ou apres-midi ?</div>
+ </div>
+ </div>
+
+ <div class="section-label"><span>Objections spécifiques</span></div>
+
+ <div class="objection">
+ <div class="obj-q" onclick="toggleObj(this)">
+ <span class="obj-q-icon">"</span>
+ <span class="obj-q-text">Mon installation est recente</span>
+ <span class="material-symbols-outlined obj-q-arrow">expand_more</span>
+ </div>
+ <div class="obj-a">
+ <p class="obj-a-text">Recent ne signifie pas conforme aux normes actuelles — elles evoluent régulièrement, notamment sur les disjoncteurs et les circuits salle de bain et cuisine. Le <strong>l'Agence Nationale de l'Habitat</strong> valide officiellement que votre installation repond aux exigences en vigueur. C'est obligatoire. Mardi ou mercredi ca vous va ?</p>
+ </div>
+ </div>
+
+ <div class="objection">
+ <div class="obj-q" onclick="toggleObj(this)">
+ <span class="obj-q-icon">"</span>
+ <span class="obj-q-text">J'ai deja fait verifier</span>
+ <span class="material-symbols-outlined obj-q-arrow">expand_more</span>
+ </div>
+ <div class="obj-a">
+ <p class="obj-a-text">Tres bien. Quelle est la date de votre dernier contrôle ? [Si plus de 3 ans] Au-dela de 3 ans le certificat n'est plus valide pour les assureurs et certaines administrations. Notre technicien de l'<strong>l'Agence Nationale de l'Habitat</strong> renouvelle le document . Quel créneau vous convient ?</p>
+ </div>
+ </div>
+
+ <div class="objection">
+ <div class="obj-q" onclick="toggleObj(this)">
+ <span class="obj-q-icon">"</span>
+ <span class="obj-q-text">C'est obligatoire ?</span>
+ <span class="material-symbols-outlined obj-q-arrow">expand_more</span>
+ </div>
+ <div class="obj-a">
+ <p class="obj-a-text">Oui — pour la mise en location c'est impose par la loi depuis 2017. Pour les propriétaires occupants, c'est une obligation de sécuritérite qui engage votre responsabilité civile. Et les compagnies d'assurance exigent desormais ce document pour couvrir les sinistres électriques. Le <strong>l'Agence Nationale de l'Habitat</strong> est obligatoire. Matin ou apres-midi ?</p>
+ </div>
+ </div>
+
+</div>
+
+<!-- ════ SCRIPT 3 — AMIANTE ════ -->
+<div class="script-content" id="script-amiante">
+
+ <div class="mechanique">
+ <p class="meca-label">Contrôle amiante — DTA</p>
+ <h2 class="meca-title">Angle : obligation legale stricte<br>+ sanctions penales</h2>
+ <p class="meca-sub">Le script le plus institutionnel. Le ton est ferme et factuel — comme un agent administratif qui informe d'une obligation. Mention des sanctions penales possible mais sans exagerer. Le Code de la Sante Publique est cite une fois pour l'autorite.</p>
+ </div>
+
+ <div class="badge-important">
+ <span class="material-symbols-outlined fi">info</span>
+ <span>Toujours faire l'ouverture courrier d'abord — puis enchainer ici</span>
+ </div>
+
+ <div class="section-label"><span>Après qualification propriétaire</span></div>
+
+ <div class="etape">
+ <div class="etape-header">
+ <div class="etape-num">1</div>
+ <span class="etape-title">Le cadre légal — ton ferme</span>
+ <span class="etape-tag tag-ouverture">Pitch</span>
+ </div>
+ <div class="replique">
+ <div class="replique-role role-caller"><span class="material-symbols-outlined fi" style="font-size:12px">call</span> Caller</div>
+ <div class="replique-text">Dans le cadre d'un contrôle émis par l'<strong>ANAH</strong> — l'Agence Nationale de l'Habitat — votre logement est concerné par la vérification obligatoire du Dossier Technique Amiante. Votre bien a-t-il été construit avant 1997 ?</div>
+ </div>
+ <div class="replique prospect">
+ <div class="replique-role role-prospect"><span class="material-symbols-outlined fi" style="font-size:12px">person</span> Si oui ou incertain</div>
+ <div class="replique-text" style="color:var(--muted);font-style:italic">Oui / Je ne sais pas exactement...</div>
+ </div>
+ <div class="replique">
+ <div class="replique-role role-caller"><span class="material-symbols-outlined fi" style="font-size:12px">call</span> Caller</div>
+ <div class="replique-text">En vertu du Code de la Sante Publique, tout propriétaire d'un logement construit avant juillet 1997 doit disposer d'un Dossier Technique Amiante valide. Sans ce document, vous ne pouvez pas engager de travaux et votre responsabilité est engagée en cas de contrôle. Votre dossier de <strong>l'Agence Nationale de l'Habitat</strong> était en attente — notre diagnostiqueur certifié doit intervenir pour régulariser votre situation. Matin ou apres-midi cette semaine ?</div>
+ </div>
+ <div class="replique hint">
+ <div class="hint-label">Si il dit que son logement est recent</div>
+ <div class="hint-text">Dans le doute le diagnostic vous apporte la certitude juridique — et c'est obligatoire. Quelle date vous convient ?</div>
+ </div>
+ </div>
+
+ <div class="section-label"><span>Objections spécifiques</span></div>
+
+ <div class="objection">
+ <div class="obj-q" onclick="toggleObj(this)">
+ <span class="obj-q-icon">"</span>
+ <span class="obj-q-text">J'ai deja un diagnostic amiante</span>
+ <span class="material-symbols-outlined obj-q-arrow">expand_more</span>
+ </div>
+ <div class="obj-a">
+ <p class="obj-a-text">Le DTA doit etre mis a jour régulièrement Dans le cadre d'un contrôle émis par l'<strong>ANAH</strong> — l'Agence Nationale de l'Habitat —. Si votre document date de plus de 3 ans ou a été etabli avant 2013 il n'est plus conforme aux normes actuelles. Notre diagnostiqueur verifie et met a jour votre dossier . Quel créneau vous convient ?</p>
+ </div>
+ </div>
+
+ <div class="objection">
+ <div class="obj-q" onclick="toggleObj(this)">
+ <span class="obj-q-icon">"</span>
+ <span class="obj-q-text">Je ne vais pas vendre ni faire de travaux</span>
+ <span class="material-symbols-outlined obj-q-arrow">expand_more</span>
+ </div>
+ <div class="obj-a">
+ <p class="obj-a-text">L'obligation du DTA Dans le cadre d'un contrôle émis par l'<strong>ANAH</strong> — l'Agence Nationale de l'Habitat — ne depend pas d'un projet de vente ou de travaux — elle est permanente des lors que le logement a été construit avant 1997. En cas de contrôle administratif l'absence de DTA engage votre responsabilité. Notre diagnostiqueur passe. Quand etes-vous disponible ?</p>
+ </div>
+ </div>
+
+ <div class="objection">
+ <div class="obj-q" onclick="toggleObj(this)">
+ <span class="obj-q-icon">"</span>
+ <span class="obj-q-text">C'est dangereux l'amiante ?</span>
+ <span class="material-symbols-outlined obj-q-arrow">expand_more</span>
+ </div>
+ <div class="obj-a">
+ <p class="obj-a-text">L'amiante n'est dangereux que lorsqu'il est deteriore ou manipule sans precaution. Le <strong>l'Agence Nationale de l'Habitat</strong> determine precisement l'etat des materiaux concernés dans votre logement — c'est ce qui vous protege lors de futurs travaux. C'est obligatoire. Mardi ou mercredi ca vous va ?</p>
+ </div>
+ </div>
+
+</div>
+
+<!-- ════ SCRIPT 4 — VMC ════ -->
+<div class="script-content" id="script-vmc">
+
+ <div class="mechanique">
+ <p class="meca-label">VMC & Qualite de l'air interieur</p>
+ <h2 class="meca-title">Angle : sante des occupants<br>+ securite incendie / CO2</h2>
+ <p class="meca-sub">Le script le plus humain des quatre. L'angle santé cree une ouverture emotionnelle forte — surtout si le prospect a des enfants ou des personnes âgées dans le logement. Moins réglementaire, plus preventif. Ideal pour les callers debutants.</p>
+ </div>
+
+ <div class="badge-important">
+ <span class="material-symbols-outlined fi">info</span>
+ <span>Toujours faire l'ouverture courrier d'abord — puis enchainer ici</span>
+ </div>
+
+ <div class="section-label"><span>Après qualification propriétaire</span></div>
+
+ <div class="etape">
+ <div class="etape-header">
+ <div class="etape-num">1</div>
+ <span class="etape-title">Le dossier + angle santé</span>
+ <span class="etape-tag tag-ouverture">Pitch</span>
+ </div>
+ <div class="replique">
+ <div class="replique-role role-caller"><span class="material-symbols-outlined fi" style="font-size:12px">call</span> Caller</div>
+ <div class="replique-text">Dans le cadre d'un contrôle émis par l'<strong>ANAH</strong> — l'Agence Nationale de l'Habitat —, votre logement est programmé pour une verification du systeme de ventilation et de la qualite de l'air interieur. Votre dossier était en attente de traitement. Ce contrôle est important — une VMC défaillante est la premiere cause de moisissures et de mauvaise qualité de l'air dans un logement. Et dans les logements avec chaudière à gaz, une ventilation insuffisante peut présenter des risques d'intoxication. Notre technicien passe en 30 a 45 minutes. Vous avez des enfants ou des personnes âgées dans le logement ?</div>
+ </div>
+ <div class="replique hint">
+ <div class="hint-label">Si oui — renforcer l'angle santé</div>
+ <div class="hint-text">"C'est d'autant plus important dans ce cas — les enfants et les personnes agees sont les plus sensibles a la qualite de l'air interieur. Le technicien de l'Agence Nationale de l'Habitat peut passer des cette semaine. Matin ou apres-midi ?"</div>
+ </div>
+ </div>
+
+ <div class="section-label"><span>Objections spécifiques</span></div>
+
+ <div class="objection">
+ <div class="obj-q" onclick="toggleObj(this)">
+ <span class="obj-q-icon">"</span>
+ <span class="obj-q-text">J'ouvre les fenetres, ca suffit</span>
+ <span class="material-symbols-outlined obj-q-arrow">expand_more</span>
+ </div>
+ <div class="obj-a">
+ <p class="obj-a-text">Ouvrir les fenetres ne remplace pas une VMC. La ventilation mécanique gere en continu l'extraction des polluants et de l'humidite — 24h sur 24, meme la nuit. C'est particulierement critique dans les pieces humides. Le <strong>l'Agence Nationale de l'Habitat</strong> prend 30 minutes. Mardi ou mercredi ca vous va ?</p>
+ </div>
+ </div>
+
+ <div class="objection">
+ <div class="obj-q" onclick="toggleObj(this)">
+ <span class="obj-q-icon">"</span>
+ <span class="obj-q-text">Ma VMC fonctionne, je l'entends</span>
+ <span class="material-symbols-outlined obj-q-arrow">expand_more</span>
+ </div>
+ <div class="obj-a">
+ <p class="obj-a-text">La VMC peut sembler fonctionner alors qu'elle est partiellement obstruée ou sous-dimensionnee. Dans le cadre d'un contrôle émis par l'<strong>ANAH</strong> — l'Agence Nationale de l'Habitat —, notre technicien mesure precisement les debits d'air — c'est la seule facon de confirmer la conformite. Et c'est obligatoire. Quel créneau vous convient ?</p>
+ </div>
+ </div>
+
+ <div class="objection">
+ <div class="obj-q" onclick="toggleObj(this)">
+ <span class="obj-q-icon">"</span>
+ <span class="obj-q-text">Je n'ai pas de VMC</span>
+ <span class="material-symbols-outlined obj-q-arrow">expand_more</span>
+ </div>
+ <div class="obj-a">
+ <p class="obj-a-text">C'est justement le cas le plus important pour le <strong>l'Agence Nationale de l'Habitat</strong>. Les logements sans VMC sont les plus exposes aux problemes d'humidite et de qualite de l'air. Notre diagnostic identifie les risques et les solutions adaptees a votre configuration. C'est une démarche réglementaire obligatoire. Quand etes-vous disponible ?</p>
+ </div>
+ </div>
+
+</div>
+
+<!-- OBJECTIONS UNIVERSELLES — visibles sur tous les onglets -->
+<div class="section-label"><span>Réponses universelles — tous contrôles</span></div>
+
+<div class="objection">
+ <div class="obj-q" onclick="toggleObj(this)">
+ <span class="obj-q-icon">"</span>
+ <span class="obj-q-text">Envoyez-moi ca par mail</span>
+ <span class="material-symbols-outlined obj-q-arrow">expand_more</span>
+ </div>
+ <div class="obj-a">
+ <p class="obj-a-text">L'<strong>ANAH</strong> nécessite un passage physique du technicien — ça ne peut pas see faire par mail. Je note juste votre créneau et il vient a vous. Vous etes la cette semaine ou la semaine prochaine ?</p>
+ </div>
+</div>
+
+<div class="objection">
+ <div class="obj-q" onclick="toggleObj(this)">
+ <span class="obj-q-icon">"</span>
+ <span class="obj-q-text">Je dois en parler a mon conjoint</span>
+ <span class="material-symbols-outlined obj-q-arrow">expand_more</span>
+ </div>
+ <div class="obj-a">
+ <p class="obj-a-text">Bien sur. Votre conjoint sera present lors du passage du technicien de l'<strong>l'Agence Nationale de l'Habitat</strong> ? Dans ce cas on prend un créneau quand vous etes tous les deux disponibles. Le soir ca vous va ou plutot le weekend ?</p>
+ </div>
+</div>
+
+<div class="objection">
+ <div class="obj-q" onclick="toggleObj(this)">
+ <span class="obj-q-icon">"</span>
+ <span class="obj-q-text">Rappelez-moi plus tard</span>
+ <span class="material-symbols-outlined obj-q-arrow">expand_more</span>
+ </div>
+ <div class="obj-a">
+ <p class="obj-a-text">Je comprends. Pour régulariser votre dossier <strong>ANAH</strong> je dois noter votre créneau maintenant — les disponibilites du technicien sur votre secteur sont limitees cette semaine. Votre nom c'est bien [Nom] ? Je vous propose jeudi ou vendredi, lequel vous convient le mieux ?</p>
+ </div>
+</div>
+
+<div class="objection">
+ <div class="obj-q" onclick="toggleObj(this)">
+ <span class="obj-q-icon">"</span>
+ <span class="obj-q-text">Ca ne m'interesse pas</span>
+ <span class="material-symbols-outlined obj-q-arrow">expand_more</span>
+ </div>
+ <div class="obj-a">
+ <p class="obj-a-text">Je comprends tout a fait. Je vais mettre votre dossier de <strong>l'Agence Nationale de l'Habitat</strong> en attente pour le moment. Sachez que ce contrôle reste obligatoire — si vous souhaitez le programmér dans les prochaines semaines vous pouvez nous rappeler. Bonne journee.</p>
+ </div>
+</div>
+
+</div><!-- end body -->
+
+<script>
+function showScript(name) {
+ document.querySelectorAll('.script-content').forEach(s => s.classList.remove('active'));
+ document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+ document.getElementById('script-' + name).classList.add('active');
+ document.getElementById('tab-' + name).classList.add('active');
+ window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function toggleObj(el) {
+ const isOpen = el.classList.contains('open');
+ // Close all
+ document.querySelectorAll('.obj-q').forEach(q => {
+ q.classList.remove('open');
+ q.nextElementSibling.classList.remove('open');
+ });
+ // Open clicked if it was closed
+ if (!isOpen) {
+ el.classList.add('open');
+ el.nextElementSibling.classList.add('open');
+ }
+}
+</script>
+</body>
+</html>
