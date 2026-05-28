@@ -4,417 +4,554 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Micro-influence · Stacker</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
-  --dark:#1b1c1c;--surface:#faf7f4;--cream:#f5f0e8;
-  --muted:#6b5550;--border:rgba(226,190,188,0.45);
-  --red:#b52330;--red2:#ff5a5f;--red-soft:rgba(181,35,48,0.08);
-  --green:#006c4c;--green-soft:rgba(0,108,76,0.08);
-  --gold:#c9a84c;
+  --bg:#111112;
+  --surface:#1a1a1c;
+  --surface2:#222225;
+  --border:rgba(255,255,255,0.07);
+  --red:#b52330;
+  --red2:#e8323f;
+  --text:#fff;
+  --muted:rgba(255,255,255,0.4);
+  --muted2:rgba(255,255,255,0.18);
 }
-html,body{background:var(--surface);color:var(--dark);font-family:'Inter',sans-serif;min-height:100%}
-.fi{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
-.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;line-height:1;font-family:'Material Symbols Outlined'}
+html,body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;min-height:100%;overscroll-behavior:none}
+.mono{font-family:'JetBrains Mono',monospace}
 
 /* HEADER */
-.header{background:var(--dark);padding:20px 20px 0;position:sticky;top:0;z-index:100}
-.header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.logo{font-family:'Plus Jakarta Sans';font-weight:900;font-size:17px;color:#fff;letter-spacing:-0.04em}
-.logo span{font-family:'JetBrains Mono';font-size:9px;font-weight:600;color:var(--red2);background:rgba(255,90,95,0.15);padding:2px 7px;border-radius:4px;letter-spacing:0.1em;margin-left:8px}
-.header-sub{font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px}
-.back-btn{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;text-decoration:none}
-.back-btn .material-symbols-outlined{font-size:18px;color:rgba(255,255,255,0.7)}
+.header{background:var(--bg);padding:16px 18px 0;position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border)}
+.header-top{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.back{width:32px;height:32px;border-radius:9px;background:var(--surface2);display:flex;align-items:center;justify-content:center;text-decoration:none;flex-shrink:0;border:1px solid var(--border)}
+.header-title{font-weight:900;font-size:16px;letter-spacing:-0.03em}
+.header-sub{font-size:11px;color:var(--muted);margin-top:1px;font-weight:500}
+.badge{display:inline-block;font-family:'JetBrains Mono';font-size:8px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;padding:2px 6px;border-radius:4px;background:var(--red);color:#fff;margin-left:8px;vertical-align:2px}
 
 /* TABS */
-.tabs{display:flex;gap:0;overflow-x:auto;scrollbar-width:none;border-top:1px solid rgba(255,255,255,0.08);margin-top:4px}
+.tabs{display:flex;gap:0;overflow-x:auto;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
-.tab{padding:12px 16px;font-size:12px;font-weight:700;color:rgba(255,255,255,0.4);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all 0.2s;display:flex;align-items:center;gap:6px;flex-shrink:0}
-.tab.active{color:#fff;border-bottom-color:var(--red2)}
-.tab-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.tab{padding:10px 14px;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all 0.2s;flex-shrink:0;letter-spacing:-0.01em}
+.tab.active{color:#fff;border-bottom-color:#fff}
 
 /* BODY */
-.body{max-width:680px;margin:0 auto;padding:20px 16px 100px}
+.body{padding:20px 18px 100px;max-width:680px;margin:0 auto}
 
-/* HERO STATS */
-.hero-dark{background:radial-gradient(ellipse at top right,rgba(181,35,48,0.18),transparent 60%),radial-gradient(ellipse at bottom left,rgba(255,90,95,0.08),transparent 50%),var(--dark);border-radius:18px;padding:20px;margin-bottom:20px;position:relative;overflow:hidden}
-.hero-dark::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:rgba(181,35,48,0.1);pointer-events:none}
-.hero-label{font-family:'JetBrains Mono';font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,90,95,0.7);margin-bottom:8px}
-.hero-title{font-family:'Plus Jakarta Sans';font-weight:900;font-size:20px;letter-spacing:-0.04em;color:#fff;margin-bottom:4px;line-height:1.1}
-.hero-sub{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.6;margin-bottom:18px}
-.stats-row{display:flex;align-items:center;gap:0}
-.stat-item{flex:1;padding:0 16px}
-.stat-item:first-child{padding-left:0}
-.stat-divider{width:1px;height:36px;background:rgba(255,255,255,0.1);flex-shrink:0}
-.stat-val{font-family:'Plus Jakarta Sans';font-weight:900;font-size:24px;color:#fff;letter-spacing:-0.04em;line-height:1}
-.stat-val.red{color:var(--red2)}
-.stat-label{font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.1em;margin-top:2px}
+/* HERO STRIP */
+.hero-strip{background:var(--surface);border-radius:16px;padding:18px;margin-bottom:16px;border:1px solid var(--border);position:relative;overflow:hidden}
+.hero-strip::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.12) 50%,transparent)}
+.hero-eyebrow{font-family:'JetBrains Mono';font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.hero-title{font-weight:900;font-size:22px;letter-spacing:-0.04em;line-height:1.05;margin-bottom:14px}
+.hero-title span{color:var(--red2)}
+.stats-row{display:flex;gap:0}
+.stat{flex:1;padding-right:16px;border-right:1px solid var(--border)}
+.stat:last-child{border-right:none;padding-right:0;padding-left:16px}
+.stat:not(:first-child):not(:last-child){padding:0 16px}
+.stat-n{font-weight:900;font-size:22px;letter-spacing:-0.04em;color:#fff}
+.stat-n.accent{color:var(--red2)}
+.stat-l{font-family:'JetBrains Mono';font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-top:2px}
 
-/* RÈGLES */
-.regles{background:var(--dark);border-radius:16px;padding:16px 18px;margin-bottom:16px}
-.regle-title{font-family:'JetBrains Mono';font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:10px}
-.regle{display:flex;align-items:flex-start;gap:10px;margin-bottom:7px}
-.regle:last-child{margin-bottom:0}
-.regle-num{font-family:'JetBrains Mono';font-size:10px;font-weight:700;color:var(--red2);flex-shrink:0;margin-top:1px}
-.regle-text{font-size:12px;color:rgba(255,255,255,0.55);line-height:1.5}
+/* RULES */
+.rules{background:var(--surface);border-radius:12px;border:1px solid var(--border);overflow:hidden;margin-bottom:16px}
+.rules-head{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.rules-head-label{font-family:'JetBrains Mono';font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted)}
+.rule{display:flex;gap:12px;padding:10px 16px;border-bottom:1px solid var(--border);align-items:flex-start}
+.rule:last-child{border-bottom:none}
+.rule-n{font-family:'JetBrains Mono';font-size:10px;font-weight:600;color:var(--red2);flex-shrink:0;margin-top:1px}
+.rule-t{font-size:12px;color:rgba(255,255,255,0.6);line-height:1.55}
 
 /* SECTION LABEL */
-.section-label{display:flex;align-items:center;gap:8px;margin:20px 0 10px}
-.section-label::before{content:'';width:16px;height:1px;background:var(--gold)}
-.section-label span{font-family:'JetBrains Mono';font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold)}
+.section-label{font-family:'JetBrains Mono';font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin:20px 0 10px;display:flex;align-items:center;gap:8px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
 
 /* MISSION CARD */
-.mission{background:#fff;border-radius:14px;border:1px solid var(--border);padding:16px;margin-bottom:10px;box-shadow:0 2px 8px -3px rgba(27,28,28,0.06);cursor:pointer;transition:transform 0.2s,box-shadow 0.2s}
-.mission:hover{transform:translateY(-2px);box-shadow:0 8px 24px -6px rgba(27,28,28,0.12)}
-.mission-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
-.mission-brand{display:flex;align-items:center;gap:10px}
-.mission-logo{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.mission-name{font-family:'Plus Jakarta Sans';font-weight:800;font-size:14px;letter-spacing:-0.02em;color:var(--dark)}
-.mission-desc{font-size:12px;color:var(--muted);margin-top:1px;line-height:1.4}
-.mission-price{font-family:'Plus Jakarta Sans';font-weight:900;font-size:18px;color:var(--dark);letter-spacing:-0.03em;flex-shrink:0}
-.mission-price span{font-size:11px;font-weight:500;color:var(--muted)}
-.mission-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
-.tag{font-size:10px;font-weight:700;font-family:'JetBrains Mono';padding:3px 8px;border-radius:99px}
-.tag-platform{background:rgba(27,28,28,0.07);color:var(--muted)}
-.tag-type{background:var(--red-soft);color:var(--red)}
-.tag-new{background:rgba(0,108,76,0.1);color:var(--green)}
+.mission{background:var(--surface);border-radius:14px;border:1px solid var(--border);margin-bottom:16px;overflow:hidden;cursor:pointer;transition:border-color 0.2s,transform 0.2s;position:relative}
+.mission::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.08) 50%,transparent)}
+.mission:hover{border-color:rgba(255,255,255,0.15);transform:translateY(-1px)}
+.mission-inner{padding:16px}
+.mission-top{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.mission-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--border)}
+.mission-info{flex:1;min-width:0}
+.mission-name{font-weight:800;font-size:14px;letter-spacing:-0.02em}
+.mission-desc{font-size:11px;color:var(--muted);margin-top:2px;font-weight:500}
+.mission-price{font-weight:900;font-size:17px;letter-spacing:-0.03em;color:#fff;flex-shrink:0}
+.mission-price small{font-size:11px;font-weight:500;color:var(--muted)}
+.mission-platforms{display:flex;gap:6px;margin-bottom:12px;align-items:center}
+.platform-chip{display:flex;align-items:center;gap:5px;padding:4px 8px;border-radius:7px;background:var(--surface2);border:1px solid var(--border);font-size:11px;font-weight:600;color:rgba(255,255,255,0.65)}
+.platform-chip svg{flex-shrink:0}
+.mission-brief{background:var(--bg);border-radius:9px;padding:11px 12px;margin-bottom:12px;border:1px solid var(--border)}
+.brief-label{font-family:'JetBrains Mono';font-size:8px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.brief-text{font-size:12px;color:rgba(255,255,255,0.6);line-height:1.65}
 .mission-footer{display:flex;align-items:center;justify-content:space-between}
-.mission-slots{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:4px}
-.mission-slots .material-symbols-outlined{font-size:14px}
-.mission-cta{display:flex;align-items:center;gap:4px;padding:7px 14px;border-radius:10px;background:var(--dark);font-size:12px;font-weight:700;color:#fff;font-family:'Plus Jakarta Sans';transition:background 0.2s}
-.mission-cta:hover{background:var(--red)}
-.mission-cta .material-symbols-outlined{font-size:14px}
+.mission-slots{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px;font-weight:500}
+.mission-slots svg{opacity:0.4}
+.accept-btn{display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:8px;background:transparent;color:rgba(255,255,255,0.7);font-weight:700;font-size:11px;font-family:"Plus Jakarta Sans",sans-serif;transition:all 0.2s;border:1px solid rgba(255,255,255,0.15);cursor:pointer;letter-spacing:-0.01em}
+.accept-btn:hover{background:var(--red);color:#fff;border-color:var(--red)}
+.accept-btn svg{flex-shrink:0;opacity:0.6}
+.accept-btn:hover svg{opacity:1}
+.mission.accepted{border-color:rgba(255,255,255,0.12)}
+.accepted-label{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:10px;background:var(--surface2);border:1px solid var(--border);font-size:12px;font-weight:700;color:rgba(255,255,255,0.5)}
 
-/* MISSION ACCEPTÉE */
-.mission.accepted{border-color:rgba(0,108,76,0.25);background:rgba(0,108,76,0.03)}
-.accepted-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:8px;background:var(--green-soft);font-size:11px;font-weight:700;color:var(--green);font-family:'JetBrains Mono'}
-.accepted-badge .material-symbols-outlined{font-size:13px}
+/* SUBMIT */
+.card{background:var(--surface);border-radius:14px;border:1px solid var(--border);padding:18px;margin-bottom:10px;position:relative;overflow:hidden}
+.card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1) 50%,transparent)}
+.card-title{font-weight:800;font-size:14px;letter-spacing:-0.02em;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.card-title svg{opacity:0.6}
+.field{margin-bottom:12px}
+.field-label{font-family:'JetBrains Mono';font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:block}
+.field-input{width:100%;padding:10px 12px;border-radius:9px;border:1px solid var(--border);background:var(--bg);color:#fff;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:500;outline:none;transition:border-color 0.2s}
+.field-input:focus{border-color:rgba(255,255,255,0.25)}
+.field-input option{background:#222}
+.cta-btn{width:100%;padding:13px;border-radius:11px;background:var(--red);color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:13px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:opacity 0.2s;letter-spacing:-0.01em;margin-top:4px}
+.cta-btn:hover{opacity:0.85}
+.info-box{background:var(--surface);border-radius:11px;padding:14px;border:1px solid var(--border)}
+.info-box-label{font-family:'JetBrains Mono';font-size:8px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.info-box p{font-size:12px;color:rgba(255,255,255,0.55);line-height:1.65}
 
-/* SOUMISSION */
-.submit-card{background:#fff;border-radius:14px;border:1px solid var(--border);padding:16px;margin-bottom:10px;box-shadow:0 2px 8px -3px rgba(27,28,28,0.06)}
-.submit-card.hidden{display:none}
-.submit-title{font-family:'Plus Jakarta Sans';font-weight:800;font-size:13px;color:var(--dark);margin-bottom:12px;display:flex;align-items:center;gap:6px}
-.submit-title .material-symbols-outlined{font-size:16px;color:var(--red)}
-.input-group{margin-bottom:10px}
-.input-label{font-size:10px;font-weight:700;font-family:'JetBrains Mono';letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
-.input-field{width:100%;padding:10px 12px;border-radius:10px;border:1.5px solid var(--border);font-size:13px;font-family:'Inter';color:var(--dark);background:#faf7f4;outline:none;transition:border-color 0.2s}
-.input-field:focus{border-color:var(--red)}
-.submit-btn{width:100%;padding:12px;border-radius:12px;background:var(--dark);color:#fff;font-family:'Plus Jakarta Sans';font-weight:800;font-size:13px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:background 0.2s}
-.submit-btn:hover{background:var(--red)}
-.submit-btn .material-symbols-outlined{font-size:16px}
-
-/* MES POSTS */
-.post-item{background:#fff;border-radius:12px;border:1px solid var(--border);padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px}
-.post-platform{width:32px;height:32px;border-radius:8px;background:rgba(27,28,28,0.06);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+/* POSTS */
+.post-row{background:var(--surface);border-radius:11px;border:1px solid var(--border);padding:12px 14px;margin-bottom:6px;display:flex;align-items:center;gap:12px}
+.post-icon{width:30px;height:30px;border-radius:8px;background:var(--surface2);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--border)}
 .post-info{flex:1;min-width:0}
-.post-brand{font-family:'Plus Jakarta Sans';font-weight:700;font-size:13px;color:var(--dark)}
-.post-date{font-size:11px;color:var(--muted);margin-top:1px}
-.post-status{font-size:11px;font-weight:700;font-family:'JetBrains Mono';padding:3px 8px;border-radius:6px;flex-shrink:0}
-.status-pending{background:rgba(201,168,76,0.12);color:#9a7a28}
-.status-validated{background:var(--green-soft);color:var(--green)}
-.status-rejected{background:var(--red-soft);color:var(--red)}
-.post-amount{font-family:'Plus Jakarta Sans';font-weight:900;font-size:15px;color:var(--dark);flex-shrink:0;margin-left:8px}
-
-/* EMPTY STATE */
-.empty{text-align:center;padding:40px 20px}
-.empty .material-symbols-outlined{font-size:40px;color:rgba(27,28,28,0.12);display:block;margin-bottom:8px}
-.empty p{font-size:13px;color:var(--muted)}
+.post-brand{font-weight:700;font-size:13px;letter-spacing:-0.01em}
+.post-meta{font-size:10px;color:var(--muted);margin-top:2px;font-weight:500}
+.post-badge{font-family:'JetBrains Mono';font-size:9px;font-weight:600;padding:3px 7px;border-radius:5px;flex-shrink:0}
+.badge-pending{background:rgba(201,168,76,0.12);color:#c9a84c}
+.badge-validated{background:rgba(34,197,94,0.1);color:#4ade80}
+.badge-rejected{background:rgba(255,90,95,0.12);color:var(--red2)}
+.post-amount{font-weight:800;font-size:14px;margin-left:6px;flex-shrink:0}
+.empty{text-align:center;padding:48px 20px}
+.empty svg{opacity:0.12;margin-bottom:10px}
+.empty p{font-size:13px;color:var(--muted);font-weight:500}
 
 /* TAB CONTENT */
 .tab-content{display:none}
 .tab-content.active{display:block}
 
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:200;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s;backdrop-filter:blur(4px)}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-sheet{background:var(--surface);border-radius:20px 20px 0 0;width:100%;max-width:680px;max-height:88vh;overflow-y:auto;transform:translateY(30px);transition:transform 0.3s cubic-bezier(0.22,1,0.36,1);border-top:1px solid rgba(255,255,255,0.1)}
+.modal-overlay.open .modal-sheet{transform:translateY(0)}
+.modal-handle{width:32px;height:3px;background:rgba(255,255,255,0.15);border-radius:99px;margin:12px auto 0}
+.modal-head{padding:18px 18px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;position:relative}
+.modal-head-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--border)}
+.modal-head-info{flex:1}
+.modal-head-name{font-weight:900;font-size:17px;letter-spacing:-0.03em}
+.modal-head-sub{font-size:11px;color:var(--muted);margin-top:2px;font-weight:500}
+.modal-close{width:28px;height:28px;border-radius:7px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.modal-body{padding:18px}
+.m-section{margin-bottom:18px}
+.m-label{font-family:'JetBrains Mono';font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.m-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.m-block{background:var(--bg);border-radius:10px;padding:13px;border:1px solid var(--border)}
+.m-block p{font-size:13px;color:rgba(255,255,255,0.65);line-height:1.65}
+.m-step{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid var(--border);align-items:flex-start}
+.m-step:first-child{padding-top:0}
+.m-step:last-child{border-bottom:none;padding-bottom:0}
+.m-step-n{width:22px;height:22px;border-radius:6px;background:var(--red);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono';font-size:9px;font-weight:700;color:#fff;flex-shrink:0}
+.m-step-t{font-size:12px;color:rgba(255,255,255,0.65);line-height:1.6;padding-top:2px}
+.m-step-t strong{color:#fff;font-weight:700}
+.m-dont{display:flex;gap:9px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--border)}
+.m-dont:last-child{border-bottom:none}
+.m-dont-x{font-size:10px;color:var(--red2);flex-shrink:0;margin-top:2px;font-weight:800}
+.m-dont-t{font-size:12px;color:rgba(255,255,255,0.5);line-height:1.5}
+.m-example{background:var(--surface2);border-radius:10px;padding:13px;border-left:2px solid var(--red)}
+.m-example-l{font-family:'JetBrains Mono';font-size:8px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.m-example-t{font-size:13px;color:rgba(255,255,255,0.65);line-height:1.65;font-style:italic}
+.m-chips{display:flex;gap:6px;flex-wrap:wrap}
+.m-chip{padding:4px 10px;border-radius:6px;background:var(--surface2);border:1px solid var(--border);font-size:11px;font-weight:600;color:rgba(255,255,255,0.6)}
+.m-infos{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px}
+.m-info{background:var(--bg);border-radius:9px;padding:11px;text-align:center;border:1px solid var(--border)}
+.m-info-val{font-weight:800;font-size:14px;letter-spacing:-0.02em}
+.m-info-val.r{color:var(--red2)}
+.m-info-l{font-family:'JetBrains Mono';font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+.modal-accept{width:100%;padding:13px;border-radius:11px;background:var(--red);color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:13px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:background 0.2s,opacity 0.2s}
+.modal-accept:hover{opacity:0.85}
+
 /* BOTTOM NAV */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--dark);padding:10px 16px 20px;display:flex;justify-content:space-around;border-top:1px solid rgba(255,255,255,0.08);z-index:99}
-.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;opacity:0.4;transition:opacity 0.2s;text-decoration:none}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);padding:10px 0 20px;display:flex;justify-content:space-around;z-index:99}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;opacity:0.3;transition:opacity 0.2s;text-decoration:none;padding:0 20px}
 .nav-item.active{opacity:1}
-.nav-item .material-symbols-outlined{font-size:22px;color:#fff}
-.nav-item span{font-size:9px;color:#fff;font-family:'JetBrains Mono';letter-spacing:0.05em}
+.nav-item span{font-family:'JetBrains Mono';font-size:8px;letter-spacing:0.08em;color:#fff;text-transform:uppercase}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="header">
   <div class="header-top">
-    <div style="display:flex;align-items:center;gap:12px">
-      <a href="index.html" class="back-btn">
-        <span class="material-symbols-outlined">arrow_back</span>
-      </a>
-      <div>
-        <div class="logo">Micro-influence<span>MODULE</span></div>
-        <div class="header-sub">Poste · Encaisse · Répète — 10 € par vidéo validée</div>
-      </div>
+    <a href="index.html" class="back">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="rgba(255,255,255,0.7)"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+    </a>
+    <div>
+      <div class="header-title">Micro-influence <span class="badge">MODULE</span></div>
+      <div class="header-sub">Poste · Encaisse · 5 € par vidéo validée</div>
     </div>
   </div>
   <div class="tabs">
-    <div class="tab active" onclick="showTab('missions')" id="tab-missions">
-      <div class="tab-dot" style="background:#fff"></div>
-      Missions
-    </div>
-    <div class="tab" onclick="showTab('soumettre')" id="tab-soumettre">
-      <div class="tab-dot" style="background:#ff5a5f"></div>
-      Soumettre
-    </div>
-    <div class="tab" onclick="showTab('mesposts')" id="tab-mesposts">
-      <div class="tab-dot" style="background:#c9a84c"></div>
-      Mes posts
-    </div>
+    <div class="tab active" onclick="showTab('missions')" id="tab-missions">Missions</div>
+    <div class="tab" onclick="showTab('soumettre')" id="tab-soumettre">Soumettre</div>
+    <div class="tab" onclick="showTab('mesposts')" id="tab-mesposts">Mes posts</div>
   </div>
 </div>
 
 <div class="body">
 
-<!-- ══ TAB MISSIONS ══ -->
+<!-- TAB MISSIONS -->
 <div class="tab-content active" id="content-missions">
 
-  <div class="hero-dark">
-    <p class="hero-label">Tes gains cette semaine</p>
-    <h2 class="hero-title">Poste. Encaisse.</h2>
-    <p class="hero-sub">Choisis une mission, poste ta vidéo, envoie le lien. Validation sous 48h — paiement vendredi.</p>
+  <div class="hero-strip">
+    <p class="hero-eyebrow">Cette semaine</p>
+    <h2 class="hero-title">Poste.<br>Encaisse. <span>Répète.</span></h2>
     <div class="stats-row">
-      <div class="stat-item">
-        <p class="stat-val" id="statPosts">0</p>
-        <p class="stat-label">Posts validés</p>
+      <div class="stat">
+        <p class="stat-n" id="statPosts">0</p>
+        <p class="stat-l">Validés</p>
       </div>
-      <div class="stat-divider"></div>
-      <div class="stat-item">
-        <p class="stat-val red" id="statEarnings">0 €</p>
-        <p class="stat-label">Gagnés</p>
+      <div class="stat">
+        <p class="stat-n accent" id="statEarnings">0 €</p>
+        <p class="stat-l">Gagnés</p>
       </div>
-      <div class="stat-divider"></div>
-      <div class="stat-item">
-        <p class="stat-val" id="statPending">0</p>
-        <p class="stat-label">En attente</p>
+      <div class="stat">
+        <p class="stat-n" id="statPending">0</p>
+        <p class="stat-l">En attente</p>
       </div>
     </div>
   </div>
 
-  <div class="regles">
-    <p class="regle-title">Règles absolues</p>
-    <div class="regle"><span class="regle-num">01</span><span class="regle-text">La vidéo doit rester en ligne minimum 7 jours après soumission</span></div>
-    <div class="regle"><span class="regle-num">02</span><span class="regle-text">Ton compte doit être public au moment de la validation</span></div>
-    <div class="regle"><span class="regle-num">03</span><span class="regle-text">Ne pas mentionner que tu es rémunéré — contenu naturel uniquement</span></div>
-    <div class="regle"><span class="regle-num">04</span><span class="regle-text">Une seule soumission par mission — les doublons sont refusés</span></div>
-    <div class="regle"><span class="regle-num">05</span><span class="regle-text">Vidéo minimum 20 secondes, son activé, visage recommandé</span></div>
+  <div class="rules">
+    <div class="rules-head">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="rgba(255,255,255,0.3)"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+      <span class="rules-head-label">Règles absolues</span>
+    </div>
+    <div class="rule"><span class="rule-n">01</span><span class="rule-t">La vidéo doit rester en ligne minimum 7 jours après soumission</span></div>
+    <div class="rule"><span class="rule-n">02</span><span class="rule-t">Ton compte doit être public au moment de la validation</span></div>
+    <div class="rule"><span class="rule-n">03</span><span class="rule-t">Ne pas mentionner que tu es rémunéré — contenu naturel uniquement</span></div>
+    <div class="rule"><span class="rule-n">04</span><span class="rule-t">Une seule soumission par mission — les doublons sont refusés</span></div>
+    <div class="rule"><span class="rule-n">05</span><span class="rule-t">Vidéo minimum 20 secondes, son activé, visage recommandé</span></div>
   </div>
 
-  <div class="section-label"><span>Missions disponibles</span></div>
+  <div class="section-label">Missions disponibles</div>
 
-  <!-- MISSION 1 — HUNTLIST -->
-  <div class="mission" id="mission-huntlist">
-    <div class="mission-top">
-      <div class="mission-brand">
-        <div class="mission-logo" style="background:rgba(181,35,48,0.1);display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined fi" style="font-size:18px;color:var(--red)">my_location</span></div>
-        <div>
+  <!-- HUNTLIST -->
+  <div class="mission" id="mission-huntlist" onclick="openModal('huntlist')">
+    <div class="mission-inner">
+      <div class="mission-top">
+        <div class="mission-icon" style="background:rgba(181,35,48,0.15)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#e8323f"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        </div>
+        <div class="mission-info">
           <p class="mission-name">Huntlist.fr</p>
-          <p class="mission-desc">Présente l'outil de prospection IA pour artisans</p>
+          <p class="mission-desc">Prospection IA pour artisans</p>
         </div>
+        <p class="mission-price">5 €<small> /post</small></p>
       </div>
-      <div style="text-align:right">
-        <p class="mission-price">10 €<span> / post</span></p>
+      <div class="mission-platforms">
+        <div class="platform-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="white"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/></svg>TikTok</div>
+        <div class="platform-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>Instagram</div>
+        <div class="platform-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="white"><path d="M12.166 2c1.456 0 5.675.421 7.318 5.003.435 1.197.33 3.228.241 4.933l-.006.132c-.003.05.028.108.08.145.264.184.73.37 1.548.228.428-.072.79.075.862.328.085.302-.224.632-.635.79-.047.017-.1.033-.155.05-.658.193-1.083.538-1.202.972-.06.22.007.432.09.596.351.7 1.386 1.562 3.693 1.958v.001c.197.034.39.19.39.38 0 .332-.414.69-1.182.91-.226.065-.324.25-.39.434-.059.163-.099.34-.288.365-.193.025-.41-.08-.685-.165a5.035 5.035 0 0 0-1.56-.253c-.317 0-.617.038-.898.11-.59.156-1.1.55-1.726 1.02-1.02.767-2.295 1.721-4.355 1.721-2.054 0-3.316-.948-4.33-1.712-.63-.474-1.143-.871-1.737-1.029a4.978 4.978 0 0 0-.896-.11 5.03 5.03 0 0 0-1.562.253c-.278.086-.492.19-.685.165-.19-.025-.23-.202-.288-.365-.066-.184-.164-.369-.39-.434-.768-.22-1.182-.578-1.182-.91 0-.19.193-.346.39-.38 2.307-.396 3.342-1.258 3.693-1.958.083-.164.15-.376.09-.596-.119-.434-.544-.779-1.202-.972a4.12 4.12 0 0 1-.155-.05c-.411-.158-.72-.488-.635-.79.072-.253.434-.4.862-.328.82.143 1.284-.044 1.548-.228.052-.037.083-.095.08-.145l-.006-.132c-.089-1.705-.194-3.736.241-4.933C6.491 2.421 10.71 2 12.166 2z"/></svg>Snapchat</div>
       </div>
-    </div>
-    <div class="mission-tags">
-      <span class="tag tag-platform">TikTok</span>
-      <span class="tag tag-platform">Instagram</span>
-      <span class="tag tag-type">Démo produit</span>
-      <span class="tag tag-new">Nouveau</span>
-    </div>
-    <div style="background:var(--cream);border-radius:10px;padding:12px;margin-bottom:12px">
-      <p style="font-size:11px;font-weight:700;color:var(--muted);font-family:'JetBrains Mono';letter-spacing:0.1em;text-transform:uppercase;margin-bottom:5px">Brief</p>
-      <p style="font-size:12px;color:var(--dark);line-height:1.65">Montre l'interface de Huntlist, explique comment ça génère des leads automatiquement. Angle : "j'ai trouvé un outil que les artisans ignorent encore". Lien en bio obligatoire.</p>
-    </div>
-    <div class="mission-footer">
-      <span class="mission-slots"><span class="material-symbols-outlined fi">group</span> Places illimitées</span>
-      <div class="mission-cta" onclick="acceptMission('huntlist', this)">
-        <span class="material-symbols-outlined fi">bolt</span>
-        Accepter
+      <div class="mission-brief">
+        <p class="brief-label">Brief</p>
+        <p class="brief-text">Montre l'interface de Huntlist, explique comment ça génère des leads automatiquement. Angle : "j'ai trouvé un outil que les artisans ignorent encore". Lien en bio obligatoire.</p>
+      </div>
+      <div class="mission-footer">
+        <span class="mission-slots"><svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>Places illimitées</span>
+        <button class="accept-btn" onclick="event.stopPropagation();acceptMission('huntlist',this)">
+          Accepter
+        </button>
       </div>
     </div>
   </div>
 
-  <!-- MISSION 2 — CROQUEZ-MOI -->
-  <div class="mission" id="mission-croquezmoi">
-    <div class="mission-top">
-      <div class="mission-brand">
-        <div class="mission-logo" style="background:rgba(201,168,76,0.1);display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined fi" style="font-size:18px;color:var(--gold)">restaurant</span></div>
-        <div>
+  <!-- CROQUEZ-MOI -->
+  <div class="mission" id="mission-croquezmoi" onclick="openModal('croquezmoi')">
+    <div class="mission-inner">
+      <div class="mission-top">
+        <div class="mission-icon" style="background:rgba(201,168,76,0.15)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#c9a84c"><path d="M18.06 22.99h1.66c.84 0 1.53-.64 1.63-1.46L23 5.05h-5V1h-1.97v4.05h-4.97l.3 2.34c1.71.47 3.31 1.32 4.27 2.26 1.44 1.42 2.43 2.89 2.43 5.29v8.05zM1 21.99V21h15.03v.99c0 .55-.45 1-1.01 1H2.01c-.56 0-1.01-.45-1.01-1zm15.03-7c0-8.53-15.03-8.53-15.03 0h15.03zM1.02 17h15v2h-15z"/></svg>
+        </div>
+        <div class="mission-info">
           <p class="mission-name">Croquez-Moi</p>
-          <p class="mission-desc">Food truck premium — événements & mariages</p>
+          <p class="mission-desc">Food truck premium événements</p>
         </div>
+        <p class="mission-price">5 €<small> /post</small></p>
       </div>
-      <div style="text-align:right">
-        <p class="mission-price">10 €<span> / post</span></p>
+      <div class="mission-platforms">
+        <div class="platform-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="white"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/></svg>TikTok</div>
+        <div class="platform-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>Instagram</div>
+        <div class="platform-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="white"><path d="M12.166 2c1.456 0 5.675.421 7.318 5.003.435 1.197.33 3.228.241 4.933l-.006.132c-.003.05.028.108.08.145.264.184.73.37 1.548.228.428-.072.79.075.862.328.085.302-.224.632-.635.79-.047.017-.1.033-.155.05-.658.193-1.083.538-1.202.972-.06.22.007.432.09.596.351.7 1.386 1.562 3.693 1.958v.001c.197.034.39.19.39.38 0 .332-.414.69-1.182.91-.226.065-.324.25-.39.434-.059.163-.099.34-.288.365-.193.025-.41-.08-.685-.165a5.035 5.035 0 0 0-1.56-.253c-.317 0-.617.038-.898.11-.59.156-1.1.55-1.726 1.02-1.02.767-2.295 1.721-4.355 1.721-2.054 0-3.316-.948-4.33-1.712-.63-.474-1.143-.871-1.737-1.029a4.978 4.978 0 0 0-.896-.11 5.03 5.03 0 0 0-1.562.253c-.278.086-.492.19-.685.165-.19-.025-.23-.202-.288-.365-.066-.184-.164-.369-.39-.434-.768-.22-1.182-.578-1.182-.91 0-.19.193-.346.39-.38 2.307-.396 3.342-1.258 3.693-1.958.083-.164.15-.376.09-.596-.119-.434-.544-.779-1.202-.972a4.12 4.12 0 0 1-.155-.05c-.411-.158-.72-.488-.635-.79.072-.253.434-.4.862-.328.82.143 1.284-.044 1.548-.228.052-.037.083-.095.08-.145l-.006-.132c-.089-1.705-.194-3.736.241-4.933C6.491 2.421 10.71 2 12.166 2z"/></svg>Snapchat</div>
       </div>
-    </div>
-    <div class="mission-tags">
-      <span class="tag tag-platform">TikTok</span>
-      <span class="tag tag-platform">Snapchat</span>
-      <span class="tag tag-type">Lifestyle</span>
-    </div>
-    <div style="background:var(--cream);border-radius:10px;padding:12px;margin-bottom:12px">
-      <p style="font-size:11px;font-weight:700;color:var(--muted);font-family:'JetBrains Mono';letter-spacing:0.1em;text-transform:uppercase;margin-bottom:5px">Brief</p>
-      <p style="font-size:12px;color:var(--dark);line-height:1.65">Contenu lifestyle autour d'un événement ou d'un mariage. Évoque le food truck de manière naturelle. Angle : "le food truck dont tout le monde parle à mes events".</p>
-    </div>
-    <div class="mission-footer">
-      <span class="mission-slots"><span class="material-symbols-outlined fi">group</span> Places illimitées</span>
-      <div class="mission-cta" onclick="acceptMission('croquezmoi', this)">
-        <span class="material-symbols-outlined fi">bolt</span>
-        Accepter
+      <div class="mission-brief">
+        <p class="brief-label">Brief</p>
+        <p class="brief-text">Contenu lifestyle autour d'un événement ou mariage. Angle : "le food truck dont tout le monde parle à mes events". Nom Croquez-Moi mentionné à l'oral.</p>
+      </div>
+      <div class="mission-footer">
+        <span class="mission-slots"><svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>Places illimitées</span>
+        <button class="accept-btn" onclick="event.stopPropagation();acceptMission('croquezmoi',this)">
+          Accepter
+        </button>
       </div>
     </div>
   </div>
 
-  <!-- MISSION 3 — STACKER -->
-  <div class="mission" id="mission-stacker">
-    <div class="mission-top">
-      <div class="mission-brand">
-        <div class="mission-logo" style="background:var(--red);display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined fi" style="font-size:18px;color:#fff">bolt</span></div>
-        <div>
-          <p class="mission-name">Stacker</p>
-          <p class="mission-desc">Recrute de nouveaux Stackers via tes réseaux</p>
+  <!-- STACKER -->
+  <div class="mission" id="mission-stacker" onclick="openModal('stacker')">
+    <div class="mission-inner">
+      <div class="mission-top">
+        <div class="mission-icon" style="background:var(--red)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
         </div>
+        <div class="mission-info">
+          <p class="mission-name">Stacker</p>
+          <p class="mission-desc">Recrute via tes réseaux</p>
+        </div>
+        <div style="text-align:right"><p class="mission-price" style="color:var(--red2)">5 €<small style="color:var(--muted)"> /post</small></p><p style="font-size:10px;color:var(--muted);font-weight:600;margin-top:2px">+ com. parrainage</p></div>
       </div>
-      <div style="text-align:right">
-        <p class="mission-price">15 €<span> / post</span></p>
+      <div class="mission-platforms">
+        <div class="platform-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="white"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/></svg>TikTok</div>
+        <div class="platform-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>Instagram</div>
+        <div class="platform-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="white"><path d="M12.166 2c1.456 0 5.675.421 7.318 5.003.435 1.197.33 3.228.241 4.933l-.006.132c-.003.05.028.108.08.145.264.184.73.37 1.548.228.428-.072.79.075.862.328.085.302-.224.632-.635.79-.047.017-.1.033-.155.05-.658.193-1.083.538-1.202.972-.06.22.007.596.09.596.351.7 1.386 1.562 3.693 1.958v.001c.197.034.39.19.39.38 0 .332-.414.69-1.182.91-.226.065-.324.25-.39.434-.059.163-.099.34-.288.365-.193.025-.41-.08-.685-.165a5.035 5.035 0 0 0-1.56-.253c-.317 0-.617.038-.898.11-.59.156-1.1.55-1.726 1.02-1.02.767-2.295 1.721-4.355 1.721-2.054 0-3.316-.948-4.33-1.712-.63-.474-1.143-.871-1.737-1.029a4.978 4.978 0 0 0-.896-.11 5.03 5.03 0 0 0-1.562.253c-.278.086-.492.19-.685.165-.19-.025-.23-.202-.288-.365-.066-.184-.164-.369-.39-.434-.768-.22-1.182-.578-1.182-.91 0-.19.193-.346.39-.38 2.307-.396 3.342-1.258 3.693-1.958.083-.164.15-.376.09-.596-.119-.434-.544-.779-1.202-.972a4.12 4.12 0 0 1-.155-.05c-.411-.158-.72-.488-.635-.79.072-.253.434-.4.862-.328.82.143 1.284-.044 1.548-.228.052-.037.083-.095.08-.145l-.006-.132c-.089-1.705-.194-3.736.241-4.933C6.491 2.421 10.71 2 12.166 2z"/></svg>Snapchat</div>
+        <span style="font-size:10px;color:var(--red2);font-weight:700;padding:4px 10px;border-radius:6px;background:rgba(232,50,63,0.12)">+ com. sur recrutés</span>
       </div>
-    </div>
-    <div class="mission-tags">
-      <span class="tag tag-platform">TikTok</span>
-      <span class="tag tag-platform">Instagram</span>
-      <span class="tag tag-platform">Snapchat</span>
-      <span class="tag tag-type">Recrutement</span>
-      <span class="tag tag-new">+5 € bonus</span>
-    </div>
-    <div style="background:var(--cream);border-radius:10px;padding:12px;margin-bottom:12px">
-      <p style="font-size:11px;font-weight:700;color:var(--muted);font-family:'JetBrains Mono';letter-spacing:0.1em;text-transform:uppercase;margin-bottom:5px">Brief</p>
-      <p style="font-size:12px;color:var(--dark);line-height:1.65">Montre tes gains de la semaine, explique comment tu travailles depuis ton tel. Angle : "comment je gagne 50 € par jour sans bouger de chez moi". Ton lien de parrainage en bio.</p>
-    </div>
-    <div class="mission-footer">
-      <span class="mission-slots"><span class="material-symbols-outlined fi">group</span> Places illimitées</span>
-      <div class="mission-cta" onclick="acceptMission('stacker', this)">
-        <span class="material-symbols-outlined fi">bolt</span>
-        Accepter
+      <div class="mission-brief">
+        <p class="brief-label">Brief</p>
+        <p class="brief-text">Montre tes gains de la semaine, explique comment tu travailles depuis ton tél. Angle : "comment je gagne 50 € par jour sans bouger de chez moi". Ton lien de parrainage en bio — chaque Stacker recruté via ton lien te rapporte une commission.</p>
+      </div>
+      <div class="mission-footer">
+        <span class="mission-slots"><svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>Places illimitées</span>
+        <button class="accept-btn" onclick="event.stopPropagation();acceptMission('stacker',this)">
+          Accepter
+        </button>
       </div>
     </div>
   </div>
 
 </div>
 
-<!-- ══ TAB SOUMETTRE ══ -->
+<!-- TAB SOUMETTRE -->
 <div class="tab-content" id="content-soumettre">
-
-  <div class="hero-dark" style="margin-bottom:20px">
-    <p class="hero-label">Soumission de post</p>
-    <h2 class="hero-title">Tu as posté ?<br>Encaisse-le.</h2>
-    <p class="hero-sub">Renseigne le lien de ta vidéo. On valide sous 48h et tu es payé vendredi.</p>
+  <div class="hero-strip" style="margin-bottom:16px">
+    <p class="hero-eyebrow">Soumission</p>
+    <h2 class="hero-title" style="margin-bottom:0">Tu as posté ?<br>Encaisse-le.</h2>
   </div>
-
-  <div class="submit-card">
-    <p class="submit-title"><span class="material-symbols-outlined fi">add_circle</span> Nouvelle soumission</p>
-    <div class="input-group">
-      <p class="input-label">Mission</p>
-      <select class="input-field" id="submitMission">
+  <div class="card">
+    <p class="card-title">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+      Nouvelle soumission
+    </p>
+    <div class="field">
+      <label class="field-label">Mission</label>
+      <select class="field-input" id="submitMission">
         <option value="">Sélectionne une mission</option>
-        <option value="huntlist">Huntlist.fr — 10 €</option>
-        <option value="croquezmoi">Croquez-Moi — 10 €</option>
-        <option value="stacker">Stacker — 15 €</option>
+        <option value="huntlist">Huntlist.fr — 5 €</option>
+        <option value="croquezmoi">Croquez-Moi — 5 €</option>
+        <option value="stacker">Stacker — 5 € + commission</option>
       </select>
     </div>
-    <div class="input-group">
-      <p class="input-label">Plateforme</p>
-      <select class="input-field" id="submitPlatform">
+    <div class="field">
+      <label class="field-label">Plateforme</label>
+      <select class="field-input" id="submitPlatform">
         <option value="">Sélectionne la plateforme</option>
         <option value="TikTok">TikTok</option>
         <option value="Instagram">Instagram</option>
         <option value="Snapchat">Snapchat</option>
       </select>
     </div>
-    <div class="input-group">
-      <p class="input-label">Lien de la vidéo</p>
-      <input class="input-field" type="url" id="submitUrl" placeholder="https://www.tiktok.com/@toi/video/..." />
+    <div class="field">
+      <label class="field-label">Lien de la vidéo</label>
+      <input class="field-input" type="url" id="submitUrl" placeholder="https://www.tiktok.com/@toi/video/..." />
     </div>
-    <div class="input-group">
-      <p class="input-label">Nombre d'abonnés (estimation)</p>
-      <input class="input-field" type="number" id="submitFollowers" placeholder="ex: 1200" />
+    <div class="field">
+      <label class="field-label">Nombre d'abonnés</label>
+      <input class="field-input" type="number" id="submitFollowers" placeholder="ex: 1200" />
     </div>
-    <button class="submit-btn" onclick="submitPost()">
-      <span class="material-symbols-outlined fi">send</span>
+    <button class="cta-btn" onclick="submitPost()">
       Soumettre ma vidéo
     </button>
   </div>
-
-  <div style="background:var(--cream);border-radius:12px;padding:14px 16px;margin-top:12px">
-    <p style="font-size:11px;font-weight:700;font-family:'JetBrains Mono';letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Délais & paiement</p>
-    <p style="font-size:12px;color:var(--dark);line-height:1.65">Validation sous <strong>48h ouvrées</strong>. Les gains validés sont reversés <strong>chaque vendredi</strong> avec tes commissions RDV. Tout refus est motivé par message.</p>
+  <div class="info-box">
+    <p class="info-box-label">Délais & paiement</p>
+    <p>Validation sous <strong style="color:#fff">48h ouvrées</strong>. Gains reversés <strong style="color:#fff">chaque vendredi</strong> avec tes commissions RDV. Tout refus est motivé par message.</p>
   </div>
-
 </div>
 
-<!-- ══ TAB MES POSTS ══ -->
+<!-- TAB MES POSTS -->
 <div class="tab-content" id="content-mesposts">
-
-  <div class="hero-dark" style="margin-bottom:20px">
-    <p class="hero-label">Historique</p>
-    <h2 class="hero-title">Mes posts</h2>
-    <p class="hero-sub">Suivi de toutes tes soumissions et leur statut.</p>
+  <div class="hero-strip" style="margin-bottom:16px">
+    <p class="hero-eyebrow">Historique</p>
+    <h2 class="hero-title" style="margin-bottom:14px">Mes posts</h2>
     <div class="stats-row">
-      <div class="stat-item">
-        <p class="stat-val" id="statPostsHistory">0</p>
-        <p class="stat-label">Total posts</p>
+      <div class="stat">
+        <p class="stat-n" id="statPostsHistory">0</p>
+        <p class="stat-l">Total posts</p>
       </div>
-      <div class="stat-divider"></div>
-      <div class="stat-item">
-        <p class="stat-val red" id="statEarningsHistory">0 €</p>
-        <p class="stat-label">Gagnés</p>
+      <div class="stat">
+        <p class="stat-n accent" id="statEarningsHistory">0 €</p>
+        <p class="stat-l">Gagnés</p>
       </div>
     </div>
   </div>
-
   <div id="postsList"></div>
+</div>
 
 </div>
 
-</div><!-- end body -->
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-head">
+      <div class="modal-head-icon" id="modalIcon"></div>
+      <div class="modal-head-info">
+        <p class="modal-head-name" id="modalBrand"></p>
+        <p class="modal-head-sub" id="modalTagline"></p>
+      </div>
+      <div class="modal-close" onclick="closeModalDirect()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="rgba(255,255,255,0.6)"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      </div>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
 
 <!-- BOTTOM NAV -->
 <nav class="bottom-nav">
   <a href="index.html" class="nav-item">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
     <span>Home</span>
   </a>
   <a href="missions.html" class="nav-item">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
     <span>Missions</span>
   </a>
   <a href="influence.html" class="nav-item active">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
     <span>Influence</span>
   </a>
   <a href="pipeline.html" class="nav-item">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z"/></svg>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z"/></svg>
     <span>Pipeline</span>
   </a>
 </nav>
 
 <script>
-const PRICES = { huntlist: 10, croquezmoi: 10, stacker: 15 };
+const PRICES = { huntlist: 5, croquezmoi: 5, stacker: 5 };
+const MISSIONS_DATA = {
+  huntlist: {
+    brand: 'Huntlist.fr', tagline: 'Prospection IA pour artisans',
+    iconBg: 'rgba(181,35,48,0.2)', iconSvg: `<svg width="20" height="20" viewBox="0 0 24 24" fill="#e8323f"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>`,
+    gain: '5 €', platforms: ['TikTok','Instagram','Snapchat'],
+    objectif: `Faire découvrir Huntlist.fr à des artisans et auto-entrepreneurs. L’angle doit être naturel — tu montres un outil que tu utilises, pas une pub.`,
+    steps: [
+      { t: 'Visite le site', d: `Va sur <strong>huntlist.fr</strong>, explore l’interface avant de filmer.` },
+      { t: 'Filme ta démo', d: `Screen de l’interface ou toi face caméra. Montre 1-2 fonctionnalités concrètes.` },
+      { t: 'Utilise cet angle', d: `<strong>"J’ai trouvé un outil que les artisans ignorent encore"</strong>` },
+      { t: 'Lien en bio', d: `Lien vers huntlist.fr obligatoire en bio pendant 7 jours minimum.` },
+      { t: 'Soumets', d: `Onglet Soumettre → colle le lien de ta vidéo.` }
+    ],
+    donts: [`Ne pas dire que tu es payé pour en parler`, `Ne pas lire un script — parle naturellement`, `Ne pas supprimer la vidéo avant 7 jours`],
+    example: `"“Franchement je savais pas que ça existait — tu rentres une ville, un métier, et t’as une liste de prospects en 30 secondes. Les artisans dorment sur un truc de fou.”"`,
+    duration: '20 sec min', followers: 'Aucun minimum'
+  },
+  croquezmoi: {
+    brand: 'Croquez-Moi', tagline: 'Food truck premium événements',
+    iconBg: 'rgba(201,168,76,0.2)', iconSvg: `<svg width="20" height="20" viewBox="0 0 24 24" fill="#c9a84c"><path d="M18.06 22.99h1.66c.84 0 1.53-.64 1.63-1.46L23 5.05h-5V1h-1.97v4.05h-4.97l.3 2.34c1.71.47 3.31 1.32 4.27 2.26 1.44 1.42 2.43 2.89 2.43 5.29v8.05zM1 21.99V21h15.03v.99c0 .55-.45 1-1.01 1H2.01c-.56 0-1.01-.45-1.01-1zm15.03-7c0-8.53-15.03-8.53-15.03 0h15.03zM1.02 17h15v2h-15z"/></svg>`,
+    gain: '5 €', platforms: ['TikTok','Instagram','Snapchat'],
+    objectif: `Créer du contenu lifestyle autour d’un événement ou mariage. Le food truck apparaît naturellement — pas comme une pub, comme une découverte.`,
+    steps: [
+      { t: 'Choisis ton contexte', d: `Un mariage, anniversaire, soirée privée.` },
+      { t: 'Filme en lifestyle', d: `Ambiance event, tables dressées, invités heureux. Le food truck comme décor premium.` },
+      { t: 'Utilise cet angle', d: `<strong>"Le food truck dont tout le monde parle à mes events"</strong>` },
+      { t: 'Mentionne le nom', d: `Dis <strong>Croquez-Moi</strong> à l’oral ou en texte à l’écran.` },
+      { t: 'Soumets', d: `Onglet Soumettre → colle le lien de ta vidéo.` }
+    ],
+    donts: [`Ne pas faire une vidéo trop commerciale`, `Ne pas mentionner de prix`, `Ne pas dire que tu es rémunéré`],
+    example: `"“Pour le mariage de ma cousine on avait réservé Croquez-Moi — les invités ont mangé dehors toute la soirée, personne voulait partir.”"`,
+    duration: '20 sec min', followers: 'Aucun minimum'
+  },
+  stacker: {
+    brand: 'Stacker', tagline: 'Recrute via tes réseaux',
+    iconBg: 'var(--red)', iconSvg: `<svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>`,
+    gain: '5 € + commission parrainage', platforms: ['TikTok','Instagram','Snapchat'],
+    objectif: `Recruter de nouveaux Stackers via ton lien de parrainage. La mission la mieux rémunérée — tu parles de toi, de ce que tu gagnes, de comment ça marche.`,
+    steps: [
+      { t: 'Screenshot tes gains', d: `Capture ton tableau de bord — RDV, € gagnés cette semaine.` },
+      { t: 'Filme face caméra', d: `<strong>"Je fais ça depuis chez moi, voilà ce que ça m’a rapporté"</strong>` },
+      { t: 'Utilise cet angle', d: `<strong>"Comment je gagne 50 € par jour sans bouger"</strong>` },
+      { t: 'Lien de parrainage en bio', d: `Ton lien unique Stacker — chaque inscription via ton lien = commission bonus.` },
+      { t: 'Soumets', d: `Onglet Soumettre → colle le lien de ta vidéo.` }
+    ],
+    donts: [`Ne pas promettre des gains irréalistes`, `Ne pas mentionner les clients partenaires`, `Ne pas supprimer la vidéo avant 7 jours`],
+    example: `"“J’ai téléchargé Stacker y’a deux semaines — j’ai fait 47 € net lundi depuis mon canapé en 1h30. Lien en bio.”"`,
+    duration: '20 sec min', followers: 'Aucun minimum'
+  }
+};
+
+const SNAP_SVG = `<svg width="11" height="11" viewBox="0 0 24 24" fill="white"><path d="M12.166 2c1.456 0 5.675.421 7.318 5.003.435 1.197.33 3.228.241 4.933l-.006.132c-.003.05.028.108.08.145.264.184.73.37 1.548.228.428-.072.79.075.862.328.085.302-.224.632-.635.79-.047.017-.1.033-.155.05-.658.193-1.083.538-1.202.972-.06.22.007.432.09.596.351.7 1.386 1.562 3.693 1.958v.001c.197.034.39.19.39.38 0 .332-.414.69-1.182.91-.226.065-.324.25-.39.434-.059.163-.099.34-.288.365-.193.025-.41-.08-.685-.165a5.035 5.035 0 0 0-1.56-.253c-.317 0-.617.038-.898.11-.59.156-1.1.55-1.726 1.02-1.02.767-2.295 1.721-4.355 1.721-2.054 0-3.316-.948-4.33-1.712-.63-.474-1.143-.871-1.737-1.029a4.978 4.978 0 0 0-.896-.11 5.03 5.03 0 0 0-1.562.253c-.278.086-.492.19-.685.165-.19-.025-.23-.202-.288-.365-.066-.184-.164-.369-.39-.434-.768-.22-1.182-.578-1.182-.91 0-.19.193-.346.39-.38 2.307-.396 3.342-1.258 3.693-1.958.083-.164.15-.376.09-.596-.119-.434-.544-.779-1.202-.972a4.12 4.12 0 0 1-.155-.05c-.411-.158-.72-.488-.635-.79.072-.253.434-.4.862-.328.82.143 1.284-.044 1.548-.228.052-.037.083-.095.08-.145l-.006-.132c-.089-1.705-.194-3.736.241-4.933C6.491 2.421 10.71 2 12.166 2z"/></svg>`;
+const TK_SVG = `<svg width="11" height="11" viewBox="0 0 24 24" fill="white"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/></svg>`;
+const IG_SVG = `<svg width="11" height="11" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>`;
+const PLATFORM_ICONS = { TikTok: TK_SVG, Instagram: IG_SVG, Snapchat: SNAP_SVG };
+
+function openModal(id) {
+  const d = MISSIONS_DATA[id];
+  if (!d) return;
+  document.getElementById('modalIcon').innerHTML = d.iconSvg;
+  document.getElementById('modalIcon').style.background = d.iconBg;
+  document.getElementById('modalBrand').textContent = d.brand;
+  document.getElementById('modalTagline').textContent = d.tagline;
+
+  const chips = d.platforms.map(p => `<span class="m-chip">${PLATFORM_ICONS[p] || ''} ${p}</span>`).join('');
+  const steps = d.steps.map((s,i) => `<div class="m-step"><div class="m-step-n">${i+1}</div><div class="m-step-t"><strong>${s.t}</strong> — ${s.d}</div></div>`).join('');
+  const donts = d.donts.map(t => `<div class="m-dont"><span class="m-dont-x">✕</span><span class="m-dont-t">${t}</span></div>`).join('');
+
+  document.getElementById('modalBody').innerHTML = `
+    <div class="m-section">
+      <p class="m-label">Objectif</p>
+      <div class="m-block"><p>${d.objectif}</p></div>
+    </div>
+    <div class="m-section">
+      <p class="m-label">Plateformes</p>
+      <div class="m-chips">${chips}</div>
+    </div>
+    <div class="m-section">
+      <p class="m-label">Étapes</p>
+      <div class="m-block">${steps}</div>
+    </div>
+    <div class="m-section">
+      <p class="m-label">Script oral</p>
+      <div class="m-example"><p class="m-example-l">Ce que tu peux dire</p><p class="m-example-t">${d.example}</p></div>
+    </div>
+    <div class="m-section">
+      <p class="m-label">À ne pas faire</p>
+      <div class="m-block">${donts}</div>
+    </div>
+    <div class="m-infos">
+      <div class="m-info"><p class="m-info-val">${d.duration}</p><p class="m-info-l">Durée</p></div>
+      <div class="m-info"><p class="m-info-val">${d.followers}</p><p class="m-info-l">Abonnés</p></div>
+      <div class="m-info"><p class="m-info-val r">${d.gain}</p><p class="m-info-l">Gain</p></div>
+    </div>
+    <button class="modal-accept" onclick="acceptMission('${id}',null);closeModalDirect()">
+      Accepter cette mission
+    </button>`;
+
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) { if (e.target === document.getElementById('modalOverlay')) closeModalDirect(); }
+function closeModalDirect() { document.getElementById('modalOverlay').classList.remove('open'); document.body.style.overflow = ''; }
 
 function loadStats() {
   const posts = JSON.parse(localStorage.getItem('stacker_posts') || '[]');
   const validated = posts.filter(p => p.status === 'validated');
   const pending = posts.filter(p => p.status === 'pending');
-  const earnings = validated.reduce((s, p) => s + (PRICES[p.mission] || 10), 0);
-
+  const earnings = validated.reduce((s,p) => s + (PRICES[p.mission] || 10), 0);
   document.getElementById('statPosts').textContent = validated.length;
   document.getElementById('statEarnings').textContent = earnings + ' €';
   document.getElementById('statPending').textContent = pending.length;
   document.getElementById('statPostsHistory').textContent = posts.length;
   document.getElementById('statEarningsHistory').textContent = earnings + ' €';
-
-  // Sync index
   localStorage.setItem('stacker_influence_posts', validated.length);
 }
 
@@ -422,61 +559,45 @@ function renderPosts() {
   const posts = JSON.parse(localStorage.getItem('stacker_posts') || '[]');
   const el = document.getElementById('postsList');
   if (!posts.length) {
-    el.innerHTML = '<div class="empty"><span class="material-symbols-outlined fi">video_library</span><p>Aucune soumission pour l\'instant</p></div>';
+    el.innerHTML = `<div class="empty"><svg width="40" height="40" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg><p>Aucune soumission pour l’instant</p></div>`;
     return;
   }
-  const platformIcons = {
-    TikTok: `<svg width="14" height="14" viewBox="0 0 24 24" fill="#1b1c1c"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/></svg>`,
-    Instagram: `<svg width="14" height="14" viewBox="0 0 24 24" fill="#1b1c1c"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>`,
-    Snapchat: `<svg width="14" height="14" viewBox="0 0 24 24" fill="#1b1c1c"><path d="M12.166 2c1.456 0 5.675.421 7.318 5.003.435 1.197.33 3.228.241 4.933l-.006.132c-.003.05.028.108.08.145.264.184.73.37 1.548.228.428-.072.79.075.862.328.085.302-.224.632-.635.79-.047.017-.1.033-.155.05-.658.193-1.083.538-1.202.972-.06.22.007.432.09.596.351.7 1.386 1.562 3.693 1.958v.001c.197.034.39.19.39.38 0 .332-.414.69-1.182.91-.226.065-.324.25-.39.434-.059.163-.099.34-.288.365-.193.025-.41-.08-.685-.165a5.035 5.035 0 0 0-1.56-.253c-.317 0-.617.038-.898.11-.59.156-1.1.55-1.726 1.02-1.02.767-2.295 1.721-4.355 1.721-2.054 0-3.316-.948-4.33-1.712-.63-.474-1.143-.871-1.737-1.029a4.978 4.978 0 0 0-.896-.11 5.03 5.03 0 0 0-1.562.253c-.278.086-.492.19-.685.165-.19-.025-.23-.202-.288-.365-.066-.184-.164-.369-.39-.434-.768-.22-1.182-.578-1.182-.91 0-.19.193-.346.39-.38 2.307-.396 3.342-1.258 3.693-1.958.083-.164.15-.376.09-.596-.119-.434-.544-.779-1.202-.972a4.12 4.12 0 0 1-.155-.05c-.411-.158-.72-.488-.635-.79.072-.253.434-.4.862-.328.82.143 1.284-.044 1.548-.228.052-.037.083-.095.08-.145l-.006-.132c-.089-1.705-.194-3.736.241-4.933C6.491 2.421 10.71 2 12.166 2z"/></svg>`
-  };
   const labels = { huntlist: 'Huntlist.fr', croquezmoi: 'Croquez-Moi', stacker: 'Stacker' };
-  const statusMap = { pending: ['En attente', 'status-pending'], validated: ['Validé', 'status-validated'], rejected: ['Refusé', 'status-rejected'] };
-
+  const statusMap = { pending: ['En attente','badge-pending'], validated: ['Validé','badge-validated'], rejected: ['Refusé','badge-rejected'] };
   el.innerHTML = [...posts].reverse().map(p => {
-    const [sLabel, sClass] = statusMap[p.status] || ['?', ''];
-    return `<div class="post-item">
-      <div class="post-platform">${platformIcons[p.platform] || ''}</div>
+    const [sl, sc] = statusMap[p.status] || ['?',''];
+    return `<div class="post-row">
+      <div class="post-icon">${PLATFORM_ICONS[p.platform] || ''}</div>
       <div class="post-info">
         <p class="post-brand">${labels[p.mission] || p.mission}</p>
-        <p class="post-date">${p.platform} · ${p.date}</p>
+        <p class="post-meta">${p.platform} · ${p.date}</p>
       </div>
-      <span class="post-status ${sClass}">${sLabel}</span>
+      <span class="post-badge ${sc}">${sl}</span>
       <p class="post-amount">${p.status === 'validated' ? PRICES[p.mission] + ' €' : '—'}</p>
     </div>`;
   }).join('');
 }
 
 function acceptMission(id, btn) {
-  const card = document.getElementById('mission-' + id);
-  btn.innerHTML = '<span class="material-symbols-outlined fi" style="font-size:14px">check</span> Accepté';
-  btn.style.background = 'var(--green)';
-  card.classList.add('accepted');
-  // Pre-fill submit tab
+  if (btn) {
+    btn.textContent = 'Accepté';
+    btn.style.background = 'rgba(255,255,255,0.15)';
+    btn.style.color = 'rgba(255,255,255,0.5)';
+    btn.disabled = true;
+  }
   document.getElementById('submitMission').value = id;
-  setTimeout(() => { showTab('soumettre'); }, 600);
+  setTimeout(() => showTab('soumettre'), btn ? 500 : 0);
 }
 
 function submitPost() {
   const mission = document.getElementById('submitMission').value;
   const platform = document.getElementById('submitPlatform').value;
   const url = document.getElementById('submitUrl').value;
-  if (!mission || !platform || !url) {
-    alert('Remplis tous les champs obligatoires.');
-    return;
-  }
+  if (!mission || !platform || !url) { alert('Remplis tous les champs.'); return; }
   const posts = JSON.parse(localStorage.getItem('stacker_posts') || '[]');
-  posts.push({
-    mission, platform, url,
-    followers: document.getElementById('submitFollowers').value || '0',
-    date: new Date().toLocaleDateString('fr-FR'),
-    status: 'pending'
-  });
+  posts.push({ mission, platform, url, followers: document.getElementById('submitFollowers').value || '0', date: new Date().toLocaleDateString('fr-FR'), status: 'pending' });
   localStorage.setItem('stacker_posts', JSON.stringify(posts));
-  document.getElementById('submitMission').value = '';
-  document.getElementById('submitPlatform').value = '';
-  document.getElementById('submitUrl').value = '';
-  document.getElementById('submitFollowers').value = '';
+  ['submitMission','submitPlatform','submitUrl','submitFollowers'].forEach(id => document.getElementById(id).value = '');
   loadStats();
   showTab('mesposts');
 }
