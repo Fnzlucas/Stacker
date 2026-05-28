@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Micro-influence · Stacker</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --dark:#1b1c1c;--surface:#faf7f4;--cream:#f5f0e8;
+  --muted:#6b5550;--border:rgba(226,190,188,0.45);
+  --red:#b52330;--red2:#ff5a5f;--red-soft:rgba(181,35,48,0.08);
+  --green:#006c4c;--green-soft:rgba(0,108,76,0.08);
+  --gold:#c9a84c;
+}
+html,body{background:var(--surface);color:var(--dark);font-family:'Inter',sans-serif;min-height:100%}
+.fi{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
+.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;line-height:1;font-family:'Material Symbols Outlined'}
+
+/* HEADER */
+.header{background:var(--dark);padding:20px 20px 0;position:sticky;top:0;z-index:100}
+.header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.logo{font-family:'Plus Jakarta Sans';font-weight:900;font-size:17px;color:#fff;letter-spacing:-0.04em}
+.logo span{font-family:'JetBrains Mono';font-size:9px;font-weight:600;color:var(--red2);background:rgba(255,90,95,0.15);padding:2px 7px;border-radius:4px;letter-spacing:0.1em;margin-left:8px}
+.header-sub{font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px}
+.back-btn{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;text-decoration:none}
+.back-btn .material-symbols-outlined{font-size:18px;color:rgba(255,255,255,0.7)}
+
+/* TABS */
+.tabs{display:flex;gap:0;overflow-x:auto;scrollbar-width:none;border-top:1px solid rgba(255,255,255,0.08);margin-top:4px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:12px 16px;font-size:12px;font-weight:700;color:rgba(255,255,255,0.4);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all 0.2s;display:flex;align-items:center;gap:6px;flex-shrink:0}
+.tab.active{color:#fff;border-bottom-color:var(--red2)}
+.tab-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+
+/* BODY */
+.body{max-width:680px;margin:0 auto;padding:20px 16px 100px}
+
+/* HERO STATS */
+.hero-dark{background:radial-gradient(ellipse at top right,rgba(181,35,48,0.18),transparent 60%),radial-gradient(ellipse at bottom left,rgba(255,90,95,0.08),transparent 50%),var(--dark);border-radius:18px;padding:20px;margin-bottom:20px;position:relative;overflow:hidden}
+.hero-dark::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:rgba(181,35,48,0.1);pointer-events:none}
+.hero-label{font-family:'JetBrains Mono';font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,90,95,0.7);margin-bottom:8px}
+.hero-title{font-family:'Plus Jakarta Sans';font-weight:900;font-size:20px;letter-spacing:-0.04em;color:#fff;margin-bottom:4px;line-height:1.1}
+.hero-sub{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.6;margin-bottom:18px}
+.stats-row{display:flex;align-items:center;gap:0}
+.stat-item{flex:1;padding:0 16px}
+.stat-item:first-child{padding-left:0}
+.stat-divider{width:1px;height:36px;background:rgba(255,255,255,0.1);flex-shrink:0}
+.stat-val{font-family:'Plus Jakarta Sans';font-weight:900;font-size:24px;color:#fff;letter-spacing:-0.04em;line-height:1}
+.stat-val.red{color:var(--red2)}
+.stat-label{font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.1em;margin-top:2px}
+
+/* RÈGLES */
+.regles{background:var(--dark);border-radius:16px;padding:16px 18px;margin-bottom:16px}
+.regle-title{font-family:'JetBrains Mono';font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:10px}
+.regle{display:flex;align-items:flex-start;gap:10px;margin-bottom:7px}
+.regle:last-child{margin-bottom:0}
+.regle-num{font-family:'JetBrains Mono';font-size:10px;font-weight:700;color:var(--red2);flex-shrink:0;margin-top:1px}
+.regle-text{font-size:12px;color:rgba(255,255,255,0.55);line-height:1.5}
+
+/* SECTION LABEL */
+.section-label{display:flex;align-items:center;gap:8px;margin:20px 0 10px}
+.section-label::before{content:'';width:16px;height:1px;background:var(--gold)}
+.section-label span{font-family:'JetBrains Mono';font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold)}
+
+/* MISSION CARD */
+.mission{background:#fff;border-radius:14px;border:1px solid var(--border);padding:16px;margin-bottom:10px;box-shadow:0 2px 8px -3px rgba(27,28,28,0.06);cursor:pointer;transition:transform 0.2s,box-shadow 0.2s}
+.mission:hover{transform:translateY(-2px);box-shadow:0 8px 24px -6px rgba(27,28,28,0.12)}
+.mission-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
+.mission-brand{display:flex;align-items:center;gap:10px}
+.mission-logo{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.mission-name{font-family:'Plus Jakarta Sans';font-weight:800;font-size:14px;letter-spacing:-0.02em;color:var(--dark)}
+.mission-desc{font-size:12px;color:var(--muted);margin-top:1px;line-height:1.4}
+.mission-price{font-family:'Plus Jakarta Sans';font-weight:900;font-size:18px;color:var(--dark);letter-spacing:-0.03em;flex-shrink:0}
+.mission-price span{font-size:11px;font-weight:500;color:var(--muted)}
+.mission-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.tag{font-size:10px;font-weight:700;font-family:'JetBrains Mono';padding:3px 8px;border-radius:99px}
+.tag-platform{background:rgba(27,28,28,0.07);color:var(--muted)}
+.tag-type{background:var(--red-soft);color:var(--red)}
+.tag-new{background:rgba(0,108,76,0.1);color:var(--green)}
+.mission-footer{display:flex;align-items:center;justify-content:space-between}
+.mission-slots{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:4px}
+.mission-slots .material-symbols-outlined{font-size:14px}
+.mission-cta{display:flex;align-items:center;gap:4px;padding:7px 14px;border-radius:10px;background:var(--dark);font-size:12px;font-weight:700;color:#fff;font-family:'Plus Jakarta Sans';transition:background 0.2s}
+.mission-cta:hover{background:var(--red)}
+.mission-cta .material-symbols-outlined{font-size:14px}
+
+/* MISSION ACCEPTÉE */
+.mission.accepted{border-color:rgba(0,108,76,0.25);background:rgba(0,108,76,0.03)}
+.accepted-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:8px;background:var(--green-soft);font-size:11px;font-weight:700;color:var(--green);font-family:'JetBrains Mono'}
+.accepted-badge .material-symbols-outlined{font-size:13px}
+
+/* SOUMISSION */
+.submit-card{background:#fff;border-radius:14px;border:1px solid var(--border);padding:16px;margin-bottom:10px;box-shadow:0 2px 8px -3px rgba(27,28,28,0.06)}
+.submit-card.hidden{display:none}
+.submit-title{font-family:'Plus Jakarta Sans';font-weight:800;font-size:13px;color:var(--dark);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.submit-title .material-symbols-outlined{font-size:16px;color:var(--red)}
+.input-group{margin-bottom:10px}
+.input-label{font-size:10px;font-weight:700;font-family:'JetBrains Mono';letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.input-field{width:100%;padding:10px 12px;border-radius:10px;border:1.5px solid var(--border);font-size:13px;font-family:'Inter';color:var(--dark);background:#faf7f4;outline:none;transition:border-color 0.2s}
+.input-field:focus{border-color:var(--red)}
+.submit-btn{width:100%;padding:12px;border-radius:12px;background:var(--dark);color:#fff;font-family:'Plus Jakarta Sans';font-weight:800;font-size:13px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:background 0.2s}
+.submit-btn:hover{background:var(--red)}
+.submit-btn .material-symbols-outlined{font-size:16px}
+
+/* MES POSTS */
+.post-item{background:#fff;border-radius:12px;border:1px solid var(--border);padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px}
+.post-platform{width:32px;height:32px;border-radius:8px;background:rgba(27,28,28,0.06);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.post-info{flex:1;min-width:0}
+.post-brand{font-family:'Plus Jakarta Sans';font-weight:700;font-size:13px;color:var(--dark)}
+.post-date{font-size:11px;color:var(--muted);margin-top:1px}
+.post-status{font-size:11px;font-weight:700;font-family:'JetBrains Mono';padding:3px 8px;border-radius:6px;flex-shrink:0}
+.status-pending{background:rgba(201,168,76,0.12);color:#9a7a28}
+.status-validated{background:var(--green-soft);color:var(--green)}
+.status-rejected{background:var(--red-soft);color:var(--red)}
+.post-amount{font-family:'Plus Jakarta Sans';font-weight:900;font-size:15px;color:var(--dark);flex-shrink:0;margin-left:8px}
+
+/* EMPTY STATE */
+.empty{text-align:center;padding:40px 20px}
+.empty .material-symbols-outlined{font-size:40px;color:rgba(27,28,28,0.12);display:block;margin-bottom:8px}
+.empty p{font-size:13px;color:var(--muted)}
+
+/* TAB CONTENT */
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--dark);padding:10px 16px 20px;display:flex;justify-content:space-around;border-top:1px solid rgba(255,255,255,0.08);z-index:99}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;opacity:0.4;transition:opacity 0.2s;text-decoration:none}
+.nav-item.active{opacity:1}
+.nav-item .material-symbols-outlined{font-size:22px;color:#fff}
+.nav-item span{font-size:9px;color:#fff;font-family:'JetBrains Mono';letter-spacing:0.05em}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-top">
+    <div style="display:flex;align-items:center;gap:12px">
+      <a href="index.html" class="back-btn">
+        <span class="material-symbols-outlined">arrow_back</span>
+      </a>
+      <div>
+        <div class="logo">Micro-influence<span>MODULE</span></div>
+        <div class="header-sub">Poste · Encaisse · Répète — 10 € par vidéo validée</div>
+      </div>
+    </div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('missions')" id="tab-missions">
+      <div class="tab-dot" style="background:#fff"></div>
+      Missions
+    </div>
+    <div class="tab" onclick="showTab('soumettre')" id="tab-soumettre">
+      <div class="tab-dot" style="background:#ff5a5f"></div>
+      Soumettre
+    </div>
+    <div class="tab" onclick="showTab('mesposts')" id="tab-mesposts">
+      <div class="tab-dot" style="background:#c9a84c"></div>
+      Mes posts
+    </div>
+  </div>
+</div>
+
+<div class="body">
+
+<!-- ══ TAB MISSIONS ══ -->
+<div class="tab-content active" id="content-missions">
+
+  <div class="hero-dark">
+    <p class="hero-label">Tes gains cette semaine</p>
+    <h2 class="hero-title">Poste. Encaisse.</h2>
+    <p class="hero-sub">Choisis une mission, poste ta vidéo, envoie le lien. Validation sous 48h — paiement vendredi.</p>
+    <div class="stats-row">
+      <div class="stat-item">
+        <p class="stat-val" id="statPosts">0</p>
+        <p class="stat-label">Posts validés</p>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <p class="stat-val red" id="statEarnings">0 €</p>
+        <p class="stat-label">Gagnés</p>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <p class="stat-val" id="statPending">0</p>
+        <p class="stat-label">En attente</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="regles">
+    <p class="regle-title">Règles absolues</p>
+    <div class="regle"><span class="regle-num">01</span><span class="regle-text">La vidéo doit rester en ligne minimum 7 jours après soumission</span></div>
+    <div class="regle"><span class="regle-num">02</span><span class="regle-text">Ton compte doit être public au moment de la validation</span></div>
+    <div class="regle"><span class="regle-num">03</span><span class="regle-text">Ne pas mentionner que tu es rémunéré — contenu naturel uniquement</span></div>
+    <div class="regle"><span class="regle-num">04</span><span class="regle-text">Une seule soumission par mission — les doublons sont refusés</span></div>
+    <div class="regle"><span class="regle-num">05</span><span class="regle-text">Vidéo minimum 20 secondes, son activé, visage recommandé</span></div>
+  </div>
+
+  <div class="section-label"><span>Missions disponibles</span></div>
+
+  <!-- MISSION 1 — HUNTLIST -->
+  <div class="mission" id="mission-huntlist">
+    <div class="mission-top">
+      <div class="mission-brand">
+        <div class="mission-logo" style="background:rgba(181,35,48,0.1);display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined fi" style="font-size:18px;color:var(--red)">my_location</span></div>
+        <div>
+          <p class="mission-name">Huntlist.fr</p>
+          <p class="mission-desc">Présente l'outil de prospection IA pour artisans</p>
+        </div>
+      </div>
+      <div style="text-align:right">
+        <p class="mission-price">10 €<span> / post</span></p>
+      </div>
+    </div>
+    <div class="mission-tags">
+      <span class="tag tag-platform">TikTok</span>
+      <span class="tag tag-platform">Instagram</span>
+      <span class="tag tag-type">Démo produit</span>
+      <span class="tag tag-new">Nouveau</span>
+    </div>
+    <div style="background:var(--cream);border-radius:10px;padding:12px;margin-bottom:12px">
+      <p style="font-size:11px;font-weight:700;color:var(--muted);font-family:'JetBrains Mono';letter-spacing:0.1em;text-transform:uppercase;margin-bottom:5px">Brief</p>
+      <p style="font-size:12px;color:var(--dark);line-height:1.65">Montre l'interface de Huntlist, explique comment ça génère des leads automatiquement. Angle : "j'ai trouvé un outil que les artisans ignorent encore". Lien en bio obligatoire.</p>
+    </div>
+    <div class="mission-footer">
+      <span class="mission-slots"><span class="material-symbols-outlined fi">group</span> Places illimitées</span>
+      <div class="mission-cta" onclick="acceptMission('huntlist', this)">
+        <span class="material-symbols-outlined fi">bolt</span>
+        Accepter
+      </div>
+    </div>
+  </div>
+
+  <!-- MISSION 2 — CROQUEZ-MOI -->
+  <div class="mission" id="mission-croquezmoi">
+    <div class="mission-top">
+      <div class="mission-brand">
+        <div class="mission-logo" style="background:rgba(201,168,76,0.1);display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined fi" style="font-size:18px;color:var(--gold)">restaurant</span></div>
+        <div>
+          <p class="mission-name">Croquez-Moi</p>
+          <p class="mission-desc">Food truck premium — événements & mariages</p>
+        </div>
+      </div>
+      <div style="text-align:right">
+        <p class="mission-price">10 €<span> / post</span></p>
+      </div>
+    </div>
+    <div class="mission-tags">
+      <span class="tag tag-platform">TikTok</span>
+      <span class="tag tag-platform">Snapchat</span>
+      <span class="tag tag-type">Lifestyle</span>
+    </div>
+    <div style="background:var(--cream);border-radius:10px;padding:12px;margin-bottom:12px">
+      <p style="font-size:11px;font-weight:700;color:var(--muted);font-family:'JetBrains Mono';letter-spacing:0.1em;text-transform:uppercase;margin-bottom:5px">Brief</p>
+      <p style="font-size:12px;color:var(--dark);line-height:1.65">Contenu lifestyle autour d'un événement ou d'un mariage. Évoque le food truck de manière naturelle. Angle : "le food truck dont tout le monde parle à mes events".</p>
+    </div>
+    <div class="mission-footer">
+      <span class="mission-slots"><span class="material-symbols-outlined fi">group</span> Places illimitées</span>
+      <div class="mission-cta" onclick="acceptMission('croquezmoi', this)">
+        <span class="material-symbols-outlined fi">bolt</span>
+        Accepter
+      </div>
+    </div>
+  </div>
+
+  <!-- MISSION 3 — STACKER -->
+  <div class="mission" id="mission-stacker">
+    <div class="mission-top">
+      <div class="mission-brand">
+        <div class="mission-logo" style="background:var(--red);display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined fi" style="font-size:18px;color:#fff">bolt</span></div>
+        <div>
+          <p class="mission-name">Stacker</p>
+          <p class="mission-desc">Recrute de nouveaux Stackers via tes réseaux</p>
+        </div>
+      </div>
+      <div style="text-align:right">
+        <p class="mission-price">15 €<span> / post</span></p>
+      </div>
+    </div>
+    <div class="mission-tags">
+      <span class="tag tag-platform">TikTok</span>
+      <span class="tag tag-platform">Instagram</span>
+      <span class="tag tag-platform">Snapchat</span>
+      <span class="tag tag-type">Recrutement</span>
+      <span class="tag tag-new">+5 € bonus</span>
+    </div>
+    <div style="background:var(--cream);border-radius:10px;padding:12px;margin-bottom:12px">
+      <p style="font-size:11px;font-weight:700;color:var(--muted);font-family:'JetBrains Mono';letter-spacing:0.1em;text-transform:uppercase;margin-bottom:5px">Brief</p>
+      <p style="font-size:12px;color:var(--dark);line-height:1.65">Montre tes gains de la semaine, explique comment tu travailles depuis ton tel. Angle : "comment je gagne 50 € par jour sans bouger de chez moi". Ton lien de parrainage en bio.</p>
+    </div>
+    <div class="mission-footer">
+      <span class="mission-slots"><span class="material-symbols-outlined fi">group</span> Places illimitées</span>
+      <div class="mission-cta" onclick="acceptMission('stacker', this)">
+        <span class="material-symbols-outlined fi">bolt</span>
+        Accepter
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ TAB SOUMETTRE ══ -->
+<div class="tab-content" id="content-soumettre">
+
+  <div class="hero-dark" style="margin-bottom:20px">
+    <p class="hero-label">Soumission de post</p>
+    <h2 class="hero-title">Tu as posté ?<br>Encaisse-le.</h2>
+    <p class="hero-sub">Renseigne le lien de ta vidéo. On valide sous 48h et tu es payé vendredi.</p>
+  </div>
+
+  <div class="submit-card">
+    <p class="submit-title"><span class="material-symbols-outlined fi">add_circle</span> Nouvelle soumission</p>
+    <div class="input-group">
+      <p class="input-label">Mission</p>
+      <select class="input-field" id="submitMission">
+        <option value="">Sélectionne une mission</option>
+        <option value="huntlist">Huntlist.fr — 10 €</option>
+        <option value="croquezmoi">Croquez-Moi — 10 €</option>
+        <option value="stacker">Stacker — 15 €</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <p class="input-label">Plateforme</p>
+      <select class="input-field" id="submitPlatform">
+        <option value="">Sélectionne la plateforme</option>
+        <option value="TikTok">TikTok</option>
+        <option value="Instagram">Instagram</option>
+        <option value="Snapchat">Snapchat</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <p class="input-label">Lien de la vidéo</p>
+      <input class="input-field" type="url" id="submitUrl" placeholder="https://www.tiktok.com/@toi/video/..." />
+    </div>
+    <div class="input-group">
+      <p class="input-label">Nombre d'abonnés (estimation)</p>
+      <input class="input-field" type="number" id="submitFollowers" placeholder="ex: 1200" />
+    </div>
+    <button class="submit-btn" onclick="submitPost()">
+      <span class="material-symbols-outlined fi">send</span>
+      Soumettre ma vidéo
+    </button>
+  </div>
+
+  <div style="background:var(--cream);border-radius:12px;padding:14px 16px;margin-top:12px">
+    <p style="font-size:11px;font-weight:700;font-family:'JetBrains Mono';letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Délais & paiement</p>
+    <p style="font-size:12px;color:var(--dark);line-height:1.65">Validation sous <strong>48h ouvrées</strong>. Les gains validés sont reversés <strong>chaque vendredi</strong> avec tes commissions RDV. Tout refus est motivé par message.</p>
+  </div>
+
+</div>
+
+<!-- ══ TAB MES POSTS ══ -->
+<div class="tab-content" id="content-mesposts">
+
+  <div class="hero-dark" style="margin-bottom:20px">
+    <p class="hero-label">Historique</p>
+    <h2 class="hero-title">Mes posts</h2>
+    <p class="hero-sub">Suivi de toutes tes soumissions et leur statut.</p>
+    <div class="stats-row">
+      <div class="stat-item">
+        <p class="stat-val" id="statPostsHistory">0</p>
+        <p class="stat-label">Total posts</p>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <p class="stat-val red" id="statEarningsHistory">0 €</p>
+        <p class="stat-label">Gagnés</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="postsList"></div>
+
+</div>
+
+</div><!-- end body -->
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <a href="index.html" class="nav-item">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    <span>Home</span>
+  </a>
+  <a href="missions.html" class="nav-item">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
+    <span>Missions</span>
+  </a>
+  <a href="influence.html" class="nav-item active">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+    <span>Influence</span>
+  </a>
+  <a href="pipeline.html" class="nav-item">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z"/></svg>
+    <span>Pipeline</span>
+  </a>
+</nav>
+
+<script>
+const PRICES = { huntlist: 10, croquezmoi: 10, stacker: 15 };
+
+function loadStats() {
+  const posts = JSON.parse(localStorage.getItem('stacker_posts') || '[]');
+  const validated = posts.filter(p => p.status === 'validated');
+  const pending = posts.filter(p => p.status === 'pending');
+  const earnings = validated.reduce((s, p) => s + (PRICES[p.mission] || 10), 0);
+
+  document.getElementById('statPosts').textContent = validated.length;
+  document.getElementById('statEarnings').textContent = earnings + ' €';
+  document.getElementById('statPending').textContent = pending.length;
+  document.getElementById('statPostsHistory').textContent = posts.length;
+  document.getElementById('statEarningsHistory').textContent = earnings + ' €';
+
+  // Sync index
+  localStorage.setItem('stacker_influence_posts', validated.length);
+}
+
+function renderPosts() {
+  const posts = JSON.parse(localStorage.getItem('stacker_posts') || '[]');
+  const el = document.getElementById('postsList');
+  if (!posts.length) {
+    el.innerHTML = '<div class="empty"><span class="material-symbols-outlined fi">video_library</span><p>Aucune soumission pour l\'instant</p></div>';
+    return;
+  }
+  const platformIcons = {
+    TikTok: `<svg width="14" height="14" viewBox="0 0 24 24" fill="#1b1c1c"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/></svg>`,
+    Instagram: `<svg width="14" height="14" viewBox="0 0 24 24" fill="#1b1c1c"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>`,
+    Snapchat: `<svg width="14" height="14" viewBox="0 0 24 24" fill="#1b1c1c"><path d="M12.166 2c1.456 0 5.675.421 7.318 5.003.435 1.197.33 3.228.241 4.933l-.006.132c-.003.05.028.108.08.145.264.184.73.37 1.548.228.428-.072.79.075.862.328.085.302-.224.632-.635.79-.047.017-.1.033-.155.05-.658.193-1.083.538-1.202.972-.06.22.007.432.09.596.351.7 1.386 1.562 3.693 1.958v.001c.197.034.39.19.39.38 0 .332-.414.69-1.182.91-.226.065-.324.25-.39.434-.059.163-.099.34-.288.365-.193.025-.41-.08-.685-.165a5.035 5.035 0 0 0-1.56-.253c-.317 0-.617.038-.898.11-.59.156-1.1.55-1.726 1.02-1.02.767-2.295 1.721-4.355 1.721-2.054 0-3.316-.948-4.33-1.712-.63-.474-1.143-.871-1.737-1.029a4.978 4.978 0 0 0-.896-.11 5.03 5.03 0 0 0-1.562.253c-.278.086-.492.19-.685.165-.19-.025-.23-.202-.288-.365-.066-.184-.164-.369-.39-.434-.768-.22-1.182-.578-1.182-.91 0-.19.193-.346.39-.38 2.307-.396 3.342-1.258 3.693-1.958.083-.164.15-.376.09-.596-.119-.434-.544-.779-1.202-.972a4.12 4.12 0 0 1-.155-.05c-.411-.158-.72-.488-.635-.79.072-.253.434-.4.862-.328.82.143 1.284-.044 1.548-.228.052-.037.083-.095.08-.145l-.006-.132c-.089-1.705-.194-3.736.241-4.933C6.491 2.421 10.71 2 12.166 2z"/></svg>`
+  };
+  const labels = { huntlist: 'Huntlist.fr', croquezmoi: 'Croquez-Moi', stacker: 'Stacker' };
+  const statusMap = { pending: ['En attente', 'status-pending'], validated: ['Validé', 'status-validated'], rejected: ['Refusé', 'status-rejected'] };
+
+  el.innerHTML = [...posts].reverse().map(p => {
+    const [sLabel, sClass] = statusMap[p.status] || ['?', ''];
+    return `<div class="post-item">
+      <div class="post-platform">${platformIcons[p.platform] || ''}</div>
+      <div class="post-info">
+        <p class="post-brand">${labels[p.mission] || p.mission}</p>
+        <p class="post-date">${p.platform} · ${p.date}</p>
+      </div>
+      <span class="post-status ${sClass}">${sLabel}</span>
+      <p class="post-amount">${p.status === 'validated' ? PRICES[p.mission] + ' €' : '—'}</p>
+    </div>`;
+  }).join('');
+}
+
+function acceptMission(id, btn) {
+  const card = document.getElementById('mission-' + id);
+  btn.innerHTML = '<span class="material-symbols-outlined fi" style="font-size:14px">check</span> Accepté';
+  btn.style.background = 'var(--green)';
+  card.classList.add('accepted');
+  // Pre-fill submit tab
+  document.getElementById('submitMission').value = id;
+  setTimeout(() => { showTab('soumettre'); }, 600);
+}
+
+function submitPost() {
+  const mission = document.getElementById('submitMission').value;
+  const platform = document.getElementById('submitPlatform').value;
+  const url = document.getElementById('submitUrl').value;
+  if (!mission || !platform || !url) {
+    alert('Remplis tous les champs obligatoires.');
+    return;
+  }
+  const posts = JSON.parse(localStorage.getItem('stacker_posts') || '[]');
+  posts.push({
+    mission, platform, url,
+    followers: document.getElementById('submitFollowers').value || '0',
+    date: new Date().toLocaleDateString('fr-FR'),
+    status: 'pending'
+  });
+  localStorage.setItem('stacker_posts', JSON.stringify(posts));
+  document.getElementById('submitMission').value = '';
+  document.getElementById('submitPlatform').value = '';
+  document.getElementById('submitUrl').value = '';
+  document.getElementById('submitFollowers').value = '';
+  loadStats();
+  showTab('mesposts');
+}
+
+function showTab(name) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('content-' + name).classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (name === 'mesposts') renderPosts();
+}
+
+loadStats();
+</script>
+</body>
+</html>
