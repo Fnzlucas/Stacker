@@ -716,6 +716,12 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
 }
 </style>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://vfvarvdrlyzmuytdzram.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmdmFydmRybHl6bXV5dGR6cmFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNjUxNzgsImV4cCI6MjA5NTY0MTE3OH0.seyW-Ooxvf-T44TASVcb0Sk7Bos3sYJpQDz5SfkHd0g';
+const sbPro = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+</script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>var REGION_COORDS = {
   'Auvergne-Rhône-Alpes':[45.75,4.85], 'Provence-Alpes-Côte d\'Azur':[43.93,6.07],
@@ -971,10 +977,40 @@ function selectRegionByName(region) {
     }, 80);
   }
 }
+async function loadRegionsFromSupabase() {
+  try {
+    var result = await sbPro.from('rdv').select('region, departement, id').eq('status', 'disponible');
+    if (result.error) throw result.error;
+    var data = result.data || [];
+    var regionMap = {};
+    data.forEach(function(r) {
+      if (!r.region) return;
+      if (!regionMap[r.region]) regionMap[r.region] = 0;
+      regionMap[r.region]++;
+    });
+    return Object.keys(regionMap).length > 0 ? regionMap : null;
+  } catch(e) {
+    console.warn('Supabase fallback:', e.message);
+    return null;
+  }
+}
+
 function renderRegionGrid() {
-  const regions = getRegions();
+  loadRegionsFromSupabase().then(function(supaRegions) {
+    if (supaRegions && Object.keys(supaRegions).length > 0) {
+      renderRegionGridWithData(supaRegions);
+    } else {
+      var fallback = getRegions();
+      var map2 = {};
+      Object.keys(fallback).forEach(function(k) { map2[k] = fallback[k].dispo; });
+      renderRegionGridWithData(map2);
+    }
+  });
+}
+
+function renderRegionGridWithData(regions) {
   const grid = document.getElementById('regionGrid');
-  const sorted = Object.entries(regions).sort((a,b) => b[1].dispo - a[1].dispo);
+  const sorted = Object.entries(regions).sort((a,b) => b[1] - a[1]);
   grid.innerHTML = sorted.map(([name, data]) => {
     var cls = data.dispo > 0 ? "has-dispo" : "";
     return "<div class=\"region-row\" data-region=\"" + encodeURIComponent(name) + "\">" +
@@ -1469,7 +1505,50 @@ function generateRdvsForDept(dept, count) {
 var ficheRdvs = [];
 
 function openFiche(dept, count) {
-  ficheRdvs = generateRdvsForDept(dept, count);
+  loadRdvsFromSupabase(dept, count);
+}
+
+async function loadRdvsFromSupabase(dept, count) {
+  try {
+    var result = await sbPro
+      .from('rdv')
+      .select('*')
+      .eq('departement', dept)
+      .eq('status', 'disponible')
+      .order('date_rdv', { ascending: true });
+
+    if (result.error) throw result.error;
+    var data = result.data || [];
+
+    if (data.length > 0) {
+      ficheRdvs = data.map(function(r) {
+        return {
+          id: r.id,
+          date: new Date(r.date_rdv).toLocaleDateString('fr-FR'),
+          time: r.heure_rdv ? r.heure_rdv.substring(0,5) : '09:00',
+          city: r.ville,
+          firstname: r.prospect_prenom,
+          lastname: r.prospect_nom,
+          phone: r.prospect_telephone,
+          address: r.prospect_adresse,
+          sector: r.secteur,
+          fromSupabase: true,
+          supabaseId: r.id
+        };
+      });
+      renderFiche(dept, ficheRdvs.length);
+    } else {
+      ficheRdvs = generateRdvsForDept(dept, count);
+      renderFiche(dept, ficheRdvs.length);
+    }
+  } catch(e) {
+    console.warn('Supabase erreur, mode démo', e);
+    ficheRdvs = generateRdvsForDept(dept, count);
+    renderFiche(dept, ficheRdvs.length);
+  }
+}
+
+function renderFiche(dept, count) {
   var deptShort = dept.split(' (')[0];
   document.getElementById('ficheDeptTitle').textContent = deptShort;
   document.getElementById('ficheDeptSub').textContent = count + ' RDV disponible' + (count > 1 ? 's' : '') + ' — cliquez Acheter pour débloquer les coordonnées';
@@ -1538,6 +1617,18 @@ function buyFicheRdv(id, btn) {
   var boughtIds = JSON.parse(localStorage.getItem('sp_bought_rdvs') || '[]');
   boughtIds.push(id);
   localStorage.setItem('sp_bought_rdvs', JSON.stringify(boughtIds));
+
+  // Mettre à jour le statut dans Supabase si RDV réel
+  var rdv = ficheRdvs.find(function(r) { return r.id === id; });
+  if (rdv && rdv.fromSupabase) {
+    sbPro.from('rdv').update({ status: 'vendu' }).eq('id', rdv.supabaseId || id).then(function() {
+      console.log('RDV marqué vendu dans Supabase');
+    });
+    // Enregistrer l'achat
+    sbPro.from('achats').insert({ rdv_id: rdv.supabaseId || id, montant: 25, status: 'confirme' }).then(function() {
+      console.log('Achat enregistré dans Supabase');
+    });
+  }
 
   // Ajouter dans les commandes
   var rdv = ficheRdvs.find(function(r) { return r.id === id; });
