@@ -18,6 +18,25 @@ tailwind.config = {
 }
 </script>
 <style>
+.modal-rdv-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:500;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s;backdrop-filter:blur(4px)}
+.modal-rdv-overlay.open{opacity:1;pointer-events:all}
+.modal-rdv-sheet{background:#faf7f4;border-radius:20px 20px 0 0;width:100%;max-width:680px;max-height:90vh;overflow-y:auto;transform:translateY(20px);transition:transform 0.3s cubic-bezier(0.22,1,0.36,1)}
+.modal-rdv-overlay.open .modal-rdv-sheet{transform:translateY(0)}
+.modal-rdv-handle{width:32px;height:3px;background:rgba(27,28,28,0.15);border-radius:99px;margin:12px auto 0}
+.modal-rdv-head{padding:16px 20px;border-bottom:1px solid rgba(226,190,188,0.4);display:flex;align-items:center;justify-content:space-between}
+.modal-rdv-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:16px;letter-spacing:-0.03em;color:#1b1c1c}
+.modal-rdv-close{width:28px;height:28px;border-radius:7px;background:rgba(27,28,28,0.07);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.modal-rdv-body{padding:18px 20px 32px}
+.rdv-field{margin-bottom:12px}
+.rdv-field-label{display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#6b5550;margin-bottom:5px;font-weight:600}
+.rdv-field-input{width:100%;padding:11px 13px;border-radius:10px;border:1.5px solid rgba(226,190,188,0.6);background:#fff;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:500;color:#1b1c1c;outline:none;transition:border-color 0.2s}
+.rdv-field-input:focus{border-color:#1b1c1c}
+.rdv-field-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%236b5550'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
+.rdv-field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rdv-submit-btn{width:100%;padding:13px;border-radius:12px;background:#1b1c1c;color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:14px;border:none;cursor:pointer;transition:background 0.2s;margin-top:8px}
+.rdv-submit-btn:hover{background:#b52330}
+.rdv-submit-btn:disabled{opacity:0.4;cursor:default}
+
 body{font-family:'Inter',sans-serif;background:#faf7f4}
 :root{--gold:#c9a84c;--gold2:#e8c96a}
 .font-headline{font-family:'Plus Jakarta Sans',sans-serif}
@@ -31,6 +50,9 @@ body{font-family:'Inter',sans-serif;background:#faf7f4}
 .display-tight{letter-spacing:-0.03em}
 .metric-num{letter-spacing:-0.045em;font-feature-settings:"tnum"}
 .hero-dark{background:radial-gradient(ellipse at top right,rgba(181,35,48,0.18),transparent 60%),radial-gradient(ellipse at bottom left,rgba(255,90,95,0.08),transparent 50%),#1b1c1c}
+.dark-card{transition:transform 0.35s cubic-bezier(0.22,1,0.36,1),box-shadow 0.35s ease}
+.dark-card:hover{transform:translateY(-3px);box-shadow:0 24px 48px -12px rgba(0,0,0,0.4)}
+@keyframes cardGlow{0%,100%{box-shadow:0 0 0 0 rgba(181,35,48,0)}50%{box-shadow:0 0 24px 2px rgba(181,35,48,0.18)}}
 .gold-gradient{background:linear-gradient(135deg,#1f1d18 0%,#2a2620 50%,#1f1d18 100%);border:1px solid rgba(255,197,0,0.25)}
 .gold-text{background:linear-gradient(135deg,#ffd700 0%,#ffed4a 50%,#b8860b 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .hover-lift{transition:transform 0.3s cubic-bezier(0.22,1,0.36,1),box-shadow 0.3s ease}
@@ -122,6 +144,25 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
 .explore-meta{font-size:11px;color:#8e706f}
 .explore-card-gold{background:linear-gradient(135deg,#fffbeb,#fff8dc);border-color:rgba(255,197,0,0.4)}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const _SB_URL = 'https://vfvarvdrlyzmuytdzram.supabase.co';
+const _SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmdmFydmRybHl6bXV5dGR6cmFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNjUxNzgsImV4cCI6MjA5NTY0MTE3OH0.seyW-Ooxvf-T44TASVcb0Sk7Bos3sYJpQDz5SfkHd0g';
+const sbClient = window.supabase.createClient(_SB_URL, _SB_KEY);
+
+// Soumettre un RDV vers Supabase
+async function submitRdvToSupabase(rdvData) {
+  try {
+    var result = await sbClient.from('rdv').insert(rdvData);
+    if (result.error) throw result.error;
+    console.log('RDV soumis à Supabase:', result.data);
+    return true;
+  } catch(e) {
+    console.warn('Erreur Supabase:', e);
+    return false;
+  }
+}
+</script>
 </head>
 <body class="bg-background text-on-surface font-body antialiased" data-page="home">
 
@@ -358,7 +399,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
   <!-- SECTION PHARE — RDV COLD CALL -->
   <section class="reveal">
     <a href="rdv.html" style="text-decoration:none;display:block">
-      <div style="background:#1b1c1c;border-radius:22px;overflow:hidden;position:relative">
+      <div class="dark-card" style="background:#1b1c1c;border-radius:22px;overflow:hidden;position:relative">
         <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#ff5a5f 40%,#b52330 70%,transparent)"></div>
         <div style="position:absolute;top:-50px;right:-50px;width:180px;height:180px;border-radius:50%;background:rgba(181,35,48,0.1);pointer-events:none"></div>
         <div style="padding:24px 24px 20px;position:relative">
@@ -371,8 +412,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
               <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:24px;letter-spacing:-0.04em;line-height:1.05;color:#fff;margin-bottom:6px">Prise de RDV<br>Cold Call</h2>
               <p style="font-size:13px;color:rgba(255,255,255,0.45);line-height:1.5;max-width:260px">Tu appelles, tu prends le RDV. Un commercial se déplace. Toi tu encaisses.</p>
             </div>
-            <div style="width:52px;height:52px;border-radius:16px;background:rgba(255,90,95,0.15);border:1px solid rgba(255,90,95,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-              <span class="material-symbols-outlined" style="font-size:24px;color:#ff5a5f;font-variation-settings:'FILL' 1">call</span>
+            <div style="width:52px;height:52px;border-radius:16px;background:#ffffff;border:none;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 16px rgba(255,255,255,0.15)">
+              <span class="material-symbols-outlined" style="font-size:24px;color:#b52330;font-variation-settings:'FILL' 1">call</span>
             </div>
           </div>
           <div style="display:flex;align-items:center;gap:16px;margin-bottom:18px">
@@ -397,7 +438,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
               <span style="font-size:11px;font-weight:600;padding:5px 10px;border-radius:99px;background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.5)">Paiement immédiat</span>
             </div>
             <div style="display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:12px;background:rgba(255,90,95,0.2);border:1px solid rgba(255,90,95,0.3)">
-              <span style="font-size:13px;font-weight:800;color:#fff">Prendre un RDV</span>
+              <span style="font-size:13px;font-weight:800;color:#fff" onclick="event.preventDefault();openRdvModal()">Soumettre un RDV</span>
               <span class="material-symbols-outlined" style="font-size:16px;color:#ff5a5f">arrow_forward</span>
             </div>
           </div>
@@ -641,10 +682,73 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
   <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.25) 50%,transparent);margin:0 4px"></div>
 
 
+  <!-- MICRO-INFLUENCE -->
+  <section class="reveal" style="animation-delay:0.23s">
+    <div class="eyebrow-gold mb-3"><span style="color:#1b1c1c">Micro-influence</span></div>
+    <a href="influence.html" style="text-decoration:none;display:block">
+      <div class="dark-card" style="background:#1b1c1c;border-radius:22px;overflow:hidden;position:relative">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#ff5a5f 40%,#b52330 70%,transparent)"></div>
+        <div style="position:absolute;top:-50px;right:-50px;width:180px;height:180px;border-radius:50%;background:rgba(181,35,48,0.1);pointer-events:none"></div>
+        <div style="padding:22px 24px 20px;position:relative">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+                <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.4)">Nouveau</span>
+              </div>
+              <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:22px;letter-spacing:-0.04em;line-height:1.05;color:#fff;margin-bottom:6px">Poste.<br>Encaisse.</h2>
+              <p style="font-size:13px;color:rgba(255,255,255,0.45);line-height:1.5;max-width:260px">Des marques te payent 5 € par vidéo postée depuis ton compte.</p>
+            </div>
+            <div style="width:52px;height:52px;border-radius:16px;background:#ffffff;border:none;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 16px rgba(255,255,255,0.15)">
+              <span class="material-symbols-outlined" style="font-size:24px;color:#b52330;font-variation-settings:'FILL' 1">play_circle</span>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:16px;margin-bottom:18px">
+            <div>
+              <p style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:26px;color:#fff;letter-spacing:-0.04em;line-height:1">5 €</p>
+              <p style="font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.1em">par vidéo postée</p>
+            </div>
+            <div style="width:1px;height:36px;background:rgba(255,255,255,0.1)"></div>
+            <div>
+              <p style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:26px;color:#fff;letter-spacing:-0.04em;line-height:1" id="influencePostsCount">0</p>
+              <p style="font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.1em">mes posts</p>
+            </div>
+            <div style="width:1px;height:36px;background:rgba(255,255,255,0.1)"></div>
+            <div>
+              <p style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:26px;color:#fff;letter-spacing:-0.04em;line-height:1" id="influenceEarnings">0 €</p>
+              <p style="font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.1em">gagnés</p>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+              <!-- TikTok -->
+              <div style="width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/></svg>
+              </div>
+              <!-- Instagram -->
+              <div style="width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+              </div>
+              <!-- Snapchat -->
+              <div style="width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M12.166 2c1.456 0 5.675.421 7.318 5.003.435 1.197.33 3.228.241 4.933l-.006.132c-.003.05.028.108.08.145.264.184.73.37 1.548.228.428-.072.79.075.862.328.085.302-.224.632-.635.79-.047.017-.1.033-.155.05-.658.193-1.083.538-1.202.972-.06.22.007.432.09.596.351.7 1.386 1.562 3.693 1.958v.001c.197.034.39.19.39.38 0 .332-.414.69-1.182.91-.226.065-.324.25-.39.434-.059.163-.099.34-.288.365-.193.025-.41-.08-.685-.165a5.035 5.035 0 0 0-1.56-.253c-.317 0-.617.038-.898.11-.59.156-1.1.55-1.726 1.02-1.02.767-2.295 1.721-4.355 1.721-2.054 0-3.316-.948-4.33-1.712-.63-.474-1.143-.871-1.737-1.029a4.978 4.978 0 0 0-.896-.11 5.03 5.03 0 0 0-1.562.253c-.278.086-.492.19-.685.165-.19-.025-.23-.202-.288-.365-.066-.184-.164-.369-.39-.434-.768-.22-1.182-.578-1.182-.91 0-.19.193-.346.39-.38 2.307-.396 3.342-1.258 3.693-1.958.083-.164.15-.376.09-.596-.119-.434-.544-.779-1.202-.972a4.12 4.12 0 0 1-.155-.05c-.411-.158-.72-.488-.635-.79.072-.253.434-.4.862-.328.82.143 1.284-.044 1.548-.228.052-.037.083-.095.08-.145l-.006-.132c-.089-1.705-.194-3.736.241-4.933C6.491 2.421 10.71 2 12.166 2z"/></svg>
+              </div>
+              <span style="font-size:11px;font-weight:600;padding:5px 10px;border-radius:99px;background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.5)">Paiement hebdo</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:12px;background:rgba(255,90,95,0.2);border:1px solid rgba(255,90,95,0.3);flex-shrink:0">
+              <span style="font-size:13px;font-weight:800;color:#fff">Voir les missions</span>
+              <span class="material-symbols-outlined" style="font-size:16px;color:#ff5a5f">arrow_forward</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+  </section>
+  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.25) 50%,transparent);margin:0 4px"></div>
+
   <!-- BANNIÈRE OFFRES -->
   <section class="reveal" style="animation-delay:0.21s">
     <a href="offres.html" style="text-decoration:none;display:block">
-      <div class="relative rounded-2xl overflow-hidden" style="background:#1b1c1c;padding:24px 28px;border:1.5px solid rgba(255,255,255,0.06)">
+      <div class="dark-card relative rounded-2xl overflow-hidden" style="background:#1b1c1c;padding:24px 28px;border:1.5px solid rgba(255,255,255,0.06)">
         <div style="position:absolute;top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:rgba(181,35,48,0.1);pointer-events:none"></div>
         <div class="flex items-center justify-between gap-4 relative">
           <div>
@@ -691,6 +795,84 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
 </main>
 
 <script>
+function openRdvModal() {
+  document.getElementById('modalRdvOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  // Pré-remplir la date d'aujourd'hui
+  var today = new Date().toISOString().split('T')[0];
+  document.getElementById('rdvDate').value = today;
+}
+function closeRdvModal(e) {
+  if (e.target === document.getElementById('modalRdvOverlay')) closeRdvModalDirect();
+}
+function closeRdvModalDirect() {
+  document.getElementById('modalRdvOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+async function soumettreRdv() {
+  var btn = document.getElementById('rdvSubmitBtn');
+  var date = document.getElementById('rdvDate').value;
+  var heure = document.getElementById('rdvHeure').value;
+  var secteur = document.getElementById('rdvSecteur').value;
+  var prenom = document.getElementById('rdvPrenom').value.trim();
+  var nom = document.getElementById('rdvNom').value.trim();
+  var tel = document.getElementById('rdvTel').value.trim();
+  var adresse = document.getElementById('rdvAdresse').value.trim();
+  var ville = document.getElementById('rdvVille').value.trim();
+  var dept = document.getElementById('rdvDept').value.trim();
+  var region = document.getElementById('rdvRegion').value;
+  var note = document.getElementById('rdvNote').value.trim();
+
+  if (!date || !heure || !secteur || !prenom || !nom || !tel || !adresse || !ville || !dept || !region) {
+    alert('Merci de remplir tous les champs obligatoires.');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Envoi en cours...';
+
+  var rdvData = {
+    secteur: secteur,
+    ville: ville,
+    departement: dept,
+    region: region,
+    date_rdv: date,
+    heure_rdv: heure + ':00',
+    prospect_prenom: prenom,
+    prospect_nom: nom,
+    prospect_telephone: tel,
+    prospect_adresse: adresse,
+    note_caller: note || null,
+    status: 'disponible',
+    prix: 25
+  };
+
+  var ok = await submitRdvToSupabase(rdvData);
+
+  if (ok) {
+    // Logger aussi localement
+    logCallMission && logCallMission();
+    btn.textContent = '✓ RDV soumis !';
+    btn.style.background = '#006c4c';
+    setTimeout(function() {
+      closeRdvModalDirect();
+      btn.disabled = false;
+      btn.textContent = 'Soumettre le RDV →';
+      btn.style.background = '';
+      // Vider le formulaire
+      ['rdvDate','rdvHeure','rdvSecteur','rdvPrenom','rdvNom','rdvTel','rdvAdresse','rdvVille','rdvDept','rdvRegion','rdvNote'].forEach(function(id) {
+        document.getElementById(id).value = '';
+      });
+    }, 1500);
+  } else {
+    btn.textContent = 'Erreur — réessayer';
+    btn.disabled = false;
+    btn.style.background = '#b52330';
+    setTimeout(function() { btn.textContent = 'Soumettre le RDV →'; btn.style.background = ''; }, 2000);
+  }
+}
+
 // ─── DATA ───────────────────────────────────────────
 const LEVELS = [
   { name:'Rookie', min:0, max:500 },
@@ -837,6 +1019,13 @@ function init() {
   const now = new Date();
   document.getElementById('heroDate').textContent = days[now.getDay()] + ' ' + now.getDate() + ' ' + months[now.getMonth()];
 
+  // Influence stats
+  const influencePosts = parseInt(localStorage.getItem('stacker_influence_posts') || '0');
+  const ipEl = document.getElementById('influencePostsCount');
+  const ieEl = document.getElementById('influenceEarnings');
+  if (ipEl) ipEl.textContent = influencePosts;
+  if (ieEl) ieEl.textContent = (influencePosts * 10) + ' €';
+
   renderStats();
   startFlashTimers();
   populateCoachProducts();
@@ -913,12 +1102,12 @@ function renderStats() {
   const level = LEVELS.find(l => xp >= l.min && xp < l.max) || LEVELS[0];
   const nextLevel = LEVELS[LEVELS.indexOf(level) + 1];
   const pct = nextLevel ? Math.round(((xp - level.min) / (nextLevel.min - level.min)) * 100) : 100;
-  document.getElementById('kpiLevel').textContent = level.name;
+  (document.getElementById('kpiLevel') || {})["textContent"] = level.name;
   document.getElementById('levelBadge').textContent = level.name;
   document.getElementById('navLevel').textContent = level.name + ' · ' + xp + ' XP';
-  document.getElementById('xpCurrent').textContent = xp + ' XP';
-  document.getElementById('xpNext').textContent = (nextLevel ? nextLevel.min : xp) + ' XP';
-  document.getElementById('xpBar').style.width = pct + '%';
+  (document.getElementById('xpCurrent') || {})["textContent"] = xp + ' XP';
+  (document.getElementById('xpNext') || {})["textContent"] = (nextLevel ? nextLevel.min : xp) + ' XP';
+  (document.getElementById('xpBar') || {style:{}}).style.width = pct + '%';
 
   // Rewards
   const rewardTargets = [500, 1500, 5000, 15000];
@@ -1156,16 +1345,16 @@ function updateSim() {
   const d = parseInt(document.getElementById('simDeals').value);
   const p = parseInt(document.getElementById('simPrice').value);
   const rate = 0.25;
-  document.getElementById('simDealsVal').textContent = d;
-  document.getElementById('simPriceVal').textContent = p + ' €';
+  (document.getElementById('simDealsVal') || {})["textContent"] = d;
+  (document.getElementById('simPriceVal') || {})["textContent"] = p + ' €';
   const monthly = Math.round(d * p * rate);
   // Cumul 12 mois avec churn 10%/mois
   let cumul = 0, clients = 0;
   for (let i = 1; i <= 12; i++) { clients = clients * 0.9 + d; cumul += Math.round(clients * p * rate); }
   const fidelised = Math.round(cumul * 1.35);
-  document.getElementById('simMonthly').textContent = monthly.toLocaleString('fr-FR') + ' €';
-  document.getElementById('simYearly').textContent = cumul.toLocaleString('fr-FR') + ' €';
-  document.getElementById('simFidelised').textContent = fidelised.toLocaleString('fr-FR') + ' €';
+  (document.getElementById('simMonthly') || {})["textContent"] = monthly.toLocaleString('fr-FR') + ' €';
+  (document.getElementById('simYearly') || {})["textContent"] = cumul.toLocaleString('fr-FR') + ' €';
+  (document.getElementById('simFidelised') || {})["textContent"] = fidelised.toLocaleString('fr-FR') + ' €';
 }
 
 // ─── COACH IA ────────────────────────────────────────
@@ -1306,6 +1495,21 @@ function loadRdvStats() {
 }
 
 // ─── FEED LIVE ───────────────────────────────────────
+const FEED_RDV = [
+  {city:'Lyon',sector:'Rénovation énergétique',closer:'Un caller'},
+  {city:'Marseille',sector:'Isolation combles',closer:'Un caller'},
+  {city:'Bordeaux',sector:'Pompe à chaleur',closer:'Un Égérie Stacker'},
+  {city:'Paris',sector:'Rénovation énergétique',closer:'Un caller Elite'},
+  {city:'Toulouse',sector:'Panneaux solaires',closer:'Un caller'},
+  {city:'Nantes',sector:'Isolation thermique',closer:'Un caller'},
+  {city:'Nice',sector:'Rénovation énergétique',closer:'Un Égérie Stacker'},
+  {city:'Lille',sector:'Pompe à chaleur',closer:'Un caller'},
+  {city:'Strasbourg',sector:'Isolation combles',closer:'Un caller Elite'},
+  {city:'Avignon',sector:'Rénovation énergétique',closer:'Un caller'},
+  {city:'Montpellier',sector:'Panneaux solaires',closer:'Un caller'},
+  {city:'Grenoble',sector:'Isolation thermique',closer:'Un Égérie Stacker'},
+];
+
 const FEED_DEALS = [
   {city:'Lyon',product:'Carte Fidélité',com:80,icon:'loyalty',color:'#006c4c'},
   {city:'Marseille',product:'E-Réputation Google',com:120,icon:'reviews',color:'#f4b400'},
@@ -1347,30 +1551,45 @@ function timeAgo(date) {
 }
 
 const today = new Date().toDateString();
-const feedKey = 'stacker_feed_' + today;
+const feedKey = 'stacker_feed_v2_' + today;
 // Clear old feed keys
 Object.keys(localStorage).filter(k => k.startsWith('stacker_feed_') && k !== feedKey).forEach(k => localStorage.removeItem(k));
 let feedItems = JSON.parse(localStorage.getItem(feedKey) || '[]');
 
-function showDealPopup(deal, closer) {
+function showDealPopup(item) {
   const popup = document.getElementById('dealPopup');
-  const isElite = closer.includes('Elite') || closer.includes('Égérie');
-  document.getElementById('popupTitle').textContent = (isElite ? '⭐ ' : '') + closer + ' · ' + deal.city;
-  document.getElementById('popupSub').textContent = deal.product;
-  document.getElementById('popupCom').textContent = '+' + deal.com + ' €/mois';
+  if (item.type === 'rdv') {
+    const r = item.rdv;
+    document.getElementById('popupTitle').textContent = r.closer + ' · ' + r.city;
+    document.getElementById('popupSub').textContent = r.sector;
+    document.getElementById('popupCom').textContent = '+7 € validé';
+  } else {
+    const isElite = item.closer.includes('Elite') || item.closer.includes('Égérie');
+    document.getElementById('popupTitle').textContent = (isElite ? '⭐ ' : '') + item.closer + ' · ' + item.deal.city;
+    document.getElementById('popupSub').textContent = item.deal.product;
+    document.getElementById('popupCom').textContent = '+' + item.deal.com + ' €/mois';
+  }
   popup.classList.add('show');
   setTimeout(() => popup.classList.remove('show'), 4500);
 }
 
 function addFeedItem() {
   if (!isBusinessHours()) { scheduleFeed(); return; }
-  const deal = FEED_DEALS[Math.floor(Math.random() * FEED_DEALS.length)];
-  const closer = CLOSER_NAMES[Math.floor(Math.random() * CLOSER_NAMES.length)];
-  feedItems.unshift({ deal, closer, time: Date.now() });
+  const isRdv = Math.random() < 0.45;
+  let item;
+  if (isRdv) {
+    const rdv = FEED_RDV[Math.floor(Math.random() * FEED_RDV.length)];
+    item = { type: 'rdv', rdv, time: Date.now() };
+  } else {
+    const deal = FEED_DEALS[Math.floor(Math.random() * FEED_DEALS.length)];
+    const closer = CLOSER_NAMES[Math.floor(Math.random() * CLOSER_NAMES.length)];
+    item = { deal, closer, time: Date.now() };
+  }
+  feedItems.unshift(item);
   if (feedItems.length > 60) feedItems = feedItems.slice(0, 60);
   localStorage.setItem(feedKey, JSON.stringify(feedItems));
   renderFeed();
-  showDealPopup(deal, closer);
+  showDealPopup(item);
   scheduleFeed();
 }
 
@@ -1382,24 +1601,33 @@ function renderFeed() {
     return;
   }
   const cardHTML = (item, i) => {
-    const d = item.deal;
     const ago = timeAgo(item.time);
     const isNew = i === 0 && (Date.now() - item.time) < 5000;
-    const isElite = item.closer.includes('Elite') || item.closer.includes('Égérie');
-    const inner = `<div style="display:flex;align-items:center;gap:14px;padding:14px 16px;background:#fff;border-radius:18px;border:1px solid rgba(226,190,188,0.4);box-shadow:0 1px 12px -4px rgba(27,28,28,0.07);${isNew?'animation:slideUp 0.4s cubic-bezier(0.22,1,0.36,1) both;':''}">
+    let icon, city, line1, line2, amountHtml;
+    if (item.type === 'rdv') {
+      const r = item.rdv;
+      icon = 'phone_in_talk';
+      city = r.city;
+      line1 = r.closer + ' · <span style="color:#b52330">' + r.city + '</span>';
+      line2 = '<span style="font-size:11px;color:#6b5550">' + r.sector + '</span><span style="width:3px;height:3px;border-radius:50%;background:#e2bebc;display:inline-block;margin:0 6px"></span><span style="font-size:11px;font-weight:700;padding:2px 7px;border-radius:5px;background:rgba(181,35,48,0.08);color:#b52330">RDV validé · +7 €</span>';
+    } else {
+      const d = item.deal;
+      const isElite = item.closer.includes('Elite') || item.closer.includes('Égérie');
+      icon = 'handshake';
+      city = d.city;
+      line1 = (isElite ? '⭐ ' : '') + item.closer + ' · <span style="color:#b52330">' + d.city + '</span>';
+      line2 = '<span style="font-size:11px;color:#6b5550">' + d.product + '</span><span style="width:3px;height:3px;border-radius:50%;background:#e2bebc;display:inline-block;margin:0 6px"></span><span style="font-size:12px;font-weight:800;color:#006c4c;font-family:Plus Jakarta Sans,sans-serif;letter-spacing:-0.02em">+' + d.com + ' €<span style="font-size:10px;font-weight:500;color:#6b5550">/mois</span></span>';
+    }
+    const inner = `<div style="display:flex;align-items:center;gap:14px;padding:14px 16px;background:#fff;border-radius:18px;border:1px solid rgba(226,190,188,0.4);box-shadow:0 1px 12px -4px rgba(27,28,28,0.07);${isNew?'animation:slideUp 0.4s cubic-bezier(0.22,1,0.36,1) both;'+'':''}">
         <div style="width:40px;height:40px;border-radius:12px;background:rgba(27,28,28,0.06);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-          <span class="material-symbols-outlined" style="font-size:20px;color:#1b1c1c;font-variation-settings:'FILL' 1">handshake</span>
+          <span class="material-symbols-outlined" style="font-size:20px;color:#1b1c1c;font-variation-settings:'FILL' 1">${icon}</span>
         </div>
         <div style="flex:1;min-width:0">
-          <p style="font-size:13px;font-weight:700;color:#1b1c1c;margin-bottom:3px">${isElite ? '⭐ ' : ''}${item.closer} · <span style="color:#b52330">${d.city}</span></p>
-          <div style="display:flex;align-items:center;gap:6px">
-            <span style="font-size:11px;color:#6b5550">${d.product}</span>
-            <span style="width:3px;height:3px;border-radius:50%;background:#e2bebc;display:inline-block"></span>
-            <span style="font-size:12px;font-weight:800;color:#006c4c;font-family:'Plus Jakarta Sans',sans-serif;letter-spacing:-0.02em">+${d.com} €<span style="font-size:10px;font-weight:500;color:#6b5550">/mois</span></span>
-          </div>
+          <p style="font-size:13px;font-weight:700;color:#1b1c1c;margin-bottom:3px">${line1}</p>
+          <div style="display:flex;align-items:center;flex-wrap:wrap;gap:2px">${line2}</div>
         </div>
         <div style="flex-shrink:0;text-align:right">
-          ${isNew ? `<div style="display:flex;align-items:center;gap:4px;justify-content:flex-end;margin-bottom:3px"><span style="width:5px;height:5px;border-radius:50%;background:#b52330;display:block;animation:pulse-dot 2s ease-in-out infinite"></span><span style="font-size:9px;font-weight:700;color:#b52330;letter-spacing:0.08em;text-transform:uppercase">Live</span></div>` : ''}
+          ${isNew ? '<div style="display:flex;align-items:center;gap:4px;justify-content:flex-end;margin-bottom:3px"><span style="width:5px;height:5px;border-radius:50%;background:#b52330;display:block;animation:pulse-dot 2s ease-in-out infinite"></span><span style="font-size:9px;font-weight:700;color:#b52330;letter-spacing:0.08em;text-transform:uppercase">Live</span></div>' : ''}
           <span style="font-size:10px;color:#8e706f;white-space:nowrap">${ago}</span>
         </div>
       </div>`;
@@ -1424,12 +1652,13 @@ function scheduleFeed() {
 // Init feed — charge des deals "de la veille" au démarrage
 function loadYesterdayDeals() {
   // 30 deals étalés sur hier (entre -9h et -33h)
-  const offsets = [33,31,29,27.5,26,25,24,23,22,21,20,19,18.5,18,17,16.5,16,15.5,15,14.5,14,13,12,11.5,11,10.5,10,9.5,9.2,9];
-  const yesterday = offsets.map((h, i) => ({
-    deal: FEED_DEALS[i % FEED_DEALS.length],
-    closer: CLOSER_NAMES[i % CLOSER_NAMES.length],
-    time: Date.now() - 1000*60*60*h
-  }));
+  const offsets = [9,9.2,9.5,10,10.5,11,11.5,12,13,14,14.5,15,15.5,16,16.5,17,18,18.5,19,20,21,22,23,24,25,26,27.5,29,31,33];
+  const yesterday = offsets.map((h, i) => {
+    if (i % 3 === 1) {
+      return { type: 'rdv', rdv: FEED_RDV[i % FEED_RDV.length], time: Date.now() - 1000*60*60*h };
+    }
+    return { deal: FEED_DEALS[i % FEED_DEALS.length], closer: CLOSER_NAMES[i % CLOSER_NAMES.length], time: Date.now() - 1000*60*60*h };
+  });
   if (feedItems.length === 0) {
     feedItems = yesterday;
     localStorage.setItem(feedKey, JSON.stringify(feedItems));
@@ -1470,6 +1699,91 @@ document.addEventListener('DOMContentLoaded', function() {
     <div style="text-align:right;flex-shrink:0">
       <div class="deal-popup-live"><span class="dot"></span><span class="label">Live</span></div>
       <p class="deal-popup-com" id="popupCom">–</p>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL SOUMETTRE RDV -->
+<div class="modal-rdv-overlay" id="modalRdvOverlay" onclick="closeRdvModal(event)">
+  <div class="modal-rdv-sheet">
+    <div class="modal-rdv-handle"></div>
+    <div class="modal-rdv-head">
+      <p class="modal-rdv-title">Soumettre un RDV</p>
+      <button class="modal-rdv-close" onclick="closeRdvModalDirect()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="rgba(27,28,28,0.6)"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      </button>
+    </div>
+    <div class="modal-rdv-body">
+      <div class="rdv-field-row">
+        <div class="rdv-field">
+          <label class="rdv-field-label">Date du RDV *</label>
+          <input class="rdv-field-input" type="date" id="rdvDate" />
+        </div>
+        <div class="rdv-field">
+          <label class="rdv-field-label">Heure *</label>
+          <input class="rdv-field-input" type="time" id="rdvHeure" />
+        </div>
+      </div>
+      <div class="rdv-field">
+        <label class="rdv-field-label">Secteur *</label>
+        <select class="rdv-field-input rdv-field-select" id="rdvSecteur">
+          <option value="">Sélectionner</option>
+          <option>Rénovation énergétique</option>
+          <option>Isolation combles</option>
+          <option>Pompe à chaleur</option>
+          <option>Panneaux solaires</option>
+          <option>Isolation thermique</option>
+        </select>
+      </div>
+      <div class="rdv-field-row">
+        <div class="rdv-field">
+          <label class="rdv-field-label">Prénom prospect *</label>
+          <input class="rdv-field-input" type="text" id="rdvPrenom" placeholder="Jean" />
+        </div>
+        <div class="rdv-field">
+          <label class="rdv-field-label">Nom prospect *</label>
+          <input class="rdv-field-input" type="text" id="rdvNom" placeholder="Martin" />
+        </div>
+      </div>
+      <div class="rdv-field">
+        <label class="rdv-field-label">Téléphone *</label>
+        <input class="rdv-field-input" type="tel" id="rdvTel" placeholder="06 12 34 56 78" />
+      </div>
+      <div class="rdv-field">
+        <label class="rdv-field-label">Adresse complète *</label>
+        <input class="rdv-field-input" type="text" id="rdvAdresse" placeholder="12 rue des Fleurs, Avignon" />
+      </div>
+      <div class="rdv-field-row">
+        <div class="rdv-field">
+          <label class="rdv-field-label">Ville *</label>
+          <input class="rdv-field-input" type="text" id="rdvVille" placeholder="Avignon" />
+        </div>
+        <div class="rdv-field">
+          <label class="rdv-field-label">Département *</label>
+          <input class="rdv-field-input" type="text" id="rdvDept" placeholder="Vaucluse (84)" />
+        </div>
+      </div>
+      <div class="rdv-field">
+        <label class="rdv-field-label">Région *</label>
+        <select class="rdv-field-input rdv-field-select" id="rdvRegion">
+          <option value="">Sélectionner</option>
+          <option>Provence-Alpes-Côte d'Azur</option>
+          <option>Occitanie</option>
+          <option>Île-de-France</option>
+          <option>Auvergne-Rhône-Alpes</option>
+          <option>Nouvelle-Aquitaine</option>
+          <option>Hauts-de-France</option>
+          <option>Grand Est</option>
+          <option>Bretagne</option>
+          <option>Pays de la Loire</option>
+          <option>Normandie</option>
+        </select>
+      </div>
+      <div class="rdv-field">
+        <label class="rdv-field-label">Note (optionnel)</label>
+        <input class="rdv-field-input" type="text" id="rdvNote" placeholder="Propriétaire depuis 10 ans, très motivé..." />
+      </div>
+      <button class="rdv-submit-btn" id="rdvSubmitBtn" onclick="soumettreRdv()">Soumettre le RDV →</button>
     </div>
   </div>
 </div>
