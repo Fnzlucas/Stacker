@@ -143,6 +143,119 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
 .explore-label{font-family:'Plus Jakarta Sans';font-weight:700;font-size:13px;color:#1b1c1c;letter-spacing:-.02em}
 .explore-meta{font-size:11px;color:#8e706f}
 .explore-card-gold{background:linear-gradient(135deg,#fffbeb,#fff8dc);border-color:rgba(255,197,0,0.4)}
+
+/* ── ROUE DE LA FORTUNE ── */
+.wheel-overlay{position:fixed;inset:0;background:rgba(10,10,10,0.94);z-index:700;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s;backdrop-filter:blur(12px)}
+.wheel-overlay.open{opacity:1;pointer-events:all}
+.wheel-container{display:flex;flex-direction:column;align-items:center;gap:20px;padding:28px 20px 32px;width:100%;max-width:400px}
+.wheel-header{text-align:center}
+.wheel-eyebrow{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,197,0,0.7);margin-bottom:6px}
+.wheel-title{font-family:"Plus Jakarta Sans",sans-serif;font-weight:900;font-size:24px;letter-spacing:-0.04em;color:#fff;margin-bottom:3px;line-height:1}
+.wheel-subtitle{font-size:11px;color:rgba(255,255,255,0.35);font-weight:500}
+.wheel-tokens{display:none}
+.wheel-tokens-val{display:none}
+.wheel-tokens-label{display:none}
+.wheel-title{font-family:"Plus Jakarta Sans",sans-serif;font-weight:900;font-size:20px;letter-spacing:-0.04em;color:#fff;margin-bottom:4px;line-height:1}
+.wheel-subtitle{font-size:13px;color:rgba(255,255,255,0.45);font-weight:500;margin:0}
+.wheel-wrap{position:relative;width:320px;height:320px;flex-shrink:0;filter:drop-shadow(0 20px 60px rgba(181,35,48,0.3))}
+.wheel-canvas-wrap{position:relative;width:320px;height:320px}
+#wheelCanvas{transition:transform 4.5s cubic-bezier(0.15,0.85,0.1,1.0);width:320px;height:320px}
+.wheel-pointer{position:absolute;top:-4px;left:50%;transform:translateX(-50%);z-index:10;width:20px;height:28px}
+.wheel-pointer::before{content:'';display:block;width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;border-top:22px solid #ffd700;filter:drop-shadow(0 2px 8px rgba(255,197,0,0.6))}
+.wheel-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;background:#0a0a0a;border:3px solid rgba(255,197,0,0.6);display:flex;align-items:center;justify-content:center;z-index:10;box-shadow:0 0 20px rgba(255,197,0,0.2),inset 0 0 12px rgba(0,0,0,0.5)}
+.wheel-spin-btn{width:100%;max-width:320px;padding:16px;border-radius:14px;background:linear-gradient(135deg,#ffd700 0%,#f59e0b 100%);color:#0a0a0a;font-family:"Plus Jakarta Sans",sans-serif;font-weight:900;font-size:15px;border:none;cursor:pointer;transition:all 0.2s;letter-spacing:-0.02em;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 8px 28px rgba(245,158,11,0.35)}
+.wheel-spin-btn:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(245,158,11,0.5)}
+.wheel-spin-btn:disabled{opacity:0.35;cursor:default;transform:none;box-shadow:none}
+.wheel-result{display:none;flex-direction:column;align-items:center;gap:10px;padding:18px 22px;border-radius:16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);width:100%;max-width:320px;text-align:center;animation:slideUp 0.4s cubic-bezier(0.22,1,0.36,1)}
+.wheel-result.show{display:flex}
+.wheel-result-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto}
+.wheel-result-title{font-family:"Plus Jakarta Sans",sans-serif;font-weight:900;font-size:17px;letter-spacing:-0.03em;color:#fff}
+.wheel-result-desc{font-size:11px;color:rgba(255,255,255,0.45);font-weight:500;line-height:1.6}
+.wheel-result-btn{padding:10px 24px;border-radius:10px;background:#fff;color:#1b1c1c;font-family:"Plus Jakarta Sans",sans-serif;font-weight:800;font-size:13px;border:none;cursor:pointer;transition:all 0.2s;margin-top:2px}
+.wheel-result-btn:hover{background:#f0eded}
+.wheel-close-btn{font-size:11px;color:rgba(255,255,255,0.2);background:none;border:none;cursor:pointer;font-family:"JetBrains Mono",monospace;letter-spacing:0.1em;text-transform:uppercase;padding:4px 8px;transition:color 0.2s}
+.wheel-close-btn:hover{color:rgba(255,255,255,0.5)}
+.wheel-entry{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:99px;font-size:10px;font-weight:700;letter-spacing:0.05em;cursor:pointer;transition:all 0.2s;border:1px solid transparent}
+.wheel-entry.has-spins{background:rgba(255,197,0,0.1);border-color:rgba(255,197,0,0.3);color:#ffd700;animation:pulse-dot 2s ease-in-out infinite}
+.wheel-entry.no-spins{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.07);color:rgba(255,255,255,0.25)}
+
+/* ── SEPA CLOSING MODAL ── */
+.sepa-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:600;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s;backdrop-filter:blur(6px)}
+.sepa-overlay.open{opacity:1;pointer-events:all}
+.sepa-sheet{background:#faf7f4;border-radius:24px 24px 0 0;width:100%;max-width:680px;max-height:92vh;overflow-y:auto;transform:translateY(24px);transition:transform 0.35s cubic-bezier(0.22,1,0.36,1)}
+.sepa-overlay.open .sepa-sheet{transform:translateY(0)}
+.sepa-handle{width:32px;height:3px;background:rgba(27,28,28,0.15);border-radius:99px;margin:12px auto 0}
+.sepa-head{padding:16px 20px 14px;border-bottom:1px solid rgba(226,190,188,0.4);display:flex;align-items:center;justify-content:space-between}
+.sepa-head-left{display:flex;align-items:center;gap:10px}
+.sepa-head-icon{width:36px;height:36px;border-radius:10px;background:#1b1c1c;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sepa-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:16px;letter-spacing:-0.03em;color:#1b1c1c}
+.sepa-subtitle{font-size:11px;color:#8e706f;font-weight:500;margin-top:1px}
+.sepa-close{width:28px;height:28px;border-radius:7px;background:rgba(27,28,28,0.07);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.sepa-body{padding:20px 20px 36px}
+
+/* Mode selector */
+.sepa-modes{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.sepa-mode-btn{padding:14px 12px;border-radius:14px;border:1.5px solid rgba(226,190,188,0.6);background:#fff;cursor:pointer;transition:all 0.2s;text-align:left;display:flex;flex-direction:column;gap:6px}
+.sepa-mode-btn:hover{border-color:rgba(27,28,28,0.3)}
+.sepa-mode-btn.active{border-color:#1b1c1c;background:#1b1c1c}
+.sepa-mode-icon{width:32px;height:32px;border-radius:9px;background:rgba(27,28,28,0.07);display:flex;align-items:center;justify-content:center;transition:background 0.2s}
+.sepa-mode-btn.active .sepa-mode-icon{background:rgba(255,255,255,0.12)}
+.sepa-mode-btn.active .sepa-mode-icon .material-symbols-outlined{color:#fff}
+.sepa-mode-label{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:13px;color:#1b1c1c;letter-spacing:-0.02em;transition:color 0.2s}
+.sepa-mode-btn.active .sepa-mode-label{color:#fff}
+.sepa-mode-desc{font-size:11px;color:#8e706f;font-weight:500;line-height:1.4;transition:color 0.2s}
+.sepa-mode-btn.active .sepa-mode-desc{color:rgba(255,255,255,0.5)}
+
+/* Panel content */
+.sepa-panel{display:none}
+.sepa-panel.active{display:block}
+
+/* Fields */
+.sepa-field{margin-bottom:12px}
+.sepa-label{display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#6b5550;margin-bottom:5px;font-weight:600}
+.sepa-input{width:100%;padding:12px 14px;border-radius:11px;border:1.5px solid rgba(226,190,188,0.6);background:#fff;font-size:14px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;color:#1b1c1c;outline:none;transition:border-color 0.2s;letter-spacing:0.02em}
+.sepa-input:focus{border-color:#1b1c1c}
+.sepa-input::placeholder{color:rgba(27,28,28,0.25);font-weight:400;letter-spacing:0}
+.sepa-input.iban-input{font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.08em}
+.sepa-input.error{border-color:#b52330;background:rgba(181,35,48,0.03)}
+.sepa-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* Mandate checkbox */
+.sepa-mandate{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:11px;background:rgba(27,28,28,0.04);border:1.5px solid rgba(226,190,188,0.5);margin-bottom:14px;cursor:pointer;transition:border-color 0.2s}
+.sepa-mandate:hover{border-color:rgba(27,28,28,0.2)}
+.sepa-mandate-check{width:18px;height:18px;border-radius:5px;border:2px solid rgba(27,28,28,0.3);background:#fff;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.sepa-mandate-check.checked{background:#1b1c1c;border-color:#1b1c1c}
+.sepa-mandate-text{font-size:11px;color:#5a403f;line-height:1.55;font-weight:500}
+.sepa-mandate-text strong{color:#1b1c1c;font-weight:700}
+
+/* SMS link panel */
+.sepa-phone-row{display:flex;gap:8px;margin-bottom:14px}
+.sepa-phone-input{flex:1;padding:12px 14px;border-radius:11px;border:1.5px solid rgba(226,190,188,0.6);background:#fff;font-size:14px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;color:#1b1c1c;outline:none;transition:border-color 0.2s}
+.sepa-phone-input:focus{border-color:#1b1c1c}
+.sepa-send-btn{padding:0 18px;border-radius:11px;background:#1b1c1c;color:#fff;border:none;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:13px;white-space:nowrap;transition:background 0.15s;display:flex;align-items:center;gap:6px}
+.sepa-send-btn:hover{background:#b52330}
+.sepa-send-btn:disabled{opacity:0.4;cursor:default;background:#1b1c1c}
+
+/* Status indicator */
+.sepa-status{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:11px;border:1.5px solid rgba(226,190,188,0.5);background:#fff;margin-bottom:14px}
+.sepa-status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.sepa-status-dot.waiting{background:#e5b800;animation:pulse-dot 2s ease-in-out infinite}
+.sepa-status-dot.signed{background:#006c4c}
+.sepa-status-dot.idle{background:rgba(27,28,28,0.2)}
+.sepa-status-text{font-size:12px;font-weight:600;color:#5a403f}
+.sepa-status-text strong{color:#1b1c1c}
+
+/* Confirm button */
+.sepa-confirm{width:100%;padding:14px;border-radius:12px;background:#1b1c1c;color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:14px;border:none;cursor:pointer;transition:all 0.2s;letter-spacing:-0.01em;display:flex;align-items:center;justify-content:center;gap:8px}
+.sepa-confirm:hover{background:#b52330}
+.sepa-confirm:disabled{opacity:0.4;cursor:default;background:#1b1c1c}
+.sepa-confirm.success{background:#006c4c}
+.sepa-note{text-align:center;font-size:10px;color:#8e706f;margin-top:10px;font-weight:500;line-height:1.5}
+
+/* Amount badge */
+.sepa-amount-badge{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:11px;background:rgba(0,108,76,0.07);border:1.5px solid rgba(0,108,76,0.2);margin-bottom:16px}
+.sepa-amount-label{font-size:12px;font-weight:600;color:#006c4c}
+.sepa-amount-val{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:18px;color:#006c4c;letter-spacing:-0.03em}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -309,6 +422,11 @@ async function submitRdvToSupabase(rdvData) {
         <span class="material-symbols-outlined filled text-primary" style="font-size:14px">military_tech</span>
         <span class="font-semibold text-xs text-on-surface" id="levelBadge">Rookie</span>
       </div>
+      <!-- Roue -->
+      <button id="wheelEntryBtn" onclick="openWheelModal()" class="flex items-center gap-1 px-3 py-1.5 rounded-full bg-surface-container-high transition hover:bg-surface-container-highest active:scale-95" title="Roue de la fortune">
+        <span class="material-symbols-outlined" style="font-size:16px;color:#f59e0b;font-variation-settings:'FILL' 1">casino</span>
+        <span class="font-headline font-bold text-sm text-on-surface" id="wheelEntryLabel">0</span>
+      </button>
       <!-- Avatar -->
       <div class="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-white text-xs font-bold cursor-pointer" id="headerAvatar" onclick="openHamburger()">?</div>
     </div>
@@ -788,7 +906,13 @@ async function submitRdvToSupabase(rdvData) {
       <a href="offres.html" class="explore-card"><p class="explore-label">Nos offres</p><p class="explore-meta">13 produits · scripts</p></a>
       <a href="#" onclick="openCoach();return false" class="explore-card"><p class="explore-label">Coach IA</p><p class="explore-meta">Objections en live</p></a>
       <a href="#" class="explore-card explore-card-gold"><p class="explore-label">Top closers</p><p class="explore-meta">Classement national</p></a>
-      <a href="#" class="explore-card"><p class="explore-label">Pipeline</p><p class="explore-meta">Mes prospects</p></a>
+      <a href="#" onclick="openSepaModal();return false" class="explore-card" style="border-color:rgba(0,108,76,0.3);background:linear-gradient(135deg,rgba(0,108,76,0.05),#fff)">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
+          <span class="material-symbols-outlined" style="font-size:14px;color:#006c4c;font-variation-settings:'FILL' 1">payments</span>
+          <p class="explore-label" style="color:#006c4c">Closer un deal</p>
+        </div>
+        <p class="explore-meta">Mandat SEPA · distance ou PAP</p>
+      </a>
     </div>
   </section>
 
@@ -1703,6 +1827,142 @@ document.addEventListener('DOMContentLoaded', function() {
   </div>
 </div>
 
+<!-- MODAL SEPA CLOSING -->
+<div class="sepa-overlay" id="sepaOverlay" onclick="closeSepaModal(event)">
+  <div class="sepa-sheet">
+    <div class="sepa-handle"></div>
+    <div class="sepa-head">
+      <div class="sepa-head-left">
+        <div class="sepa-head-icon">
+          <span class="material-symbols-outlined" style="font-size:18px;color:#fff;font-variation-settings:'FILL' 1">payments</span>
+        </div>
+        <div>
+          <p class="sepa-title">Closer un deal</p>
+          <p class="sepa-subtitle">Mandat SEPA — prélèvement automatique</p>
+        </div>
+      </div>
+      <button class="sepa-close" onclick="closeSepaModalDirect()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="rgba(27,28,28,0.6)"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      </button>
+    </div>
+    <div class="sepa-body">
+
+      <!-- Montant du deal -->
+      <div class="sepa-amount-badge" id="sepaAmountBadge">
+        <span class="sepa-amount-label">Commission si signé</span>
+        <span class="sepa-amount-val" id="sepaCommAmount">— €</span>
+      </div>
+
+      <!-- Sélection du mode -->
+      <div class="sepa-modes">
+        <button class="sepa-mode-btn active" id="modeBtnDistance" onclick="switchSepaMode('distance')">
+          <div class="sepa-mode-icon">
+            <span class="material-symbols-outlined" style="font-size:18px;font-variation-settings:'FILL' 1">smartphone</span>
+          </div>
+          <p class="sepa-mode-label">À distance</p>
+          <p class="sepa-mode-desc">Envoie un lien par SMS au prospect</p>
+        </button>
+        <button class="sepa-mode-btn" id="modeBtnPap" onclick="switchSepaMode('pap')">
+          <div class="sepa-mode-icon">
+            <span class="material-symbols-outlined" style="font-size:18px;font-variation-settings:'FILL' 1">stylus_note</span>
+          </div>
+          <p class="sepa-mode-label">PAP / En direct</p>
+          <p class="sepa-mode-desc">Le prospect signe sur ton écran</p>
+        </button>
+      </div>
+
+      <!-- ── MODE DISTANCE ── -->
+      <div class="sepa-panel active" id="panelDistance">
+        <div class="sepa-field">
+          <label class="sepa-label">Prénom du prospect</label>
+          <input class="sepa-input" type="text" id="distPrenom" placeholder="Jean" oninput="updateDistanceLink()"/>
+        </div>
+        <div class="sepa-field">
+          <label class="sepa-label">Numéro de téléphone</label>
+          <div class="sepa-phone-row">
+            <input class="sepa-phone-input" type="tel" id="distTel" placeholder="06 12 34 56 78" oninput="updateDistanceLink()"/>
+            <button class="sepa-send-btn" id="distSendBtn" onclick="sendSepaLink()" disabled>
+              <span class="material-symbols-outlined" style="font-size:16px">send</span>
+              Envoyer
+            </button>
+          </div>
+        </div>
+        <!-- Statut -->
+        <div class="sepa-status" id="distStatus">
+          <div class="sepa-status-dot idle"></div>
+          <p class="sepa-status-text">Remplis les champs et envoie le lien</p>
+        </div>
+        <p style="font-size:11px;color:#8e706f;margin-bottom:14px;line-height:1.6;font-weight:500">Le prospect reçoit un SMS avec un lien sécurisé. Il entre lui-même son IBAN et signe le mandat. Tu reçois une confirmation ici en temps réel.</p>
+        <button class="sepa-confirm" id="distConfirmBtn" disabled>
+          <span class="material-symbols-outlined" style="font-size:18px">pending</span>
+          En attente de signature
+        </button>
+        <p class="sepa-note">Le prélèvement est déclenché automatiquement après confirmation · Mollie · SEPA</p>
+      </div>
+
+      <!-- ── MODE PAP ── -->
+      <div class="sepa-panel" id="panelPap">
+        <div class="sepa-field">
+          <label class="sepa-label">Prénom & Nom du prospect</label>
+          <div class="sepa-row">
+            <input class="sepa-input" type="text" id="papPrenom" placeholder="Jean"/>
+            <input class="sepa-input" type="text" id="papNom" placeholder="Martin"/>
+          </div>
+        </div>
+        <div class="sepa-field">
+          <label class="sepa-label">Email (pour le PDF du mandat)</label>
+          <input class="sepa-input" type="email" id="papEmail" placeholder="jean.martin@email.com"/>
+        </div>
+        <div class="sepa-field">
+          <label class="sepa-label">IBAN du prospect</label>
+          <input class="sepa-input iban-input" type="text" id="papIban" placeholder="FR76 3000 6000 0112 3456 7890 189" oninput="formatIban(this)" maxlength="34"/>
+        </div>
+        <!-- Mandat -->
+        <div class="sepa-mandate" id="papMandateBox" onclick="toggleMandate()">
+          <div class="sepa-mandate-check" id="papMandateCheck"></div>
+          <p class="sepa-mandate-text">En fournissant son IBAN et en confirmant, le prospect autorise <strong>Stacker</strong> à envoyer des instructions à sa banque pour débiter son compte conformément aux conditions convenues. <strong>Il a lu et accepte le mandat SEPA.</strong></p>
+        </div>
+        <button class="sepa-confirm" id="papConfirmBtn" onclick="confirmPapSepa()" disabled>
+          <span class="material-symbols-outlined" style="font-size:18px;font-variation-settings:'FILL' 1">verified</span>
+          Confirmer & créer le mandat
+        </button>
+        <p class="sepa-note">Le prospect signe visuellement sur votre écran · Mandat PDF envoyé par email · Prélèvement sous 2-3 jours</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ROUE DE LA FORTUNE -->
+<div class="wheel-overlay" id="wheelOverlay" onclick="closeWheelIfOutside(event)">
+  <div class="wheel-container">
+    <div class="wheel-header" id="wheelHeader">
+      <p class="wheel-title" id="wheelHeaderTitle">Roue de la Fortune</p>
+      <p class="wheel-subtitle" id="wheelHeaderSub">Tu as <span id="wheelSpinsLeft" style="color:#ffd700;font-weight:900">0</span> tour disponible</p>
+    </div>
+
+    <div class="wheel-wrap">
+      <div class="wheel-pointer"></div>
+      <canvas id="wheelCanvas" width="320" height="320" style="border-radius:50%;display:block"></canvas>
+      <div class="wheel-center">
+        <span class="material-symbols-outlined" style="font-size:20px;color:#ffd700;font-variation-settings:'FILL' 1">star</span>
+      </div>
+    </div>
+
+    <div class="wheel-result" id="wheelResult">
+      <div class="wheel-result-icon" id="wheelResultIcon"></div>
+      <p class="wheel-result-title" id="wheelResultTitle">–</p>
+      <p class="wheel-result-desc" id="wheelResultDesc">–</p>
+      <button class="wheel-result-btn" onclick="closeWheelModal()">Super, j'en profite !</button>
+    </div>
+
+    <button class="wheel-spin-btn" id="wheelSpinBtn" onclick="spinWheel()">
+      Tourner la roue
+    </button>
+    <button class="wheel-close-btn" onclick="closeWheelModal()">Fermer</button>
+  </div>
+</div>
 <!-- MODAL SOUMETTRE RDV -->
 <div class="modal-rdv-overlay" id="modalRdvOverlay" onclick="closeRdvModal(event)">
   <div class="modal-rdv-sheet">
@@ -1787,5 +2047,445 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
   </div>
 </div>
+<script>
+// ── SEPA CLOSING MODAL ──────────────────────────────────────────
+var sepaCurrentMode = 'distance';
+var sepaMandateSigned = false;
+var sepaLinkSent = false;
+var sepaSignedByProspect = false;
+var sepaSimTimer = null;
+
+function openSepaModal(commAmount) {
+  sepaCurrentMode = 'distance';
+  sepaMandateSigned = false;
+  sepaLinkSent = false;
+  sepaSignedByProspect = false;
+  resetSepaForms();
+  switchSepaMode('distance');
+  // Commission simulée si pas passée
+  var amount = commAmount || null;
+  document.getElementById('sepaCommAmount').textContent = amount ? amount + ' €' : '— €';
+  document.getElementById('sepaOverlay').classList.add('open');
+}
+
+function closeSepaModal(e) {
+  if (e.target === document.getElementById('sepaOverlay')) closeSepaModalDirect();
+}
+
+function closeSepaModalDirect() {
+  clearTimeout(sepaSimTimer);
+  document.getElementById('sepaOverlay').classList.remove('open');
+}
+
+function switchSepaMode(mode) {
+  sepaCurrentMode = mode;
+  document.getElementById('modeBtnDistance').classList.toggle('active', mode === 'distance');
+  document.getElementById('modeBtnPap').classList.toggle('active', mode === 'pap');
+  document.getElementById('panelDistance').classList.toggle('active', mode === 'distance');
+  document.getElementById('panelPap').classList.toggle('active', mode === 'pap');
+}
+
+function resetSepaForms() {
+  ['distPrenom','distTel','papPrenom','papNom','papEmail','papIban'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) { el.value = ''; el.classList.remove('error'); }
+  });
+  document.getElementById('distSendBtn').disabled = true;
+  document.getElementById('distConfirmBtn').disabled = true;
+  document.getElementById('distConfirmBtn').innerHTML = '<span class="material-symbols-outlined" style="font-size:18px">pending</span> En attente de signature';
+  document.getElementById('distConfirmBtn').className = 'sepa-confirm';
+  setDistStatus('idle', 'Remplis les champs et envoie le lien');
+  document.getElementById('papMandateCheck').classList.remove('checked');
+  document.getElementById('papConfirmBtn').disabled = true;
+  sepaLinkSent = false;
+  sepaSignedByProspect = false;
+  sepaMandateSigned = false;
+}
+
+function updateDistanceLink() {
+  var prenom = document.getElementById('distPrenom').value.trim();
+  var tel = document.getElementById('distTel').value.trim();
+  var canSend = prenom.length > 0 && tel.replace(/\s/g,'').length >= 10;
+  document.getElementById('distSendBtn').disabled = !canSend || sepaLinkSent;
+}
+
+function sendSepaLink() {
+  var prenom = document.getElementById('distPrenom').value.trim();
+  var tel = document.getElementById('distTel').value.trim();
+  if (!prenom || tel.replace(/\s/g,'').length < 10) return;
+
+  var btn = document.getElementById('distSendBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="material-symbols-outlined" style="font-size:16px">schedule</span> Envoi…';
+
+  // Simule l'envoi du SMS
+  sepaSimTimer = setTimeout(function() {
+    sepaLinkSent = true;
+    btn.innerHTML = '<span class="material-symbols-outlined" style="font-size:16px;font-variation-settings:\'FILL\' 1">check_circle</span> Envoyé';
+    setDistStatus('waiting', '<strong>' + prenom + '</strong> n\'a pas encore signé — lien envoyé par SMS');
+
+    // Simule la signature du prospect après 8 secondes (démo)
+    sepaSimTimer = setTimeout(function() {
+      sepaSignedByProspect = true;
+      setDistStatus('signed', '<strong>' + prenom + '</strong> a signé le mandat — prêt à confirmer');
+      var confirmBtn = document.getElementById('distConfirmBtn');
+      confirmBtn.disabled = false;
+      confirmBtn.className = 'sepa-confirm';
+      confirmBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size:18px;font-variation-settings:\'FILL\' 1">verified</span> Valider le deal — déclencher le prélèvement';
+      showToast('Mandat signé par ' + prenom + ' — confirme le deal !', 'success');
+    }, 8000);
+  }, 1200);
+}
+
+function setDistStatus(state, text) {
+  var dot = document.querySelector('#distStatus .sepa-status-dot');
+  var textEl = document.querySelector('#distStatus .sepa-status-text');
+  dot.className = 'sepa-status-dot ' + state;
+  textEl.innerHTML = text;
+}
+
+// Format IBAN avec espaces tous les 4 chars
+function formatIban(input) {
+  var val = input.value.replace(/\s/g,'').toUpperCase();
+  val = val.replace(/(.{4})/g, '$1 ').trim();
+  input.value = val;
+  checkPapReady();
+}
+
+function toggleMandate() {
+  sepaMandateSigned = !sepaMandateSigned;
+  document.getElementById('papMandateCheck').classList.toggle('checked', sepaMandateSigned);
+  checkPapReady();
+}
+
+function checkPapReady() {
+  var prenom = document.getElementById('papPrenom').value.trim();
+  var nom = document.getElementById('papNom').value.trim();
+  var email = document.getElementById('papEmail').value.trim();
+  var iban = document.getElementById('papIban').value.replace(/\s/g,'');
+  var valid = prenom && nom && email && iban.length >= 14 && sepaMandateSigned;
+  document.getElementById('papConfirmBtn').disabled = !valid;
+}
+
+['papPrenom','papNom','papEmail'].forEach(function(id) {
+  var el = document.getElementById(id);
+  if (el) el.addEventListener('input', checkPapReady);
+});
+
+function confirmPapSepa() {
+  var btn = document.getElementById('papConfirmBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="material-symbols-outlined" style="font-size:18px">hourglass_top</span> Création du mandat…';
+
+  sepaSimTimer = setTimeout(function() {
+    btn.innerHTML = '<span class="material-symbols-outlined" style="font-size:18px;font-variation-settings:\'FILL\' 1">check_circle</span> Mandat créé — prélèvement planifié';
+    btn.className = 'sepa-confirm success';
+    var prenom = document.getElementById('papPrenom').value.trim();
+    showToast('Deal closé avec ' + prenom + ' — mandat SEPA confirmé !', 'success');
+    // Ferme après 2.5s
+    sepaSimTimer = setTimeout(function() { closeSepaModalDirect(); }, 2500);
+  }, 1800);
+}
+
+window.openSepaModal = openSepaModal;
+</script>
 </body>
 </html>
+<script>
+// ── ROUE DE LA FORTUNE ──────────────────────────────────────────
+var WHEEL_PRIZES = [
+  { line1:'x2', line2:'24h', desc:'Toutes tes commissions sont doublées pendant 24h — profites-en !', icon:'rocket_launch', weight:5, type:'x2' },
+  { line1:'+50€', line2:'Cash', desc:'50€ crédités directement sur ton solde Stacker.', icon:'payments', weight:8, type:'cash50' },
+  { line1:'VIP', line2:'48h', desc:'Accès prioritaire aux meilleures missions pendant 48h.', icon:'diamond', weight:10, type:'vip' },
+  { line1:'Rien', line2:'', desc:'Pas de chance… Close un deal pour gagner un nouveau tour.', icon:'sentiment_dissatisfied', weight:20, type:'nothing' },
+  { line1:'Streak', line2:'Safe', desc:'Ton streak est protégé aujourd\'hui même si tu rates ta mission.', icon:'local_fire_department', weight:12, type:'streak' },
+  { line1:'+25€', line2:'Cash', desc:'25€ crédités sur ton prochain deal closé.', icon:'savings', weight:15, type:'cash25' },
+  { line1:'Retente', line2:'!', desc:'Pas de bol… mais tu gagnes un tour supplémentaire !', icon:'refresh', weight:18, type:'retry' },
+  { line1:'x2', line2:'2h', desc:'Commissions doublées pendant 2h — lance tes appels maintenant !', icon:'bolt', weight:12, type:'x2_2h' },
+];
+
+var wheelSpins = parseInt(localStorage.getItem('stacker_wheel_spins') || '0');
+var wheelSpinning = false;
+var wheelCurrentDeg = 0;
+var wheelActiveReward = null;
+
+function buildWheel() {
+  var canvas = document.getElementById('wheelCanvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var dpr = window.devicePixelRatio || 2;
+  var size = 320;
+  canvas.width = size * dpr;
+  canvas.height = size * dpr;
+  canvas.style.width = size + 'px';
+  canvas.style.height = size + 'px';
+  ctx.scale(dpr, dpr);
+  var cx = size / 2, cy = size / 2, r = size / 2 - 2;
+  var total = WHEEL_PRIZES.reduce(function(a,p){ return a+p.weight; }, 0);
+  var COLORS = ['#b52330','#1a1a1a','#c0283a','#222222','#b52330','#1a1a1a','#c0283a','#222222'];
+  var startAngle = -Math.PI / 2;
+
+  WHEEL_PRIZES.forEach(function(prize, i) {
+    var slice = (prize.weight / total) * 2 * Math.PI;
+    var endAngle = startAngle + slice;
+    var midAngle = startAngle + slice / 2;
+
+    // Segment
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, r, startAngle, endAngle);
+    ctx.closePath();
+    ctx.fillStyle = COLORS[i % COLORS.length];
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,197,0,0.2)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    // Text — radial, always readable
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(midAngle);
+    ctx.translate(r * 0.65, 0);
+    // Flip text for left-side segments so it's never upside down
+    if (midAngle > Math.PI / 2 || midAngle < -Math.PI / 2) {
+      ctx.rotate(Math.PI);
+    }
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    var hasTwo = prize.line2 && prize.line2 !== '!';
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '800 12px "Plus Jakarta Sans", sans-serif';
+    ctx.fillText(prize.line1, 0, hasTwo ? -7 : 0);
+    if (hasTwo) {
+      ctx.fillStyle = 'rgba(255,255,255,0.6)';
+      ctx.font = '600 9px "Plus Jakarta Sans", sans-serif';
+      ctx.fillText(prize.line2, 0, 7);
+    }
+    ctx.restore();
+
+    startAngle = endAngle;
+  });
+
+  // Gold outer ring
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, 0, 2 * Math.PI);
+  ctx.strokeStyle = 'rgba(255,197,0,0.6)';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+
+  // 8 gold dots
+  for (var d = 0; d < 8; d++) {
+    var da = (d / 8) * 2 * Math.PI;
+    ctx.beginPath();
+    ctx.arc(cx + r * Math.cos(da), cy + r * Math.sin(da), 4, 0, 2 * Math.PI);
+    ctx.fillStyle = '#ffd700';
+    ctx.fill();
+  }
+
+  // Inner hub
+  ctx.beginPath();
+  ctx.arc(cx, cy, 38, 0, 2 * Math.PI);
+  var grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 38);
+  grad.addColorStop(0, '#1a1a1a');
+  grad.addColorStop(1, '#0a0a0a');
+  ctx.fillStyle = grad;
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(255,197,0,0.5)';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+}
+
+function getWheelResult(finalDeg) {
+  var total = WHEEL_PRIZES.reduce(function(a,p){ return a+p.weight; }, 0);
+  // La roue tourne dans le sens des aiguilles, le pointeur est en haut (270°)
+  var normalizedDeg = ((finalDeg % 360) + 360) % 360;
+  var pointerAngle = (270 - normalizedDeg + 360) % 360;
+  var cumAngle = 0;
+  var angle = 0;
+  for (var i = 0; i < WHEEL_PRIZES.length; i++) {
+    var slice = (WHEEL_PRIZES[i].weight / total) * 360;
+    if (pointerAngle >= angle && pointerAngle < angle + slice) return i;
+    angle += slice;
+  }
+  return 0;
+}
+
+function pickWeightedIndex() {
+  var total = WHEEL_PRIZES.reduce(function(a,p){ return a+p.weight; }, 0);
+  var rand = Math.random() * total;
+  var cumul = 0;
+  for (var i = 0; i < WHEEL_PRIZES.length; i++) {
+    cumul += WHEEL_PRIZES[i].weight;
+    if (rand < cumul) return i;
+  }
+  return 0;
+}
+
+function spinWheel() {
+  if (wheelSpinning) return;
+  if (wheelSpins <= 0) { showToast('Plus de tours disponibles — close un deal pour en gagner !', 'info'); return; }
+  wheelSpins--;
+  localStorage.setItem('stacker_wheel_spins', wheelSpins);
+  updateWheelEntry();
+  document.getElementById('wheelSpinBtn').disabled = true;
+  document.getElementById('wheelResult').classList.remove('show');
+  wheelSpinning = true;
+
+  // Calcul du segment cible
+  var targetIdx = pickWeightedIndex();
+  var total = WHEEL_PRIZES.reduce(function(a,p){ return a+p.weight; }, 0);
+  // Angle du centre du segment cible (depuis 0° = droite, sens trigonométrique)
+  var segStart = -90;
+  for (var i = 0; i < targetIdx; i++) segStart += (WHEEL_PRIZES[i].weight / total) * 360;
+  var segCenter = segStart + (WHEEL_PRIZES[targetIdx].weight / total) * 360 / 2;
+  // Pour que le pointeur (haut = 270°) tombe sur ce segment
+  var targetDeg = wheelCurrentDeg + (5 * 360) + (270 - segCenter - wheelCurrentDeg % 360 + 360) % 360;
+  if (targetDeg - wheelCurrentDeg < 1440) targetDeg += 360;
+
+  var canvas = document.getElementById('wheelCanvas');
+  canvas.style.transition = 'transform 4.5s cubic-bezier(0.15,0.85,0.1,1.0)';
+  canvas.style.transform = 'rotate(' + targetDeg + 'deg)';
+  wheelCurrentDeg = targetDeg;
+
+  setTimeout(function() {
+    wheelSpinning = false;
+    wheelActiveReward = WHEEL_PRIZES[targetIdx];
+    applyWheelReward(targetIdx);
+  }, 4200);
+}
+
+function applyWheelReward(idx) {
+  var prize = WHEEL_PRIZES[idx];
+
+  // Retry = on regagne un tour
+  if (prize.type === 'retry') {
+    wheelSpins++;
+    localStorage.setItem('stacker_wheel_spins', wheelSpins);
+    updateWheelEntry();
+  }
+
+  // Affiche le résultat
+  var iconEl = document.getElementById('wheelResultIcon');
+  iconEl.style.background = prize.color;
+  iconEl.innerHTML = '<span class="material-symbols-outlined" style="font-size:24px;color:'+prize.textColor+';font-variation-settings:\'FILL\' 1">'+prize.icon+'</span>';
+  document.getElementById('wheelResultTitle').textContent = prize.line1 + (prize.line2 ? ' · ' + prize.line2 : '');
+  document.getElementById('wheelResultDesc').textContent = prize.desc;
+  document.getElementById('wheelResult').classList.add('show');
+  var sl = document.getElementById('wheelSpinsLeft'); if(sl) sl.textContent = wheelSpins;
+  var sub = document.getElementById('wheelHeaderSub');
+  if (sub && !sub.innerHTML.includes('Offert')) sub.innerHTML = 'Tu as <span id="wheelSpinsLeft" style="color:#ffd700;font-weight:900">'+wheelSpins+'</span> tour disponible';
+
+  if (wheelSpins > 0) {
+    setTimeout(function() { document.getElementById('wheelSpinBtn').disabled = false; }, 500);
+  }
+
+  // Sauvegarde la récompense active
+  if (prize.type !== 'nothing' && prize.type !== 'retry') {
+    var expiry = Date.now() + (prize.type === 'x2' ? 86400000 : prize.type === 'x2_2h' ? 7200000 : prize.type === 'vip' ? 172800000 : 0);
+    localStorage.setItem('stacker_active_reward', JSON.stringify({ type: prize.type, label: prize.label, expiry: expiry }));
+  }
+}
+
+function openWheelModal() {
+  buildWheel();
+  var sl = document.getElementById('wheelSpinsLeft'); if(sl) sl.textContent = wheelSpins;
+  var sub = document.getElementById('wheelHeaderSub');
+  if (sub && !sub.innerHTML.includes('Offert')) sub.innerHTML = 'Tu as <span id="wheelSpinsLeft" style="color:#ffd700;font-weight:900">'+wheelSpins+'</span> tour disponible';
+  document.getElementById('wheelResult').classList.remove('show');
+  document.getElementById('wheelSpinBtn').disabled = wheelSpins <= 0;
+  document.getElementById('wheelOverlay').classList.add('open');
+}
+
+function closeWheelModal() {
+  document.getElementById('wheelOverlay').classList.remove('open');
+}
+
+function closeWheelIfOutside(e) {
+  if (e.target === document.getElementById('wheelOverlay')) closeWheelModal();
+}
+
+function updateWheelEntry() {
+  var btn = document.getElementById('wheelEntryBtn');
+  var label = document.getElementById('wheelEntryLabel');
+  if (!btn) return;
+  var sl = document.getElementById('wheelSpinsLeft'); if(sl) sl.textContent = wheelSpins;
+  var sub = document.getElementById('wheelHeaderSub');
+  if (sub && !sub.innerHTML.includes('Offert')) sub.innerHTML = 'Tu as <span id="wheelSpinsLeft" style="color:#ffd700;font-weight:900">'+wheelSpins+'</span> tour disponible';
+  label.textContent = wheelSpins;
+  var icon = btn.querySelector('.material-symbols-outlined');
+  if (wheelSpins > 0) {
+    if (icon) icon.style.color = '#f59e0b';
+    btn.style.position = 'relative';
+    // Badge de notification
+    var badge = btn.querySelector('.wheel-badge');
+    if (!badge) {
+      badge = document.createElement('span');
+      badge.className = 'wheel-badge';
+      badge.style.cssText = 'position:absolute;top:-4px;right:-4px;width:14px;height:14px;border-radius:50%;background:#b52330;border:2px solid #fcf9f8;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:#fff;font-family:Plus Jakarta Sans,sans-serif';
+      btn.appendChild(badge);
+    }
+    badge.textContent = wheelSpins;
+    badge.style.display = 'flex';
+  } else {
+    if (icon) icon.style.color = 'rgba(27,28,28,0.3)';
+    var badge = btn.querySelector('.wheel-badge');
+    if (badge) badge.style.display = 'none';
+  }
+}
+
+// Donne un tour de roue quand on close un deal (hook sur confirmPapSepa et distConfirmBtn)
+function grantWheelSpin(reason) {
+  wheelSpins++;
+  localStorage.setItem('stacker_wheel_spins', wheelSpins);
+  updateWheelEntry();
+  showToast('Tour de roue gagné — ' + (reason || 'bravo !') + ' 🎰', 'success');
+}
+
+// Hook sur le deal closé PAP
+var _origConfirmPap = window.confirmPapSepa;
+window.confirmPapSepa = function() {
+  if (typeof _origConfirmPap === 'function') _origConfirmPap();
+  setTimeout(function() { grantWheelSpin('deal closé en PAP'); }, 2000);
+};
+
+// Init
+updateWheelEntry();
+window.openWheelModal = openWheelModal;
+window.grantWheelSpin = grantWheelSpin;
+
+// ── DAILY WHEEL POPUP ──
+function checkDailyWheel() {
+  var today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+  var lastSeen = localStorage.getItem('stacker_wheel_daily');
+  if (lastSeen === today) return; // déjà vu aujourd'hui
+  // Marque comme vu aujourd'hui
+  localStorage.setItem('stacker_wheel_daily', today);
+  // Donne un tour
+  wheelSpins = Math.max(wheelSpins, 1);
+  localStorage.setItem('stacker_wheel_spins', wheelSpins);
+  updateWheelEntry();
+  // Ouvre après 1.5s — laisse la page charger
+  setTimeout(function() {
+    buildWheel();
+    var sl = document.getElementById('wheelSpinsLeft'); if(sl) sl.textContent = wheelSpins;
+  var sub = document.getElementById('wheelHeaderSub');
+  if (sub && !sub.innerHTML.includes('Offert')) sub.innerHTML = 'Tu as <span id="wheelSpinsLeft" style="color:#ffd700;font-weight:900">'+wheelSpins+'</span> tour disponible';
+    document.getElementById('wheelResult').classList.remove('show');
+    document.getElementById('wheelSpinBtn').disabled = false;
+    // Titre daily
+    var titleEl = document.getElementById('wheelHeaderTitle');
+    if (titleEl) titleEl.textContent = 'Ton tour quotidien';
+    var subEl = document.getElementById('wheelHeaderSub');
+    if (subEl) subEl.innerHTML = 'Offert chaque jour — bonne chance 🤞';
+    document.getElementById('wheelOverlay').classList.add('open');
+  }, 1500);
+}
+
+// Lance le check daily au démarrage
+localStorage.removeItem('stacker_wheel_daily'); // DEV: force daily popup
+if (document.readyState === 'complete') {
+  setTimeout(checkDailyWheel, 1000);
+} else {
+  window.addEventListener('load', function() { setTimeout(checkDailyWheel, 1000); });
+}
+</script>
