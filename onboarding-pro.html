@@ -492,6 +492,8 @@ function submitOnboarding() {
     nom: document.getElementById('nom').value,
     email: document.getElementById('email').value,
     telephone: document.getElementById('telephone').value,
+    formeJuridique: document.getElementById('formeJuridique').value,
+    effectif: document.getElementById('effectif').value,
     zones: Array.from(document.querySelectorAll('.zone-chip.selected')).map(function(e) { return e.textContent; }),
     secteurs: Array.from(document.querySelectorAll('.secteur-chip.selected')).map(function(e) { return e.textContent; }),
     createdAt: new Date().toISOString()
