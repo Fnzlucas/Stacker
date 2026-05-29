@@ -493,6 +493,11 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
       </div>
     </div>
 
+    <!-- ── TAB : PROFIL ── -->
+    <div class="tab-content" id="content-profil">
+      <div id="profilContent"></div>
+    </div>
+
     <!-- ── TAB : CRÉDITS ── -->
     <div class="tab-content" id="content-credits">
       <div class="section-title" style="margin-bottom:20px">
@@ -580,6 +585,30 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
 
 <style>
 @keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:0.3}}
+.profil-avatar{width:72px;height:72px;border-radius:18px;background:var(--dark);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:24px;color:#fff;letter-spacing:-0.04em;margin-bottom:16px}
+.profil-name{font-weight:900;font-size:22px;letter-spacing:-0.04em;color:var(--dark);margin-bottom:2px}
+.profil-company{font-size:14px;color:var(--muted);font-weight:500;margin-bottom:20px}
+.profil-section{background:var(--white);border-radius:14px;border:1px solid var(--border);overflow:hidden;margin-bottom:16px}
+.profil-section-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.profil-section-title{font-weight:800;font-size:13px;letter-spacing:-0.01em;color:var(--dark)}
+.profil-edit-btn{font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;background:none;border:none;font-family:'Plus Jakarta Sans',sans-serif}
+.profil-edit-btn:hover{color:var(--dark)}
+.profil-row{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:1px solid var(--border)}
+.profil-row:last-child{border-bottom:none}
+.profil-row-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted)}
+.profil-row-val{font-size:13px;font-weight:600;color:var(--dark);text-align:right;max-width:60%}
+.profil-row-val.editable{cursor:pointer;color:var(--dark)}
+.profil-row-val.editable:hover{text-decoration:underline}
+.profil-tag{display:inline-block;padding:3px 9px;border-radius:6px;background:var(--surface);font-size:11px;font-weight:600;color:var(--muted);margin:2px}
+.profil-tag.secteur{background:var(--red-soft);color:var(--red)}
+.profil-siret-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;background:var(--green-soft);color:var(--green);font-size:11px;font-weight:700}
+.profil-danger-zone{background:var(--white);border-radius:14px;border:1.5px solid rgba(181,35,48,0.2);overflow:hidden;margin-bottom:16px}
+.profil-danger-head{padding:14px 18px;border-bottom:1px solid rgba(181,35,48,0.1)}
+.profil-danger-title{font-weight:800;font-size:13px;color:var(--red)}
+.profil-danger-btn{width:100%;padding:12px 18px;background:transparent;border:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;color:var(--red);border-bottom:1px solid rgba(181,35,48,0.1)}
+.profil-danger-btn:last-child{border-bottom:none}
+.profil-danger-btn:hover{background:var(--red-soft)}
+
 .prospect-detail-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:600;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.2s;backdrop-filter:blur(4px)}
 .prospect-detail-overlay.open{opacity:1;pointer-events:all}
 .prospect-detail-box{background:var(--white);border-radius:18px;width:100%;max-width:400px;max-height:85vh;overflow-y:auto;transform:translateY(8px);transition:transform 0.25s cubic-bezier(0.22,1,0.36,1);margin:16px}
@@ -1222,6 +1251,7 @@ function showToast(msg) {
 function showTab(name) {
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
   document.getElementById('content-' + name).classList.add('active');
+  if (name === 'profil') renderProfil();
 }
 
 function setActive(el) {
@@ -1704,6 +1734,93 @@ function closeSignalNow() {
   signalRdvId = null;
 }
 
+
+function renderProfil() {
+  var profile = JSON.parse(localStorage.getItem('sp_profile') || '{}');
+  var prenom = profile.prenom || '';
+  var nom = profile.nom || '';
+  var initiales = ((prenom[0] || '') + (nom[0] || '')).toUpperCase() || 'P';
+  var fullname = (prenom + ' ' + nom).trim() || 'Profil non renseigné';
+  var company = profile.raisonSociale || 'Entreprise non renseignée';
+
+  var zones = profile.zones || [];
+  var secteurs = profile.secteurs || [];
+
+  var html = '';
+
+  // Avatar + nom
+  html += '<div class="profil-avatar">' + initiales + '</div>';
+  html += '<p class="profil-name">' + fullname + '</p>';
+  html += '<p class="profil-company">' + company + '</p>';
+
+  // Infos entreprise
+  html += '<div class="profil-section">';
+  html += '<div class="profil-section-head"><span class="profil-section-title">Informations entreprise</span></div>';
+  html += '<div class="profil-row"><span class="profil-row-label">Raison sociale</span><span class="profil-row-val">' + (profile.raisonSociale || '—') + '</span></div>';
+  html += '<div class="profil-row"><span class="profil-row-label">SIRET</span><span class="profil-row-val"><span class="profil-siret-badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="#00704a"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>Vérifié</span> &nbsp;' + (profile.siret || '—') + '</span></div>';
+  html += '<div class="profil-row"><span class="profil-row-label">Forme juridique</span><span class="profil-row-val">' + (profile.formeJuridique || '—') + '</span></div>';
+  html += '<div class="profil-row"><span class="profil-row-label">Effectif</span><span class="profil-row-val">' + (profile.effectif || '—') + '</span></div>';
+  html += '</div>';
+
+  // Coordonnées
+  html += '<div class="profil-section">';
+  html += '<div class="profil-section-head"><span class="profil-section-title">Coordonnées</span><button class="profil-edit-btn" onclick="editCoordonnees()">Modifier</button></div>';
+  html += '<div class="profil-row"><span class="profil-row-label">Nom</span><span class="profil-row-val">' + fullname + '</span></div>';
+  html += '<div class="profil-row"><span class="profil-row-label">Email</span><span class="profil-row-val">' + (profile.email || '—') + '</span></div>';
+  html += '<div class="profil-row"><span class="profil-row-label">Téléphone</span><span class="profil-row-val">' + (profile.telephone || '—') + '</span></div>';
+  html += '</div>';
+
+  // Zones & secteurs
+  html += '<div class="profil-section">';
+  html += '<div class="profil-section-head"><span class="profil-section-title">Zones & secteurs</span><button class="profil-edit-btn" onclick="editZones()">Modifier</button></div>';
+  html += '<div class="profil-row" style="flex-direction:column;align-items:flex-start;gap:8px">';
+  html += '<span class="profil-row-label">Régions</span>';
+  html += '<div>' + (zones.length ? zones.map(function(z) { return '<span class="profil-tag">' + z + '</span>'; }).join('') : '<span style="font-size:12px;color:var(--muted)">Non renseigné</span>') + '</div>';
+  html += '</div>';
+  html += '<div class="profil-row" style="flex-direction:column;align-items:flex-start;gap:8px">';
+  html += '<span class="profil-row-label">Secteurs</span>';
+  html += '<div>' + (secteurs.length ? secteurs.map(function(s) { return '<span class="profil-tag secteur">' + s + '</span>'; }).join('') : '<span style="font-size:12px;color:var(--muted)">Non renseigné</span>') + '</div>';
+  html += '</div>';
+  html += '</div>';
+
+  // Crédits & abonnement
+  html += '<div class="profil-section">';
+  html += '<div class="profil-section-head"><span class="profil-section-title">Compte & facturation</span></div>';
+  html += '<div class="profil-row"><span class="profil-row-label">Solde crédits</span><span class="profil-row-val" style="color:var(--green);font-weight:800">' + credits + ' crédits</span></div>';
+  html += '<div class="profil-row"><span class="profil-row-label">Formule</span><span class="profil-row-val">Sans abonnement — 25 € / RDV</span></div>';
+  html += '<div class="profil-row"><span class="profil-row-label">Membre depuis</span><span class="profil-row-val">' + (profile.createdAt ? new Date(profile.createdAt).toLocaleDateString("fr-FR") : '—') + '</span></div>';
+  html += '<div class="profil-row" style="border-top:1px solid var(--border)">';
+  html += '<button id="btnChangerFormule2" style="width:100%;padding:10px;border-radius:9px;background:var(--dark);color:#fff;font-family:Plus Jakarta Sans,sans-serif;font-weight:700;font-size:13px;border:none;cursor:pointer">Changer de formule</button>';
+  html += '</div>';
+  html += '</div>';
+
+  // Zone danger
+  html += '<div class="profil-danger-zone">';
+  html += '<div class="profil-danger-head"><p class="profil-danger-title">Zone sensible</p></div>';
+  html += '<button class="profil-danger-btn" onclick="changePassword()">Changer le mot de passe <span>→</span></button>';
+  html += '<button class="profil-danger-btn" onclick="deleteAccount()">Supprimer mon compte <span>→</span></button>';
+  html += '</div>';
+
+  document.getElementById('profilContent').innerHTML = html;
+  ['btnChangerFormule','btnChangerFormule2'].forEach(function(id) { var b = document.getElementById(id); if (b) b.addEventListener('click', function() { showTab('abonnement'); setActive(document.querySelectorAll('.nav-item')[1]); }); });
+}
+
+function editCoordonnees() {
+  showToast('Modification des coordonnées — fonctionnalité disponible prochainement');
+}
+function editZones() {
+  showToast('Modification des zones — fonctionnalité disponible prochainement');
+}
+function changePassword() {
+  showToast('Réinitialisation du mot de passe — un email vous sera envoyé');
+}
+function deleteAccount() {
+  if (confirm('Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.')) {
+    localStorage.clear();
+    window.location.href = 'onboarding-pro.html';
+  }
+}
+
 function toggleDrawer() {
   document.getElementById('drawer').classList.toggle('open');
   document.getElementById('drawerOverlay').classList.toggle('open');
@@ -1746,6 +1863,10 @@ setTimeout(() => {
   <a class="nav-item" onclick="showTab('commandes');closeDrawer()">
     <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/></svg>
     <span class="nav-text">Mes commandes</span>
+  </a>
+  <a class="nav-item" onclick="showTab('profil');closeDrawer()">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+    <span class="nav-text">Mon profil</span>
   </a>
   <a class="nav-item" onclick="showTab('credits');closeDrawer()">
     <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
