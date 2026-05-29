@@ -1,0 +1,1822 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stacker Professionnel — Achetez vos RDV qualifiés</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#f5f4f2;
+  --white:#ffffff;
+  --dark:#111112;
+  --surface:#f0eeeb;
+  --border:rgba(17,17,18,0.09);
+  --red:#b52330;
+  --red2:#e8323f;
+  --red-soft:rgba(181,35,48,0.07);
+  --muted:#7a7570;
+  --muted2:rgba(17,17,18,0.35);
+  --green:#00704a;
+  --green-soft:rgba(0,112,74,0.08);
+}
+html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans',sans-serif;min-height:100%}
+.mono{font-family:'JetBrains Mono',monospace}
+
+/* ── HEADER ── */
+.header{background:var(--dark);padding:0 16px;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;gap:12px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-mark{font-weight:900;font-size:17px;letter-spacing:-0.04em;color:#fff}
+.logo-mark span{color:var(--red2)}
+.logo-badge{font-family:'JetBrains Mono';font-size:8px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;padding:2px 7px;border-radius:4px;background:var(--red);color:#fff}
+.header-right{display:flex;align-items:center;gap:12px;flex-shrink:0}
+.header-credits{display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:8px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1)}
+.header-credits-val{font-weight:800;font-size:13px;color:#fff;letter-spacing:-0.02em}
+.header-credits-label{font-size:11px;color:rgba(255,255,255,0.4);font-weight:500}
+.header-avatar{width:32px;height:32px;border-radius:9px;background:var(--red);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#fff;cursor:pointer}
+
+/* ── LAYOUT ── */
+.layout{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 58px)}
+
+/* ── SIDEBAR ── */
+.sidebar{background:var(--white);border-right:1px solid var(--border);padding:24px 0;position:sticky;top:58px;height:calc(100vh - 58px);overflow-y:auto}
+.sidebar-section{margin-bottom:28px}
+.sidebar-label{font-family:'JetBrains Mono';font-size:8px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);padding:0 20px;margin-bottom:8px;display:block}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 20px;cursor:pointer;transition:background 0.15s;text-decoration:none;color:var(--dark)}
+.nav-item:hover{background:var(--surface)}
+.nav-item.active{background:var(--red-soft);color:var(--red)}
+.nav-item.active .nav-icon{color:var(--red)}
+.nav-icon{width:18px;height:18px;flex-shrink:0;opacity:0.5}
+.nav-item.active .nav-icon{opacity:1}
+.nav-text{font-weight:600;font-size:13px}
+.nav-count{margin-left:auto;font-family:'JetBrains Mono';font-size:9px;font-weight:600;padding:2px 6px;border-radius:4px;background:var(--red);color:#fff}
+
+.sidebar-divider{height:1px;background:var(--border);margin:8px 20px 16px}
+
+.plan-box{margin:0 14px;padding:14px;border-radius:12px;background:var(--dark);position:relative;overflow:hidden}
+.plan-box::after{content:'';position:absolute;top:-30px;right:-30px;width:100px;height:100px;border-radius:50%;background:rgba(181,35,48,0.15);pointer-events:none}
+.plan-label{font-family:'JetBrains Mono';font-size:8px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:4px}
+.plan-name{font-weight:900;font-size:14px;color:#fff;letter-spacing:-0.02em;margin-bottom:10px}
+.plan-btn{width:100%;padding:8px;border-radius:8px;background:var(--red);color:#fff;font-family:'Plus Jakarta Sans';font-weight:700;font-size:11px;border:none;cursor:pointer;transition:opacity 0.2s}
+.plan-btn:hover{opacity:0.85}
+
+/* ── MAIN ── */
+.main{padding:28px 28px 60px}
+
+/* ── PAGE TABS ── */
+.page-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:24px}
+.page-tab{padding:10px 18px;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap;letter-spacing:-0.01em}
+.page-tab.active{color:var(--dark);border-bottom-color:var(--dark)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* ── STATS ROW ── */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.stat-card{background:var(--white);border-radius:14px;border:1px solid var(--border);padding:16px 18px}
+.stat-card-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--muted);margin-bottom:6px}
+.stat-card-val{font-weight:900;font-size:24px;letter-spacing:-0.04em;color:var(--dark)}
+.stat-card-val.red{color:var(--red2)}
+.stat-card-val.green{color:var(--green)}
+.stat-card-sub{font-size:11px;color:var(--muted);margin-top:3px;font-weight:500}
+
+/* ── SECTION TITLE ── */
+.section-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.section-title h2{font-weight:800;font-size:16px;letter-spacing:-0.03em}
+.section-title-right{display:flex;align-items:center;gap:8px}
+
+/* ── FILTERS ── */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.filter-btn{padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--white);font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all 0.15s;white-space:nowrap}
+.filter-btn:hover{border-color:var(--dark);color:var(--dark)}
+.filter-btn.active{background:var(--dark);color:#fff;border-color:var(--dark)}
+
+/* ── RDV CATALOGUE ── */
+.rdv-catalogue-layout{display:grid;grid-template-columns:1fr 400px;gap:16px;align-items:start}
+.rdv-grid{display:flex;flex-direction:column;gap:8px;max-height:calc(100vh - 240px);overflow-y:auto;scrollbar-width:thin;padding-right:2px}
+.map-panel{position:sticky;top:74px;border-radius:14px;overflow:hidden;border:1px solid var(--border);box-shadow:0 4px 20px -6px rgba(17,17,18,0.1)}
+#rdvMap{height:450px;width:100%}
+@media(max-width:900px){
+  .layout{display:block}
+  .sidebar{display:none}
+  .rdv-catalogue-layout{grid-template-columns:1fr;grid-template-rows:auto auto}
+  .rdv-grid{max-height:none;overflow-y:visible;order:2}
+  .map-panel{position:relative;top:0;order:1}
+  #rdvMap{height:280px}
+  .stats-row{grid-template-columns:1fr 1fr}
+  .plans-grid{grid-template-columns:1fr}
+}
+.leaflet-popup-content-wrapper{border-radius:12px;border:none;box-shadow:0 8px 24px -6px rgba(0,0,0,0.15);padding:0;overflow:hidden}
+.leaflet-popup-content{margin:0;width:220px!important}
+.map-popup{padding:14px}
+.map-popup-sector{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:13px;color:#111112;margin-bottom:3px}
+.map-popup-zone{font-size:11px;color:#7a7570;font-weight:500;margin-bottom:8px}
+.map-popup-row{display:flex;align-items:center;justify-content:space-between}
+.map-popup-price{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:16px;color:#111112}
+.map-popup-btn{padding:6px 12px;border-radius:7px;background:#111112;color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:11px;border:none;cursor:pointer}
+.map-popup-btn:hover{background:#b52330}
+.map-pin-active{filter:hue-rotate(0deg)}
+.rdv-card{background:var(--white);border-radius:14px;border:1px solid var(--border);padding:16px 18px;display:flex;align-items:center;gap:16px;transition:border-color 0.15s,box-shadow 0.15s;cursor:default}
+.rdv-card:hover{border-color:rgba(17,17,18,0.2);box-shadow:0 4px 16px -6px rgba(17,17,18,0.1)}
+.rdv-card.featured{border-color:rgba(181,35,48,0.25);background:linear-gradient(135deg,rgba(181,35,48,0.03),var(--white))}
+.rdv-badge-hot{position:absolute;top:-6px;left:12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;font-weight:700;padding:3px 9px;border-radius:5px;background:var(--red);color:#fff;letter-spacing:0}
+.rdv-card-wrap{position:relative;flex:1}
+.rdv-sector-icon{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.rdv-info{flex:1;min-width:0}
+.rdv-sector{font-weight:800;font-size:14px;letter-spacing:-0.02em;color:var(--dark);margin-bottom:2px}
+.rdv-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.rdv-meta-item{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--muted);font-weight:500}
+.rdv-meta-item svg{flex-shrink:0;opacity:0.5}
+.rdv-tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px}
+.tag-new{background:var(--green-soft);color:var(--green)}
+.tag-hot{background:var(--red-soft);color:var(--red)}
+.rdv-price-block{text-align:right;flex-shrink:0}
+.rdv-price{font-weight:900;font-size:20px;letter-spacing:-0.04em;color:var(--dark)}
+.rdv-price small{font-size:12px;font-weight:500;color:var(--muted)}
+.rdv-price-sub{font-size:10px;color:var(--muted);margin-top:1px;font-weight:500}
+.rdv-actions{display:flex;gap:6px;flex-shrink:0}
+.btn-primary{padding:9px 18px;border-radius:9px;background:var(--dark);color:#fff;font-family:'Plus Jakarta Sans';font-weight:700;font-size:12px;border:none;cursor:pointer;transition:background 0.15s;white-space:nowrap;letter-spacing:-0.01em}
+.btn-primary:hover{background:var(--red)}
+.btn-ghost{padding:9px 14px;border-radius:9px;background:transparent;color:var(--muted);font-family:'Plus Jakarta Sans';font-weight:600;font-size:12px;border:1px solid var(--border);cursor:pointer;transition:all 0.15s}
+.btn-ghost:hover{border-color:var(--dark);color:var(--dark)}
+
+/* ── ABONNEMENT ── */
+.plans-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:28px}
+.plan-card{background:var(--white);border-radius:16px;border:1px solid var(--border);padding:22px;position:relative;overflow:hidden;transition:border-color 0.2s}
+.plan-card.recommended{border-color:var(--dark);box-shadow:0 8px 32px -8px rgba(17,17,18,0.15)}
+.plan-card.recommended::before{content:'RECOMMANDÉ';font-family:'JetBrains Mono';font-size:7px;letter-spacing:0.2em;font-weight:700;position:absolute;top:0;left:0;right:0;text-align:center;padding:5px;background:var(--dark);color:#fff}
+.plan-card-body{margin-top:8px}
+.plan-card.recommended .plan-card-body{margin-top:24px}
+.plan-price-big{font-weight:900;font-size:32px;letter-spacing:-0.05em;color:var(--dark);line-height:1}
+.plan-price-big small{font-size:14px;font-weight:500;color:var(--muted);letter-spacing:0}
+.plan-name-card{font-weight:800;font-size:15px;letter-spacing:-0.02em;margin-bottom:4px}
+.plan-desc{font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.5;font-weight:500}
+.plan-features{display:flex;flex-direction:column;gap:7px;margin-bottom:20px}
+.plan-feature{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--dark);font-weight:500}
+.plan-feature svg{flex-shrink:0}
+.plan-cta{width:100%;padding:11px;border-radius:10px;font-family:'Plus Jakarta Sans';font-weight:800;font-size:13px;border:none;cursor:pointer;transition:all 0.2s;letter-spacing:-0.01em}
+.plan-cta-dark{background:var(--dark);color:#fff}
+.plan-cta-dark:hover{background:var(--red)}
+.plan-cta-outline{background:transparent;color:var(--dark);border:1.5px solid var(--border)}
+.plan-cta-outline:hover{border-color:var(--dark)}
+
+/* ── COMMANDES ── */
+.orders-table{width:100%;border-collapse:collapse}
+.orders-table th{text-align:left;font-family:'JetBrains Mono';font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);padding:8px 14px;border-bottom:1px solid var(--border)}
+.orders-table td{padding:12px 14px;border-bottom:1px solid var(--border);font-size:13px;font-weight:500;color:var(--dark)}
+.orders-table tr:last-child td{border-bottom:none}
+.orders-table tr:hover td{background:var(--surface)}
+.status-pill{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:5px;font-size:10px;font-weight:700;font-family:'JetBrains Mono'}
+.status-done{background:var(--green-soft);color:var(--green)}
+.status-pending{background:rgba(201,168,76,0.1);color:#9a7a28}
+.status-cancelled{background:var(--red-soft);color:var(--red)}
+
+/* ── MODAL ACHAT ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.2s;backdrop-filter:blur(4px)}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-box{background:var(--white);border-radius:20px;width:100%;max-width:440px;box-shadow:0 24px 80px -16px rgba(0,0,0,0.25);transform:translateY(8px);transition:transform 0.25s cubic-bezier(0.22,1,0.36,1)}
+.modal-overlay.open .modal-box{transform:translateY(0)}
+.modal-head{padding:22px 24px 18px;border-bottom:1px solid var(--border)}
+.modal-head-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:4px}
+.modal-title{font-weight:900;font-size:18px;letter-spacing:-0.03em}
+.modal-close-btn{width:28px;height:28px;border-radius:7px;background:var(--surface);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.modal-sub{font-size:12px;color:var(--muted);font-weight:500}
+.modal-body{padding:20px 24px}
+.modal-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border)}
+.modal-row:last-of-type{border-bottom:none}
+.modal-row-label{font-size:13px;color:var(--muted);font-weight:500}
+.modal-row-val{font-weight:700;font-size:13px;color:var(--dark)}
+.qty-control{display:flex;align-items:center;gap:8px}
+.qty-btn{width:28px;height:28px;border-radius:7px;border:1px solid var(--border);background:var(--white);font-weight:800;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.qty-btn:hover{background:var(--dark);color:#fff;border-color:var(--dark)}
+.qty-val{font-weight:800;font-size:15px;width:24px;text-align:center}
+.modal-total{display:flex;justify-content:space-between;align-items:center;padding:14px;border-radius:11px;background:var(--surface);margin:14px 0}
+.modal-total-label{font-weight:700;font-size:14px}
+.modal-total-val{font-weight:900;font-size:20px;letter-spacing:-0.03em;color:var(--dark)}
+.modal-confirm{width:100%;padding:13px;border-radius:11px;background:var(--dark);color:#fff;font-family:'Plus Jakarta Sans';font-weight:800;font-size:14px;border:none;cursor:pointer;transition:background 0.2s;letter-spacing:-0.01em}
+.modal-confirm:hover{background:var(--red)}
+.modal-footer-note{text-align:center;font-size:11px;color:var(--muted);margin-top:10px;font-weight:500}
+
+/* ── EMPTY ── */
+.empty{text-align:center;padding:60px 20px}
+.empty svg{opacity:0.1;display:block;margin:0 auto 12px}
+.empty p{font-size:14px;color:var(--muted);font-weight:500}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--dark);color:#fff;padding:12px 18px;border-radius:12px;font-size:13px;font-weight:600;z-index:999;transform:translateY(20px);opacity:0;transition:all 0.3s cubic-bezier(0.22,1,0.36,1);display:flex;align-items:center;gap:8px;box-shadow:0 8px 24px -6px rgba(0,0,0,0.3)}
+.toast.show{transform:translateY(0);opacity:1}
+
+.signal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:700;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.2s;backdrop-filter:blur(3px)}
+.signal-overlay.open{opacity:1;pointer-events:all}
+.signal-box{background:#fff;border-radius:18px;width:100%;max-width:400px;margin:16px;box-shadow:0 24px 80px rgba(0,0,0,0.2);transform:translateY(8px);transition:transform 0.25s cubic-bezier(0.22,1,0.36,1)}
+.signal-overlay.open .signal-box{transform:translateY(0)}
+.signal-head{padding:20px 22px 16px;border-bottom:1px solid var(--border)}
+.signal-title{font-weight:900;font-size:16px;letter-spacing:-0.03em;color:var(--dark)}
+.signal-sub{font-size:12px;color:var(--muted);margin-top:3px;font-weight:500}
+.signal-body{padding:18px 22px}
+.signal-reasons{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.signal-reason{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;border:1.5px solid var(--border);cursor:pointer;transition:all 0.15s}
+.signal-reason:hover{border-color:var(--red);background:var(--red-soft)}
+.signal-reason.selected{border-color:var(--red);background:var(--red-soft)}
+.signal-reason-dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;transition:all 0.15s}
+.signal-reason.selected .signal-reason-dot{background:var(--red);border-color:var(--red)}
+.signal-reason-text{font-size:13px;font-weight:600;color:var(--dark)}
+.signal-confirm{width:100%;padding:12px;border-radius:11px;background:var(--red);color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:13px;border:none;cursor:pointer;transition:opacity 0.2s;margin-bottom:8px}
+.signal-confirm:hover{opacity:0.85}
+.signal-confirm:disabled{opacity:0.4;cursor:default}
+.signal-cancel{width:100%;padding:10px;border-radius:11px;background:transparent;color:var(--muted);font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:13px;border:none;cursor:pointer}
+</style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div style="display:flex;align-items:center;gap:10px">
+    <button class="hamburger" onclick="toggleDrawer()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="logo">
+      <span class="logo-mark">Stacker<span>.</span></span>
+      <span class="logo-badge">PRO</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="header-credits">
+      <span class="header-credits-val" id="creditBalance">200</span>
+      <span class="header-credits-label">crédits</span>
+    </div>
+    <div class="header-avatar" id="avatarInitials">SH</div>
+  </div>
+</header>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <span class="sidebar-label">Navigation</span>
+      <a class="nav-item active" onclick="showTab('catalogue');setActive(this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/></svg>
+        <span class="nav-text">Catalogue RDV</span>
+        <span class="nav-count" id="navCount">12</span>
+      </a>
+      <a class="nav-item" onclick="showTab('abonnement');setActive(this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+        <span class="nav-text">Abonnement</span>
+      </a>
+      <a class="nav-item" onclick="showTab('commandes');setActive(this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/></svg>
+        <span class="nav-text">Mes commandes</span>
+      </a>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+      <span class="sidebar-label">Mon compte</span>
+      <a class="nav-item" onclick="showTab('credits');setActive(this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+        <span class="nav-text">Crédits</span>
+      </a>
+    </div>
+
+    <div class="plan-box">
+      <p class="plan-label">Votre offre</p>
+      <p class="plan-name">Sans abonnement</p>
+      <button class="plan-btn" onclick="showTab('abonnement');setActive(document.querySelectorAll('.nav-item')[1])">Souscrirefessionnel →</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- ── TAB : CATALOGUE ── -->
+    <div class="tab-content active" id="content-catalogue">
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <p class="stat-card-label">RDV achetés</p>
+          <p class="stat-card-val" id="statTotal">0</p>
+          <p class="stat-card-sub">Ce mois-ci</p>
+        </div>
+        <div class="stat-card">
+          <p class="stat-card-label">Dépensé</p>
+          <p class="stat-card-val red" id="statSpent">0 €</p>
+          <p class="stat-card-sub">Ce mois-ci</p>
+        </div>
+        <div class="stat-card">
+          <p class="stat-card-label">Taux closing</p>
+          <p class="stat-card-val green">—</p>
+          <p class="stat-card-sub">Mes résultats</p>
+        </div>
+        <div class="stat-card">
+          <p class="stat-card-label">Dispo aujourd'hui</p>
+          <p class="stat-card-val" id="statDispo">12</p>
+          <p class="stat-card-sub">RDV qualifiés</p>
+        </div>
+      </div>
+
+      <div class="section-title">
+        <h2>RDV disponibles</h2>
+        <div class="section-title-right">
+          <span style="font-size:11px;color:var(--muted);font-weight:500">Mis à jour ce matin</span>
+          <div style="width:6px;height:6px;border-radius:50%;background:#00704a;animation:pulse-dot 2s ease-in-out infinite"></div>
+        </div>
+      </div>
+
+      <div class="region-selector" id="regionSelector">
+        <span class="region-selector-label">Sélectionnez une région</span>
+        <div class="region-grid" id="regionGrid"></div>
+        <div class="dept-panel" id="deptPanel">
+          <div class="dept-panel-header">
+            <span class="dept-panel-title" id="deptPanelTitle"></span>
+            <button class="dept-panel-close" onclick="closeDeptPanel()">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="var(--muted)"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+            </button>
+          </div>
+          <div id="deptList"></div>
+        </div>
+        <div class="region-back" id="regionBack" onclick="resetRegion()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--muted)"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+          <span class="region-back-label">Toutes les régions</span>
+        </div>
+        <div id="regionCurrentTitle" class="region-current" style="display:none"></div>
+        <div class="filters" id="filterBtns" style="display:none">
+          <button class="filter-btn active" onclick="filterRdv('all',this)">Tous les secteurs</button>
+          <button class="filter-btn" onclick="filterRdv('renovation',this)">Rénovation énergétique</button>
+          <button class="filter-btn" onclick="filterRdv('isolation',this)">Isolation</button>
+          <button class="filter-btn" onclick="filterRdv('pac',this)">Pompe à chaleur</button>
+          <button class="filter-btn" onclick="filterRdv('solaire',this)">Panneaux solaires</button>
+        </div>
+      </div>
+
+      <div class="rdv-catalogue-layout">
+        <div class="rdv-grid" id="rdvGrid"></div>
+        <div class="map-panel">
+          <button class="map-expand-btn" onclick="openFullMap()" title="Agrandir">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#111"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+          </button>
+          <div id="rdvMap"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TAB : ABONNEMENT ── -->
+    <div class="tab-content" id="content-abonnement">
+      <div class="section-title" style="margin-bottom:20px">
+        <h2>Choisissez votre formule</h2>
+      </div>
+
+      <div class="plans-grid">
+
+        <!-- STARTER -->
+        <div class="plan-card">
+          <div class="plan-card-body">
+            <p class="plan-name-card">Essentiel</p>
+            <p class="plan-desc">Pour tester et commencer sans engagement</p>
+            <div class="plan-price-big">25 €<small>/RDV</small></div>
+            <div style="height:1px;background:var(--border);margin:16px 0"></div>
+            <div class="plan-features">
+              <div class="plan-feature">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#00704a"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                Achat à l'unité
+              </div>
+              <div class="plan-feature">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#00704a"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                Paiement CB immédiat
+              </div>
+              <div class="plan-feature">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#00704a"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                Accès catalogue complet
+              </div>
+              <div class="plan-feature" style="color:var(--muted)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                Pas de priorité zone
+              </div>
+            </div>
+            <button class="plan-cta plan-cta-outline" onclick="showToast('Formule Essentiel — achat à l\'unité activé')">Continuer en Essentiel</button>
+          </div>
+        </div>
+
+        <!-- PRO — RECOMMANDÉ -->
+        <div class="plan-card recommended">
+          <div class="plan-card-body">
+            <p class="plan-name-card">Professionnelfessionnel</p>
+            <p class="plan-desc">Le meilleur rapport qualité/prix pour les commerciaux actifs</p>
+            <div class="plan-price-big">19 €<small>/RDV</small></div>
+            <p style="font-size:10px;color:var(--muted);font-weight:500;margin-top:4px;margin-bottom:0">+ 199 € abonnement mensuel</p>
+            <div style="height:1px;background:var(--border);margin:16px 0"></div>
+            <div class="plan-features">
+              <div class="plan-feature">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#00704a"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                RDV illimités au tarif réduit
+              </div>
+              <div class="plan-feature">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#00704a"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                Facturation mensuelle
+              </div>
+              <div class="plan-feature">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#00704a"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                Priorité sur votre zone
+              </div>
+              <div class="plan-feature">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#00704a"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                Accès RDV avant les autres
+              </div>
+            </div>
+            <button class="plan-cta plan-cta-dark" onclick="showToast('Abonnement Professionnel — redirection paiement...')">Souscrirefessionnel</button>
+          </div>
+        </div>
+
+        <!-- ELITE -->
+        <div class="plan-card">
+          <div class="plan-card-body">
+            <p class="plan-name-card">Premium</p>
+            <p class="plan-desc">Pour les équipes et apporteurs à fort volume</p>
+            <div class="plan-price-big">14 €<small>/RDV</small></div>
+            <p style="font-size:10px;color:var(--muted);font-weight:500;margin-top:4px;margin-bottom:0">+ 499 € abonnement mensuel</p>
+            <div style="height:1px;background:var(--border);margin:16px 0"></div>
+            <div class="plan-features">
+              <div class="plan-feature">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#00704a"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                Tout ce qui est dans Professionnel
+              </div>
+              <div class="plan-feature">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#00704a"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                Multi-zones simultanées
+              </div>
+              <div class="plan-feature">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#00704a"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                Responsable de compte dédié
+              </div>
+              <div class="plan-feature">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#00704a"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                Facturation sur facture
+              </div>
+            </div>
+            <button class="plan-cta plan-cta-outline" onclick="showToast('Premium — on vous recontacte sous 24h')">Nous contacter</button>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="background:var(--white);border-radius:14px;border:1px solid var(--border);padding:20px 24px">
+        <p style="font-weight:800;font-size:14px;letter-spacing:-0.02em;margin-bottom:6px">Sans engagement</p>
+        <p style="font-size:13px;color:var(--muted);font-weight:500;line-height:1.65">Résiliez à tout moment depuis votre espace. Aucun frais de résiliation. Les RDV achetés restent valables 30 jours après résiliation. Paiement sécurisé via Stripe.</p>
+      </div>
+    </div>
+
+    <!-- ── TAB : COMMANDES ── -->
+    <div class="tab-content" id="content-commandes">
+      <div class="section-title" style="margin-bottom:20px">
+        <h2>Mes commandes</h2>
+      </div>
+      <div style="background:var(--white);border-radius:14px;border:1px solid var(--border);overflow:hidden">
+        <table class="orders-table" id="ordersTable">
+          <thead>
+            <tr>
+              <th>Secteur</th>
+              <th>Ville</th>
+              <th>Date</th>
+              <th>Qté</th>
+              <th>Montant</th>
+              <th>Statut</th>
+            </tr>
+          </thead>
+          <tbody id="ordersBody">
+            <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);font-weight:500">Aucune commande pour l'instant</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── TAB : CRÉDITS ── -->
+    <div class="tab-content" id="content-credits">
+      <div class="section-title" style="margin-bottom:20px">
+        <h2>Mes crédits</h2>
+      </div>
+      <div class="stats-row" style="grid-template-columns:1fr 1fr 1fr">
+        <div class="stat-card">
+          <p class="stat-card-label">Solde actuel</p>
+          <p class="stat-card-val green" id="creditDisplay">200 €</p>
+          <p class="stat-card-sub">Disponible immédiatement</p>
+        </div>
+        <div class="stat-card">
+          <p class="stat-card-label">Utilisés ce mois</p>
+          <p class="stat-card-val" id="creditUsed">0 €</p>
+          <p class="stat-card-sub">RDV achetés</p>
+        </div>
+        <div class="stat-card">
+          <p class="stat-card-label">Professionnelchain rechargement</p>
+          <p class="stat-card-val">—</p>
+          <p class="stat-card-sub">Pas d'abonnement actif</p>
+        </div>
+      </div>
+      <div style="background:var(--white);border-radius:14px;border:1px solid var(--border);padding:20px 24px;margin-top:4px">
+        <p style="font-weight:800;font-size:14px;margin-bottom:14px;letter-spacing:-0.02em">Recharger mes crédits</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn-ghost" onclick="addCredits(100)">+ 100 €</button>
+          <button class="btn-ghost" onclick="addCredits(250)">+ 250 €</button>
+          <button class="btn-ghost" onclick="addCredits(500)">+ 500 €</button>
+          <button class="btn-primary" onclick="addCredits(1000)">+ 1 000 € — meilleure valeur</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- MODAL ACHAT -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-head-top">
+        <p class="modal-title" id="modalTitle">Acheter ce RDV</p>
+        <button class="modal-close-btn" onclick="closeModalDirect()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--muted)"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </div>
+      <p class="modal-sub" id="modalSub"></p>
+    </div>
+    <div class="modal-body">
+      <div class="modal-row">
+        <span class="modal-row-label">Secteur</span>
+        <span class="modal-row-val" id="mSector"></span>
+      </div>
+      <div class="modal-row">
+        <span class="modal-row-label">Zone</span>
+        <span class="modal-row-val" id="mZone"></span>
+      </div>
+      <div class="modal-row">
+        <span class="modal-row-label">Prix unitaire</span>
+        <span class="modal-row-val" id="mPrice"></span>
+      </div>
+      <div class="modal-row">
+        <span class="modal-row-label">Quantité</span>
+        <div class="qty-control">
+          <button class="qty-btn" onclick="changeQty(-1)">−</button>
+          <span class="qty-val" id="qtyVal">1</span>
+          <button class="qty-btn" onclick="changeQty(1)">+</button>
+        </div>
+      </div>
+      <div class="modal-total">
+        <span class="modal-total-label">Total</span>
+        <span class="modal-total-val" id="modalTotal">25 €</span>
+      </div>
+      <button class="modal-confirm" onclick="confirmOrder()">Confirmer la commande</button>
+      <p class="modal-footer-note">Paiement sécurisé · Remboursé si RDV non honoré</p>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="#4ade80"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+  <span id="toastMsg"></span>
+</div>
+
+<style>
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:0.3}}
+.prospect-detail-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:600;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.2s;backdrop-filter:blur(4px)}
+.prospect-detail-overlay.open{opacity:1;pointer-events:all}
+.prospect-detail-box{background:var(--white);border-radius:18px;width:100%;max-width:400px;max-height:85vh;overflow-y:auto;transform:translateY(8px);transition:transform 0.25s cubic-bezier(0.22,1,0.36,1);margin:16px}
+.prospect-detail-overlay.open .prospect-detail-box{transform:translateY(0)}
+.pd-head{background:var(--dark);border-radius:18px 18px 0 0;padding:18px 20px;display:flex;align-items:center;justify-content:space-between}
+.pd-head-name{font-weight:900;font-size:17px;color:#fff;letter-spacing:-0.03em}
+.pd-head-sub{font-size:11px;color:rgba(255,255,255,0.45);margin-top:2px;font-weight:500}
+.pd-close{width:28px;height:28px;border-radius:7px;background:rgba(255,255,255,0.1);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.pd-body{padding:18px 20px}
+.pd-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.pd-item{background:var(--surface);border-radius:10px;padding:12px}
+.pd-item-label{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:4px}
+.pd-item-val{font-weight:800;font-size:14px;letter-spacing:-0.02em;color:var(--dark)}
+.pd-item-val.red{color:var(--red)}
+.pd-item-val.green{color:var(--green)}
+.pd-comment{background:var(--surface);border-radius:10px;padding:12px;margin-bottom:14px}
+.pd-comment-label{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:6px}
+.pd-comment-text{font-size:13px;color:var(--dark);line-height:1.6;font-weight:500}
+.pd-tag-row{display:flex;gap:6px;flex-wrap:wrap}
+.pd-tag{font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;background:var(--dark);color:#fff}
+
+.fiche-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:400;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s;backdrop-filter:blur(3px)}
+.fiche-overlay.open{opacity:1;pointer-events:all}
+.fiche-sheet{background:var(--white);border-radius:20px 20px 0 0;width:100%;max-width:680px;max-height:88vh;overflow-y:auto;transform:translateY(20px);transition:transform 0.3s cubic-bezier(0.22,1,0.36,1)}
+.fiche-overlay.open .fiche-sheet{transform:translateY(0)}
+.fiche-handle{width:32px;height:3px;background:rgba(17,17,18,0.15);border-radius:99px;margin:12px auto 0}
+.fiche-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.fiche-head-left h3{font-weight:900;font-size:16px;letter-spacing:-0.03em}
+.fiche-head-left p{font-size:12px;color:var(--muted);margin-top:2px;font-weight:500}
+.fiche-close{width:28px;height:28px;border-radius:7px;background:var(--surface);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.fiche-body{padding:16px 20px 24px}
+.fiche-rdv-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:10px;transition:border-color 0.15s}
+.fiche-rdv-card:hover{border-color:rgba(17,17,18,0.2)}
+.fiche-rdv-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.fiche-rdv-datetime{display:flex;align-items:center;gap:8px}
+.fiche-rdv-date{font-weight:800;font-size:13px;letter-spacing:-0.01em;color:var(--dark)}
+.fiche-rdv-time{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;background:var(--red-soft);color:var(--red)}
+.fiche-rdv-sector{font-size:10px;font-weight:600;padding:3px 8px;border-radius:6px;background:var(--surface);color:var(--muted)}
+.fiche-rdv-fields{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
+.fiche-rdv-field{display:flex;align-items:center;gap:10px}
+.fiche-rdv-field-icon{width:28px;height:28px;border-radius:7px;background:var(--surface);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.fiche-rdv-field-icon svg{opacity:0.5}
+.fiche-rdv-field-content{}
+.fiche-rdv-field-label{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)}
+.fiche-rdv-field-val{font-size:13px;font-weight:600;color:var(--dark)}
+.fiche-rdv-field-val.blurred{filter:blur(4px);user-select:none;pointer-events:none;background:linear-gradient(90deg,rgba(17,17,18,0.08),rgba(17,17,18,0.05));border-radius:4px;padding:1px 4px}
+.fiche-rdv-buy{width:100%;padding:11px;border-radius:10px;background:var(--dark);color:#fff;font-family:"Plus Jakarta Sans",sans-serif;font-weight:800;font-size:13px;border:none;cursor:pointer;transition:background 0.15s;display:flex;align-items:center;justify-content:center;gap:8px}
+.fiche-rdv-buy:hover{background:var(--red)}
+.fiche-rdv-buy.bought{background:var(--green-soft);color:var(--green);cursor:default}
+.fiche-unlock-note{text-align:center;font-size:11px;color:var(--muted);margin-top:8px;font-weight:500}
+
+.dept-panel{display:none;flex-direction:column;gap:0;background:var(--white);border-radius:14px;border:1px solid var(--border);overflow:hidden;margin-bottom:16px}
+.dept-panel.visible{display:flex}
+.dept-panel-header{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.dept-panel-title{font-weight:800;font-size:14px;letter-spacing:-0.02em}
+.dept-panel-close{width:26px;height:26px;border-radius:6px;background:var(--surface);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.dept-row{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.12s}
+.dept-row:last-child{border-bottom:none}
+.dept-row:hover{background:var(--surface)}
+.dept-row.active{background:var(--red-soft)}
+.dept-row.active .dept-name{color:var(--red);font-weight:800}
+.dept-name{font-size:13px;font-weight:600;color:var(--dark)}
+.dept-rdv{font-size:11px;font-weight:700;padding:2px 8px;border-radius:5px;background:var(--surface);color:var(--muted)}
+.dept-rdv.dispo{background:var(--red-soft);color:var(--red)}
+
+.region-selector{margin-bottom:16px}
+.region-selector-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--muted);margin-bottom:8px;display:block}
+.region-grid{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.region-row{background:var(--white);border-radius:11px;border:1px solid var(--border);padding:11px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:all 0.15s}
+.region-row:hover{border-color:rgba(17,17,18,0.2);background:var(--surface)}
+.region-row.active{border-color:var(--dark);background:var(--dark)}
+.region-row.active .region-name{color:#fff}
+.region-row.active .region-count{background:rgba(255,255,255,0.15);color:#fff}
+.region-name{font-weight:700;font-size:13px;color:var(--dark);letter-spacing:-0.01em}
+.region-count{font-size:11px;font-weight:700;padding:3px 10px;border-radius:5px;background:var(--surface);color:var(--muted)}
+.region-count.has-dispo{background:var(--red-soft);color:var(--red)}
+.region-back{display:none;align-items:center;gap:8px;margin-bottom:14px;cursor:pointer;padding:8px 0}
+.region-back.visible{display:flex}
+.region-back-label{font-size:13px;font-weight:700;color:var(--muted)}
+.region-back:hover .region-back-label{color:var(--dark)}
+.region-current{font-weight:800;font-size:16px;letter-spacing:-0.03em;margin-bottom:12px}
+
+.map-panel{position:relative}
+.map-expand-btn{position:absolute;top:10px;right:10px;z-index:999;width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.95);border:1px solid rgba(0,0,0,0.1);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.15)}
+.map-expand-btn:hover{background:#fff}
+.map-fullscreen-overlay{position:fixed;inset:0;z-index:500;display:none;flex-direction:column}
+.map-fullscreen-overlay.open{display:flex}
+.map-fullscreen-header{background:var(--dark);height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;flex-shrink:0}
+.map-fullscreen-title{font-weight:800;font-size:15px;color:#fff;letter-spacing:-0.02em}
+.map-fullscreen-close{display:flex;align-items:center;gap:7px;padding:7px 14px;border-radius:8px;background:rgba(255,255,255,0.1);border:none;cursor:pointer;color:#fff;font-family:"Plus Jakarta Sans",sans-serif;font-weight:700;font-size:12px}
+#rdvMapFull{flex:1;width:100%}
+
+/* HAMBURGER MOBILE */
+.hamburger{display:none;width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,0.1);border:none;cursor:pointer;align-items:center;justify-content:center;flex-direction:column;gap:5px}
+.hamburger span{display:block;width:16px;height:2px;background:#fff;border-radius:2px;transition:all 0.25s}
+.drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:300;opacity:0;pointer-events:none;transition:opacity 0.25s;backdrop-filter:blur(2px)}
+.drawer-overlay.open{opacity:1;pointer-events:all}
+.drawer{position:fixed;top:0;left:0;bottom:0;width:260px;background:var(--white);z-index:301;transform:translateX(-100%);transition:transform 0.3s cubic-bezier(0.22,1,0.36,1);padding:20px 0;overflow-y:auto}
+.drawer.open{transform:translateX(0)}
+.drawer-close{display:flex;align-items:center;justify-content:space-between;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px}
+.drawer-close-label{font-weight:800;font-size:15px;letter-spacing:-0.02em}
+.drawer-close-btn{width:28px;height:28px;border-radius:7px;background:var(--surface);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center}
+@media(max-width:900px){
+  .hamburger{display:flex}
+}
+</style>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>var REGION_COORDS = {
+  'Auvergne-Rhône-Alpes':[45.75,4.85], 'Provence-Alpes-Côte d\'Azur':[43.93,6.07],
+  'Nouvelle-Aquitaine':[44.84,-0.58], 'Occitanie':[43.60,3.88],
+  'Île-de-France':[48.86,2.35], 'Pays de la Loire':[47.48,-0.55],
+  'Hauts-de-France':[50.48,2.79], 'Grand Est':[48.70,6.18],
+  'Bretagne':[48.20,-2.93], 'Normandie':[49.18,0.37],
+  'Bourgogne-Franche-Comté':[47.05,5.04], 'Centre-Val de Loire':[47.75,1.67],
+};
+
+var DEPT_COORDS = {
+  'Ain (01)':[46.07,5.34],'Allier (03)':[46.34,3.43],'Ardèche (07)':[44.73,4.27],
+  'Cantal (15)':[45.04,2.75],'Drôme (26)':[44.72,5.24],'Isère (38)':[45.28,5.79],
+  'Loire (42)':[45.57,4.23],'Haute-Loire (43)':[45.19,3.91],'Puy-de-Dôme (63)':[45.77,3.08],
+  'Rhône (69)':[45.74,4.75],'Savoie (73)':[45.52,6.56],'Haute-Savoie (74)':[45.89,6.48],
+  'Alpes-de-Haute-Provence (04)':[44.06,6.23],'Hautes-Alpes (05)':[44.65,6.34],
+  'Alpes-Maritimes (06)':[43.93,7.18],'Bouches-du-Rhône (13)':[43.53,5.41],
+  'Var (83)':[43.46,6.26],'Vaucluse (84)':[43.99,5.08],
+  'Charente (16)':[45.65,0.15],'Charente-Maritime (17)':[45.74,-0.73],
+  'Corrèze (19)':[45.27,1.77],'Creuse (23)':[46.00,2.02],
+  'Dordogne (24)':[45.10,0.73],'Gironde (33)':[44.84,-0.58],
+  'Landes (40)':[43.93,-0.75],'Lot-et-Garonne (47)':[44.35,0.62],
+  'Pyrénées-Atlantiques (64)':[43.29,-0.37],'Deux-Sèvres (79)':[46.32,-0.46],
+  'Vienne (86)':[46.58,0.34],'Haute-Vienne (87)':[45.83,1.23],
+  'Ariège (09)':[42.95,1.60],'Aude (11)':[43.25,2.35],'Aveyron (12)':[44.35,2.57],
+  'Gard (30)':[43.95,4.17],'Haute-Garonne (31)':[43.60,1.44],'Gers (32)':[43.70,0.59],
+  'Hérault (34)':[43.61,3.88],'Lot (46)':[44.62,1.67],'Lozère (48)':[44.51,3.50],
+  'Hautes-Pyrénées (65)':[43.23,0.07],'Pyrénées-Orientales (66)':[42.67,2.54],
+  'Tarn (81)':[43.79,2.14],'Tarn-et-Garonne (82)':[44.02,1.35],
+  'Paris (75)':[48.86,2.35],'Seine-et-Marne (77)':[48.62,2.95],
+  'Yvelines (78)':[48.78,1.83],'Essonne (91)':[48.53,2.29],
+  'Hauts-de-Seine (92)':[48.84,2.23],'Seine-Saint-Denis (93)':[48.91,2.46],
+  'Val-de-Marne (94)':[48.78,2.47],'Val-d\'Oise (95)':[49.06,2.13],
+  'Loire-Atlantique (44)':[47.26,-1.54],'Maine-et-Loire (49)':[47.38,-0.56],
+  'Mayenne (53)':[48.09,-0.62],'Sarthe (72)':[48.00,0.19],'Vendée (85)':[46.67,-1.43],
+  'Aisne (02)':[49.57,3.62],'Nord (59)':[50.52,3.21],'Oise (60)':[49.41,2.44],
+  'Pas-de-Calais (62)':[50.52,2.14],'Somme (80)':[49.92,2.30],
+  'Ardennes (08)':[49.69,4.72],'Aube (10)':[48.24,4.08],'Marne (51)':[48.97,4.36],
+  'Haute-Marne (52)':[48.11,5.13],'Meurthe-et-Moselle (54)':[48.69,6.18],
+  'Meuse (55)':[48.97,5.34],'Moselle (57)':[49.12,6.50],
+  'Bas-Rhin (67)':[48.57,7.51],'Haut-Rhin (68)':[47.83,7.26],'Vosges (88)':[48.17,6.45],
+  'Côtes-d\'Armor (22)':[48.45,-2.87],'Finistère (29)':[48.26,-3.99],
+  'Ille-et-Vilaine (35)':[48.17,-1.68],'Morbihan (56)':[47.89,-2.85],
+  'Calvados (14)':[49.09,-0.35],'Eure (27)':[49.07,1.15],
+  'Manche (50)':[49.08,-1.27],'Orne (61)':[48.43,0.09],'Seine-Maritime (76)':[49.66,1.10],
+  'Côte-d\'Or (21)':[47.32,4.83],'Doubs (25)':[47.13,6.35],'Jura (39)':[46.67,5.55],
+  'Nièvre (58)':[47.11,3.50],'Haute-Saône (70)':[47.63,6.09],
+  'Saône-et-Loire (71)':[46.66,4.57],'Yonne (89)':[47.80,3.57],
+  'Territoire de Belfort (90)':[47.64,6.87],
+  'Cher (18)':[47.08,2.39],'Eure-et-Loir (28)':[48.44,1.49],'Indre (36)':[46.81,1.70],
+  'Indre-et-Loire (37)':[47.22,0.69],'Loir-et-Cher (41)':[47.58,1.34],'Loiret (45)':[47.90,2.14],
+};
+
+
+
+
+const DEPARTMENTS = {
+  'Auvergne-Rhône-Alpes': ['Ain (01)','Allier (03)','Ardèche (07)','Cantal (15)','Drôme (26)','Isère (38)','Loire (42)','Haute-Loire (43)','Puy-de-Dôme (63)','Rhône (69)','Savoie (73)','Haute-Savoie (74)'],
+  'Provence-Alpes-Côte d\'Azur': ['Alpes-de-Haute-Provence (04)','Hautes-Alpes (05)','Alpes-Maritimes (06)','Bouches-du-Rhône (13)','Var (83)','Vaucluse (84)'],
+  'Nouvelle-Aquitaine': ['Charente (16)','Charente-Maritime (17)','Corrèze (19)','Creuse (23)','Dordogne (24)','Gironde (33)','Landes (40)','Lot-et-Garonne (47)','Pyrénées-Atlantiques (64)','Deux-Sèvres (79)','Vienne (86)','Haute-Vienne (87)'],
+  'Occitanie': ['Ariège (09)','Aude (11)','Aveyron (12)','Gard (30)','Haute-Garonne (31)','Gers (32)','Hérault (34)','Lot (46)','Lozère (48)','Hautes-Pyrénées (65)','Pyrénées-Orientales (66)','Tarn (81)','Tarn-et-Garonne (82)'],
+  'Île-de-France': ['Paris (75)','Seine-et-Marne (77)','Yvelines (78)','Essonne (91)','Hauts-de-Seine (92)','Seine-Saint-Denis (93)','Val-de-Marne (94)','Val-d\'Oise (95)'],
+  'Pays de la Loire': ['Loire-Atlantique (44)','Maine-et-Loire (49)','Mayenne (53)','Sarthe (72)','Vendée (85)'],
+  'Hauts-de-France': ['Aisne (02)','Nord (59)','Oise (60)','Pas-de-Calais (62)','Somme (80)'],
+  'Grand Est': ['Ardennes (08)','Aube (10)','Marne (51)','Haute-Marne (52)','Meurthe-et-Moselle (54)','Meuse (55)','Moselle (57)','Bas-Rhin (67)','Haut-Rhin (68)','Vosges (88)'],
+  'Bretagne': ['Côtes-d\'Armor (22)','Finistère (29)','Ille-et-Vilaine (35)','Morbihan (56)'],
+  'Normandie': ['Calvados (14)','Eure (27)','Manche (50)','Orne (61)','Seine-Maritime (76)'],
+  'Bourgogne-Franche-Comté': ['Côte-d\'Or (21)','Doubs (25)','Jura (39)','Nièvre (58)','Haute-Saône (70)','Saône-et-Loire (71)','Yonne (89)','Territoire de Belfort (90)'],
+  'Centre-Val de Loire': ['Cher (18)','Eure-et-Loir (28)','Indre (36)','Indre-et-Loire (37)','Loir-et-Cher (41)','Loiret (45)'],
+};
+
+// Coordonnées GPS des villes
+const COORDS = {
+  'Lyon': [45.7640, 4.8357],
+  'Marseille': [43.2965, 5.3698],
+  'Bordeaux': [44.8378, -0.5792],
+  'Toulouse': [43.6047, 1.4442],
+  'Paris': [48.8566, 2.3522],
+  'Nantes': [47.2184, -1.5536],
+  'Lille': [50.6292, 3.0573],
+  'Nice': [43.7102, 7.2620],
+  'Strasbourg': [48.5734, 7.7521],
+  'Rennes': [48.1173, -1.6778],
+  'Montpellier': [43.6110, 3.8767],
+  'Avignon': [43.9493, 4.8055],
+};
+
+let map = null;
+let markers = [];
+
+const RDV_DATA = [
+  { id:1, sector:'Rénovation énergétique', zone:'Lyon & périphérie', city:'Lyon', price:25, dispo:4, tag:'populaire', category:'renovation', profile:'Professionnelpriétaire, DPE E/F, >50 ans, revenus modestes' },
+  { id:2, sector:'Isolation combles', zone:'Marseille Sud', city:'Marseille', price:25, region:'Provence-Alpes-Côte d\'Azur', dispo:2, tag:'nouveau', category:'isolation', profile:'Professionnelpriétaire maison individuelle, intéressé prime CEE' },
+  { id:3, sector:'Pompe à chaleur', zone:'Bordeaux Métropole', city:'Bordeaux', price:25, region:'Nouvelle-Aquitaine', dispo:3, tag:'populaire', category:'pac', profile:'Professionnelpriétaire, chauffage fioul existant, budget confirmé' },
+  { id:4, sector:'Panneaux solaires', zone:'Toulouse & alentours', city:'Toulouse', price:25, region:'Occitanie', dispo:1, tag:'nouveau', category:'solaire', profile:'Professionnelpriétaire maison, toit sud exposé, primo-intéressé' },
+  { id:5, sector:'Rénovation énergétique', zone:'Paris Île-de-France', city:'Paris', price:25, region:'Île-de-France', dispo:5, tag:null, category:'renovation', profile:'Professionnelpriétaire appartement, DPE D/E, locataire en place' },
+  { id:6, sector:'Isolation thermique', zone:'Nantes & Pays de Loire', city:'Nantes', price:25, region:'Pays de la Loire', dispo:2, tag:null, category:'isolation', profile:'Professionnelpriétaire maison, projet isolation murs, devis souhaité' },
+  { id:7, sector:'Pompe à chaleur', zone:'Lille Métropole', city:'Lille', price:25, region:'Hauts-de-France', dispo:3, tag:'nouveau', category:'pac', profile:'Professionnelpriétaire, comparatif pompe à chaleur/chaudière gaz' },
+  { id:8, sector:'Panneaux solaires', zone:'Nice & Côte d\'Azur', city:'Nice', price:25, region:'Provence-Alpes-Côte d\'Azur', dispo:1, tag:'populaire', category:'solaire', profile:'Professionnelpriétaire villa, fort ensoleillement, budget confirmé 15k€+' },
+  { id:9, sector:'Rénovation énergétique', zone:'Strasbourg & Alsace', city:'Strasbourg', price:25, region:'Grand Est', dispo:2, tag:null, category:'renovation', profile:'Professionnelpriétaire maison ancienne, projet global rénovation' },
+  { id:10, sector:'Isolation combles', zone:'Rennes & Bretagne', city:'Rennes', price:25, region:'Bretagne', dispo:4, tag:'nouveau', category:'isolation', profile:'Professionnelpriétaire, combles perdus, éligible MaPrimeRénov' },
+  { id:11, sector:'Pompe à chaleur', zone:'Montpellier & Hérault', city:'Montpellier', price:25, region:'Occitanie', dispo:2, tag:null, category:'pac', profile:'Professionnelpriétaire maison, chauffage électrique, project PAC air/air' },
+  { id:12, sector:'Panneaux solaires', zone:'Avignon & Vaucluse', city:'Avignon', price:25, region:'Provence-Alpes-Côte d\'Azur', dispo:3, tag:'populaire', category:'solaire', profile:'Agriculteur/propriétaire, grande toiture, revente surplus EDF' },
+];
+
+let currentFilter = 'all';
+let currentRdv = null;
+let currentQty = 1;
+let orders = JSON.parse(localStorage.getItem('sp_orders_v2') || '[]');
+localStorage.setItem('sp_credits', '200');
+let credits = 200;
+
+function renderStats() {
+  const thisMonth = orders.filter(o => new Date(o.date).getMonth() === new Date().getMonth());
+  const total = thisMonth.reduce((s,o) => s + o.qty, 0);
+  const spent = thisMonth.reduce((s,o) => s + o.total, 0);
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('statSpent').textContent = spent + ' €';
+  document.getElementById('creditBalance').textContent = credits;
+  document.getElementById('creditDisplay').textContent = credits + ' €';
+  document.getElementById('creditUsed').textContent = spent + ' €';
+}
+
+function renderRdvList(filtered) {
+  const grid = document.getElementById('rdvGrid');
+
+  grid.innerHTML = filtered.map(r => {
+    const tagHtml = r.tag ? '<span class="rdv-tag ' + (r.tag === 'populaire' ? 'tag-hot' : 'tag-new') + '">' + (r.tag === 'populaire' ? 'Populaire' : 'Nouveau') + '</span>' : '';
+    const iconBg = r.category === 'renovation' ? 'rgba(181,35,48,0.08)' : r.category === 'isolation' ? 'rgba(201,168,76,0.1)' : r.category === 'pac' ? 'rgba(0,112,74,0.08)' : 'rgba(21,101,192,0.08)';
+    const iconColor = r.category === 'renovation' ? '#b52330' : r.category === 'isolation' ? '#9a7a28' : r.category === 'pac' ? '#00704a' : '#1565c0';
+    const iconPath = r.category === 'renovation' ? 'M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z' : r.category === 'isolation' ? 'M12 3L2 12h3v8h6v-5h2v5h6v-8h3z' : r.category === 'pac' ? 'M13 2.05v2.02c3.95.49 7 3.85 7 7.93 0 3.21-1.81 6-4.72 7.28L13 17v5h5l-1.22-1.22C19.91 19.07 22 15.76 22 12c0-5.18-3.95-9.45-9-9.95zM11 2.05C5.95 2.55 2 6.82 2 12c0 3.76 2.09 7.07 5.22 8.78L6 22h5V2.05z' : 'M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.79 1.42-1.41zM4 10.5H1v2h3v-2zm9-9.95h-2V3.5h2V.55zm7.45 3.91l-1.41-1.41-1.79 1.79 1.41 1.41 1.79-1.79zm-3.21 13.7l1.79 1.8 1.41-1.41-1.8-1.79-1.4 1.4zM20 10.5v2h3v-2h-3zm-8-5c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm-1 16.95h2V19.5h-2v2.95zm-7.45-3.91l1.41 1.41 1.79-1.8-1.41-1.41-1.79 1.8z';
+    return `
+    <div class="rdv-card ${r.tag ? 'featured' : ''}" style="position:relative">
+      ${r.tag ? `<span class="rdv-badge-hot">${r.tag === 'populaire' ? 'Populaire' : 'Nouveau'}</span>` : ''}
+      <div class="rdv-sector-icon" style="background:${iconBg}">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="${iconColor}"><path d="${iconPath}"/></svg>
+      </div>
+      <div class="rdv-info">
+        <p class="rdv-sector">${r.sector}</p>
+        <div class="rdv-meta">
+          <span class="rdv-meta-item">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            ${r.zone}
+          </span>
+          <span class="rdv-meta-item">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+            ${r.dispo} RDV dispo${r.dispo > 1 ? 's' : ''}
+          </span>
+          <span style="font-size:11px;color:var(--muted);font-weight:500;font-style:italic">${r.profile}</span>
+        </div>
+      </div>
+      <div class="rdv-price-block">
+        <p class="rdv-price">${r.price} €<small>/RDV</small></p>
+        <p class="rdv-price-sub">Honoré garanti</p>
+      </div>
+      <div class="rdv-actions">
+        <button class="btn-ghost" onclick="showInfo(${r.id})">Détails</button>
+        <button class="btn-primary" onclick="openModal(${r.id})">Acheter</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+
+let currentRegion = null;
+
+function getRegions() {
+  const map = {};
+  RDV_DATA.forEach(r => {
+    if (!map[r.region]) map[r.region] = { total: 0, dispo: 0 };
+    map[r.region].total++;
+    map[r.region].dispo += r.dispo;
+  });
+  return map;
+}
+
+
+
+var mapMode = 'regions';
+
+function drillDownRegion(region) {
+  if (!map) return;
+  mapMode = 'depts';
+
+  // Supprimer markers actuels
+  markers.forEach(function(m) { map.removeLayer(m); });
+  markers = [];
+
+  // Afficher bouton retour
+  var backBtn = document.getElementById('mapBackBtn');
+  if (!backBtn) {
+    backBtn = document.createElement('button');
+    backBtn.id = 'mapBackBtn';
+    backBtn.innerHTML = '← Toutes les régions';
+    backBtn.style.cssText = 'position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:200;background:#fff;border:1px solid #ddd;padding:6px 12px;border-radius:8px;font-family:Plus Jakarta Sans,sans-serif;font-weight:700;font-size:11px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.12)';
+    backBtn.onclick = function() {
+      mapMode = 'regions';
+      backBtn.style.display = 'none';
+      updateMapMarkers(RDV_DATA);
+      map.setView([46.8, 2.3], 6);
+    };
+    document.getElementById('rdvMap').style.position = 'relative';
+    document.getElementById('rdvMap').appendChild(backBtn);
+  }
+  backBtn.style.display = 'block';
+
+  // Trouver les départements
+  var depts = DEPARTMENTS[region] || [];
+  var FORCED = {'Vaucluse (84)':4,'Gard (30)':3};
+  var bounds = [];
+
+  depts.forEach(function(dept) {
+    var coords = DEPT_COORDS[dept];
+    if (!coords) return;
+    bounds.push(L.latLng(coords[0], coords[1]));
+
+    var count = FORCED[dept] !== undefined ? FORCED[dept] : (Math.random() > 0.4 ? Math.floor(Math.random()*4)+1 : 0);
+    var active = count > 0;
+
+    var icon = L.divIcon({
+      className: '',
+      iconSize: null,
+      iconAnchor: null,
+      html: '<div style="background:' + (active ? '#b52330' : 'rgba(100,100,100,0.4)') + ';color:#fff;font-family:Plus Jakarta Sans,sans-serif;font-weight:700;font-size:10px;padding:4px 9px;border-radius:99px;white-space:nowrap;border:2px solid #fff;cursor:' + (active ? 'pointer' : 'default') + ';display:inline-block;box-shadow:' + (active ? '0 2px 8px rgba(181,35,48,0.4)' : 'none') + '">' + dept.split(' (')[0] + (active ? ' · ' + count + ' RDV' : '') + '</div>'
+    });
+
+    var m = L.marker([coords[0], coords[1]], { icon: icon }).addTo(map);
+    if (active) {
+      (function(d, c) {
+        m.on('click', function() { openFiche(d, c); });
+      })(dept, count);
+    }
+    markers.push(m);
+  });
+
+  // Zoomer sur la région
+  if (bounds.length > 0) {
+    map.fitBounds(L.latLngBounds(bounds).pad(0.2));
+  }
+}
+
+
+function selectRegionByName(region) {
+  var row = document.querySelector('.region-row[data-region="' + encodeURIComponent(region) + '"]');
+  if (row) {
+    row.click();
+  } else {
+    // Reconstruire la grille si nécessaire et réessayer
+    renderRegionGrid();
+    setTimeout(function() {
+      var r2 = document.querySelector('.region-row[data-region="' + encodeURIComponent(region) + '"]');
+      if (r2) r2.click();
+    }, 80);
+  }
+}
+function renderRegionGrid() {
+  const regions = getRegions();
+  const grid = document.getElementById('regionGrid');
+  const sorted = Object.entries(regions).sort((a,b) => b[1].dispo - a[1].dispo);
+  grid.innerHTML = sorted.map(([name, data]) => {
+    var cls = data.dispo > 0 ? "has-dispo" : "";
+    return "<div class=\"region-row\" data-region=\"" + encodeURIComponent(name) + "\">" +
+      "<span class=\"region-name\">" + name + "</span>" +
+      "<span class=\"region-count " + cls + "\">" + data.dispo + " RDV</span>" +
+      "</div>";
+  }).join('');
+  grid.querySelectorAll(".region-row").forEach(function(row) {
+    row.addEventListener("click", function() {
+      var name = decodeURIComponent(row.getAttribute("data-region"));
+      selectRegion(name, row);
+    });
+  });
+}
+
+let currentDept = null;
+
+function selectRegion(region, el) {
+  currentRegion = region;
+  currentDept = null;
+  document.querySelectorAll('.region-row').forEach(r => r.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('regionGrid').style.display = 'none';
+  document.querySelector('.region-selector-label').style.display = 'none';
+
+  // Ouvrir panel départements
+  const depts = DEPARTMENTS[region] || [];
+  document.getElementById('deptPanelTitle').textContent = region;
+  const deptList = document.getElementById('deptList');
+  var deptHtml = "";
+  var deptCounts = {};
+  var FORCED_DISPO = {
+    'Vaucluse (84)': 4,
+    'Gard (30)': 3,
+  };
+  depts.forEach(function(d) {
+    var count = FORCED_DISPO[d] !== undefined ? FORCED_DISPO[d] : (Math.random() > 0.4 ? Math.floor(Math.random() * 4) + 1 : 0);
+    deptCounts[d] = count;
+    var cls = count > 0 ? "dispo" : "";
+    var label = count > 0 ? (count + " RDV") : "Aucun";
+    deptHtml += "<div class=\"dept-row\" data-dept=\"" + encodeURIComponent(d) + "\" data-count=\"" + count + "\"><span class=\"dept-name\">" + d + "</span><span class=\"dept-rdv " + cls + "\">" + label + "</span></div>";
+  });
+  deptList.innerHTML = deptHtml;
+  deptList.querySelectorAll(".dept-row").forEach(function(row) {
+    row.addEventListener("click", function() {
+      var d = decodeURIComponent(row.getAttribute("data-dept"));
+      var count = parseInt(row.getAttribute("data-count"));
+      selectDept(d, count, row);
+    });
+  });
+  document.getElementById('deptPanel').classList.add('visible');
+
+  // Zoomer sur la région dans la carte
+  setTimeout(function() { drillDownRegion(region); }, 100);
+}
+
+function selectDept(dept, count, el) {
+  if (count === 0) { showToast('Aucun RDV disponible dans ce département'); return; }
+  document.querySelectorAll('.dept-row').forEach(r => r.classList.remove('active'));
+  el.classList.add('active');
+  openFiche(dept, count);
+}
+
+function closeDeptPanel() {
+  document.getElementById('deptPanel').classList.remove('visible');
+  document.getElementById('regionGrid').style.display = 'flex';
+  document.querySelector('.region-selector-label').style.display = 'block';
+  document.querySelectorAll('.region-row').forEach(r => r.classList.remove('active'));
+  currentRegion = null;
+  currentDept = null;
+}
+
+function resetRegion() {
+  currentRegion = null;
+  currentDept = null;
+  currentFilter = 'all';
+  document.getElementById('regionGrid').style.display = 'flex';
+  document.getElementById('regionBack').classList.remove('visible');
+  document.getElementById('regionCurrentTitle').style.display = 'none';
+  document.getElementById('filterBtns').style.display = 'none';
+  document.getElementById('deptPanel').classList.remove('visible');
+  document.querySelector('.region-selector-label').style.display = 'block';
+  document.querySelectorAll('.region-row').forEach(r => r.classList.remove('active'));
+  document.getElementById('rdvGrid').innerHTML = '';
+  updateMapMarkers([]);
+}
+
+function applyFilters() {
+  let filtered = RDV_DATA;
+  if (currentRegion) filtered = filtered.filter(r => r.region === currentRegion);
+  if (currentFilter !== 'all') filtered = filtered.filter(r => r.category === currentFilter);
+  const grid = document.getElementById('rdvGrid');
+  if (!filtered.length) {
+    grid.innerHTML = '<div style="padding:32px;text-align:center;color:var(--muted);font-weight:500;font-size:13px">Aucun RDV disponible pour cette sélection</div>';
+  } else {
+    renderRdvList(filtered);
+  }
+  updateMapMarkers(filtered);
+  document.getElementById('navCount').textContent = filtered.length;
+}
+
+function filterRdv(cat, btn) {
+  currentFilter = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (currentRegion) applyFilters();
+}
+
+
+function openModal(id) {
+  currentRdv = RDV_DATA.find(r => r.id === id);
+  if (!currentRdv) return;
+  currentQty = 1;
+  document.getElementById('modalTitle').textContent = 'Acheter — ' + currentRdv.sector;
+  document.getElementById('modalSub').textContent = currentRdv.zone;
+  document.getElementById('mSector').textContent = currentRdv.sector;
+  document.getElementById('mZone').textContent = currentRdv.zone;
+  document.getElementById('mPrice').textContent = currentRdv.price + ' €';
+  updateModalTotal();
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function changeQty(delta) {
+  currentQty = Math.max(1, Math.min(currentRdv?.dispo || 10, currentQty + delta));
+  document.getElementById('qtyVal').textContent = currentQty;
+  updateModalTotal();
+}
+
+function updateModalTotal() {
+  if (!currentRdv) return;
+  document.getElementById('modalTotal').textContent = (currentRdv.price * currentQty) + ' €';
+}
+
+function confirmOrder() {
+  if (!currentRdv) return;
+  const total = currentRdv.price * currentQty;
+  if (credits < total) { showToast('Crédits insuffisants — rechargez votre compte'); closeModalDirect(); return; }
+  credits -= total;
+  localStorage.setItem('sp_credits', credits);
+  orders.unshift({
+    sector: currentRdv.sector, city: currentRdv.city, zone: currentRdv.zone,
+    qty: currentQty, total, date: new Date().toISOString(), status: 'done'
+  });
+  localStorage.setItem('sp_orders_v2', JSON.stringify(orders));
+  if (currentRegion) applyFilters(); else document.getElementById('rdvGrid').innerHTML = '';
+  renderOrders();
+  renderStats();
+  closeModalDirect();
+  showToast(currentQty + ' RDV commandé' + (currentQty > 1 ? 's' : '') + ' — confirmation par email');
+}
+
+
+function openOrderFiche(order) {
+  var rdv = order.rdvData;
+  if (!rdv) { showToast('Détails non disponibles pour cette commande'); return; }
+
+  ficheRdvs = [rdv];
+  document.getElementById('ficheDeptTitle').textContent = rdv.city;
+  document.getElementById('ficheDeptSub').textContent = 'RDV le ' + rdv.date + ' \u00e0 ' + rdv.time + ' \u2014 coordonn\u00e9es d\u00e9bloqu\u00e9es';
+
+  var body = document.getElementById('ficheBody');
+  body.innerHTML = '';
+
+  var card = document.createElement('div');
+  card.className = 'fiche-rdv-card';
+  card.setAttribute('data-cardid', rdv.id);
+
+  // Header date/heure
+  var top = document.createElement('div');
+  top.className = 'fiche-rdv-top';
+  top.innerHTML = '<div class="fiche-rdv-datetime"><span class="fiche-rdv-date">' + rdv.date + '</span><span class="fiche-rdv-time">' + rdv.time + '</span></div><span class="fiche-rdv-sector">' + rdv.sector + '</span>';
+  card.appendChild(top);
+
+  // Champs
+  var fields = document.createElement('div');
+  fields.className = 'fiche-rdv-fields';
+
+  function makeField(iconPath, label, val) {
+    var f = document.createElement('div'); f.className = 'fiche-rdv-field';
+    f.innerHTML = '<div class="fiche-rdv-field-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="#111"><path d="' + iconPath + '"/></svg></div>' +
+      '<div class="fiche-rdv-field-content"><p class="fiche-rdv-field-label">' + label + '</p><p class="fiche-rdv-field-val">' + val + '</p></div>';
+    return f;
+  }
+
+  fields.appendChild(makeField('M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z', 'Adresse', rdv.city + '<br><small style="font-size:11px;color:#7a7570">' + rdv.address + '</small>'));
+  fields.appendChild(makeField('M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z', 'Prospect', rdv.firstname + ' ' + rdv.lastname));
+  fields.appendChild(makeField('M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z', 'T\u00e9l\u00e9phone', rdv.phone));
+  card.appendChild(fields);
+
+  // Actions
+  var actions = document.createElement('div');
+  actions.style.cssText = 'display:flex;gap:8px';
+  var acheté = document.createElement('button');
+  acheté.className = 'fiche-rdv-buy bought';
+  acheté.style.flex = '1';
+  acheté.disabled = true;
+  acheté.textContent = 'Achet\u00e9';
+  var profilBtn = document.createElement('button');
+  profilBtn.style.cssText = 'padding:11px 14px;border-radius:10px;background:#f0faf5;border:1px solid rgba(0,112,74,0.2);font-family:Plus Jakarta Sans,sans-serif;font-weight:700;font-size:12px;color:#00704a;cursor:pointer';
+  profilBtn.textContent = 'Profil';
+  profilBtn.onclick = function() { openProspectDetail(rdv.id); };
+
+  var signalBtn = document.createElement('button');
+  signalBtn.style.cssText = 'padding:11px 14px;border-radius:10px;background:var(--red-soft);border:1px solid rgba(181,35,48,0.2);font-family:Plus Jakarta Sans,sans-serif;font-weight:700;font-size:12px;color:var(--red);cursor:pointer;white-space:nowrap';
+  signalBtn.textContent = 'Non honor\u00e9';
+  var oIdx = orders.findIndex(function(o) { return o.rdvData && o.rdvData.id === rdv.id; });
+  signalBtn.onclick = function() { openSignal(oIdx, rdv.id); };
+
+  actions.appendChild(acheté);
+  actions.appendChild(profilBtn);
+  actions.appendChild(signalBtn);
+  card.appendChild(actions);
+
+  body.appendChild(card);
+
+  document.getElementById('ficheOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+
+function renderOrders() {
+  var tbody = document.getElementById('ordersBody');
+  if (!orders.length) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);font-weight:500">Aucune commande pour l\'instant</td></tr>';
+    return;
+  }
+  var statusMap = { done: ['Livr\u00e9','status-done'], pending: ['En cours','status-pending'], cancelled: ['Annul\u00e9','status-cancelled'] };
+  tbody.innerHTML = '';
+  orders.forEach(function(o, idx) {
+    var sl = (statusMap[o.status] || ['?',''])[0];
+    var sc = (statusMap[o.status] || ['?',''])[1];
+    var d = new Date(o.date);
+    var tr = document.createElement('tr');
+    tr.style.cursor = 'pointer';
+    tr.innerHTML = '<td style="font-weight:700">' + o.sector + '</td>' +
+      '<td>' + o.city + '</td>' +
+      '<td>' + d.toLocaleDateString('fr-FR') + '</td>' +
+      '<td>' + o.qty + '</td>' +
+      '<td style="font-weight:700">' + o.total + ' \u20ac</td>' +
+      '<td><span class="status-pill ' + sc + '">' + sl + '</span></td>';
+    tr.addEventListener('click', function() {
+      if (o.rdvData) {
+        openOrderFiche(o);
+      } else {
+        showToast('D\u00e9tails non disponibles — achetez un nouveau RDV pour acc\u00e9der \u00e0 la fiche');
+      }
+    });
+    tbody.appendChild(tr);
+  });
+}
+
+function showInfo(id) {
+  const r = RDV_DATA.find(x => x.id === id);
+  if (r) showToast('Professionnelfil : ' + r.profile);
+}
+
+function addCredits(amount) {
+  credits += amount;
+  localStorage.setItem('sp_credits', credits);
+  renderStats();
+  showToast('+' + amount + ' € crédités sur votre compte');
+}
+
+function closeModal(e) { if (e.target === document.getElementById('modalOverlay')) closeModalDirect(); }
+function closeModalDirect() { document.getElementById('modalOverlay').classList.remove('open'); }
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+function showTab(name) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.getElementById('content-' + name).classList.add('active');
+}
+
+function setActive(el) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function initMap() {
+  if (map) return;
+  map = L.map('rdvMap', { zoomControl: false, scrollWheelZoom: false, dragging: false, doubleClickZoom: false, attributionControl: false }).setView([46.8, 2.3], 6);
+  L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap France',
+    subdomains: ['a','b','c'],
+    maxZoom: 18
+  }).addTo(map);
+}
+
+function updateMapMarkers(data) {
+  if (!map) return;
+  markers.forEach(m => map.removeLayer(m));
+  markers = [];
+  var rc = {};
+  data.forEach(function(r) { if (r.region) rc[r.region] = (rc[r.region]||0) + r.dispo; });
+  Object.keys(rc).forEach(function(region) {
+    var coords = REGION_COORDS[region]; if (!coords) return;
+    var icon = L.divIcon({ className: '', iconSize: null, iconAnchor: null,
+      html: '<div style="background:#b52330;color:#fff;font-family:Plus Jakarta Sans,sans-serif;font-weight:700;font-size:11px;padding:5px 11px;border-radius:99px;white-space:nowrap;box-shadow:0 3px 12px rgba(181,35,48,0.4);border:2px solid #fff;cursor:pointer;display:inline-block">' + region.split('-')[0].trim() + ' · ' + rc[region] + ' RDV</div>'
+    });
+    var m = L.marker(coords, { icon }).addTo(map);
+    (function(reg) { m.on('click', function() { drillDownRegion(reg); }); })(region);
+    markers.push(m);
+  });
+}
+
+
+
+
+let mapFull = null;
+let markersFull = [];
+
+function openFullMap() {
+  document.getElementById('mapFullOverlay').classList.add('open');
+  if (!mapFull) {
+    mapFull = L.map('rdvMapFull', { zoomControl: true, scrollWheelZoom: true }).setView([46.8, 2.3], 6);
+    L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap France',
+      subdomains: ['a','b','c'],
+      maxZoom: 18
+    }).addTo(mapFull);
+  }
+  setTimeout(() => {
+    mapFull.invalidateSize();
+    updateFullMarkers(currentFilter === 'all' ? RDV_DATA : RDV_DATA.filter(r => r.category === currentFilter));
+  }, 100);
+}
+
+function closeFullMap() {
+  document.getElementById('mapFullOverlay').classList.remove('open');
+}
+
+function updateFullMarkers(data) {
+  markersFull.forEach(m => mapFull.removeLayer(m));
+  markersFull = [];
+  var rc = {};
+  data.forEach(function(r) { if (r.region) rc[r.region] = (rc[r.region]||0) + r.dispo; });
+  Object.keys(rc).forEach(function(region) {
+    var coords = REGION_COORDS[region]; if (!coords) return;
+    var icon = L.divIcon({ className: '', iconSize: null, iconAnchor: null,
+      html: '<div style="background:#b52330;color:#fff;font-family:Plus Jakarta Sans,sans-serif;font-weight:700;font-size:12px;padding:7px 14px;border-radius:99px;white-space:nowrap;box-shadow:0 4px 16px rgba(181,35,48,0.5);border:2px solid #fff;cursor:pointer;display:inline-block">' + region + ' · ' + rc[region] + ' RDV</div>'
+    });
+    var m = L.marker(coords, { icon }).addTo(mapFull);
+    (function(reg) { m.on('click', function() { closeFullMap(); showTab('catalogue'); setActive(document.querySelector('.nav-item')); resetRegion(); setTimeout(function() { selectRegionByName(reg); }, 50); }); })(region);
+    markersFull.push(m);
+  });
+}
+
+
+
+var DEPT_CITIES = {
+  'Ain (01)': ['Bourg-en-Bresse','Oyonnax','Ambérieu-en-Bugey','Gex','Bellegarde-sur-Valserine'],
+  'Allier (03)': ['Moulins','Vichy','Montluçon','Cusset','Yzeure'],
+  'Ardèche (07)': ['Privas','Aubenas','Annonay','Tournon-sur-Rhône'],
+  'Cantal (15)': ['Aurillac','Saint-Flour','Riom-ès-Montagnes'],
+  'Drôme (26)': ['Valence','Romans-sur-Isère','Montélimar','Bourg-lès-Valence'],
+  'Isère (38)': ['Grenoble','Échirolles','Saint-Martin-d’Hères','Bourgoin-Jallieu','Vienne'],
+  'Loire (42)': ['Saint-Étienne','Roanne','Firminy','Andrézieux-Bouthéon'],
+  'Haute-Loire (43)': ['Le Puy-en-Velay','Brioude','Yssingeaux'],
+  'Puy-de-Dôme (63)': ['Clermont-Ferrand','Thiers','Riom','Issoire','Ambert'],
+  'Rhône (69)': ['Lyon','Villeurbanne','Vénissieux','Caluire-et-Cuire','Bron','Saint-Priest'],
+  'Savoie (73)': ['Chambéry','Aix-les-Bains','Albertville','Bourg-Saint-Maurice'],
+  'Haute-Savoie (74)': ['Annecy','Thonon-les-Bains','Annemasse','Cluses','Sallanches'],
+  'Alpes-de-Haute-Provence (04)': ['Digne-les-Bains','Manosque','Sisteron','Castellane'],
+  'Hautes-Alpes (05)': ['Gap','Briançon','Embrun'],
+  'Alpes-Maritimes (06)': ['Nice','Cannes','Antibes','Menton','Grasse','Cagnes-sur-Mer'],
+  'Bouches-du-Rhône (13)': ['Marseille','Aix-en-Provence','Martigues','Arles','Salon-de-Provence','Aubagne'],
+  'Var (83)': ['Toulon','La Seyne-sur-Mer','Hyères','Fréjus','Draguignan','Saint-Raphaël'],
+  'Vaucluse (84)': ['Avignon','Orange','Carpentras','Pertuis','Cavaillon','Apt'],
+  'Charente (16)': ['Angoulême','Cognac','Soyaux','La Couronne'],
+  'Charente-Maritime (17)': ['La Rochelle','Rochefort','Saintes','Royan','Jonzac'],
+  'Corrèze (19)': ['Tulle','Brive-la-Gaillarde','Ussel'],
+  'Creuse (23)': ['Guéret','Aubusson','La Souterraine'],
+  'Dordogne (24)': ['Périgueux','Bergerac','Sarlat-la-Canéda','Brive'],
+  'Gironde (33)': ['Bordeaux','Mérignac','Pessac','Libourne','Bègles','Talence'],
+  'Landes (40)': ['Mont-de-Marsan','Dax','Capbreton','Biscarrosse'],
+  'Lot-et-Garonne (47)': ['Agen','Marmande','Villeneuve-sur-Lot','Nérac'],
+  'Pyrénées-Atlantiques (64)': ['Pau','Bayonne','Biarritz','Anglet','Hendaye'],
+  'Deux-Sèvres (79)': ['Niort','Bressuire','Parthenay','Thouars'],
+  'Vienne (86)': ['Poitiers','Châtellerault','Loudun'],
+  'Haute-Vienne (87)': ['Limoges','Saint-Junien','Rochechouart'],
+  'Ariège (09)': ['Foix','Pamiers','Saint-Girons'],
+  'Aude (11)': ['Carcassonne','Narbonne','Castelnaudary','Limoux'],
+  'Aveyron (12)': ['Rodez','Millau','Villefranche-de-Rouergue'],
+  'Gard (30)': ['Nîmes','Alès','Bagnols-sur-Cèze','Beaucaire'],
+  'Haute-Garonne (31)': ['Toulouse','Blagnac','Colomiers','Tournefeuille','Muret'],
+  'Gers (32)': ['Auch','Condom','Auch','Lectoure'],
+  'Hérault (34)': ['Montpellier','Béziers','Sète','Agde','Lunel'],
+  'Lot (46)': ['Cahors','Figeac','Gourdon'],
+  'Lozère (48)': ['Mende','Florac','Langogne'],
+  'Hautes-Pyrénées (65)': ['Tarbes','Lourdes','Bagnères-de-Bigorre'],
+  'Pyrénées-Orientales (66)': ['Perpignan','Canet-en-Roussillon','Saint-Estève'],
+  'Tarn (81)': ['Albi','Castres','Gaillac','Mazamet'],
+  'Tarn-et-Garonne (82)': ['Montauban','Castelsarrasin','Moissac'],
+  'Paris (75)': ['Paris 1er','Paris 5ème','Paris 11ème','Paris 15ème','Paris 18ème'],
+  'Seine-et-Marne (77)': ['Meaux','Melun','Chelles','Montereau-Fault-Yonne'],
+  'Yvelines (78)': ['Versailles','Sartrouville','Mantes-la-Jolie','Trappes'],
+  'Essonne (91)': ['Évry-Courcouronnes','Corbeil-Essonnes','Massy','Palaiseau'],
+  'Hauts-de-Seine (92)': ['Nanterre','Boulogne-Billancourt','Rueil-Malmaison','Colombes'],
+  'Seine-Saint-Denis (93)': ['Saint-Denis','Montreuil','Aulnay-sous-Bois','Noisy-le-Grand'],
+  'Val-de-Marne (94)': ['Créteil','Vitry-sur-Seine','Champigny-sur-Marne','Ivry-sur-Seine'],
+  'Val-d\'Oise (95)': ['Cergy','Argenteuil','Sarcelles','Gonesse'],
+  'Loire-Atlantique (44)': ['Nantes','Saint-Nazaire','Saint-Herblain','Rezé'],
+  'Maine-et-Loire (49)': ['Angers','Cholet','Saumur','Avrillé'],
+  'Mayenne (53)': ['Laval','Mayenne','Château-Gontier'],
+  'Sarthe (72)': ['Le Mans','La Flèche','Sablé-sur-Sarthe'],
+  'Vendée (85)': ['La Roche-sur-Yon','Les Sables-d’Olonne','Fontenay-le-Comte'],
+  'Aisne (02)': ['Laon','Saint-Quentin','Soissons','Château-Thierry'],
+  'Nord (59)': ['Lille','Roubaix','Tourcoing','Villeneuve-d’Ascq','Dunkerque'],
+  'Oise (60)': ['Beauvais','Compiègne','Creil','Senlis'],
+  'Pas-de-Calais (62)': ['Calais','Arras','Boulogne-sur-Mer','Lens','Béthune'],
+  'Somme (80)': ['Amiens','Abbeville','Albert','Péronne'],
+  'Ardennes (08)': ['Charleville-Mézières','Sedan','Rethel'],
+  'Aube (10)': ['Troyes','Bar-sur-Aube','Romilly-sur-Seine'],
+  'Marne (51)': ['Reims','Châlons-en-Champagne','Épernay'],
+  'Haute-Marne (52)': ['Chaumont','Saint-Dizier','Langres'],
+  'Meurthe-et-Moselle (54)': ['Nancy','Vandoeuvre-lès-Nancy','Lunéville','Longwy'],
+  'Meuse (55)': ['Bar-le-Duc','Verdun','Commercy'],
+  'Moselle (57)': ['Metz','Thionville','Forbach','Saint-Avold'],
+  'Bas-Rhin (67)': ['Strasbourg','Haguenau','Schiltigheim','Sélestat'],
+  'Haut-Rhin (68)': ['Mulhouse','Colmar','Saint-Louis','Illzach'],
+  'Vosges (88)': ['Épinal','Saint-Dié-des-Vosges','Remiremont'],
+  'Côtes-d\'Armor (22)': ['Saint-Brieuc','Lannion','Dinan','Loudéac'],
+  'Finistère (29)': ['Brest','Quimper','Lorient','Quimperlé'],
+  'Ille-et-Vilaine (35)': ['Rennes','Saint-Malo','Fougères','Cesson-Sévigné'],
+  'Morbihan (56)': ['Vannes','Lorient','Pontivy','Auray'],
+  'Calvados (14)': ['Caen','Lisieux','Hérouville-Saint-Clair','Bayeux'],
+  'Eure (27)': ['Évreux','Vernon','Louviers','Bernay'],
+  'Manche (50)': ['Cherbourg-en-Cotentin','Saint-Lô','Avranches','Granville'],
+  'Orne (61)': ['Alençon','Flers','Argentan'],
+  'Seine-Maritime (76)': ['Rouen','Le Havre','Dieppe','Saint-Étienne-du-Rouvray'],
+  'Côte-d\'Or (21)': ['Dijon','Beaune','Auxerre','Longvic'],
+  'Doubs (25)': ['Besançon','Montbéliard','Pontarlier','Audincourt'],
+  'Jura (39)': ['Lons-le-Saunier','Dole','Saint-Claude'],
+  'Nièvre (58)': ['Nevers','Cosne-Cours-sur-Loire','Clamecy'],
+  'Haute-Saône (70)': ['Vesoul','Lure','Gray'],
+  'Saône-et-Loire (71)': ['Chalon-sur-Saône','Mâcon','Le Creusot','Autun'],
+  'Yonne (89)': ['Auxerre','Sens','Joigny','Avallon'],
+  'Territoire de Belfort (90)': ['Belfort','Delle','Bavilliers'],
+  'Cher (18)': ['Bourges','Vierzon','Saint-Amand-Montrond'],
+  'Eure-et-Loir (28)': ['Chartres','Dreux','Châteaudun'],
+  'Indre (36)': ['Châteauroux','Issoudun','Guéret'],
+  'Indre-et-Loire (37)': ['Tours','Joué-lès-Tours','Saint-Pierre-des-Corps'],
+  'Loir-et-Cher (41)': ['Blois','Vendôme','Romorantin-Lanthenay'],
+  'Loiret (45)': ['Orléans','Saint-Jean-de-la-Ruelle','Fleury-les-Aubrais','Montargis'],
+};
+
+function getCityForDept(dept) {
+  var cities = DEPT_CITIES[dept];
+  if (cities && cities.length) return randomFrom(cities);
+  return dept.split(' (')[0];
+}
+
+var FIRSTNAMES = ['Jean','Michel','Pierre','Marie','Sylvie','André','Christine','Patrick','Isabelle','François','Nathalie','Philippe','Martine','Alain','Catherine'];
+var LASTNAMES = ['Martin','Bernard','Dubois','Thomas','Robert','Richard','Petit','Durand','Leroy','Moreau','Simon','Laurent','Lefebvre','Michel','Garcia'];
+var STREETS = ['Rue de la Paix','Avenue du Général de Gaulle','Rue des Fleurs','Boulevard du Maréchal Foch','Chemin des Oliviers','Allée des Mimosas','Route de Lyon','Impasse des Pins','Rue Victor Hugo','Avenue Jean Jaurès'];
+var SECTORS_LIST = ['Rénovation énergétique','Isolation combles','Pompe à chaleur','Panneaux solaires','Isolation thermique'];
+var HOURS = ['09:00','09:30','10:00','10:30','11:00','14:00','14:30','15:00','15:30','16:00','16:30'];
+
+function randomFrom(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+function generateRdvsForDept(dept, count) {
+  var rdvs = [];
+  // city générée depuis le mapping du département
+  var today = new Date();
+  for (var i = 0; i < count; i++) {
+    var d = new Date(today);
+    d.setDate(d.getDate() + Math.floor(Math.random() * 7) + 1);
+    var day = ('0' + d.getDate()).slice(-2);
+    var month = ('0' + (d.getMonth()+1)).slice(-2);
+    var phone = '06 ' + Math.floor(10+Math.random()*90) + ' ' + Math.floor(10+Math.random()*90) + ' ' + Math.floor(10+Math.random()*90) + ' ' + Math.floor(10+Math.random()*90);
+    rdvs.push({
+      date: day + '/' + month + '/' + d.getFullYear(),
+      time: randomFrom(HOURS),
+      city: getCityForDept(dept),
+      firstname: randomFrom(FIRSTNAMES),
+      lastname: randomFrom(LASTNAMES),
+      address: Math.floor(1+Math.random()*120) + ' ' + randomFrom(STREETS) + ', ' + getCityForDept(dept),
+      phone: phone,
+      sector: randomFrom(SECTORS_LIST),
+      id: 'rdv_' + Date.now() + '_' + i
+    });
+  }
+  return rdvs.sort((a,b) => a.date.localeCompare(b.date));
+}
+
+var ficheRdvs = [];
+
+function openFiche(dept, count) {
+  ficheRdvs = generateRdvsForDept(dept, count);
+  var deptShort = dept.split(' (')[0];
+  document.getElementById('ficheDeptTitle').textContent = deptShort;
+  document.getElementById('ficheDeptSub').textContent = count + ' RDV disponible' + (count > 1 ? 's' : '') + ' — cliquez Acheter pour débloquer les coordonnées';
+
+  var boughtIds = JSON.parse(localStorage.getItem('sp_bought_rdvs') || '[]');
+
+  document.getElementById('ficheBody').innerHTML = ficheRdvs.map(function(r) {
+    var bought = boughtIds.indexOf(r.id) !== -1;
+    var html = '';
+    html += '<div class="fiche-rdv-card" data-cardid="' + r.id + '">';
+    html += '<div class="fiche-rdv-top">';
+    html += '<div class="fiche-rdv-datetime">';
+    html += '<span class="fiche-rdv-date">' + r.date + '</span>';
+    html += '<span class="fiche-rdv-time">' + r.time + '</span>';
+    html += '</div>';
+    html += '<span class="fiche-rdv-sector">' + r.sector + '</span>';
+    html += '</div>';
+    html += '<div class="fiche-rdv-fields">';
+    html += '<div class="fiche-rdv-field">';
+    html += '<div class="fiche-rdv-field-icon"><svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"#111\"><path d=\"M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z\"/></svg></div>';
+    html += '<div class="fiche-rdv-field-content"><p class="fiche-rdv-field-label">Adresse</p>';
+    html += '<p class="fiche-rdv-field-val">' + r.city + '</p>';
+    html += '<p class="fiche-rdv-field-val blurred" style="margin-top:2px;font-size:12px">' + r.address + '</p></div></div>';
+    html += '<div class="fiche-rdv-field">';
+    html += '<div class="fiche-rdv-field-icon"><svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"#111\"><path d=\"M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\"/></svg></div>';
+    html += '<div class="fiche-rdv-field-content"><p class="fiche-rdv-field-label">Prospect</p>';
+    html += '<p class="fiche-rdv-field-val blurred">' + r.firstname + ' ' + r.lastname + '</p></div></div>';
+    html += '<div class="fiche-rdv-field">';
+    html += '<div class="fiche-rdv-field-icon"><svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"#111\"><path d=\"M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z\"/></svg></div>';
+    html += '<div class="fiche-rdv-field-content"><p class="fiche-rdv-field-label">Téléphone</p>';
+    html += '<p class="fiche-rdv-field-val blurred">' + r.phone + '</p></div></div>';
+    html += '</div>';
+    // Pill détails toujours visible
+    html += '<div style="display:flex;flex-direction:column;gap:8px">';
+    if (bought) {
+      html += '<button class="fiche-rdv-buy bought" disabled>Acheté</button>';
+    } else {
+      html += '<button class="fiche-rdv-buy" data-rdvid="' + r.id + '">Acheter — 25 crédits</button>';
+    }
+    html += '<div data-rdvid="' + r.id + '" class="prospect-pill ' + (bought ? 'pill-unlocked' : 'pill-locked') + '" style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-radius:10px;background:' + (bought ? '#f0faf5' : '#f5f4f2') + ';border:1px solid ' + (bought ? 'rgba(0,112,74,0.2)' : '#e0ddd9') + ';cursor:' + (bought ? 'pointer' : 'default') + '">';
+    html += '<div style="display:flex;align-items:center;gap:8px">';
+    html += '<svg width="14" height="14" viewBox="0 0 24 24" fill="' + (bought ? '#00704a' : '#aaa') + '"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>';
+    html += '<span style="font-size:12px;font-weight:700;color:' + (bought ? '#00704a' : '#aaa') + '">Détails du prospect</span>';
+    html += '</div>';
+    html += '<span style="font-size:10px;font-weight:600;color:' + (bought ? '#00704a' : '#bbb') + '">' + (bought ? 'Voir →' : 'Achetez pour débloquer') + '</span>';
+    html += '</div>';
+    html += '</div>';
+    return html;
+  }).join('');
+  // Binder les événements après injection HTML
+  document.getElementById('ficheBody').querySelectorAll('.fiche-rdv-buy:not(.bought)').forEach(function(btn) {
+    btn.addEventListener('click', function() { buyFicheRdv(btn.getAttribute('data-rdvid'), btn); });
+  });
+  document.getElementById('ficheBody').querySelectorAll('.pill-unlocked').forEach(function(pill) {
+    pill.addEventListener('click', function() { openProspectDetail(pill.getAttribute('data-rdvid')); });
+  });
+
+  document.getElementById('ficheOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function buyFicheRdv(id, btn) {
+  if (credits < 25) { showToast('Crédits insuffisants — rechargez votre compte'); return; }
+  credits -= 25;
+  localStorage.setItem('sp_credits', credits);
+  var boughtIds = JSON.parse(localStorage.getItem('sp_bought_rdvs') || '[]');
+  boughtIds.push(id);
+  localStorage.setItem('sp_bought_rdvs', JSON.stringify(boughtIds));
+
+  // Ajouter dans les commandes
+  var rdv = ficheRdvs.find(function(r) { return r.id === id; });
+  if (rdv) {
+    orders.unshift({
+      sector: rdv.sector, city: rdv.city, zone: rdv.city,
+      qty: 1, total: 25, date: new Date().toISOString(), status: 'done',
+      rdvData: rdv
+    });
+    localStorage.setItem('sp_orders_v2', JSON.stringify(orders));
+    renderOrders();
+  }
+  // Scope sur la card exacte
+  var card = document.querySelector('.fiche-rdv-card[data-cardid="' + id + '"]');
+  if (card) {
+    card.querySelectorAll('.blurred').forEach(function(el) { el.classList.remove('blurred'); });
+    btn.className = 'fiche-rdv-buy bought';
+    btn.disabled = true;
+    btn.textContent = 'Acheté';
+    var pill = card.querySelector('.prospect-pill');
+    if (pill) {
+      pill.style.background = '#f0faf5';
+      pill.style.border = '1px solid rgba(0,112,74,0.2)';
+      pill.style.cursor = 'pointer';
+      pill.querySelector('svg').setAttribute('fill','#00704a');
+      var spans = pill.querySelectorAll('span');
+      if (spans[0]) spans[0].style.color = '#00704a';
+      if (spans[1]) { spans[1].textContent = 'Voir →'; spans[1].style.color = '#00704a'; }
+      pill.addEventListener('click', function() { openProspectDetail(id); });
+    }
+  }
+  renderStats();
+  showToast('RDV acheté — coordonnées débloquées');
+}
+
+function closeFiche(e) { if (e.target === document.getElementById('ficheOverlay')) closeFicheNow(); }
+function closeFicheNow() {
+  document.getElementById('ficheOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+
+var LOGEMENTS = ['Maison individuelle','Maison individuelle','Maison individuelle','Appartement','Maison de ville','Pavillon'];
+var DPE_LABELS = ['D','E','E','F','F','G'];
+var DPE_COLORS = {'D':'#f59e0b','E':'#f97316','F':'#ef4444','G':'#b52330'};
+var REVENUS = ['Modestes (< 30k€)','Intermédiaires (30-50k€)','Aisés (> 50k€)'];
+var PROJETS = ['Isolation combles','Rénovation complète','Pompe à chaleur','Panneaux solaires','Isolation murs','Fenêtres double vitrage'];
+var COMMENTS = [
+  "Très intéressé, demande un devis rapide. Déjà contacté 1 concurrent.",
+  "Propriétaire depuis 12 ans, chauffage au fioul. Veut passer aux énergies renouvelables.",
+  "Retraité, disponible en journée. Budget confirmé, accord du conjoint obtenu.",
+  "Locataire sortant récemment, vient d’acheter. Urgence sur l’isolation.",
+  "DPE réalisé il y a 3 mois, très motivé par MaPrimeRénov. Projet bien défini.",
+  "Maison des années 70, travaux jamais faits. Fort potentiel, écoute le conseiller.",
+  "A déjà un devis d’un concurrent, cherche à comparer. Bon profil décideur.",
+];
+
+function generateProspect(rdv) {
+  var dpe = DPE_LABELS[Math.floor(Math.random() * DPE_LABELS.length)];
+  return {
+    age: Math.floor(45 + Math.random() * 25),
+    logement: LOGEMENTS[Math.floor(Math.random() * LOGEMENTS.length)],
+    surface: Math.floor(80 + Math.random() * 120) + ' m²',
+    dpe: dpe,
+    dpeColor: DPE_COLORS[dpe],
+    revenus: REVENUS[Math.floor(Math.random() * REVENUS.length)],
+    projet: rdv.sector,
+    proprio_depuis: Math.floor(3 + Math.random() * 20) + ' ans',
+    comment: COMMENTS[Math.floor(Math.random() * COMMENTS.length)],
+    eligible_mpr: Math.random() > 0.3,
+  };
+}
+
+function openProspectDetail(rdvId) {
+  var rdv = ficheRdvs.find(function(r) { return r.id === rdvId; });
+  if (!rdv) return;
+  var p = generateProspect(rdv);
+  document.getElementById('pdName').textContent = rdv.firstname + ' ' + rdv.lastname;
+  document.getElementById('pdSub').textContent = rdv.city + ' · RDV le ' + rdv.date + ' à ' + rdv.time;
+  document.getElementById('pdBody').innerHTML =
+    '<div class="pd-grid">' +
+      '<div class="pd-item"><p class="pd-item-label">Âge estimé</p><p class="pd-item-val">' + p.age + ' ans</p></div>' +
+      '<div class="pd-item"><p class="pd-item-label">Logement</p><p class="pd-item-val">' + p.logement + '</p></div>' +
+      '<div class="pd-item"><p class="pd-item-label">Surface</p><p class="pd-item-val">' + p.surface + '</p></div>' +
+      '<div class="pd-item"><p class="pd-item-label">DPE actuel</p><p class="pd-item-val" style="color:' + p.dpeColor + '">Classe ' + p.dpe + '</p></div>' +
+      '<div class="pd-item"><p class="pd-item-label">Revenus</p><p class="pd-item-val" style="font-size:11px">' + p.revenus + '</p></div>' +
+      '<div class="pd-item"><p class="pd-item-label">Propriétaire depuis</p><p class="pd-item-val">' + p.proprio_depuis + '</p></div>' +
+    '</div>' +
+    '<div class="pd-comment"><p class="pd-comment-label">Note du caller</p><p class="pd-comment-text">' + p.comment + '</p></div>' +
+    '<div class="pd-tag-row">' +
+      '<span class="pd-tag">' + p.projet + '</span>' +
+      (p.eligible_mpr ? '<span class="pd-tag" style="background:var(--green)">Éligible MaPrimeRénov</span>' : '') +
+    '</div>';
+  document.getElementById('prospectOverlay').classList.add('open');
+}
+
+function closeProspect(e) { if (e.target === document.getElementById('prospectOverlay')) closeProspectNow(); }
+function closeProspectNow() { document.getElementById('prospectOverlay').classList.remove('open'); }
+
+
+var signalOrderIdx = null;
+var signalRdvId = null;
+
+function openSignal(orderIdx, rdvId) {
+  signalOrderIdx = orderIdx;
+  signalRdvId = rdvId;
+  document.querySelectorAll('.signal-reason').forEach(function(r) { r.classList.remove('selected'); });
+  document.getElementById('signalConfirmBtn').disabled = true;
+
+  var alert = document.getElementById('signalAlert');
+  var reasons = document.getElementById('signalReasons');
+  var confirmBtn = document.getElementById('signalConfirmBtn');
+  alert.style.display = 'none';
+  reasons.style.display = 'flex';
+  confirmBtn.style.display = 'block';
+
+  var order = orders[orderIdx];
+  var blocked = false;
+
+  // 1. Vérifier le délai 48h
+  if (order && order.rdvData) {
+    var rdvDate = order.rdvData.date; // format dd/mm/yyyy
+    var parts = rdvDate.split('/');
+    var rdvTimestamp = new Date(parts[2], parts[1]-1, parts[0]).getTime();
+    var now = Date.now();
+    var diffH = (now - rdvTimestamp) / (1000 * 3600);
+    if (diffH > 48) {
+      alert.textContent = 'Délai dépassé — le signalement n\'est possible que dans les 48h suivant la date du RDV.';
+      alert.style.display = 'block';
+      reasons.style.display = 'none';
+      confirmBtn.style.display = 'none';
+      blocked = true;
+    }
+  }
+
+  // 2. Vérifier le quota mensuel (2 max/mois)
+  if (!blocked) {
+    var now2 = new Date();
+    var thisMonth = now2.getMonth() + '-' + now2.getFullYear();
+    var signalsThisMonth = JSON.parse(localStorage.getItem('sp_signals_' + thisMonth) || '0');
+    if (signalsThisMonth >= 2) {
+      alert.textContent = 'Quota atteint — vous avez déjà signalé 2 RDV ce mois-ci. Pour tout signalement supplémentaire, contactez le support.';
+      alert.style.display = 'block';
+      reasons.style.display = 'none';
+      confirmBtn.style.display = 'none';
+      blocked = true;
+    }
+  }
+
+  document.getElementById('signalOverlay').classList.add('open');
+}
+
+function selectReason(el) {
+  document.querySelectorAll('.signal-reason').forEach(function(r) { r.classList.remove('selected'); });
+  el.classList.add('selected');
+  document.getElementById('signalConfirmBtn').disabled = false;
+}
+
+function confirmSignal() {
+  // Incrémenter quota mensuel
+  var now = new Date();
+  var monthKey = 'sp_signals_' + now.getMonth() + '-' + now.getFullYear();
+  var count = parseInt(localStorage.getItem(monthKey) || '0');
+  localStorage.setItem(monthKey, count + 1);
+
+  // Rembourser 25 crédits
+  credits += 25;
+  localStorage.setItem('sp_credits', credits);
+
+  // Mettre à jour le statut de la commande
+  if (signalOrderIdx !== null && orders[signalOrderIdx]) {
+    orders[signalOrderIdx].status = 'cancelled';
+    orders[signalOrderIdx].refunded = true;
+    orders[signalOrderIdx].signalDate = new Date().toISOString();
+    localStorage.setItem('sp_orders_v2', JSON.stringify(orders));
+    renderOrders();
+    renderStats();
+  }
+
+  // Alerte admin si 2ème signalement du mois
+  if (count + 1 >= 2) {
+    console.warn('[STACKER ADMIN] Pro a atteint 2 signalements ce mois — review manuelle requise');
+  }
+
+  closeSignalNow();
+  closeFicheNow();
+  showToast('25 crédits remboursés — signalement enregistré');
+}
+
+function closeSignal(e) { if (e.target === document.getElementById('signalOverlay')) closeSignalNow(); }
+function closeSignalNow() {
+  document.getElementById('signalOverlay').classList.remove('open');
+  signalOrderIdx = null;
+  signalRdvId = null;
+}
+
+function toggleDrawer() {
+  document.getElementById('drawer').classList.toggle('open');
+  document.getElementById('drawerOverlay').classList.toggle('open');
+}
+function closeDrawer() {
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drawerOverlay').classList.remove('open');
+}
+
+renderRegionGrid();
+renderOrders();
+renderStats();
+setTimeout(() => {
+  initMap();
+  setTimeout(() => {
+    if (map) map.invalidateSize();
+    updateMapMarkers(RDV_DATA);
+  }, 400);
+}, 200);
+</script>
+
+<!-- DRAWER MOBILE -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-close">
+    <span class="drawer-close-label">Menu</span>
+    <button class="drawer-close-btn" onclick="toggleDrawer()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="var(--muted)"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+    </button>
+  </div>
+  <span class="sidebar-label">Navigation</span>
+  <a class="nav-item" onclick="showTab('catalogue');closeDrawer()">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/></svg>
+    <span class="nav-text">Catalogue RDV</span>
+  </a>
+  <a class="nav-item" onclick="showTab('abonnement');closeDrawer()">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+    <span class="nav-text">Abonnement</span>
+  </a>
+  <a class="nav-item" onclick="showTab('commandes');closeDrawer()">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/></svg>
+    <span class="nav-text">Mes commandes</span>
+  </a>
+  <a class="nav-item" onclick="showTab('credits');closeDrawer()">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+    <span class="nav-text">Mes crédits</span>
+  </a>
+</div>
+
+<!-- MAP FULLSCREEN -->
+<div class="map-fullscreen-overlay" id="mapFullOverlay">
+  <div class="map-fullscreen-header">
+    <span class="map-fullscreen-title">Carte des RDV disponibles</span>
+    <button class="map-fullscreen-close" onclick="closeFullMap()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      Fermer
+    </button>
+  </div>
+  <div id="rdvMapFull"></div>
+</div>
+
+<!-- FICHE RDV DÉPARTEMENT -->
+<div class="fiche-overlay" id="ficheOverlay" onclick="closeFiche(event)">
+  <div class="fiche-sheet">
+    <div class="fiche-handle"></div>
+    <div class="fiche-head">
+      <div class="fiche-head-left">
+        <h3 id="ficheDeptTitle"></h3>
+        <p id="ficheDeptSub"></p>
+      </div>
+      <button class="fiche-close" onclick="closeFicheNow()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="var(--muted)"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      </button>
+    </div>
+    <div class="fiche-body" id="ficheBody"></div>
+  </div>
+</div>
+
+<!-- DÉTAIL PROSPECT -->
+<div class="prospect-detail-overlay" id="prospectOverlay" onclick="closeProspect(event)">
+  <div class="prospect-detail-box">
+    <div class="pd-head">
+      <div>
+        <p class="pd-head-name" id="pdName"></p>
+        <p class="pd-head-sub" id="pdSub"></p>
+      </div>
+      <button class="pd-close" onclick="closeProspectNow()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="rgba(255,255,255,0.6)"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      </button>
+    </div>
+    <div class="pd-body" id="pdBody"></div>
+  </div>
+</div>
+
+<!-- SIGNALEMENT RDV -->
+<div class="signal-overlay" id="signalOverlay" onclick="closeSignal(event)">
+  <div class="signal-box">
+    <div class="signal-head">
+      <p class="signal-title">Signaler un RDV non honoré</p>
+      <p class="signal-sub" id="signalSubtitle">Sélectionnez la raison — remboursement sous 24h</p>
+    </div>
+    <div class="signal-body">
+      <div id="signalAlert" style="display:none;padding:10px 12px;border-radius:10px;background:rgba(181,35,48,0.08);border:1px solid rgba(181,35,48,0.2);margin-bottom:14px;font-size:12px;color:var(--red);font-weight:600;line-height:1.5"></div>
+      <div class="signal-reasons" id="signalReasons">
+        <div class="signal-reason" onclick="selectReason(this)"><div class="signal-reason-dot"></div><span class="signal-reason-text">Prospect absent à l'adresse au moment du RDV</span></div>
+        <div class="signal-reason" onclick="selectReason(this)"><div class="signal-reason-dot"></div><span class="signal-reason-text">Numéro de téléphone incorrect ou inatteignable</span></div>
+        <div class="signal-reason" onclick="selectReason(this)"><div class="signal-reason-dot"></div><span class="signal-reason-text">Annulation par le prospect avant votre arrivée</span></div>
+        <div class="signal-reason" onclick="selectReason(this)"><div class="signal-reason-dot"></div><span class="signal-reason-text">Adresse introuvable ou incorrecte</span></div>
+      </div>
+      <button class="signal-confirm" id="signalConfirmBtn" disabled onclick="confirmSignal()">Confirmer et rembourser 25 crédits</button>
+      <button class="signal-cancel" onclick="closeSignalNow()">Annuler</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>
