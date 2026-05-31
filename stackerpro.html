@@ -75,11 +75,11 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
 /* ── STATS ROW ── */
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
 .stat-card{background:var(--white);border-radius:14px;border:1px solid var(--border);padding:16px 18px}
-.stat-card-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--muted);margin-bottom:6px}
-.stat-card-val{font-weight:900;font-size:24px;letter-spacing:-0.04em;color:var(--dark)}
+.stat-card-label{font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:8px}
+.stat-card-val{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:28px;letter-spacing:-0.05em;color:var(--dark);line-height:1}
 .stat-card-val.red{color:var(--red2)}
 .stat-card-val.green{color:var(--green)}
-.stat-card-sub{font-size:11px;color:var(--muted);margin-top:3px;font-weight:500}
+.stat-card-sub{font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;color:var(--muted);margin-top:6px;font-weight:600}
 
 /* ── SECTION TITLE ── */
 .section-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
@@ -203,6 +203,120 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
 .empty svg{opacity:0.1;display:block;margin:0 auto 12px}
 .empty p{font-size:14px;color:var(--muted);font-weight:500}
 
+/* ── WELCOME BLOCK ── */
+.welcome-block{background:var(--white);border-radius:16px;border:1px solid var(--border);padding:24px 24px 20px;margin-bottom:20px}
+.welcome-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}
+.welcome-eyebrow{font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.02em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.welcome-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:22px;letter-spacing:-0.04em;color:var(--dark);line-height:1.1}
+.welcome-sub{font-size:12px;color:var(--muted);font-weight:500;margin-top:5px}
+.welcome-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.welcome-stat{background:var(--surface);border-radius:12px;padding:14px 16px;border:1px solid var(--border)}
+.welcome-stat-val{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:24px;letter-spacing:-0.05em;color:var(--dark);line-height:1}
+.welcome-stat-val.accent{color:var(--red)}
+.welcome-stat-label{font-size:11px;font-weight:600;color:var(--muted);margin-top:4px}
+
+/* ── WELCOME BLOCK ── */
+.welcome-block{background:var(--white);border-radius:16px;border:1px solid var(--border);padding:24px 24px 20px;margin-bottom:20px}
+.welcome-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}
+.welcome-eyebrow{font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.02em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.welcome-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:22px;letter-spacing:-0.04em;color:var(--dark);line-height:1.1}
+.welcome-sub{font-size:12px;color:var(--muted);font-weight:500;margin-top:5px}
+.welcome-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.welcome-stat{background:var(--surface);border-radius:12px;padding:14px 16px;border:1px solid var(--border)}
+.welcome-stat-val{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:24px;letter-spacing:-0.05em;color:var(--dark);line-height:1}
+.welcome-stat-val.accent{color:var(--red)}
+.welcome-stat-label{font-size:11px;font-weight:600;color:var(--muted);margin-top:4px}
+
+/* ── DASHBOARD NEW ── */
+.db-hero{display:flex;align-items:center;justify-content:space-between;background:var(--white);border-radius:16px;border:1px solid var(--border);padding:24px 28px;margin-bottom:16px;gap:24px}
+.db-hero-eyebrow{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:6px;font-family:'Plus Jakarta Sans',sans-serif}
+.db-hero-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:26px;letter-spacing:-0.05em;color:var(--dark);line-height:1}
+.db-hero-sub{font-size:12px;color:var(--muted);font-weight:500;margin-top:5px}
+.db-hero-right{display:flex;align-items:center;gap:0;flex-shrink:0;background:var(--surface);border-radius:14px;border:1px solid var(--border);overflow:hidden}
+.db-kpi{padding:16px 24px;text-align:center}
+.db-kpi-val{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:22px;letter-spacing:-0.05em;color:var(--dark);line-height:1}
+.db-kpi-val.accent{color:var(--red)}
+.db-kpi-label{font-size:10px;font-weight:600;color:var(--muted);margin-top:4px;white-space:nowrap}
+.db-kpi-divider{width:1px;background:var(--border);align-self:stretch}
+
+.db-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.db-stat-card{background:var(--white);border-radius:14px;border:1px solid var(--border);padding:18px;display:flex;align-items:center;gap:14px}
+.db-stat-icon{width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0;min-width:28px}
+.db-stat-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:6px;font-family:'Plus Jakarta Sans',sans-serif}
+.db-stat-val{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:24px;letter-spacing:-0.05em;color:var(--dark);line-height:1}
+.db-stat-sub{font-size:11px;color:var(--muted);font-weight:500;margin-top:4px}
+
+.db-two-col{display:grid;grid-template-columns:1.5fr 1fr;gap:16px;margin-bottom:16px}
+.db-block{background:var(--white);border-radius:14px;border:1px solid var(--border);padding:20px}
+.db-block-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.db-block-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:13px;letter-spacing:-0.02em;color:var(--dark)}
+.db-badge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:99px;background:var(--surface);color:var(--muted);font-family:'Plus Jakarta Sans',sans-serif;border:1px solid var(--border)}
+.db-badge.red{background:rgba(181,35,48,0.07);color:var(--red);border-color:rgba(181,35,48,0.15)}
+.db-badge.green{background:rgba(0,112,74,0.07);color:#00704a;border-color:rgba(0,112,74,0.15)}
+.db-empty{font-size:12px;color:var(--muted);font-weight:500;text-align:center;padding:20px 0}
+
+.db-chart{width:100%;height:120px;display:flex;align-items:flex-end;gap:2px;padding-bottom:16px;position:relative}
+.db-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%}
+.db-bar{width:100%;border-radius:3px 3px 0 0;background:var(--red);min-height:4px;transition:opacity 0.15s}
+.db-bar:hover{opacity:0.7;cursor:pointer}
+.db-bar-label{font-size:7px;color:var(--muted);font-weight:600;position:absolute;bottom:0}
+
+.db-alert-list{display:flex;flex-direction:column;gap:8px}
+.db-alert{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:10px;border:1px solid var(--border)}
+.db-alert.info{background:rgba(37,99,235,0.03);border-color:rgba(37,99,235,0.1)}
+.db-alert.success{background:rgba(0,112,74,0.03);border-color:rgba(0,112,74,0.1)}
+.db-alert.warning{background:rgba(245,158,11,0.03);border-color:rgba(245,158,11,0.12)}
+.db-alert-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.db-alert-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:12px;color:var(--dark)}
+.db-alert-sub{font-size:11px;color:var(--muted);margin-top:1px;line-height:1.4}
+.db-alert-time{font-size:10px;color:var(--muted);margin-top:3px}
+
+.db-honor-list{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.db-honor-item{padding:14px;border-radius:12px;background:var(--surface);border:1px solid var(--border)}
+.db-honor-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.db-honor-date-box{display:flex;flex-direction:column;align-items:center;justify-content:center;width:38px;height:38px;border-radius:9px;background:var(--white);border:1px solid var(--border)}
+.db-honor-day{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:14px;letter-spacing:-0.04em;color:var(--dark);line-height:1}
+.db-honor-month{font-size:7px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em}
+.db-honor-status{font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px}
+.db-honor-status.ok{background:rgba(0,112,74,0.1);color:#00704a}
+.db-honor-status.wait{background:rgba(245,158,11,0.1);color:#d97706}
+.db-honor-name{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:12px;color:var(--dark);letter-spacing:-0.01em}
+.db-honor-meta{font-size:11px;color:var(--muted);margin-top:3px}
+
+/* ── DERNIERE MINUTE ── */
+.db-urgency{background:var(--white);border-radius:16px;border:1.5px solid rgba(181,35,48,0.2);padding:20px 24px;margin-bottom:16px}
+.db-urgency-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.db-urgency-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:99px;background:var(--white);border:1px solid var(--border);font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;font-weight:800;letter-spacing:0.1em;color:var(--dark)}
+.db-urgency-dot{width:6px;height:6px;border-radius:50%;background:var(--red);animation:pulse-dot 1.2s ease-in-out infinite;flex-shrink:0}
+.db-urgency-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:14px;letter-spacing:-0.02em;color:var(--dark)}
+.db-urgency-sub{font-size:11px;color:var(--muted);font-weight:500;margin-top:2px}
+.db-urgency-cards{display:flex;gap:10px;overflow-x:auto;padding:2px 0;scrollbar-width:none}
+.db-urgency-cards::-webkit-scrollbar{display:none}
+.db-urgency-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;min-width:175px;flex-shrink:0;cursor:pointer;transition:all 0.2s}
+.db-urgency-card:hover{border-color:rgba(181,35,48,0.35);background:#fff;transform:translateY(-2px);box-shadow:0 4px 16px rgba(181,35,48,0.08)}
+.db-urgency-card-type{font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;font-family:'Plus Jakarta Sans',sans-serif}
+.db-urgency-card-name{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:12px;color:var(--dark);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.db-urgency-card-city{font-size:11px;color:var(--muted);margin-bottom:10px}
+.db-urgency-card-footer{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.db-urgency-prices{display:flex;align-items:baseline;gap:5px}
+.db-urgency-price{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:18px;letter-spacing:-0.04em;color:var(--red)}
+.db-urgency-old-price{font-size:11px;color:var(--muted);text-decoration:line-through;font-weight:500}
+.db-urgency-timer{font-size:9px;font-weight:700;color:var(--red);font-family:'JetBrains Mono',monospace;margin-top:2px}
+.db-urgency-buy{background:var(--dark);color:#fff;border:none;border-radius:8px;padding:7px 13px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:11px;cursor:pointer;transition:background 0.15s;white-space:nowrap}
+.db-urgency-buy:hover{background:var(--red)}
+
+/* ── STAT MODAL ── */
+.stat-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:500;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s;backdrop-filter:blur(4px)}
+.stat-modal-overlay.open{opacity:1;pointer-events:all}
+.stat-modal{background:#faf9f8;border-radius:20px 20px 0 0;width:100%;max-width:680px;max-height:80vh;overflow-y:auto;transform:translateY(20px);transition:transform 0.3s cubic-bezier(0.22,1,0.36,1);padding:24px}
+.stat-modal-overlay.open .stat-modal{transform:translateY(0)}
+.stat-modal-handle{width:32px;height:3px;background:rgba(0,0,0,0.12);border-radius:99px;margin:0 auto 20px}
+.stat-modal-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:18px;letter-spacing:-0.03em;color:var(--dark);margin-bottom:16px}
+.stat-modal-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)}
+.stat-modal-row:last-child{border-bottom:none}
+.stat-modal-label{font-size:13px;font-weight:600;color:var(--dark)}
+.stat-modal-val{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:14px;color:var(--dark)}
+
 /* ── TOAST ── */
 .toast{position:fixed;bottom:24px;right:24px;background:var(--dark);color:#fff;padding:12px 18px;border-radius:12px;font-size:13px;font-weight:600;z-index:999;transform:translateY(20px);opacity:0;transition:all 0.3s cubic-bezier(0.22,1,0.36,1);display:flex;align-items:center;gap:8px;box-shadow:0 8px 24px -6px rgba(0,0,0,0.3)}
 .toast.show{transform:translateY(0);opacity:1}
@@ -247,7 +361,7 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
       <span class="header-credits-val" id="creditBalance">200</span>
       <span class="header-credits-label">crédits</span>
     </div>
-    <div class="header-avatar" id="avatarInitials">SH</div>
+    <div class="header-avatar" id="avatarInitials">?</div>
   </div>
 </header>
 
@@ -286,7 +400,7 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
     <div class="plan-box">
       <p class="plan-label">Votre offre</p>
       <p class="plan-name">Sans abonnement</p>
-      <button class="plan-btn" onclick="showTab('abonnement');setActive(document.querySelectorAll('.nav-item')[1])">Souscrirefessionnel →</button>
+      <button class="plan-btn" onclick="showTab('abonnement');setActive(document.querySelectorAll('.nav-item')[1])">Souscrire au Pro →</button>
     </div>
   </aside>
 
@@ -296,26 +410,105 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
     <!-- ── TAB : CATALOGUE ── -->
     <div class="tab-content active" id="content-catalogue">
 
-      <div class="stats-row">
-        <div class="stat-card">
-          <p class="stat-card-label">RDV achetés</p>
-          <p class="stat-card-val" id="statTotal">0</p>
-          <p class="stat-card-sub">Ce mois-ci</p>
+      <!-- DASHBOARD -->
+      <div class="db-hero">
+        <div class="db-hero-left">
+          <p class="db-hero-eyebrow">Tableau de bord</p>
+          <p class="db-hero-title" id="welcomeTitle">Bonjour.</p>
+          <p class="db-hero-sub" id="welcomeSub">Voici votre activité du jour</p>
         </div>
-        <div class="stat-card">
-          <p class="stat-card-label">Dépensé</p>
-          <p class="stat-card-val red" id="statSpent">0 €</p>
-          <p class="stat-card-sub">Ce mois-ci</p>
+        <div class="db-hero-right">
+          <div class="db-kpi">
+            <p class="db-kpi-val accent" id="welcomeDispoTotal">—</p>
+            <p class="db-kpi-label">RDV France</p>
+          </div>
+          <div class="db-kpi-divider"></div>
+          <div class="db-kpi">
+            <p class="db-kpi-val" id="welcomeDispoPaca">—</p>
+            <p class="db-kpi-label">PACA · Occitanie</p>
+          </div>
+
         </div>
-        <div class="stat-card">
-          <p class="stat-card-label">Taux closing</p>
-          <p class="stat-card-val green">—</p>
-          <p class="stat-card-sub">Mes résultats</p>
+      </div>
+
+      <!-- STATS ROW -->
+      <div class="db-stats">
+        <div class="db-stat-card" onclick="openStatModal('rdv')" style="cursor:pointer">
+          <div class="db-stat-icon">
+            <span class="material-symbols-outlined" style="font-size:22px;color:var(--muted);font-variation-settings:'FILL' 0">event</span>
+          </div>
+          <div>
+            <p class="db-stat-label">RDV achetés</p>
+            <p class="db-stat-val" id="statTotal">0</p>
+            <p class="db-stat-sub">Ce mois-ci</p>
+          </div>
         </div>
-        <div class="stat-card">
-          <p class="stat-card-label">Dispo aujourd'hui</p>
-          <p class="stat-card-val" id="statDispo">12</p>
-          <p class="stat-card-sub">RDV qualifiés</p>
+        <div class="db-stat-card" onclick="openStatModal('depenses')" style="cursor:pointer">
+          <div class="db-stat-icon">
+            <span class="material-symbols-outlined" style="font-size:22px;color:var(--muted);font-variation-settings:'FILL' 0">payments</span>
+          </div>
+          <div>
+            <p class="db-stat-label">Dépensé</p>
+            <p class="db-stat-val" id="statSpent" style="color:var(--red)">0 €</p>
+            <p class="db-stat-sub">Ce mois-ci</p>
+          </div>
+        </div>
+
+        <div class="db-stat-card" onclick="openStatModal('dispo')" style="cursor:pointer">
+          <div class="db-stat-icon">
+            <span class="material-symbols-outlined" style="font-size:22px;color:var(--muted);font-variation-settings:'FILL' 0">calendar_today</span>
+          </div>
+          <div>
+            <p class="db-stat-label">Dispo aujourd'hui</p>
+            <p class="db-stat-val" id="statDispo">—</p>
+            <p class="db-stat-sub">RDV qualifiés</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- DERNIERE MINUTE BANNER -->
+      <div class="db-urgency" id="urgencyBanner">
+        <div class="db-urgency-head">
+          <div>
+            <div class="db-urgency-badge"><div class="db-urgency-dot"></div>DERNIÈRE MINUTE</div>
+            <p class="db-urgency-title" style="margin-top:8px">RDV à saisir · Prix réduit</p>
+            <p class="db-urgency-sub">Ces RDV expirent sous 24h</p>
+          </div>
+        </div>
+        <div class="db-urgency-cards" id="urgencyCards"></div>
+      </div>
+
+      <!-- GRAPHIQUE + ALERTES -->
+      <div class="db-two-col">
+
+        <div class="db-block">
+          <div class="db-block-head">
+            <p class="db-block-title">Activité — 30 jours</p>
+            <span class="db-badge" id="chartTotal">0 RDV</span>
+          </div>
+          <div class="db-chart" id="chartWrap"></div>
+        </div>
+
+        <div class="db-block">
+          <div class="db-block-head">
+            <p class="db-block-title">Alertes</p>
+            <span class="db-badge green" id="alertBadge">0</span>
+          </div>
+          <div class="db-alert-list" id="alertList">
+            <p class="db-empty">Aucune alerte</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RDV A HONORER -->
+      <div class="db-block" style="margin-bottom:20px">
+        <div class="db-block-head">
+          <p class="db-block-title">RDV à honorer</p>
+          <span class="db-badge red" id="honorBadge">0 à venir</span>
+        </div>
+        <div class="db-honor-list" id="honorList">
+          <p class="db-empty">Aucun RDV planifié</p>
         </div>
       </div>
 
@@ -427,7 +620,7 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
                 Accès RDV avant les autres
               </div>
             </div>
-            <button class="plan-cta plan-cta-dark" onclick="showToast('Abonnement Professionnel — redirection paiement...')">Souscrirefessionnel</button>
+            <button class="plan-cta plan-cta-dark" onclick="showToast('Abonnement Professionnel — redirection paiement...')">Souscrire au Pro</button>
           </div>
         </div>
 
@@ -813,17 +1006,17 @@ let map = null;
 let markers = [];
 
 const RDV_DATA = [
-  { id:1, sector:'Rénovation énergétique', zone:'Lyon & périphérie', city:'Lyon', price:25, dispo:4, tag:'populaire', category:'renovation', profile:'Professionnelpriétaire, DPE E/F, >50 ans, revenus modestes' },
-  { id:2, sector:'Isolation combles', zone:'Marseille Sud', city:'Marseille', price:25, region:'Provence-Alpes-Côte d\'Azur', dispo:2, tag:'nouveau', category:'isolation', profile:'Professionnelpriétaire maison individuelle, intéressé prime CEE' },
-  { id:3, sector:'Pompe à chaleur', zone:'Bordeaux Métropole', city:'Bordeaux', price:25, region:'Nouvelle-Aquitaine', dispo:3, tag:'populaire', category:'pac', profile:'Professionnelpriétaire, chauffage fioul existant, budget confirmé' },
-  { id:4, sector:'Panneaux solaires', zone:'Toulouse & alentours', city:'Toulouse', price:25, region:'Occitanie', dispo:1, tag:'nouveau', category:'solaire', profile:'Professionnelpriétaire maison, toit sud exposé, primo-intéressé' },
-  { id:5, sector:'Rénovation énergétique', zone:'Paris Île-de-France', city:'Paris', price:25, region:'Île-de-France', dispo:5, tag:null, category:'renovation', profile:'Professionnelpriétaire appartement, DPE D/E, locataire en place' },
-  { id:6, sector:'Isolation thermique', zone:'Nantes & Pays de Loire', city:'Nantes', price:25, region:'Pays de la Loire', dispo:2, tag:null, category:'isolation', profile:'Professionnelpriétaire maison, projet isolation murs, devis souhaité' },
-  { id:7, sector:'Pompe à chaleur', zone:'Lille Métropole', city:'Lille', price:25, region:'Hauts-de-France', dispo:3, tag:'nouveau', category:'pac', profile:'Professionnelpriétaire, comparatif pompe à chaleur/chaudière gaz' },
-  { id:8, sector:'Panneaux solaires', zone:'Nice & Côte d\'Azur', city:'Nice', price:25, region:'Provence-Alpes-Côte d\'Azur', dispo:1, tag:'populaire', category:'solaire', profile:'Professionnelpriétaire villa, fort ensoleillement, budget confirmé 15k€+' },
-  { id:9, sector:'Rénovation énergétique', zone:'Strasbourg & Alsace', city:'Strasbourg', price:25, region:'Grand Est', dispo:2, tag:null, category:'renovation', profile:'Professionnelpriétaire maison ancienne, projet global rénovation' },
-  { id:10, sector:'Isolation combles', zone:'Rennes & Bretagne', city:'Rennes', price:25, region:'Bretagne', dispo:4, tag:'nouveau', category:'isolation', profile:'Professionnelpriétaire, combles perdus, éligible MaPrimeRénov' },
-  { id:11, sector:'Pompe à chaleur', zone:'Montpellier & Hérault', city:'Montpellier', price:25, region:'Occitanie', dispo:2, tag:null, category:'pac', profile:'Professionnelpriétaire maison, chauffage électrique, project PAC air/air' },
+  { id:1, sector:'Rénovation énergétique', zone:'Lyon & périphérie', city:'Lyon', price:25, dispo:4, tag:'populaire', category:'renovation', profile:'Propriétaire, DPE E/F, >50 ans, revenus modestes' },
+  { id:2, sector:'Isolation combles', zone:'Marseille Sud', city:'Marseille', price:25, region:'Provence-Alpes-Côte d\'Azur', dispo:2, tag:'nouveau', category:'isolation', profile:'Propriétaire maison individuelle, intéressé prime CEE' },
+  { id:3, sector:'Pompe à chaleur', zone:'Bordeaux Métropole', city:'Bordeaux', price:25, region:'Nouvelle-Aquitaine', dispo:3, tag:'populaire', category:'pac', profile:'Propriétaire, chauffage fioul existant, budget confirmé' },
+  { id:4, sector:'Panneaux solaires', zone:'Toulouse & alentours', city:'Toulouse', price:25, region:'Occitanie', dispo:1, tag:'nouveau', category:'solaire', profile:'Propriétaire maison, toit sud exposé, primo-intéressé' },
+  { id:5, sector:'Rénovation énergétique', zone:'Paris Île-de-France', city:'Paris', price:25, region:'Île-de-France', dispo:5, tag:null, category:'renovation', profile:'Propriétaire appartement, DPE D/E, locataire en place' },
+  { id:6, sector:'Isolation thermique', zone:'Nantes & Pays de Loire', city:'Nantes', price:25, region:'Pays de la Loire', dispo:2, tag:null, category:'isolation', profile:'Propriétaire maison, projet isolation murs, devis souhaité' },
+  { id:7, sector:'Pompe à chaleur', zone:'Lille Métropole', city:'Lille', price:25, region:'Hauts-de-France', dispo:3, tag:'nouveau', category:'pac', profile:'Propriétaire, comparatif pompe à chaleur/chaudière gaz' },
+  { id:8, sector:'Panneaux solaires', zone:'Nice & Côte d\'Azur', city:'Nice', price:25, region:'Provence-Alpes-Côte d\'Azur', dispo:1, tag:'populaire', category:'solaire', profile:'Propriétaire villa, fort ensoleillement, budget confirmé 15k€+' },
+  { id:9, sector:'Rénovation énergétique', zone:'Strasbourg & Alsace', city:'Strasbourg', price:25, region:'Grand Est', dispo:2, tag:null, category:'renovation', profile:'Propriétaire maison ancienne, projet global rénovation' },
+  { id:10, sector:'Isolation combles', zone:'Rennes & Bretagne', city:'Rennes', price:25, region:'Bretagne', dispo:4, tag:'nouveau', category:'isolation', profile:'Propriétaire, combles perdus, éligible MaPrimeRénov' },
+  { id:11, sector:'Pompe à chaleur', zone:'Montpellier & Hérault', city:'Montpellier', price:25, region:'Occitanie', dispo:2, tag:null, category:'pac', profile:'Propriétaire maison, chauffage électrique, project PAC air/air' },
   { id:12, sector:'Panneaux solaires', zone:'Avignon & Vaucluse', city:'Avignon', price:25, region:'Provence-Alpes-Côte d\'Azur', dispo:3, tag:'populaire', category:'solaire', profile:'Agriculteur/propriétaire, grande toiture, revente surplus EDF' },
 ];
 
@@ -833,6 +1026,202 @@ let currentQty = 1;
 let orders = JSON.parse(localStorage.getItem('sp_orders_v2') || '[]');
 localStorage.setItem('sp_credits', '200');
 let credits = 200;
+
+// ── DASHBOARD BLOCKS ──────────────────────────────────────────
+
+function renderChart() {
+  var wrap = document.getElementById('chartWrap');
+  if (!wrap) return;
+  var history = JSON.parse(localStorage.getItem('sp_purchase_history') || '[]');
+  var demo = [1,0,2,1,3,0,1,2,0,2,4,1,2,0,1,3,2,1,0,2,1,3,4,1,0,2,1,0,3,2];
+  var days = [], maxVal = 0, now = new Date();
+  for (var i = 29; i >= 0; i--) {
+    var d = new Date(now); d.setDate(d.getDate()-i);
+    var key = d.toISOString().slice(0,10);
+    var count = demo[29-i] || 0;
+    if (count > maxVal) maxVal = count;
+    days.push({date:d, count:count});
+  }
+  if (maxVal === 0) maxVal = 1;
+  var total = days.reduce(function(s,d){ return s+d.count; }, 0);
+  var badge = document.getElementById('chartTotal');
+  if (badge) badge.textContent = total + ' RDV';
+  var html = '';
+  days.forEach(function(d, i) {
+    var h = Math.max(3, Math.round((d.count/maxVal)*90));
+    var opacity = d.count > 0 ? (0.25 + (d.count/maxVal)*0.75) : 0.1;
+    var showL = i===0||i===6||i===13||i===20||i===29;
+    html += '<div class="db-bar-wrap">';
+    html += '<div class="db-bar" style="height:'+h+'px;opacity:'+opacity+'"></div>';
+    html += '<span class="db-bar-label">'+(showL?d.date.getDate():'')+'</span>';
+    html += '</div>';
+  });
+  wrap.innerHTML = html;
+}
+
+function renderHonorList() {
+  var list = document.getElementById('honorList');
+  var badge = document.getElementById('honorBadge');
+  if (!list) return;
+  var demo = [
+    {name:'M. Bernard Dupont', city:'Marseille 13', date:new Date(Date.now()+86400000), status:'ok', type:'Rénovation énergétique'},
+    {name:'Mme Sylvie Martin', city:'Montpellier 34', date:new Date(Date.now()+2*86400000), status:'ok', type:'Pompe à chaleur'},
+    {name:'M. Jacques Lebrun', city:'Avignon 84', date:new Date(Date.now()+3*86400000), status:'wait', type:'Isolation combles'},
+  ];
+  var months=['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
+  if (badge) badge.textContent = demo.length + ' à venir';
+  var html = '';
+  demo.forEach(function(r) {
+    html += '<div class="db-honor-item">';
+    html += '<div class="db-honor-top">';
+    html += '<div class="db-honor-date-box"><span class="db-honor-day">'+r.date.getDate()+'</span><span class="db-honor-month">'+months[r.date.getMonth()]+'</span></div>';
+    html += '<span class="db-honor-status '+r.status+'">'+(r.status==='ok'?'Confirmé':'En attente')+'</span>';
+    html += '</div>';
+    html += '<p class="db-honor-name">'+r.name+'</p>';
+    html += '<p class="db-honor-meta">'+r.city+' · '+r.type+'</p>';
+    html += '</div>';
+  });
+  list.innerHTML = html;
+}
+
+function renderAlerts() {
+  var list = document.getElementById('alertList');
+  var badge = document.getElementById('alertBadge');
+  if (!list) return;
+  var alerts = [
+    {type:'info', color:'#2563eb', title:'8 nouveaux RDV en PACA', sub:'Des RDV rénovation énergétique viennent d\'être ajoutés.', time:'Il y a 2h'},
+    {type:'success', color:'#00704a', title:'RDV honoré — M. Dupont', sub:'Pensez à noter le résultat dans votre suivi.', time:'Hier'},
+    {type:'warning', color:'#d97706', title:'Solde bas — 75 crédits', sub:'Rechargez pour continuer sans interruption.', time:'Il y a 3j'},
+  ];
+  if (badge) { badge.textContent = alerts.length; badge.className = 'db-badge green'; }
+  var html = '';
+  alerts.forEach(function(a) {
+    html += '<div class="db-alert '+a.type+'">';
+    html += '<div class="db-alert-dot" style="background:'+a.color+'"></div>';
+    html += '<div><p class="db-alert-title">'+a.title+'</p><p class="db-alert-sub">'+a.sub+'</p><p class="db-alert-time">'+a.time+'</p></div>';
+    html += '</div>';
+  });
+  list.innerHTML = html;
+}
+
+// Urgency RDV derniere minute
+var URGENCY_RDV = [
+  {type:'Rénovation', name:'M. Karim Boussaid', city:'Marseille 13e', expiry:Date.now()+3600000*4, original:25},
+  {type:'Pompe à chaleur', name:'Mme Claire Faure', city:'Montpellier 34', expiry:Date.now()+3600000*7, original:25},
+  {type:'Isolation combles', name:'M. Denis Garnier', city:'Nîmes 30', expiry:Date.now()+3600000*11, original:25},
+  {type:'Solaire', name:'Mme Fatima Ouhabi', city:'Toulon 83', expiry:Date.now()+3600000*18, original:25},
+  {type:'Double vitrage', name:'M. Antoine Ferraro', city:'Aix-en-Provence 13', expiry:Date.now()+3600000*22, original:25},
+];
+var URGENCY_PRICE = 20;
+
+function formatCountdown(expiry) {
+  var diff = Math.max(0, expiry - Date.now());
+  var h = Math.floor(diff/3600000);
+  var m = Math.floor((diff%3600000)/60000);
+  return h + 'h ' + (m<10?'0':'')+m + 'min';
+}
+
+function renderUrgency() {
+  var cards = document.getElementById('urgencyCards');
+  if (!cards) return;
+  var html = '';
+  URGENCY_RDV.forEach(function(r, i) {
+    html += '<div class="db-urgency-card" onclick="buyUrgencyRdv('+i+')">';
+    html += '<p class="db-urgency-card-type">'+r.type+'</p>';
+    html += '<p class="db-urgency-card-name">'+r.name+'</p>';
+    html += '<p class="db-urgency-card-city">'+r.city+'</p>';
+    html += '<div class="db-urgency-card-footer">';
+    html += '<div><div class="db-urgency-prices"><span class="db-urgency-price">'+URGENCY_PRICE+'€</span><span class="db-urgency-old-price">'+r.original+'€</span></div>';
+    html += '<p class="db-urgency-timer" id="timer_'+i+'">'+formatCountdown(r.expiry)+'</p></div>';
+    html += '<button class="db-urgency-buy" onclick="event.stopPropagation();buyUrgencyRdv('+i+')">Acheter</button>';
+    html += '</div></div>';
+  });
+  cards.innerHTML = html;
+  // Update timers every minute
+  setInterval(function() {
+    URGENCY_RDV.forEach(function(r, i) {
+      var el = document.getElementById('timer_'+i);
+      if (el) el.textContent = formatCountdown(r.expiry);
+    });
+  }, 60000);
+}
+
+function buyUrgencyRdv(idx) {
+  var r = URGENCY_RDV[idx];
+  var credits = parseInt(localStorage.getItem('sp_credits')||'0');
+  if (credits < URGENCY_PRICE) { showToast('Crédits insuffisants — rechargez votre compte', 'error'); return; }
+  credits -= URGENCY_PRICE;
+  localStorage.setItem('sp_credits', credits);
+  document.getElementById('creditBalance').textContent = credits;
+  URGENCY_RDV.splice(idx, 1);
+  renderUrgency();
+  showToast('RDV acheté — ' + r.name + ' · ' + r.city, 'success');
+}
+
+// Stat modal
+function openStatModal(type) {
+  var overlay = document.getElementById('statModalOverlay');
+  var title = document.getElementById('statModalTitle');
+  var body = document.getElementById('statModalBody');
+  var history = JSON.parse(localStorage.getItem('sp_purchase_history')||'[]');
+  var credits = parseInt(localStorage.getItem('sp_credits')||'0');
+  if (type === 'rdv') {
+    title.textContent = 'RDV achetés ce mois';
+    var thisMonth = new Date().toISOString().slice(0,7);
+    var monthRdv = history.filter(function(h){ return h.date && h.date.startsWith(thisMonth); });
+    var html = monthRdv.length === 0 ? '<p class="db-empty">Aucun RDV acheté ce mois</p>' : '';
+    monthRdv.forEach(function(r) {
+      html += '<div class="stat-modal-row"><span class="stat-modal-label">'+(r.name||'RDV')+'</span><span class="stat-modal-val">'+(r.price||25)+'€</span></div>';
+    });
+    body.innerHTML = html;
+  } else if (type === 'depenses') {
+    title.textContent = 'Détail des dépenses';
+    body.innerHTML = '<div class="stat-modal-row"><span class="stat-modal-label">Crédits restants</span><span class="stat-modal-val">'+credits+'</span></div><div class="stat-modal-row"><span class="stat-modal-label">Valeur restante</span><span class="stat-modal-val">'+(credits*25)+'€</span></div>';
+  } else if (type === 'dispo') {
+    title.textContent = "RDV disponibles aujourd'hui";
+    var html = '';
+    RDV_DATA.slice(0,8).forEach(function(r) {
+      html += '<div class="stat-modal-row"><span class="stat-modal-label">'+r.secteur+' · '+r.ville+'</span><span class="stat-modal-val">'+r.prix+'€</span></div>';
+    });
+    body.innerHTML = html || '<p class="db-empty">Aucun RDV disponible</p>';
+  }
+  overlay.classList.add('open');
+}
+
+function closeStatModal() {
+  document.getElementById('statModalOverlay').classList.remove('open');
+}
+
+function renderWelcome() {
+  var p = JSON.parse(localStorage.getItem('sp_profile') || '{}');
+  var prenom = p.prenom || p.raisonSociale || '';
+  var hour = new Date().getHours();
+  var greeting = hour < 12 ? 'Bonjour' : hour < 18 ? 'Bon après-midi' : 'Bonsoir';
+  var titleEl = document.getElementById('welcomeTitle');
+  if (titleEl) titleEl.textContent = prenom ? greeting + ', ' + prenom + '.' : greeting + '.';
+
+  // Compte les RDV dispo par région
+  var pacaOcc = RDV_DATA.filter(function(r) {
+    return r.region && (r.region.includes('Provence') || r.region.includes('Occitanie'));
+  }).reduce(function(s,r){ return s + (r.dispo||0); }, 0);
+
+  var idf = RDV_DATA.filter(function(r) {
+    return r.region && r.region.includes('Île-de-France');
+  }).reduce(function(s,r){ return s + (r.dispo||0); }, 0);
+
+  var total = RDV_DATA.reduce(function(s,r){ return s + (r.dispo||0); }, 0);
+
+  var el1 = document.getElementById('welcomeDispoTotal');
+  var el2 = document.getElementById('welcomeDispoPaca');
+  var el3 = document.getElementById('welcomeDispoIdf');
+  if (el1) el1.textContent = total;
+  if (el2) el2.textContent = pacaOcc;
+  if (el3) el3.textContent = idf;
+
+  // Sous-titre dynamique
+  var sub = document.getElementById('welcomeSub');
+  if (sub) sub.textContent = total + ' RDV qualifiés disponibles en France';
+}
 
 function renderStats() {
   const thisMonth = orders.filter(o => new Date(o.date).getMonth() === new Date().getMonth());
@@ -1157,7 +1546,12 @@ function confirmOrder() {
   localStorage.setItem('sp_orders_v2', JSON.stringify(orders));
   if (currentRegion) applyFilters(); else document.getElementById('rdvGrid').innerHTML = '';
   renderOrders();
+  renderWelcome();
   renderStats();
+  renderChart();
+  renderHonorList();
+  renderAlerts();
+  renderUrgency();
   closeModalDirect();
   showToast(currentQty + ' RDV commandé' + (currentQty > 1 ? 's' : '') + ' — confirmation par email');
 }
@@ -1264,7 +1658,7 @@ function renderOrders() {
 
 function showInfo(id) {
   const r = RDV_DATA.find(x => x.id === id);
-  if (r) showToast('Professionnelfil : ' + r.profile);
+  if (r) showToast('Profil : ' + r.profile);
 }
 
 function addCredits(amount) {
@@ -2028,6 +2422,14 @@ setTimeout(() => {
       <button class="signal-confirm" id="signalConfirmBtn" disabled onclick="confirmSignal()">Confirmer et rembourser 25 crédits</button>
       <button class="signal-cancel" onclick="closeSignalNow()">Annuler</button>
     </div>
+  </div>
+</div>
+<!-- STAT MODAL -->
+<div class="stat-modal-overlay" id="statModalOverlay" onclick="if(event.target===this)closeStatModal()">
+  <div class="stat-modal">
+    <div class="stat-modal-handle"></div>
+    <p class="stat-modal-title" id="statModalTitle">Détail</p>
+    <div id="statModalBody"></div>
   </div>
 </div>
 </body>
