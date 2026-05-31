@@ -120,6 +120,9 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
 .rdv-card{background:var(--white);border-radius:14px;border:1px solid var(--border);padding:16px 18px;display:flex;align-items:center;gap:16px;transition:border-color 0.15s,box-shadow 0.15s;cursor:default}
 .rdv-card:hover{border-color:rgba(17,17,18,0.2);box-shadow:0 4px 16px -6px rgba(17,17,18,0.1)}
 .rdv-card.featured{border-color:rgba(181,35,48,0.25);background:linear-gradient(135deg,rgba(181,35,48,0.03),var(--white))}
+.rdv-quality-badge{display:inline-block;font-size:9px;font-weight:800;padding:2px 7px;border-radius:99px;letter-spacing:0.04em;text-transform:uppercase;vertical-align:middle;margin-left:6px;font-family:'Plus Jakarta Sans',sans-serif}
+.rdv-quality-badge.qualifie{background:#1b1c1c;color:#ffd700}
+.rdv-quality-badge.simple{background:var(--surface);color:var(--muted);border:1px solid var(--border)}
 .rdv-badge-hot{position:absolute;top:-6px;left:12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;font-weight:700;padding:3px 9px;border-radius:5px;background:var(--red);color:#fff;letter-spacing:0}
 .rdv-card-wrap{position:relative;flex:1}
 .rdv-sector-icon{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -246,8 +249,8 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
 .db-stat-val{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:24px;letter-spacing:-0.05em;color:var(--dark);line-height:1}
 .db-stat-sub{font-size:11px;color:var(--muted);font-weight:500;margin-top:4px}
 
-.db-two-col{display:grid;grid-template-columns:1.5fr 1fr;gap:16px;margin-bottom:16px}
-.db-block{background:var(--white);border-radius:14px;border:1px solid var(--border);padding:20px}
+.db-two-col{display:grid;grid-template-columns:1.5fr 1fr;gap:16px;margin-bottom:16px;align-items:stretch}
+.db-block{background:var(--white);border-radius:14px;border:1px solid var(--border);padding:20px;display:flex;flex-direction:column}
 .db-block-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
 .db-block-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:13px;letter-spacing:-0.02em;color:var(--dark)}
 .db-badge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:99px;background:var(--surface);color:var(--muted);font-family:'Plus Jakarta Sans',sans-serif;border:1px solid var(--border)}
@@ -255,7 +258,7 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
 .db-badge.green{background:rgba(0,112,74,0.07);color:#00704a;border-color:rgba(0,112,74,0.15)}
 .db-empty{font-size:12px;color:var(--muted);font-weight:500;text-align:center;padding:20px 0}
 
-.db-chart{width:100%;height:120px;display:flex;align-items:flex-end;gap:2px;padding-bottom:16px;position:relative}
+.db-chart{width:100%;flex:1;min-height:160px;display:flex;align-items:flex-end;gap:3px;padding-bottom:18px;position:relative}
 .db-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%}
 .db-bar{width:100%;border-radius:3px 3px 0 0;background:var(--red);min-height:4px;transition:opacity 0.15s}
 .db-bar:hover{opacity:0.7;cursor:pointer}
@@ -297,6 +300,7 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
 .db-urgency-card-type{font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;font-family:'Plus Jakarta Sans',sans-serif}
 .db-urgency-card-name{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:12px;color:var(--dark);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .db-urgency-card-city{font-size:11px;color:var(--muted);margin-bottom:10px}
+.db-urgency-card-slot{font-size:11px;color:var(--dark);font-weight:700;margin-bottom:10px;font-family:'Plus Jakarta Sans',sans-serif}
 .db-urgency-card-footer{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .db-urgency-prices{display:flex;align-items:baseline;gap:5px}
 .db-urgency-price{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:18px;letter-spacing:-0.04em;color:var(--red)}
@@ -539,6 +543,8 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
         <div id="regionCurrentTitle" class="region-current" style="display:none"></div>
         <div class="filters" id="filterBtns" style="display:none">
           <button class="filter-btn active" onclick="filterRdv('all',this)">Tous les secteurs</button>
+          <button class="filter-btn" onclick="filterRdv('qualifie',this)">⭐ RDV Qualifiés</button>
+          <button class="filter-btn" onclick="filterRdv('simple',this)">Contrôles</button>
           <button class="filter-btn" onclick="filterRdv('renovation',this)">Rénovation énergétique</button>
           <button class="filter-btn" onclick="filterRdv('isolation',this)">Isolation</button>
           <button class="filter-btn" onclick="filterRdv('pac',this)">Pompe à chaleur</button>
@@ -1006,18 +1012,18 @@ let map = null;
 let markers = [];
 
 const RDV_DATA = [
-  { id:1, sector:'Rénovation énergétique', zone:'Lyon & périphérie', city:'Lyon', price:25, dispo:4, tag:'populaire', category:'renovation', profile:'Propriétaire, DPE E/F, >50 ans, revenus modestes' },
-  { id:2, sector:'Isolation combles', zone:'Marseille Sud', city:'Marseille', price:25, region:'Provence-Alpes-Côte d\'Azur', dispo:2, tag:'nouveau', category:'isolation', profile:'Propriétaire maison individuelle, intéressé prime CEE' },
-  { id:3, sector:'Pompe à chaleur', zone:'Bordeaux Métropole', city:'Bordeaux', price:25, region:'Nouvelle-Aquitaine', dispo:3, tag:'populaire', category:'pac', profile:'Propriétaire, chauffage fioul existant, budget confirmé' },
-  { id:4, sector:'Panneaux solaires', zone:'Toulouse & alentours', city:'Toulouse', price:25, region:'Occitanie', dispo:1, tag:'nouveau', category:'solaire', profile:'Propriétaire maison, toit sud exposé, primo-intéressé' },
-  { id:5, sector:'Rénovation énergétique', zone:'Paris Île-de-France', city:'Paris', price:25, region:'Île-de-France', dispo:5, tag:null, category:'renovation', profile:'Propriétaire appartement, DPE D/E, locataire en place' },
-  { id:6, sector:'Isolation thermique', zone:'Nantes & Pays de Loire', city:'Nantes', price:25, region:'Pays de la Loire', dispo:2, tag:null, category:'isolation', profile:'Propriétaire maison, projet isolation murs, devis souhaité' },
-  { id:7, sector:'Pompe à chaleur', zone:'Lille Métropole', city:'Lille', price:25, region:'Hauts-de-France', dispo:3, tag:'nouveau', category:'pac', profile:'Propriétaire, comparatif pompe à chaleur/chaudière gaz' },
-  { id:8, sector:'Panneaux solaires', zone:'Nice & Côte d\'Azur', city:'Nice', price:25, region:'Provence-Alpes-Côte d\'Azur', dispo:1, tag:'populaire', category:'solaire', profile:'Propriétaire villa, fort ensoleillement, budget confirmé 15k€+' },
-  { id:9, sector:'Rénovation énergétique', zone:'Strasbourg & Alsace', city:'Strasbourg', price:25, region:'Grand Est', dispo:2, tag:null, category:'renovation', profile:'Propriétaire maison ancienne, projet global rénovation' },
-  { id:10, sector:'Isolation combles', zone:'Rennes & Bretagne', city:'Rennes', price:25, region:'Bretagne', dispo:4, tag:'nouveau', category:'isolation', profile:'Propriétaire, combles perdus, éligible MaPrimeRénov' },
-  { id:11, sector:'Pompe à chaleur', zone:'Montpellier & Hérault', city:'Montpellier', price:25, region:'Occitanie', dispo:2, tag:null, category:'pac', profile:'Propriétaire maison, chauffage électrique, project PAC air/air' },
-  { id:12, sector:'Panneaux solaires', zone:'Avignon & Vaucluse', city:'Avignon', price:25, region:'Provence-Alpes-Côte d\'Azur', dispo:3, tag:'populaire', category:'solaire', profile:'Agriculteur/propriétaire, grande toiture, revente surplus EDF' },
+  { id:1, sector:'Rénovation énergétique', zone:'Lyon & périphérie', city:'Lyon', price:25, dispo:4, tag:'populaire', category:'renovation', quality:'simple', profile:'Propriétaire, DPE E/F, >50 ans, revenus modestes' },
+  { id:2, sector:'Isolation combles', zone:'Marseille Sud', city:'Marseille', price:25, region:'Provence-Alpes-Côte d\'Azur', dispo:2, tag:'nouveau', category:'isolation', quality:'simple', profile:'Propriétaire maison individuelle, intéressé prime CEE' },
+  { id:3, sector:'Pompe à chaleur', zone:'Bordeaux Métropole', city:'Bordeaux', price:80, region:'Nouvelle-Aquitaine', dispo:3, tag:'populaire', category:'pac', quality:'qualifie', profile:'Propriétaire, projet PAC confirmé, demande de devis active' },
+  { id:4, sector:'Panneaux solaires', zone:'Toulouse & alentours', city:'Toulouse', price:25, region:'Occitanie', dispo:1, tag:'nouveau', category:'solaire', quality:'simple', profile:'Propriétaire maison, toit sud exposé, primo-intéressé' },
+  { id:5, sector:'Rénovation énergétique', zone:'Paris Île-de-France', city:'Paris', price:25, region:'Île-de-France', dispo:5, tag:null, category:'renovation', quality:'simple', profile:'Propriétaire appartement, DPE D/E, locataire en place' },
+  { id:6, sector:'Isolation thermique', zone:'Nantes & Pays de Loire', city:'Nantes', price:80, region:'Pays de la Loire', dispo:2, tag:null, category:'isolation', quality:'qualifie', profile:'Propriétaire, travaux d\'isolation murs souhaités, devis demandé' },
+  { id:7, sector:'Pompe à chaleur', zone:'Lille Métropole', city:'Lille', price:25, region:'Hauts-de-France', dispo:3, tag:'nouveau', category:'pac', quality:'simple', profile:'Propriétaire, comparatif pompe à chaleur/chaudière gaz' },
+  { id:8, sector:'Panneaux solaires', zone:'Nice & Côte d\'Azur', city:'Nice', price:80, region:'Provence-Alpes-Côte d\'Azur', dispo:1, tag:'populaire', category:'solaire', quality:'qualifie', profile:'Propriétaire villa, projet solaire validé, budget 15k€+ confirmé' },
+  { id:9, sector:'Rénovation énergétique', zone:'Strasbourg & Alsace', city:'Strasbourg', price:25, region:'Grand Est', dispo:2, tag:null, category:'renovation', quality:'simple', profile:'Propriétaire maison ancienne, projet global rénovation' },
+  { id:10, sector:'Isolation combles', zone:'Rennes & Bretagne', city:'Rennes', price:25, region:'Bretagne', dispo:4, tag:'nouveau', category:'isolation', quality:'simple', profile:'Propriétaire, combles perdus, éligible MaPrimeRénov' },
+  { id:11, sector:'Pompe à chaleur', zone:'Montpellier & Hérault', city:'Montpellier', price:80, region:'Occitanie', dispo:2, tag:null, category:'pac', quality:'qualifie', profile:'Propriétaire, demande active de remplacement chauffage, prêt à signer' },
+  { id:12, sector:'Panneaux solaires', zone:'Avignon & Vaucluse', city:'Avignon', price:25, region:'Provence-Alpes-Côte d\'Azur', dispo:3, tag:'populaire', category:'solaire', quality:'simple', profile:'Agriculteur/propriétaire, grande toiture, revente surplus EDF' },
 ];
 
 let currentFilter = 'all';
@@ -1106,11 +1112,11 @@ function renderAlerts() {
 
 // Urgency RDV derniere minute
 var URGENCY_RDV = [
-  {type:'Rénovation', name:'M. Karim Boussaid', city:'Marseille 13e', expiry:Date.now()+3600000*4, original:25},
-  {type:'Pompe à chaleur', name:'Mme Claire Faure', city:'Montpellier 34', expiry:Date.now()+3600000*7, original:25},
-  {type:'Isolation combles', name:'M. Denis Garnier', city:'Nîmes 30', expiry:Date.now()+3600000*11, original:25},
-  {type:'Solaire', name:'Mme Fatima Ouhabi', city:'Toulon 83', expiry:Date.now()+3600000*18, original:25},
-  {type:'Double vitrage', name:'M. Antoine Ferraro', city:'Aix-en-Provence 13', expiry:Date.now()+3600000*22, original:25},
+  {type:'Rénovation', city:'Marseille 13e', rdvDate:new Date(Date.now()+2*86400000), slot:'14h00', expiry:Date.now()+3600000*4, original:25},
+  {type:'Pompe à chaleur', city:'Montpellier 34', rdvDate:new Date(Date.now()+2*86400000), slot:'10h30', expiry:Date.now()+3600000*7, original:25},
+  {type:'Isolation combles', city:'Nîmes 30', rdvDate:new Date(Date.now()+3*86400000), slot:'09h00', expiry:Date.now()+3600000*11, original:25},
+  {type:'Solaire', city:'Toulon 83', rdvDate:new Date(Date.now()+3*86400000), slot:'16h00', expiry:Date.now()+3600000*18, original:25},
+  {type:'Double vitrage', city:'Aix-en-Provence 13', rdvDate:new Date(Date.now()+4*86400000), slot:'11h00', expiry:Date.now()+3600000*22, original:25},
 ];
 var URGENCY_PRICE = 20;
 
@@ -1128,8 +1134,9 @@ function renderUrgency() {
   URGENCY_RDV.forEach(function(r, i) {
     html += '<div class="db-urgency-card" onclick="buyUrgencyRdv('+i+')">';
     html += '<p class="db-urgency-card-type">'+r.type+'</p>';
-    html += '<p class="db-urgency-card-name">'+r.name+'</p>';
-    html += '<p class="db-urgency-card-city">'+r.city+'</p>';
+    html += '<p class="db-urgency-card-name">'+r.city+'</p>';
+    var months = ['jan','fév','mar','avr','mai','jun','jul','aoû','sep','oct','nov','déc'];
+    html += '<p class="db-urgency-card-slot">'+r.rdvDate.getDate()+' '+months[r.rdvDate.getMonth()]+' · '+r.slot+'</p>';
     html += '<div class="db-urgency-card-footer">';
     html += '<div><div class="db-urgency-prices"><span class="db-urgency-price">'+URGENCY_PRICE+'€</span><span class="db-urgency-old-price">'+r.original+'€</span></div>';
     html += '<p class="db-urgency-timer" id="timer_'+i+'">'+formatCountdown(r.expiry)+'</p></div>';
@@ -1155,7 +1162,7 @@ function buyUrgencyRdv(idx) {
   document.getElementById('creditBalance').textContent = credits;
   URGENCY_RDV.splice(idx, 1);
   renderUrgency();
-  showToast('RDV acheté — ' + r.name + ' · ' + r.city, 'success');
+  showToast('RDV acheté — ' + r.type + ' · ' + r.city, 'success');
 }
 
 // Stat modal
@@ -1249,7 +1256,7 @@ function renderRdvList(filtered) {
         <svg width="20" height="20" viewBox="0 0 24 24" fill="${iconColor}"><path d="${iconPath}"/></svg>
       </div>
       <div class="rdv-info">
-        <p class="rdv-sector">${r.sector}</p>
+        <p class="rdv-sector">${r.sector} ${r.quality === 'qualifie' ? '<span class="rdv-quality-badge qualifie">Qualifié</span>' : '<span class="rdv-quality-badge simple">Contrôle</span>'}</p>
         <div class="rdv-meta">
           <span class="rdv-meta-item">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
@@ -1264,7 +1271,7 @@ function renderRdvList(filtered) {
       </div>
       <div class="rdv-price-block">
         <p class="rdv-price">${r.price} €<small>/RDV</small></p>
-        <p class="rdv-price-sub">Honoré garanti</p>
+        <p class="rdv-price-sub">${r.quality === 'qualifie' ? 'Client demandeur' : 'Honoré garanti'}</p>
       </div>
       <div class="rdv-actions">
         <button class="btn-ghost" onclick="showInfo(${r.id})">Détails</button>
@@ -1490,7 +1497,11 @@ function resetRegion() {
 function applyFilters() {
   let filtered = RDV_DATA;
   if (currentRegion) filtered = filtered.filter(r => r.region === currentRegion);
-  if (currentFilter !== 'all') filtered = filtered.filter(r => r.category === currentFilter);
+  if (currentFilter === 'qualifie' || currentFilter === 'simple') {
+    filtered = filtered.filter(r => r.quality === currentFilter);
+  } else if (currentFilter !== 'all') {
+    filtered = filtered.filter(r => r.category === currentFilter);
+  }
   const grid = document.getElementById('rdvGrid');
   if (!filtered.length) {
     grid.innerHTML = '<div style="padding:32px;text-align:center;color:var(--muted);font-weight:500;font-size:13px">Aucun RDV disponible pour cette sélection</div>';
@@ -1881,6 +1892,7 @@ function generateRdvsForDept(dept, count) {
     var day = ('0' + d.getDate()).slice(-2);
     var month = ('0' + (d.getMonth()+1)).slice(-2);
     var phone = '06 ' + Math.floor(10+Math.random()*90) + ' ' + Math.floor(10+Math.random()*90) + ' ' + Math.floor(10+Math.random()*90) + ' ' + Math.floor(10+Math.random()*90);
+    var isQualifie = Math.random() < 0.35; // ~35% qualifiés
     rdvs.push({
       date: day + '/' + month + '/' + d.getFullYear(),
       time: randomFrom(HOURS),
@@ -1890,6 +1902,8 @@ function generateRdvsForDept(dept, count) {
       address: Math.floor(1+Math.random()*120) + ' ' + randomFrom(STREETS) + ', ' + getCityForDept(dept),
       phone: phone,
       sector: randomFrom(SECTORS_LIST),
+      quality: isQualifie ? 'qualifie' : 'simple',
+      price: isQualifie ? 80 : 25,
       id: 'rdv_' + Date.now() + '_' + i
     });
   }
@@ -1899,17 +1913,28 @@ function generateRdvsForDept(dept, count) {
 var ficheRdvs = [];
 
 function openFiche(dept, count) {
-  loadRdvsFromSupabase(dept, count);
+  // Affiche immédiatement les données démo — pas d'attente
+  ficheRdvs = generateRdvsForDept(dept, count);
+  renderFiche(dept, ficheRdvs.length);
+  // Tente Supabase en arrière-plan avec timeout court (3s max)
+  if (typeof sbPro !== 'undefined' && sbPro) {
+    loadRdvsFromSupabase(dept, count);
+  }
 }
 
 async function loadRdvsFromSupabase(dept, count) {
   try {
-    var result = await sbPro
+    var timeout = new Promise(function(_, reject) {
+      setTimeout(function() { reject(new Error('timeout')); }, 3000);
+    });
+    var query = sbPro
       .from('rdv')
       .select('*')
       .eq('departement', dept)
       .eq('status', 'disponible')
       .order('date_rdv', { ascending: true });
+
+    var result = await Promise.race([query, timeout]);
 
     if (result.error) throw result.error;
     var data = result.data || [];
@@ -1926,19 +1951,15 @@ async function loadRdvsFromSupabase(dept, count) {
           phone: r.prospect_telephone,
           address: r.prospect_adresse,
           sector: r.secteur,
+          quality: r.quality || 'simple',
           fromSupabase: true,
           supabaseId: r.id
         };
       });
       renderFiche(dept, ficheRdvs.length);
-    } else {
-      ficheRdvs = generateRdvsForDept(dept, count);
-      renderFiche(dept, ficheRdvs.length);
     }
   } catch(e) {
-    console.warn('Supabase erreur, mode démo', e);
-    ficheRdvs = generateRdvsForDept(dept, count);
-    renderFiche(dept, ficheRdvs.length);
+    // Mode démo déjà affiché, on ne fait rien
   }
 }
 
@@ -1958,7 +1979,7 @@ function renderFiche(dept, count) {
     html += '<span class="fiche-rdv-date">' + r.date + '</span>';
     html += '<span class="fiche-rdv-time">' + r.time + '</span>';
     html += '</div>';
-    html += '<span class="fiche-rdv-sector">' + r.sector + '</span>';
+    html += '<span class="fiche-rdv-sector">' + r.sector + (r.quality === 'qualifie' ? ' <span class="rdv-quality-badge qualifie">Qualifié</span>' : '') + '</span>';
     html += '</div>';
     html += '<div class="fiche-rdv-fields">';
     html += '<div class="fiche-rdv-field">';
@@ -1980,7 +2001,8 @@ function renderFiche(dept, count) {
     if (bought) {
       html += '<button class="fiche-rdv-buy bought" disabled>Acheté</button>';
     } else {
-      html += '<button class="fiche-rdv-buy" data-rdvid="' + r.id + '">Acheter — 25 crédits</button>';
+      var rdvPrice = r.price || (r.quality === 'qualifie' ? 80 : 25);
+      html += '<button class="fiche-rdv-buy" data-rdvid="' + r.id + '">Acheter — ' + rdvPrice + ' crédits</button>';
     }
     html += '<div data-rdvid="' + r.id + '" class="prospect-pill ' + (bought ? 'pill-unlocked' : 'pill-locked') + '" style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-radius:10px;background:' + (bought ? '#f0faf5' : '#f5f4f2') + ';border:1px solid ' + (bought ? 'rgba(0,112,74,0.2)' : '#e0ddd9') + ';cursor:' + (bought ? 'pointer' : 'default') + '">';
     html += '<div style="display:flex;align-items:center;gap:8px">';
@@ -2318,6 +2340,11 @@ function closeDrawer() {
 renderRegionGrid();
 renderOrders();
 renderStats();
+renderWelcome();
+renderChart();
+renderHonorList();
+renderAlerts();
+renderUrgency();
 setTimeout(() => {
   initMap();
   setTimeout(() => {
