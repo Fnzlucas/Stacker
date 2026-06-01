@@ -93,9 +93,8 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
 .filter-btn.active{background:var(--dark);color:#fff;border-color:var(--dark)}
 
 /* ── RDV CATALOGUE ── */
-.rdv-catalogue-layout{display:grid;grid-template-columns:1fr 400px;gap:16px;align-items:start;min-height:450px}
-.rdv-grid{display:flex;flex-direction:column;gap:8px;max-height:calc(100vh - 240px);overflow-y:auto;scrollbar-width:thin;padding-right:2px;min-height:200px}
-.rdv-grid:empty::before{content:'Sélectionnez un département sur la carte ou dans la liste pour voir les RDV disponibles';display:flex;align-items:center;justify-content:center;text-align:center;color:var(--muted);font-size:13px;font-weight:500;padding:40px 20px;height:100%;line-height:1.6}
+.rdv-catalogue-layout{display:block;margin-top:16px}
+.rdv-grid{display:flex;flex-direction:column;gap:8px}
 .map-panel{position:sticky;top:74px;border-radius:14px;overflow:hidden;border:1px solid var(--border);box-shadow:0 4px 20px -6px rgba(17,17,18,0.1)}
 #rdvMap{height:450px;width:100%}
 @media(max-width:900px){
@@ -553,8 +552,7 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
         </div>
       </div>
 
-      <div class="rdv-catalogue-layout">
-        <div class="rdv-grid" id="rdvGrid"></div>
+      <div class="rdv-catalogue-layout" id="catalogueLayout">
         <div class="map-panel">
           <button class="map-expand-btn" onclick="openFullMap()" title="Agrandir">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="#111"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
@@ -562,6 +560,7 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
           <div id="rdvMap"></div>
         </div>
       </div>
+      <div id="rdvGrid" style="display:none"></div>
     </div>
 
     <!-- ── TAB : ABONNEMENT ── -->
@@ -1406,12 +1405,18 @@ function renderRegionGrid() {
 
 function renderRegionGridWithData(regions) {
   const grid = document.getElementById('regionGrid');
-  const sorted = Object.entries(regions).sort((a,b) => b[1] - a[1]);
-  grid.innerHTML = sorted.map(([name, data]) => {
-    var cls = data.dispo > 0 ? "has-dispo" : "";
+  // Normalise : accepte soit un nombre, soit un objet {dispo}
+  const normalized = {};
+  Object.keys(regions).forEach(function(k) {
+    var v = regions[k];
+    normalized[k] = (typeof v === 'number') ? v : (v && v.dispo != null ? v.dispo : 0);
+  });
+  const sorted = Object.entries(normalized).sort((a,b) => b[1] - a[1]);
+  grid.innerHTML = sorted.map(([name, dispo]) => {
+    var cls = dispo > 0 ? "has-dispo" : "";
     return "<div class=\"region-row\" data-region=\"" + encodeURIComponent(name) + "\">" +
       "<span class=\"region-name\">" + name + "</span>" +
-      "<span class=\"region-count " + cls + "\">" + data.dispo + " RDV</span>" +
+      "<span class=\"region-count " + cls + "\">" + dispo + " RDV</span>" +
       "</div>";
   }).join('');
   grid.querySelectorAll(".region-row").forEach(function(row) {
