@@ -93,8 +93,9 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
 .filter-btn.active{background:var(--dark);color:#fff;border-color:var(--dark)}
 
 /* ── RDV CATALOGUE ── */
-.rdv-catalogue-layout{display:grid;grid-template-columns:1fr 400px;gap:16px;align-items:start}
-.rdv-grid{display:flex;flex-direction:column;gap:8px;max-height:calc(100vh - 240px);overflow-y:auto;scrollbar-width:thin;padding-right:2px}
+.rdv-catalogue-layout{display:grid;grid-template-columns:1fr 400px;gap:16px;align-items:start;min-height:450px}
+.rdv-grid{display:flex;flex-direction:column;gap:8px;max-height:calc(100vh - 240px);overflow-y:auto;scrollbar-width:thin;padding-right:2px;min-height:200px}
+.rdv-grid:empty::before{content:'Sélectionnez un département sur la carte ou dans la liste pour voir les RDV disponibles';display:flex;align-items:center;justify-content:center;text-align:center;color:var(--muted);font-size:13px;font-weight:500;padding:40px 20px;height:100%;line-height:1.6}
 .map-panel{position:sticky;top:74px;border-radius:14px;overflow:hidden;border:1px solid var(--border);box-shadow:0 4px 20px -6px rgba(17,17,18,0.1)}
 #rdvMap{height:450px;width:100%}
 @media(max-width:900px){
@@ -890,7 +891,6 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
 .region-back:hover .region-back-label{color:var(--dark)}
 .region-current{font-weight:800;font-size:16px;letter-spacing:-0.03em;margin-bottom:12px}
 
-.map-panel{position:relative}
 .map-expand-btn{position:absolute;top:10px;right:10px;z-index:999;width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.95);border:1px solid rgba(0,0,0,0.1);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.15)}
 .map-expand-btn:hover{background:#fff}
 .map-fullscreen-overlay{position:fixed;inset:0;z-index:500;display:none;flex-direction:column}
