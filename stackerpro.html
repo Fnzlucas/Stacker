@@ -383,6 +383,9 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
 .onb2-risk-row{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 20px}
 .onb2-risk-x{font-size:14px;font-weight:600;color:rgba(255,255,255,0.55)}
 .onb2-risk-eq{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:800;color:#fff}
+.onb2-trust{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:24px;flex-wrap:wrap}
+.onb2-trust-item{font-size:12px;font-weight:700;color:rgba(255,255,255,0.6)}
+.onb2-trust-dot{color:rgba(255,255,255,0.3)}
 .onb2-flow{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:36px}
 .onb2-flow-step{display:flex;flex-direction:column;align-items:center;gap:10px}
 .onb2-flow-dot{width:14px;height:14px;border-radius:50%;box-shadow:0 0 16px currentColor}
@@ -446,6 +449,17 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
   .onb2-h2{font-size:22px}
   .onb2-count{font-size:22px}
 }
+
+/* ── EN-TÊTE RDV ÉPURÉ ── */
+.rdv-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:24px;flex-wrap:wrap}
+.rdv-head-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:26px;letter-spacing:-0.04em;color:var(--dark);line-height:1.1}
+.rdv-head-sub{font-size:14px;color:var(--muted);font-weight:500;margin-top:5px}
+.rdv-head-kpis{display:flex;gap:28px}
+.rdv-head-kpi{text-align:right}
+.rdv-head-kpi-val{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:26px;letter-spacing:-0.04em;color:var(--dark);line-height:1}
+.rdv-head-kpi-val.accent{color:var(--red)}
+.rdv-head-kpi-lbl{font-size:11px;color:var(--muted);font-weight:600;margin-top:4px}
+@media(max-width:600px){.rdv-head-kpis{gap:18px;width:100%;justify-content:space-between}.rdv-head-kpi{text-align:left}.rdv-head-kpi-val{font-size:22px}}
 
 /* ── RETOUR ACCUEIL ── */
 .back-home{display:inline-flex;align-items:center;gap:6px;background:var(--white);border:1px solid var(--border);border-radius:99px;padding:8px 16px 8px 12px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:13px;color:var(--dark);cursor:pointer;transition:all 0.15s;margin-bottom:20px}
@@ -517,6 +531,26 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
 .acc-module-light{background:var(--white)}
 .acc-module-light .acc-module-ic{background:rgba(181,35,48,0.08) !important}
 .acc-bottom{display:grid;grid-template-columns:1.6fr 1fr;gap:16px}
+/* Réassurance — garanties */
+.trust-guarantees{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.trust-guar{display:flex;align-items:flex-start;gap:12px;background:var(--white);border:1px solid var(--border);border-radius:14px;padding:18px}
+.trust-guar-ic{font-size:24px;color:var(--red);flex-shrink:0}
+.trust-guar-t{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:14px;color:var(--dark);letter-spacing:-0.02em}
+.trust-guar-d{font-size:11px;color:var(--muted);font-weight:500;margin-top:3px;line-height:1.4}
+/* Réassurance — témoignages */
+.trust-testimonials{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.trust-testi{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:22px;display:flex;flex-direction:column}
+.trust-testi-stars{color:#f5a623;font-size:15px;letter-spacing:2px;margin-bottom:12px}
+.trust-testi-text{font-size:14px;color:var(--dark);font-weight:500;line-height:1.6;font-style:italic;flex:1;margin-bottom:18px}
+.trust-testi-author{display:flex;align-items:center;gap:11px}
+.trust-testi-avatar{width:40px;height:40px;border-radius:50%;background:#1b1c1c;color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:14px;flex-shrink:0}
+.trust-testi-name{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:13px;color:var(--dark)}
+.trust-testi-role{font-size:11px;color:var(--muted);font-weight:500;margin-top:1px}
+/* Réassurance — footer signaux */
+.trust-footer{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:24px;margin-top:32px;padding:20px;background:var(--white);border:1px solid var(--border);border-radius:14px}
+.trust-foot-item{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:var(--muted)}
+.trust-foot-item .material-symbols-outlined{font-size:17px;color:var(--dark)}
+@media(max-width:760px){.trust-guarantees{grid-template-columns:1fr 1fr}.trust-testimonials{grid-template-columns:1fr}}
 .acc-activity{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:22px}
 .acc-activity-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
 .acc-activity-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:14px;letter-spacing:-0.02em;color:var(--dark)}
@@ -777,6 +811,13 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
         <div class="onb2-risk-row"><span class="onb2-risk-x">Chaque vidéo</span><span class="onb2-risk-eq">= preuve de publication</span></div>
       </div>
       <p class="onb2-lead">Aucun coût caché, aucun engagement. Le risque, c'est nous qui le portons. À vous la croissance.</p>
+      <div class="onb2-trust">
+        <span class="onb2-trust-item">Paiement sécurisé</span>
+        <span class="onb2-trust-dot">·</span>
+        <span class="onb2-trust-item">Sans engagement</span>
+        <span class="onb2-trust-dot">·</span>
+        <span class="onb2-trust-item">Support humain</span>
+      </div>
       <button class="onb2-go onb2-go-final" onclick="onb2Close()">Accéder à Stacker Pro</button>
     </div>
   </div>
@@ -964,8 +1005,60 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
         </div>
       </div>
 
+      <!-- BANDE GARANTIES / ZÉRO RISQUE -->
+      <div class="trust-guarantees">
+        <div class="trust-guar">
+          <span class="material-symbols-outlined trust-guar-ic">verified_user</span>
+          <div><p class="trust-guar-t">Payé au résultat</p><p class="trust-guar-d">RDV non honoré remboursé, 0€ sans vente</p></div>
+        </div>
+        <div class="trust-guar">
+          <span class="material-symbols-outlined trust-guar-ic">event_available</span>
+          <div><p class="trust-guar-t">Sans engagement</p><p class="trust-guar-d">Résiliable à tout moment, aucune durée imposée</p></div>
+        </div>
+        <div class="trust-guar">
+          <span class="material-symbols-outlined trust-guar-ic">lock</span>
+          <div><p class="trust-guar-t">Paiement sécurisé</p><p class="trust-guar-d">Transactions protégées via Stripe & Mollie</p></div>
+        </div>
+        <div class="trust-guar">
+          <span class="material-symbols-outlined trust-guar-ic">support_agent</span>
+          <div><p class="trust-guar-t">Support humain</p><p class="trust-guar-d">Une vraie équipe joignable pour vous accompagner</p></div>
+        </div>
+      </div>
+
+      <!-- TÉMOIGNAGES -->
+      <div class="acc-section-head" style="margin-top:32px">
+        <h2 class="acc-section-title">Ils ont fait décoller leur business</h2>
+        <p class="acc-section-sub">Des pros comme vous, partout en France.</p>
+      </div>
+      <div class="trust-testimonials">
+        <div class="trust-testi">
+          <div class="trust-testi-stars">★★★★★</div>
+          <p class="trust-testi-text">"En trois semaines, j'ai eu plus de rendez-vous qu'en six mois de prospection seul. Je signe, c'est tout."</p>
+          <div class="trust-testi-author">
+            <div class="trust-testi-avatar">KM</div>
+            <div><p class="trust-testi-name">Karim M.</p><p class="trust-testi-role">Rénovation énergétique · Avignon</p></div>
+          </div>
+        </div>
+        <div class="trust-testi">
+          <div class="trust-testi-stars">★★★★★</div>
+          <p class="trust-testi-text">"La campagne vidéo a explosé ma visibilité. Mon salon était plein le week-end suivant, du jamais vu."</p>
+          <div class="trust-testi-author">
+            <div class="trust-testi-avatar">SL</div>
+            <div><p class="trust-testi-name">Sophie L.</p><p class="trust-testi-role">Institut de beauté · Nîmes</p></div>
+          </div>
+        </div>
+        <div class="trust-testi">
+          <div class="trust-testi-stars">★★★★★</div>
+          <p class="trust-testi-text">"Les closers vendent mieux que moi. Je paie qu'à la vente, donc je ne prends aucun risque. Imparable."</p>
+          <div class="trust-testi-author">
+            <div class="trust-testi-avatar">TD</div>
+            <div><p class="trust-testi-name">Thomas D.</p><p class="trust-testi-role">Panneaux solaires · Montpellier</p></div>
+          </div>
+        </div>
+      </div>
+
       <!-- DEUX COLONNES : ACTIVITÉ + ARMÉE -->
-      <div class="acc-bottom">
+      <div class="acc-bottom" style="margin-top:32px">
         <div class="acc-activity">
           <div class="acc-activity-head">
             <p class="acc-activity-title">Votre activité récente</p>
@@ -984,63 +1077,37 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
           <div class="acc-army-stat"><span class="acc-army-num">800+</span><span class="acc-army-lbl">vidéos publiées / mois</span></div>
         </div>
       </div>
+
+      <!-- FOOTER SIGNAUX DE CONFIANCE -->
+      <div class="trust-footer">
+        <div class="trust-foot-item"><span class="material-symbols-outlined">business</span>Stacker SAS · SIREN 000 000 000</div>
+        <div class="trust-foot-item"><span class="material-symbols-outlined">lock</span>Paiement sécurisé Stripe & Mollie</div>
+        <div class="trust-foot-item"><span class="material-symbols-outlined">shield</span>Données protégées · RGPD</div>
+        <div class="trust-foot-item"><span class="material-symbols-outlined">description</span>CGV & facturation conformes</div>
+      </div>
     </div>
 
     <!-- ── TAB : CATALOGUE ── -->
     <div class="tab-content" id="content-catalogue">
 
-      <!-- DASHBOARD -->
-      <div class="db-hero">
-        <div class="db-hero-left">
-          <p class="db-hero-eyebrow">Tableau de bord</p>
-          <p class="db-hero-title" id="welcomeTitle">Bonjour.</p>
-          <p class="db-hero-sub" id="welcomeSub">Voici votre activité du jour</p>
+      <!-- EN-TÊTE SIMPLE -->
+      <div class="rdv-head">
+        <div>
+          <h1 class="rdv-head-title">Rendez-vous qualifiés</h1>
+          <p class="rdv-head-sub">Achetez des RDV près de chez vous, sans engagement.</p>
         </div>
-        <div class="db-hero-right">
-          <div class="db-kpi">
-            <p class="db-kpi-val accent" id="welcomeDispoTotal">—</p>
-            <p class="db-kpi-label">RDV France</p>
+        <div class="rdv-head-kpis">
+          <div class="rdv-head-kpi">
+            <p class="rdv-head-kpi-val accent" id="welcomeDispoTotal">—</p>
+            <p class="rdv-head-kpi-lbl">RDV dispo en France</p>
           </div>
-          <div class="db-kpi-divider"></div>
-          <div class="db-kpi">
-            <p class="db-kpi-val" id="welcomeDispoPaca">—</p>
-            <p class="db-kpi-label">PACA · Occitanie</p>
+          <div class="rdv-head-kpi">
+            <p class="rdv-head-kpi-val" id="statDispo">—</p>
+            <p class="rdv-head-kpi-lbl">Dispo aujourd'hui</p>
           </div>
-
-        </div>
-      </div>
-
-      <!-- STATS ROW -->
-      <div class="db-stats">
-        <div class="db-stat-card" onclick="openStatModal('rdv')" style="cursor:pointer">
-          <div class="db-stat-icon">
-            <span class="material-symbols-outlined" style="font-size:22px;color:var(--muted);font-variation-settings:'FILL' 0">event</span>
-          </div>
-          <div>
-            <p class="db-stat-label">RDV achetés</p>
-            <p class="db-stat-val" id="statTotal">0</p>
-            <p class="db-stat-sub">Ce mois-ci</p>
-          </div>
-        </div>
-        <div class="db-stat-card" onclick="openStatModal('depenses')" style="cursor:pointer">
-          <div class="db-stat-icon">
-            <span class="material-symbols-outlined" style="font-size:22px;color:var(--muted);font-variation-settings:'FILL' 0">payments</span>
-          </div>
-          <div>
-            <p class="db-stat-label">Dépensé</p>
-            <p class="db-stat-val" id="statSpent" style="color:var(--red)">0 €</p>
-            <p class="db-stat-sub">Ce mois-ci</p>
-          </div>
-        </div>
-
-        <div class="db-stat-card" onclick="openStatModal('dispo')" style="cursor:pointer">
-          <div class="db-stat-icon">
-            <span class="material-symbols-outlined" style="font-size:22px;color:var(--muted);font-variation-settings:'FILL' 0">calendar_today</span>
-          </div>
-          <div>
-            <p class="db-stat-label">Dispo aujourd'hui</p>
-            <p class="db-stat-val" id="statDispo">—</p>
-            <p class="db-stat-sub">RDV qualifiés</p>
+          <div class="rdv-head-kpi">
+            <p class="rdv-head-kpi-val" id="statTotal">0</p>
+            <p class="rdv-head-kpi-lbl">Vos RDV ce mois</p>
           </div>
         </div>
       </div>
@@ -1057,42 +1124,8 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
         <div class="db-urgency-cards" id="urgencyCards"></div>
       </div>
 
-      <!-- GRAPHIQUE + ALERTES -->
-      <div class="db-two-col">
-
-        <div class="db-block">
-          <div class="db-block-head">
-            <p class="db-block-title">Activité — 30 jours</p>
-            <span class="db-badge" id="chartTotal">0 RDV</span>
-          </div>
-          <div class="db-chart" id="chartWrap"></div>
-        </div>
-
-        <div class="db-block">
-          <div class="db-block-head">
-            <p class="db-block-title">Alertes</p>
-            <button class="db-alert-add" onclick="openAlertModal()">+ Créer une alerte</button>
-          </div>
-          <div class="db-alert-list" id="alertList">
-            <p class="db-empty">Aucune alerte</p>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- RDV A HONORER -->
-      <div class="db-block" style="margin-bottom:20px">
-        <div class="db-block-head">
-          <p class="db-block-title">RDV à honorer</p>
-          <span class="db-badge red" id="honorBadge">0 à venir</span>
-        </div>
-        <div class="db-honor-list" id="honorList">
-          <p class="db-empty">Aucun RDV planifié</p>
-        </div>
-      </div>
-
       <div class="section-title">
-        <h2>RDV disponibles</h2>
+        <h2>Choisissez votre zone</h2>
         <div class="section-title-right">
           <span style="font-size:11px;color:var(--muted);font-weight:500">Mis à jour ce matin</span>
           <div style="width:6px;height:6px;border-radius:50%;background:#b52330;animation:pulse-dot 2s ease-in-out infinite"></div>
@@ -1118,7 +1151,7 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
         <div id="regionCurrentTitle" class="region-current" style="display:none"></div>
         <div class="filters" id="filterBtns" style="display:none">
           <button class="filter-btn active" onclick="filterRdv('all',this)">Tous les secteurs</button>
-          <button class="filter-btn" onclick="filterRdv('qualifie',this)">⭐ RDV Qualifiés</button>
+          <button class="filter-btn" onclick="filterRdv('qualifie',this)">RDV Qualifiés</button>
           <button class="filter-btn" onclick="filterRdv('simple',this)">Contrôles</button>
           <button class="filter-btn" onclick="filterRdv('renovation',this)">Rénovation énergétique</button>
           <button class="filter-btn" onclick="filterRdv('isolation',this)">Isolation</button>
@@ -1135,6 +1168,18 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
           <div id="rdvMap"></div>
         </div>
       </div>
+
+      <!-- RDV A HONORER (déplacé en bas, discret) -->
+      <div class="db-block" style="margin-top:20px">
+        <div class="db-block-head">
+          <p class="db-block-title">Vos RDV à honorer</p>
+          <span class="db-badge red" id="honorBadge">0 à venir</span>
+        </div>
+        <div class="db-honor-list" id="honorList">
+          <p class="db-empty">Aucun RDV planifié</p>
+        </div>
+      </div>
+
       <div id="rdvGrid" style="display:none"></div>
     </div>
 
@@ -2057,11 +2102,12 @@ function renderStats() {
   const thisMonth = orders.filter(o => new Date(o.date).getMonth() === new Date().getMonth());
   const total = thisMonth.reduce((s,o) => s + o.qty, 0);
   const spent = thisMonth.reduce((s,o) => s + o.total, 0);
-  document.getElementById('statTotal').textContent = total;
-  document.getElementById('statSpent').textContent = spent + ' €';
-  document.getElementById('creditBalance').textContent = credits;
-  document.getElementById('creditDisplay').textContent = credits + ' €';
-  document.getElementById('creditUsed').textContent = spent + ' €';
+  var set = function(id,v){ var e=document.getElementById(id); if(e) e.textContent=v; };
+  set('statTotal', total);
+  set('statSpent', spent + ' €');
+  set('creditBalance', credits);
+  set('creditDisplay', credits + ' €');
+  set('creditUsed', spent + ' €');
 }
 
 function renderRdvList(filtered) {
