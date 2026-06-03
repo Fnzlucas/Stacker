@@ -97,6 +97,7 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
 .rdv-grid{display:flex;flex-direction:column;gap:8px}
 .map-panel{position:sticky;top:74px;border-radius:14px;overflow:hidden;border:1px solid var(--border);box-shadow:0 4px 20px -6px rgba(17,17,18,0.1)}
 #rdvMap{height:450px;width:100%}
+
 @media(max-width:900px){
   .layout{display:block}
   .sidebar{display:none}
@@ -341,6 +342,328 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
 .stat-modal-label{font-size:13px;font-weight:600;color:var(--dark)}
 .stat-modal-val{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:14px;color:var(--dark)}
 
+/* ── ONBOARDING IMMERSIF ── */
+.onb2{position:fixed;inset:0;z-index:9999;background:radial-gradient(ellipse at 70% 20%,#2a0e12,#0a0a0b 60%);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.onb2.closing{animation:onb2Fade 0.5s forwards}
+@keyframes onb2Fade{to{opacity:0;visibility:hidden}}
+.onb2-skip{position:absolute;top:22px;right:24px;z-index:20;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:13px;padding:8px 16px;border-radius:99px;cursor:pointer;transition:all 0.15s}
+.onb2-skip:hover{background:rgba(255,255,255,0.14);color:#fff}
+.onb2-stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:60px 32px 100px;opacity:0;pointer-events:none;transform:translateY(20px);transition:opacity 0.6s,transform 0.6s;overflow-y:auto}
+.onb2-stage.active{opacity:1;pointer-events:all;transform:translateY(0)}
+.onb2-inner{max-width:560px;width:100%;text-align:center;position:relative;z-index:2}
+.onb2-pulse-ring{position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(181,35,48,0.25),transparent 65%);animation:onb2Pulse 3s ease-in-out infinite;pointer-events:none}
+@keyframes onb2Pulse{0%,100%{opacity:0.5;transform:translateX(-50%) scale(1)}50%{opacity:0.9;transform:translateX(-50%) scale(1.15)}}
+.onb2-kicker{font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#ff5c6a;margin-bottom:20px}
+.onb2-logo-big{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:30px;letter-spacing:-0.05em;color:#fff;margin-bottom:24px}
+.onb2-logo-big span{color:#b52330}
+.onb2-coverage{display:flex;justify-content:center;gap:14px;margin-bottom:30px}
+.onb2-cov-item{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:18px 28px;display:flex;flex-direction:column;gap:4px}
+.onb2-cov-num{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:24px;letter-spacing:-0.04em;color:#fff;line-height:1}
+.onb2-cov-lbl{font-size:11px;color:rgba(255,255,255,0.45);font-weight:600}
+.onb2-mega{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:40px;letter-spacing:-0.05em;color:#fff;line-height:1.08;margin-bottom:18px}
+.onb2-mega span{color:#ff5c6a}
+.onb2-roles{display:flex;flex-direction:column;gap:10px;max-width:440px;margin:0 auto 30px;text-align:left}
+.onb2-role{display:flex;align-items:flex-start;gap:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:14px 18px}
+.onb2-role-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.onb2-role-t{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:14px;color:#fff;letter-spacing:-0.01em}
+.onb2-role-d{font-size:12px;color:rgba(255,255,255,0.5);font-weight:500;margin-top:2px}
+.onb2-h2{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:34px;letter-spacing:-0.05em;color:#fff;line-height:1.12;margin-bottom:22px}
+.onb2-h2 span{color:#ff5c6a}
+.onb2-lead{font-size:15px;color:rgba(255,255,255,0.55);font-weight:500;line-height:1.6;margin-bottom:26px;max-width:460px;margin-left:auto;margin-right:auto}
+.onb2-go{display:inline-flex;align-items:center;gap:8px;background:#b52330;color:#fff;border:none;border-radius:13px;padding:15px 32px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:15px;cursor:pointer;transition:all 0.2s;box-shadow:0 8px 28px rgba(181,35,48,0.4)}
+.onb2-go:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(181,35,48,0.55)}
+.onb2-go-final{background:linear-gradient(135deg,#b52330,#ff5c6a);padding:17px 44px;font-size:16px}
+.onb2-counters{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
+.onb2-counter{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:24px 14px}
+.onb2-count{display:block;font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:40px;letter-spacing:-0.05em;color:#fff;line-height:1;font-variant-numeric:tabular-nums}
+.onb2-count-lbl{display:block;font-size:11px;color:rgba(255,255,255,0.45);font-weight:600;margin-top:8px;line-height:1.3}
+.onb2-live{display:inline-flex;align-items:center;gap:8px;background:rgba(181,35,48,0.1);border:1px solid rgba(181,35,48,0.3);border-radius:99px;padding:8px 18px;font-size:13px;font-weight:700;color:#ff5c6a;margin-bottom:30px}
+.onb2-live-dot{width:8px;height:8px;border-radius:50%;background:#ff4444;animation:pulse-dot 1.4s ease-in-out infinite;box-shadow:0 0 10px rgba(255,68,68,0.6)}
+.onb2-risk{display:flex;flex-direction:column;gap:10px;max-width:440px;margin:0 auto 28px}
+.onb2-risk-row{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 20px}
+.onb2-risk-x{font-size:14px;font-weight:600;color:rgba(255,255,255,0.55)}
+.onb2-risk-eq{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:800;color:#fff}
+.onb2-flow{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:36px}
+.onb2-flow-step{display:flex;flex-direction:column;align-items:center;gap:10px}
+.onb2-flow-dot{width:14px;height:14px;border-radius:50%;box-shadow:0 0 16px currentColor}
+.onb2-flow-label{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:13px;color:#fff;letter-spacing:-0.01em}
+.onb2-flow-line{width:60px;height:1px;background:linear-gradient(90deg,rgba(255,255,255,0.1),rgba(255,255,255,0.3),rgba(255,255,255,0.1));margin:0 4px;margin-bottom:23px}
+.onb2-dots{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:20}
+/* Module slides — architecture premium */
+.onb-mod{justify-content:flex-start !important;align-items:center !important}
+.onb-mod-ghost{position:absolute;top:50%;left:5%;transform:translateY(-50%);font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:340px;line-height:0.8;letter-spacing:-0.06em;pointer-events:none;z-index:0;user-select:none}
+.onb-mod-inner{max-width:600px;width:100%;position:relative;z-index:2;text-align:left}
+.onb-mod-head{margin-bottom:28px}
+.onb-mod-tag{display:inline-block;font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--c);background:var(--cb);border:1px solid var(--cb);padding:6px 14px;border-radius:99px;margin-bottom:20px}
+.onb-mod-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:42px;letter-spacing:-0.05em;color:#fff;line-height:1.05;margin-bottom:16px}
+.onb-mod-lead{font-size:16px;color:rgba(255,255,255,0.55);font-weight:500;line-height:1.65;max-width:520px}
+.onb-mod-proofs{display:flex;flex-direction:column;gap:0;margin-bottom:30px;border-top:1px solid rgba(255,255,255,0.1)}
+.onb-mod-proof{display:flex;align-items:baseline;gap:16px;padding:16px 4px;border-bottom:1px solid rgba(255,255,255,0.1)}
+.onb-mod-proof-k{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:16px;color:#fff;letter-spacing:-0.02em;min-width:130px;flex-shrink:0}
+.onb-mod-proof-v{font-size:14px;color:rgba(255,255,255,0.5);font-weight:500}
+@media(max-width:700px){
+  .onb-mod-ghost{font-size:200px;left:50%;transform:translate(-50%,-50%);opacity:0.6}
+  .onb-mod-inner{text-align:center}
+  .onb-mod-title{font-size:30px}
+  .onb-mod-lead{font-size:14px;margin:0 auto}
+  .onb-mod-proof{flex-direction:column;gap:2px;align-items:center;text-align:center}
+  .onb-mod-proof-k{min-width:0}
+  .onb-mod-proofs{align-items:stretch}
+}
+.onb2-dot{width:8px;height:8px;border-radius:99px;background:rgba(255,255,255,0.2);transition:all 0.3s}
+.onb2-dot.active{width:26px;background:#ff5c6a}
+@media(max-width:600px){
+  .onb2-stage{padding:32px 20px 90px;align-items:flex-start;overflow-y:auto}
+  .onb2-inner{padding-top:40px}
+  .onb2-mega{font-size:30px}
+  .onb2-h2{font-size:25px;margin-bottom:20px}
+  .onb2-lead{font-size:14px;margin-bottom:24px}
+  .onb2-kicker{font-size:11px;margin-bottom:14px}
+  .onb2-count{font-size:26px}
+  .onb2-counters{gap:8px;margin-bottom:18px}
+  .onb2-counter{padding:16px 6px}
+  .onb2-count-lbl{font-size:10px}
+  .onb2-roles{gap:8px;margin-bottom:24px}
+  .onb2-role{padding:12px 14px}
+  .onb2-role-t{font-size:13px}
+  .onb2-role-d{font-size:11px}
+  .onb2-risk{margin-bottom:22px}
+  .onb2-risk-row{padding:13px 16px}
+  .onb2-risk-x{font-size:13px}
+  .onb2-risk-eq{font-size:13px}
+  .onb2-go{padding:14px 26px;font-size:14px}
+  .onb2-go-final{padding:15px 34px;font-size:15px}
+  .onb2-flow{margin-bottom:28px}
+  .onb2-flow-line{width:32px}
+  .onb2-flow-label{font-size:11px}
+  .onb2-live{font-size:12px;padding:7px 14px;margin-bottom:24px}
+  .onb2-pulse-ring{width:220px;height:220px;top:-40px}
+  .onb2-skip{top:16px;right:16px;font-size:12px;padding:7px 13px}
+  .onb2-dots{bottom:24px}
+}
+@media(max-width:380px){
+  .onb2-mega{font-size:26px}
+  .onb2-h2{font-size:22px}
+  .onb2-count{font-size:22px}
+}
+
+/* ── RETOUR ACCUEIL ── */
+.back-home{display:inline-flex;align-items:center;gap:6px;background:var(--white);border:1px solid var(--border);border-radius:99px;padding:8px 16px 8px 12px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:13px;color:var(--dark);cursor:pointer;transition:all 0.15s;margin-bottom:20px}
+.back-home:hover{border-color:rgba(181,35,48,0.3);color:var(--red);transform:translateX(-2px)}
+.back-home svg{transition:transform 0.15s}
+.back-home:hover svg{transform:translateX(-2px)}
+
+/* ── ACCUEIL ── */
+.acc-welcome{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:20px}
+.acc-welcome-greet{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:26px;letter-spacing:-0.04em;color:var(--dark);line-height:1.1}
+.acc-welcome-sub{font-size:13px;color:var(--muted);font-weight:500;margin-top:5px}
+.acc-welcome-army{display:flex;align-items:center;gap:8px;background:var(--white);border:1px solid var(--border);border-radius:99px;padding:8px 16px;flex-shrink:0;font-size:12px;font-weight:700;color:var(--dark)}
+.acc-welcome-pulse{width:8px;height:8px;border-radius:50%;background:#ff4444;animation:pulse-dot 1.5s ease-in-out infinite;box-shadow:0 0 10px rgba(255,68,68,0.5)}
+.acc-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:32px}
+.acc-kpi{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:18px;cursor:pointer;transition:all 0.15s}
+.acc-kpi:hover{border-color:rgba(17,17,18,0.2);transform:translateY(-2px)}
+.acc-kpi-ic{font-size:20px;color:var(--muted);margin-bottom:10px;display:block}
+.acc-kpi-val{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:24px;letter-spacing:-0.04em;color:var(--dark);line-height:1}
+.acc-kpi-lbl{font-size:11px;color:var(--muted);font-weight:600;margin-top:5px}
+.acc-section-head{margin-bottom:16px}
+.acc-section-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:19px;letter-spacing:-0.03em;color:var(--dark)}
+.acc-section-sub{font-size:13px;color:var(--muted);font-weight:500;margin-top:3px}
+.acc-modules{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
+.acc-module{position:relative;background:var(--white);border:1px solid var(--border);border-radius:18px;padding:26px 24px;cursor:pointer;transition:all 0.25s cubic-bezier(0.22,1,0.36,1);display:flex;flex-direction:column;overflow:hidden}
+.acc-module::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform 0.3s}
+.acc-module::after{content:'';position:absolute;top:-60px;right:-60px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(181,35,48,0.06),transparent 70%);opacity:0;transition:opacity 0.3s;pointer-events:none}
+.acc-module:hover{border-color:rgba(181,35,48,0.3);transform:translateY(-4px);box-shadow:0 18px 40px -14px rgba(181,35,48,0.25)}
+.acc-module:hover::before{transform:scaleX(1)}
+.acc-module:hover::after{opacity:1}
+.acc-module:hover .acc-module-ic{transform:scale(1.08) rotate(-3deg)}
+.acc-module:hover .acc-module-cta{gap:9px}
+.acc-module-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;position:relative;z-index:1}
+.acc-module-ic{width:54px;height:54px;border-radius:15px;display:flex;align-items:center;justify-content:center;transition:transform 0.25s;box-shadow:0 4px 14px -4px rgba(181,35,48,0.25)}
+.acc-module-badge{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:var(--red);background:rgba(181,35,48,0.07);border:1px solid rgba(181,35,48,0.18);padding:5px 11px;border-radius:99px;font-family:'Plus Jakarta Sans',sans-serif}
+.acc-module-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:21px;letter-spacing:-0.04em;color:var(--dark);margin-bottom:9px;position:relative;z-index:1}
+.acc-module-desc{font-size:13px;color:var(--muted);font-weight:500;line-height:1.6;flex:1;margin-bottom:20px;position:relative;z-index:1}
+.acc-module-foot{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);padding-top:16px;position:relative;z-index:1}
+.acc-module-price{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:17px;letter-spacing:-0.03em;color:var(--dark)}
+.acc-module-price small{font-size:11px;font-weight:600;color:var(--muted)}
+.acc-module-cta{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:800;color:var(--red);transition:gap 0.2s;font-family:'Plus Jakarta Sans',sans-serif}
+
+/* Variantes de cards modules */
+.acc-module-dark{background:#1b1c1c;border-color:#1b1c1c}
+.acc-module-dark .acc-module-title{color:#fff}
+.acc-module-dark .acc-module-desc{color:rgba(255,255,255,0.55)}
+.acc-module-dark .acc-module-badge{color:#fff;background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.15)}
+.acc-module-dark .acc-module-ic{background:rgba(255,255,255,0.1) !important}
+.acc-module-dark .acc-module-ic svg{fill:#fff !important}
+.acc-module-dark .acc-module-foot{border-color:rgba(255,255,255,0.12)}
+.acc-module-dark .acc-module-price{color:#fff}
+.acc-module-dark .acc-module-price small{color:rgba(255,255,255,0.5)}
+.acc-module-dark .acc-module-cta{color:#ff5c6a}
+.acc-module-dark:hover{border-color:#1b1c1c;box-shadow:0 18px 40px -14px rgba(0,0,0,0.5)}
+
+.acc-module-red{background:linear-gradient(150deg,#b52330,#8a1a24);border-color:transparent}
+.acc-module-red::after{background:radial-gradient(circle,rgba(255,255,255,0.12),transparent 70%)}
+.acc-module-red .acc-module-title{color:#fff}
+.acc-module-red .acc-module-desc{color:rgba(255,255,255,0.7)}
+.acc-module-red .acc-module-badge{color:#fff;background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.25)}
+.acc-module-red .acc-module-ic{background:rgba(255,255,255,0.15) !important}
+.acc-module-red .acc-module-ic svg{fill:#fff !important}
+.acc-module-red .acc-module-foot{border-color:rgba(255,255,255,0.2)}
+.acc-module-red .acc-module-price{color:#fff}
+.acc-module-red .acc-module-price small{color:rgba(255,255,255,0.6)}
+.acc-module-red .acc-module-cta{color:#fff}
+.acc-module-red::before{background:#fff}
+.acc-module-red:hover{border-color:transparent;box-shadow:0 18px 44px -12px rgba(181,35,48,0.55)}
+
+.acc-module-light{background:var(--white)}
+.acc-module-light .acc-module-ic{background:rgba(181,35,48,0.08) !important}
+.acc-bottom{display:grid;grid-template-columns:1.6fr 1fr;gap:16px}
+.acc-activity{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:22px}
+.acc-activity-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.acc-activity-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:14px;letter-spacing:-0.02em;color:var(--dark)}
+.acc-activity-link{font-size:12px;font-weight:700;color:var(--red);cursor:pointer}
+.acc-act-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--border)}
+.acc-act-row:last-child{border-bottom:none}
+.acc-act-ic{width:34px;height:34px;border-radius:9px;background:var(--surface);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.acc-act-info{flex:1;min-width:0}
+.acc-act-t{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:13px;color:var(--dark);letter-spacing:-0.01em}
+.acc-act-d{font-size:11px;color:var(--muted);font-weight:500;margin-top:1px}
+.acc-act-amt{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:13px;color:var(--dark);flex-shrink:0}
+.acc-act-empty{text-align:center;padding:28px 0;color:var(--muted);font-size:13px;font-weight:500}
+.acc-army{background:#1b1c1c;border-radius:16px;padding:22px;position:relative;overflow:hidden}
+.acc-army::before{content:'';position:absolute;top:-40px;right:-30px;width:140px;height:140px;border-radius:50%;background:rgba(181,35,48,0.14);pointer-events:none}
+.acc-army-head{display:flex;align-items:center;gap:9px;margin-bottom:18px;position:relative;z-index:1}
+.acc-army-pulse{width:8px;height:8px;border-radius:50%;background:#ff4444;animation:pulse-dot 1.5s ease-in-out infinite;box-shadow:0 0 10px rgba(255,68,68,0.5)}
+.acc-army-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:13px;color:#fff;letter-spacing:-0.01em}
+.acc-army-stat{display:flex;flex-direction:column;gap:2px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.08);position:relative;z-index:1}
+.acc-army-stat:last-child{border-bottom:none}
+.acc-army-num{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:24px;letter-spacing:-0.04em;color:#fff;line-height:1}
+.acc-army-lbl{font-size:11px;color:rgba(255,255,255,0.45);font-weight:600}
+
+@media(max-width:760px){
+  .acc-kpis{grid-template-columns:1fr 1fr}
+  .acc-modules{grid-template-columns:1fr}
+  .acc-bottom{grid-template-columns:1fr}
+  .acc-welcome{flex-direction:column;align-items:flex-start;gap:12px}
+}
+
+/* ── FORCE DE VENTE ── */
+.vente-hero{background:linear-gradient(135deg,#1b1c1c,#2d1416);border-radius:18px;padding:36px 40px;position:relative;overflow:hidden}
+.vente-hero::before{content:'';position:absolute;top:-60px;right:-40px;width:240px;height:240px;border-radius:50%;background:rgba(181,35,48,0.15);pointer-events:none}
+.vente-hero-content{position:relative;z-index:1;max-width:560px}
+.vente-hero-badge{display:inline-block;font-size:10px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#ff5c6a;background:rgba(181,35,48,0.15);border:1px solid rgba(181,35,48,0.3);padding:4px 12px;border-radius:99px;margin-bottom:14px}
+.vente-hero-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:26px;letter-spacing:-0.04em;color:#fff;line-height:1.15;margin-bottom:10px}
+.vente-hero-sub{font-size:14px;color:rgba(255,255,255,0.6);font-weight:500;line-height:1.6}
+.vente-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.vente-tier{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:20px}
+.vente-tier-range{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:8px;font-family:'Plus Jakarta Sans',sans-serif}
+.vente-tier-comm{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:24px;letter-spacing:-0.04em;color:var(--red);line-height:1}
+.vente-tier-label{font-size:12px;color:var(--muted);font-weight:500;margin-top:4px}
+.vente-form{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:24px}
+.comm-model{display:flex;align-items:stretch;gap:16px;background:var(--white);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
+.comm-model-big{display:flex;flex-direction:column;align-items:center;justify-content:center;background:#1b1c1c;border-radius:14px;padding:24px 32px;flex-shrink:0;min-width:160px}
+.comm-model-pct{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:46px;letter-spacing:-0.05em;color:#ff5c6a;line-height:1}
+.comm-model-pct-lbl{font-size:11px;color:rgba(255,255,255,0.55);font-weight:600;margin-top:6px;text-align:center}
+.comm-model-rows{flex:1;display:flex;flex-direction:column;justify-content:center;gap:12px}
+.comm-model-row{display:flex;align-items:flex-start;gap:12px}
+.comm-model-ic{font-size:22px;color:var(--red);flex-shrink:0}
+.comm-model-t{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:14px;color:var(--dark);letter-spacing:-0.01em}
+.comm-model-d{font-size:12px;color:var(--muted);font-weight:500;margin-top:2px;line-height:1.4}
+.comm-calc{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:24px}
+.comm-calc-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:14px;letter-spacing:-0.02em;color:var(--dark);margin-bottom:14px}
+.comm-calc-row{margin-bottom:16px}
+.comm-calc-field{max-width:320px}
+.comm-calc-result{display:flex;align-items:center;gap:16px;background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:18px 20px}
+.comm-calc-res-item{flex:1;display:flex;flex-direction:column;gap:4px}
+.comm-calc-res-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--muted)}
+.comm-calc-res-val{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:24px;letter-spacing:-0.04em;color:var(--dark);line-height:1}
+.comm-calc-res-val.accent{color:var(--red)}
+.comm-calc-res-arrow{color:var(--muted);font-size:20px;font-weight:700;flex-shrink:0}
+@media(max-width:600px){.comm-model{flex-direction:column}.comm-calc-result{flex-direction:column;align-items:stretch;gap:12px}.comm-calc-res-arrow{transform:rotate(90deg);align-self:center}}
+.vente-plans{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.vente-plan{background:var(--white);border:1.5px solid var(--border);border-radius:16px;padding:24px;cursor:pointer;transition:all 0.2s;position:relative}
+.vente-plan:hover{border-color:rgba(17,17,18,0.25)}
+.vente-plan.selected{border-color:var(--red);background:rgba(181,35,48,0.02)}
+.vente-plan.featured.selected{border-color:var(--red)}
+.vente-plan-tag{position:absolute;top:-9px;right:18px;font-size:9px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:var(--red);padding:3px 10px;border-radius:99px}
+.vente-plan-name{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:15px;color:var(--dark);letter-spacing:-0.02em;margin-bottom:6px}
+.vente-plan-price{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:30px;letter-spacing:-0.05em;color:var(--dark);line-height:1;margin-bottom:16px}
+.vente-plan-price small{font-size:14px;font-weight:600;color:var(--muted);letter-spacing:0}
+.vente-plan-feats{list-style:none;margin-bottom:18px}
+.vente-plan-feats li{font-size:12px;color:var(--muted);font-weight:500;line-height:1.5;padding-left:20px;position:relative;margin-bottom:7px}
+.vente-plan-feats li::before{content:'✓';position:absolute;left:0;color:var(--red);font-weight:800}
+.vente-plan-check{text-align:center;padding:10px;border-radius:10px;background:var(--surface);border:1px solid var(--border);font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:13px;color:var(--dark);transition:all 0.2s}
+.vente-plan.selected .vente-plan-check{background:var(--red);color:#fff;border-color:var(--red)}
+.vente-recap{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:18px}
+.vente-recap-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;font-size:13px}
+.vente-recap-row span:first-child{color:var(--muted);font-weight:500}
+.vente-recap-row span:last-child{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;color:var(--dark)}
+
+/* ── UGC MODULE ── */
+.ugc-hero{background:linear-gradient(135deg,#1b1c1c,#2d1416);border-radius:18px;padding:36px 40px;position:relative;overflow:hidden}
+.ugc-hero::before{content:'';position:absolute;top:-60px;right:-40px;width:240px;height:240px;border-radius:50%;background:rgba(181,35,48,0.18);pointer-events:none}
+.ugc-hero::after{content:'';position:absolute;bottom:-80px;right:120px;width:180px;height:180px;border-radius:50%;background:rgba(181,35,48,0.1);pointer-events:none}
+.ugc-hero-content{position:relative;z-index:1;max-width:560px}
+.ugc-hero-badge{display:inline-block;font-size:10px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#ff5c6a;background:rgba(181,35,48,0.15);border:1px solid rgba(181,35,48,0.3);padding:4px 12px;border-radius:99px;margin-bottom:14px}
+.ugc-hero-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:32px;letter-spacing:-0.05em;color:#fff;line-height:1.1;margin-bottom:12px}
+.ugc-hero-sub{font-size:14px;color:rgba(255,255,255,0.6);font-weight:500;line-height:1.65;margin-bottom:22px;max-width:600px}
+.ugc-power{display:flex;gap:28px;margin-bottom:22px;flex-wrap:wrap}
+.ugc-power-item{display:flex;flex-direction:column;gap:3px}
+.ugc-power-num{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:22px;letter-spacing:-0.04em;color:#ff5c6a;line-height:1.1}
+.ugc-power-lbl{font-size:11px;color:rgba(255,255,255,0.5);font-weight:600}
+.ugc-platforms{display:flex;gap:8px}
+.ugc-platform-chip{font-size:12px;font-weight:700;color:#fff;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);padding:6px 14px;border-radius:99px;font-family:'Plus Jakarta Sans',sans-serif}
+.ugc-packs{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.ugc-pack{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:20px;cursor:pointer;transition:all 0.2s;position:relative}
+.ugc-pack:hover{border-color:rgba(181,35,48,0.35);transform:translateY(-2px);box-shadow:0 6px 20px rgba(181,35,48,0.08)}
+.ugc-pack.popular{border-color:var(--red);border-width:1.5px}
+.ugc-pack-tag{position:absolute;top:-9px;left:16px;font-size:9px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:#fff;background:var(--red);padding:3px 9px;border-radius:99px}
+.ugc-pack-qty{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:28px;letter-spacing:-0.05em;color:var(--dark);line-height:1}
+.ugc-pack-qty small{font-size:13px;font-weight:600;color:var(--muted);letter-spacing:0}
+.ugc-pack-label{font-size:12px;color:var(--muted);font-weight:600;margin:4px 0 14px}
+.ugc-pack-price{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:20px;letter-spacing:-0.04em;color:var(--red)}
+.ugc-pack-unit{font-size:11px;color:var(--muted);font-weight:500;margin-top:2px}
+.ugc-pack-save{display:inline-block;font-size:10px;font-weight:700;color:var(--red);background:rgba(181,35,48,0.08);padding:2px 8px;border-radius:99px;margin-top:8px}
+.ugc-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.ugc-steps-4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:760px){.ugc-steps-4{grid-template-columns:1fr 1fr}}
+/* Configurateur campagne */
+.camp{display:grid;grid-template-columns:1.3fr 1fr;gap:16px}
+.camp-config{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:24px}
+.camp-field{margin-bottom:20px}
+.camp-field:last-child{margin-bottom:0}
+.camp-toggle{display:flex;gap:8px;background:var(--surface);border-radius:11px;padding:4px}
+.camp-toggle-btn{flex:1;padding:10px;border-radius:8px;border:none;background:transparent;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:13px;color:var(--muted);cursor:pointer;transition:all 0.15s}
+.camp-toggle-btn.active{background:var(--white);color:var(--dark);box-shadow:0 2px 6px rgba(0,0,0,0.06)}
+.camp-budget-input{position:relative;display:flex;align-items:center}
+.camp-budget-input input{padding-right:80px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:20px}
+.camp-budget-suffix{position:absolute;right:16px;font-size:13px;font-weight:700;color:var(--muted);pointer-events:none}
+.camp-hint{font-size:11px;color:var(--muted);font-weight:500;margin-top:8px;line-height:1.4}
+.camp-durations{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.camp-dur-btn{padding:11px 8px;border-radius:10px;border:1.5px solid var(--border);background:var(--white);font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:13px;color:var(--muted);cursor:pointer;transition:all 0.15s}
+.camp-dur-btn.active{border-color:var(--red);background:rgba(181,35,48,0.04);color:var(--red)}
+.camp-summary{background:#1b1c1c;border-radius:16px;padding:24px;position:relative;overflow:hidden}
+.camp-summary::before{content:'';position:absolute;top:-40px;right:-30px;width:140px;height:140px;border-radius:50%;background:rgba(181,35,48,0.14);pointer-events:none}
+.camp-summary-label{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:13px;color:#fff;margin-bottom:16px;position:relative;z-index:1}
+.camp-summary-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.08);position:relative;z-index:1}
+.camp-summary-row span:first-child{font-size:12px;color:rgba(255,255,255,0.5);font-weight:500}
+.camp-summary-row span:last-child{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;color:#fff;font-weight:700}
+.camp-summary-total{display:flex;align-items:center;justify-content:space-between;padding:14px 0 4px;position:relative;z-index:1}
+.camp-summary-total span:first-child{font-size:13px;color:rgba(255,255,255,0.6);font-weight:600}
+.camp-summary-total span:last-child{font-family:'Plus Jakarta Sans',sans-serif;font-size:26px;color:#ff5c6a;font-weight:900;letter-spacing:-0.04em}
+@media(max-width:760px){.camp{grid-template-columns:1fr}.camp-durations{grid-template-columns:1fr 1fr}}
+.ugc-step{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:20px}
+.ugc-step-num{width:30px;height:30px;border-radius:9px;background:var(--dark);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:14px;margin-bottom:12px}
+.ugc-step-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:14px;color:var(--dark);margin-bottom:5px;letter-spacing:-0.02em}
+.ugc-step-desc{font-size:12px;color:var(--muted);font-weight:500;line-height:1.5}
+.ugc-label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);margin-bottom:7px;font-family:'Plus Jakarta Sans',sans-serif}
+.ugc-input{width:100%;padding:12px 14px;border-radius:11px;border:1.5px solid var(--border);background:var(--white);font-size:14px;font-weight:500;color:var(--dark);font-family:'Plus Jakarta Sans',sans-serif;outline:none;transition:border-color 0.2s;resize:vertical}
+.ugc-input:focus{border-color:var(--dark)}
+.ugc-platform-select{display:flex;gap:8px}
+.ugc-plat-btn{flex:1;padding:10px;border-radius:10px;border:1.5px solid var(--border);background:var(--white);font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:13px;color:var(--muted);cursor:pointer;transition:all 0.15s}
+.ugc-plat-btn.active{border-color:var(--dark);background:var(--dark);color:#fff}
+.ugc-confirm-btn{width:100%;padding:14px;border-radius:12px;background:var(--dark);color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:14px;border:none;cursor:pointer;transition:background 0.15s}
+.ugc-confirm-btn:hover{background:var(--red)}
+
 /* ── TOAST ── */
 .toast{position:fixed;bottom:24px;right:24px;background:var(--dark);color:#fff;padding:12px 18px;border-radius:12px;font-size:13px;font-weight:600;z-index:999;transform:translateY(20px);opacity:0;transition:all 0.3s cubic-bezier(0.22,1,0.36,1);display:flex;align-items:center;gap:8px;box-shadow:0 8px 24px -6px rgba(0,0,0,0.3)}
 .toast.show{transform:translateY(0);opacity:1}
@@ -369,6 +692,100 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
 </head>
 <body>
 
+<!-- ONBOARDING IMMERSIF -->
+<div class="onb2" id="onb2">
+  <button class="onb2-skip" onclick="onb2Close()">Passer →</button>
+
+  <!-- ÉTAPE 0 : STACKER C'EST QUOI -->
+  <div class="onb2-stage active" data-stage="0">
+    <div class="onb2-inner">
+      <div class="onb2-pulse-ring"></div>
+      <div class="onb2-logo-big">Stacker<span>.</span></div>
+      <p class="onb2-kicker">Stacker, c'est quoi ?</p>
+      <h1 class="onb2-mega">Un réseau de commerciaux<br>payés <span>uniquement</span> à la commission</h1>
+      <p class="onb2-lead">Des centaines de commerciaux et créateurs déployés dans toute la France et tous les pays francophones. Ils ne gagnent que lorsqu'ils produisent un résultat — donc ils se battent pour le vôtre.</p>
+      <div class="onb2-coverage">
+        <div class="onb2-cov-item"><span class="onb2-cov-num">100%</span><span class="onb2-cov-lbl">payés à la performance</span></div>
+        <div class="onb2-cov-item"><span class="onb2-cov-num">France</span><span class="onb2-cov-lbl">+ pays francophones</span></div>
+      </div>
+      <button class="onb2-go" onclick="onb2Next()">Comment ça marche <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>
+    </div>
+  </div>
+
+  <!-- ÉTAPE 1 : MODULE RDV -->
+  <div class="onb2-stage onb-mod" data-stage="1">
+    <div class="onb-mod-ghost" style="color:rgba(181,35,48,0.08)">01</div>
+    <div class="onb-mod-inner">
+      <div class="onb-mod-head">
+        <span class="onb-mod-tag" style="--c:#ff5c6a;--cb:rgba(181,35,48,0.15)">Levier 01 · Acquisition</span>
+        <h2 class="onb-mod-title">Achetez des RDV<br>comme <span style="color:#ff5c6a">nulle part ailleurs</span></h2>
+        <p class="onb-mod-lead">La seule plateforme où vous achetez des rendez-vous sans devis, sans contrat, sans engagement. Une heure de libre cet après-midi ? Prenez 1 RDV. Besoin de volume ? Prenez-en cent.</p>
+      </div>
+      <div class="onb-mod-proofs">
+        <div class="onb-mod-proof"><span class="onb-mod-proof-k">À l'unité</span><span class="onb-mod-proof-v">ou en gros, au jour le jour</span></div>
+        <div class="onb-mod-proof"><span class="onb-mod-proof-k">0 engagement</span><span class="onb-mod-proof-v">pas de devis, pas de contrat</span></div>
+        <div class="onb-mod-proof"><span class="onb-mod-proof-k">Remboursé</span><span class="onb-mod-proof-v">si le RDV n'est pas honoré</span></div>
+      </div>
+      <button class="onb2-go" onclick="onb2Next()">Levier suivant <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>
+    </div>
+  </div>
+
+  <!-- ÉTAPE 2 : MODULE UGC -->
+  <div class="onb2-stage onb-mod" data-stage="2">
+    <div class="onb-mod-ghost" style="color:rgba(181,35,48,0.08)">02</div>
+    <div class="onb-mod-inner">
+      <div class="onb-mod-head">
+        <span class="onb-mod-tag" style="--c:#ff5c6a;--cb:rgba(181,35,48,0.15)">Levier 02 · Visibilité</span>
+        <h2 class="onb-mod-title">Faites <span style="color:#ff5c6a">exploser</span><br>votre visibilité</h2>
+        <p class="onb-mod-lead">Grâce à leur nombre, nos créateurs peuvent faire décoller un artiste, un business ou un site sans aucun problème. Une vague de vidéos déferle sur les réseaux et propulse votre nom partout en France.</p>
+      </div>
+      <div class="onb-mod-proofs">
+        <div class="onb-mod-proof"><span class="onb-mod-proof-k">En nombre</span><span class="onb-mod-proof-v">des centaines de créateurs mobilisés</span></div>
+        <div class="onb-mod-proof"><span class="onb-mod-proof-k">3 réseaux</span><span class="onb-mod-proof-v">TikTok, Instagram, Snapchat</span></div>
+        <div class="onb-mod-proof"><span class="onb-mod-proof-k">Effet viral</span><span class="onb-mod-proof-v">un produit, un site, un artiste lancé</span></div>
+      </div>
+      <button class="onb2-go" onclick="onb2Next()">Levier suivant <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>
+    </div>
+  </div>
+
+  <!-- ÉTAPE 3 : MODULE FORCE DE VENTE -->
+  <div class="onb2-stage onb-mod" data-stage="3">
+    <div class="onb-mod-ghost" style="color:rgba(181,35,48,0.08)">03</div>
+    <div class="onb-mod-inner">
+      <div class="onb-mod-head">
+        <span class="onb-mod-tag" style="--c:#ff5c6a;--cb:rgba(181,35,48,0.15)">Levier 03 · Vente</span>
+        <h2 class="onb-mod-title">Une force de vente<br>qui <span style="color:#ff5c6a">ne dort jamais</span></h2>
+        <p class="onb-mod-lead">Nos Stackers attaquent par tous les canaux pour vendre vos offres : phoning, porte-à-porte, emailing, cold DM. Ils ne sont payés qu'à la vente conclue — autant dire qu'ils se battent pour vous.</p>
+      </div>
+      <div class="onb-mod-proofs">
+        <div class="onb-mod-proof"><span class="onb-mod-proof-k">Tous canaux</span><span class="onb-mod-proof-v">phoning, PAP, emailing, cold DM</span></div>
+        <div class="onb-mod-proof"><span class="onb-mod-proof-k">Partout</span><span class="onb-mod-proof-v">France et pays francophones</span></div>
+        <div class="onb-mod-proof"><span class="onb-mod-proof-k">0 vente = 0€</span><span class="onb-mod-proof-v">payés uniquement au résultat</span></div>
+      </div>
+      <button class="onb2-go" onclick="onb2Next()">Et le risque ? <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>
+    </div>
+  </div>
+
+  <!-- ÉTAPE 4 : ZÉRO RISQUE + DÉCOLLAGE -->
+  <div class="onb2-stage" data-stage="4">
+    <div class="onb2-inner">
+      <p class="onb2-kicker">Le meilleur dans tout ça</p>
+      <h2 class="onb2-h2">Vous ne payez<br>qu'au <span>résultat</span></h2>
+      <div class="onb2-risk">
+        <div class="onb2-risk-row"><span class="onb2-risk-x">Pas de RDV honoré</span><span class="onb2-risk-eq">= remboursé</span></div>
+        <div class="onb2-risk-row"><span class="onb2-risk-x">Pas de vente</span><span class="onb2-risk-eq">= 0€ de commission</span></div>
+        <div class="onb2-risk-row"><span class="onb2-risk-x">Chaque vidéo</span><span class="onb2-risk-eq">= preuve de publication</span></div>
+      </div>
+      <p class="onb2-lead">Aucun coût caché, aucun engagement. Le risque, c'est nous qui le portons. À vous la croissance.</p>
+      <button class="onb2-go onb2-go-final" onclick="onb2Close()">Accéder à Stacker Pro</button>
+    </div>
+  </div>
+
+  <div class="onb2-dots">
+    <span class="onb2-dot active"></span><span class="onb2-dot"></span><span class="onb2-dot"></span><span class="onb2-dot"></span><span class="onb2-dot"></span>
+  </div>
+</div>
+
 <!-- HEADER -->
 <header class="header">
   <div style="display:flex;align-items:center;gap:10px">
@@ -396,14 +813,22 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
   <aside class="sidebar">
     <div class="sidebar-section">
       <span class="sidebar-label">Navigation</span>
-      <a class="nav-item active" onclick="showTab('catalogue');setActive(this)">
+      <a class="nav-item active" onclick="showTab('accueil');setActive(this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        <span class="nav-text">Accueil</span>
+      </a>
+      <a class="nav-item" onclick="showTab('catalogue');setActive(this)">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/></svg>
-        <span class="nav-text">Catalogue RDV</span>
+        <span class="nav-text">RDV qualifiés</span>
         <span class="nav-count" id="navCount">12</span>
       </a>
-      <a class="nav-item" onclick="showTab('abonnement');setActive(this)">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
-        <span class="nav-text">Abonnement</span>
+      <a class="nav-item" onclick="showTab('ugc');setActive(this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+        <span class="nav-text">Visibilité / UGC</span>
+      </a>
+      <a class="nav-item" onclick="showTab('vente');setActive(this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+        <span class="nav-text">Force de vente</span>
       </a>
       <a class="nav-item" onclick="showTab('commandes');setActive(this)">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/></svg>
@@ -423,6 +848,11 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
         <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
         <span class="nav-text">Factures</span>
       </a>
+      <a class="nav-item" onclick="showTab('ugc');setActive(this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+        <span class="nav-text">Pub / UGC</span>
+        <span class="nav-count" style="background:var(--red);color:#fff">New</span>
+      </a>
     </div>
 
     <div class="plan-box">
@@ -435,8 +865,129 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
   <!-- MAIN -->
   <main class="main">
 
+    <!-- FIL D'ARIANE / RETOUR -->
+    <button class="back-home" id="backHome" onclick="showTab('accueil');setActive(document.querySelectorAll('.sidebar .nav-item')[0])" style="display:none">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+      Retour à l'accueil
+    </button>
+
+    <!-- ── TAB : ACCUEIL ── -->
+    <div class="tab-content active" id="content-accueil">
+
+      <!-- BARRE DE BIENVENUE -->
+      <div class="acc-welcome">
+        <div>
+          <p class="acc-welcome-greet" id="homeGreeting">Bonjour</p>
+          <p class="acc-welcome-sub">Voici un aperçu de votre activité et de vos leviers de croissance.</p>
+        </div>
+        <div class="acc-welcome-army">
+          <div class="acc-welcome-pulse"></div>
+          <span>Vos Stackers sont actifs</span>
+        </div>
+      </div>
+
+      <!-- 4 KPI -->
+      <div class="acc-kpis">
+        <div class="acc-kpi" onclick="openStatModal('rdv')">
+          <span class="material-symbols-outlined acc-kpi-ic">event</span>
+          <p class="acc-kpi-val" id="homeStatRdv">0</p>
+          <p class="acc-kpi-lbl">RDV achetés ce mois</p>
+        </div>
+        <div class="acc-kpi" onclick="openStatModal('depenses')">
+          <span class="material-symbols-outlined acc-kpi-ic">trending_up</span>
+          <p class="acc-kpi-val" id="homeStatSpent">0 €</p>
+          <p class="acc-kpi-lbl">Investi ce mois</p>
+        </div>
+        <div class="acc-kpi" onclick="showTab('credits')">
+          <span class="material-symbols-outlined acc-kpi-ic">account_balance_wallet</span>
+          <p class="acc-kpi-val" id="homeStatCredits">0</p>
+          <p class="acc-kpi-lbl">Crédits disponibles</p>
+        </div>
+        <div class="acc-kpi" onclick="showTab('catalogue');setActive(document.querySelectorAll('.sidebar .nav-item')[1])">
+          <span class="material-symbols-outlined acc-kpi-ic">explore</span>
+          <p class="acc-kpi-val" id="homeStatDispo">12</p>
+          <p class="acc-kpi-lbl">RDV dispo aujourd'hui</p>
+        </div>
+      </div>
+
+      <!-- TITRE SECTION MODULES -->
+      <div class="acc-section-head">
+        <h2 class="acc-section-title">Vos 3 leviers de croissance</h2>
+        <p class="acc-section-sub">Activez-les selon vos besoins. Vous ne payez qu'au résultat.</p>
+      </div>
+
+      <!-- 3 MODULES -->
+      <div class="acc-modules">
+        <div class="acc-module acc-module-dark" onclick="showTab('catalogue');setActive(document.querySelectorAll('.sidebar .nav-item')[1])">
+          <div class="acc-module-top">
+            <div class="acc-module-ic" style="background:rgba(181,35,48,0.08)">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="#b52330"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            </div>
+            <span class="acc-module-badge">Acquisition</span>
+          </div>
+          <h3 class="acc-module-title">RDV qualifiés</h3>
+          <p class="acc-module-desc">Des prospects déjà demandeurs, livrés dans votre zone. Vous n'avez plus qu'à closer.</p>
+          <div class="acc-module-foot">
+            <span class="acc-module-price">Dès 25€ <small>/ RDV</small></span>
+            <span class="acc-module-cta">Explorer les RDV →</span>
+          </div>
+        </div>
+
+        <div class="acc-module acc-module-red" onclick="showTab('ugc');setActive(document.querySelectorAll('.sidebar .nav-item')[2])">
+          <div class="acc-module-top">
+            <div class="acc-module-ic" style="background:rgba(181,35,48,0.08)">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="#b52330"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+            </div>
+            <span class="acc-module-badge">Visibilité</span>
+          </div>
+          <h3 class="acc-module-title">Vidéos UGC</h3>
+          <p class="acc-module-desc">Des créateurs publient des vidéos de votre business sur TikTok, Instagram et Snapchat.</p>
+          <div class="acc-module-foot">
+            <span class="acc-module-price">15€ <small>/ vidéo</small></span>
+            <span class="acc-module-cta">Commander →</span>
+          </div>
+        </div>
+
+        <div class="acc-module acc-module-light" onclick="showTab('vente');setActive(document.querySelectorAll('.sidebar .nav-item')[3])">
+          <div class="acc-module-top">
+            <div class="acc-module-ic" style="background:rgba(181,35,48,0.08)">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="#b52330"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+            </div>
+            <span class="acc-module-badge">Vente</span>
+          </div>
+          <h3 class="acc-module-title">Force de vente</h3>
+          <p class="acc-module-desc">Nos closers vendent vos offres partout en France. Payez uniquement à la vente conclue.</p>
+          <div class="acc-module-foot">
+            <span class="acc-module-price">À la commission</span>
+            <span class="acc-module-cta">Déployer →</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- DEUX COLONNES : ACTIVITÉ + ARMÉE -->
+      <div class="acc-bottom">
+        <div class="acc-activity">
+          <div class="acc-activity-head">
+            <p class="acc-activity-title">Votre activité récente</p>
+            <span class="acc-activity-link" onclick="showTab('commandes');setActive(document.querySelectorAll('.sidebar .nav-item')[4])">Tout voir →</span>
+          </div>
+          <div id="accActivityList"></div>
+        </div>
+
+        <div class="acc-army">
+          <div class="acc-army-head">
+            <div class="acc-army-pulse"></div>
+            <p class="acc-army-title">L'armée Stacker en chiffres</p>
+          </div>
+          <div class="acc-army-stat"><span class="acc-army-num">2 400+</span><span class="acc-army-lbl">RDV pris par semaine</span></div>
+          <div class="acc-army-stat"><span class="acc-army-num">96</span><span class="acc-army-lbl">départements couverts</span></div>
+          <div class="acc-army-stat"><span class="acc-army-num">800+</span><span class="acc-army-lbl">vidéos publiées / mois</span></div>
+        </div>
+      </div>
+    </div>
+
     <!-- ── TAB : CATALOGUE ── -->
-    <div class="tab-content active" id="content-catalogue">
+    <div class="tab-content" id="content-catalogue">
 
       <!-- DASHBOARD -->
       <div class="db-hero">
@@ -544,7 +1095,7 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
         <h2>RDV disponibles</h2>
         <div class="section-title-right">
           <span style="font-size:11px;color:var(--muted);font-weight:500">Mis à jour ce matin</span>
-          <div style="width:6px;height:6px;border-radius:50%;background:#00704a;animation:pulse-dot 2s ease-in-out infinite"></div>
+          <div style="width:6px;height:6px;border-radius:50%;background:#b52330;animation:pulse-dot 2s ease-in-out infinite"></div>
         </div>
       </div>
 
@@ -730,6 +1281,206 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
     <!-- ── TAB : PROFIL ── -->
     <div class="tab-content" id="content-profil">
       <div id="profilContent"></div>
+    </div>
+
+    <!-- ── TAB : PUB / UGC ── -->
+    <div class="tab-content" id="content-ugc">
+      <div class="ugc-hero">
+        <div class="ugc-hero-content">
+          <span class="ugc-hero-badge">Effet de masse</span>
+          <h2 class="ugc-hero-title">Inondez les réseaux.<br>Devenez incontournable.</h2>
+          <p class="ugc-hero-sub">Imaginez des milliers de créateurs qui publient sur vous quasi en simultané, partout en France. Du jour au lendemain, votre marque est sur tous les écrans de TikTok, Instagram et Snapchat — comme si tout le monde en parlait en même temps. C'est ça, l'effet Stacker.</p>
+          <div class="ugc-power">
+            <div class="ugc-power-item"><span class="ugc-power-num">Des milliers</span><span class="ugc-power-lbl">de créateurs mobilisés pour vous</span></div>
+            <div class="ugc-power-item"><span class="ugc-power-num">3 réseaux</span><span class="ugc-power-lbl">saturés en même temps</span></div>
+            <div class="ugc-power-item"><span class="ugc-power-num">24h</span><span class="ugc-power-lbl">pour devenir omniprésent</span></div>
+          </div>
+          <div class="ugc-platforms">
+            <span class="ugc-platform-chip">TikTok</span>
+            <span class="ugc-platform-chip">Instagram</span>
+            <span class="ugc-platform-chip">Snapchat</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title" style="margin:32px 0 8px">
+        <h2>Packs rapides</h2>
+      </div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:16px">Chaque vidéo est réalisée par un créateur différent disposant d'au moins 10 000 abonnés. Diffusion lancée sous 48h.</p>
+
+      <div class="ugc-packs" id="ugcPacks"></div>
+
+      <!-- CONFIGURATEUR DE CAMPAGNE -->
+      <div class="section-title" style="margin:32px 0 8px">
+        <h2>Créer une campagne sur-mesure</h2>
+      </div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:16px">Pilotez votre diffusion comme une vraie campagne : définissez votre budget, votre rythme et votre durée.</p>
+
+      <div class="camp">
+        <div class="camp-config">
+          <div class="camp-field">
+            <label class="ugc-label">Budget par jour</label>
+            <div class="camp-budget-input">
+              <input class="ugc-input" id="campDailyBudget" type="number" value="45" min="15" step="15" oninput="updateCamp()" />
+              <span class="camp-budget-suffix">€ / jour</span>
+            </div>
+            <p class="camp-hint">Minimum 15€/jour (1 vidéo). Chaque tranche de 15€ = 1 vidéo publiée par jour.</p>
+          </div>
+
+          <div class="camp-field">
+            <label class="ugc-label">Durée de la campagne</label>
+            <div class="camp-durations" id="campDurations">
+              <button class="camp-dur-btn" data-days="3" onclick="setCampDuration(3,this)">3 jours</button>
+              <button class="camp-dur-btn active" data-days="7" onclick="setCampDuration(7,this)">7 jours</button>
+              <button class="camp-dur-btn" data-days="14" onclick="setCampDuration(14,this)">14 jours</button>
+              <button class="camp-dur-btn" data-days="30" onclick="setCampDuration(30,this)">30 jours</button>
+            </div>
+            <p class="camp-hint">Le même nombre de vidéos est publié chaque jour, pour une présence régulière et continue.</p>
+          </div>
+        </div>
+
+        <div class="camp-summary">
+          <p class="camp-summary-label">Votre campagne</p>
+          <div class="camp-summary-row"><span>Vidéos par jour</span><span id="campPerDay">3 / jour</span></div>
+          <div class="camp-summary-row"><span>Durée</span><span id="campDuration">7 jours</span></div>
+          <div class="camp-summary-row"><span>Total vidéos publiées</span><span id="campVideos">21</span></div>
+          <div class="camp-summary-row"><span>Créateurs différents</span><span id="campCreators">21</span></div>
+          <div class="camp-summary-row"><span>Audience minimale</span><span>10 000 abonnés / créateur</span></div>
+          <div class="camp-summary-total"><span>Budget total</span><span id="campTotal">315 €</span></div>
+          <button class="ugc-confirm-btn" style="margin-top:16px" onclick="launchCampaign()">Lancer la campagne</button>
+        </div>
+      </div>
+
+      <div class="section-title" style="margin:32px 0 16px">
+        <h2>Comment ça marche</h2>
+      </div>
+      <div class="ugc-steps ugc-steps-4">
+        <div class="ugc-step">
+          <div class="ugc-step-num">1</div>
+          <p class="ugc-step-title">Définissez votre campagne</p>
+          <p class="ugc-step-desc">Pack rapide ou campagne sur-mesure : budget, rythme et durée à la carte.</p>
+        </div>
+        <div class="ugc-step">
+          <div class="ugc-step-num">2</div>
+          <p class="ugc-step-title">Rédigez votre brief</p>
+          <p class="ugc-step-desc">Un seul brief, diffusé à tous nos créateurs pour un message cohérent.</p>
+        </div>
+        <div class="ugc-step">
+          <div class="ugc-step-num">3</div>
+          <p class="ugc-step-title">Contrôle qualité Stacker</p>
+          <p class="ugc-step-desc">Chaque vidéo est vérifiée par notre équipe avant publication pour garantir sa conformité à votre brief.</p>
+        </div>
+        <div class="ugc-step">
+          <div class="ugc-step-num">4</div>
+          <p class="ugc-step-title">Suivi & révisions</p>
+          <p class="ugc-step-desc">Retrouvez toutes vos vidéos publiées dans votre espace. Une ne vous convient pas ? Demandez une révision en un clic.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TAB : FORCE DE VENTE ── -->
+    <div class="tab-content" id="content-vente">
+      <div class="vente-hero">
+        <div class="vente-hero-content">
+          <span class="vente-hero-badge">Vente à la performance</span>
+          <h2 class="vente-hero-title">Une force de vente déployée partout en France</h2>
+          <p class="vente-hero-sub">Nos closers vendent votre produit ou service en direct. Vous ne payez qu'à la vente réalisée — aucun coût fixe, aucun risque.</p>
+        </div>
+      </div>
+
+      <div class="section-title" style="margin:32px 0 16px"><h2>Notre rémunération : simple et transparente</h2></div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:18px">Stacker se rémunère uniquement quand vous gagnez. Aucune commission cachée, aucun frais à la performance pour vous.</p>
+
+      <div class="comm-model">
+        <div class="comm-model-big">
+          <span class="comm-model-pct">15%</span>
+          <span class="comm-model-pct-lbl">prélevés par Stacker</span>
+        </div>
+        <div class="comm-model-rows">
+          <div class="comm-model-row">
+            <span class="material-symbols-outlined comm-model-ic">bolt</span>
+            <div><p class="comm-model-t">Sur chaque vente one-shot</p><p class="comm-model-d">15% du montant de la vente conclue par le closer</p></div>
+          </div>
+          <div class="comm-model-row">
+            <span class="material-symbols-outlined comm-model-ic">autorenew</span>
+            <div><p class="comm-model-t">Sur chaque abonnement récurrent</p><p class="comm-model-d">15% chaque mois, tant que l'abonnement client est actif</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CALCULATEUR -->
+      <div class="comm-calc">
+        <p class="comm-calc-title">Simulez votre part</p>
+        <div class="comm-calc-row">
+          <div class="comm-calc-field">
+            <label class="ugc-label">Prix de votre vente / abonnement (€)</label>
+            <input class="ugc-input" id="commCalcPrice" type="number" placeholder="3000" oninput="updateCommCalc()" />
+          </div>
+        </div>
+        <div class="comm-calc-result" id="commCalcResult">
+          <div class="comm-calc-res-item">
+            <span class="comm-calc-res-lbl">Part Stacker (15%)</span>
+            <span class="comm-calc-res-val accent" id="commCalcStacker">—</span>
+          </div>
+          <div class="comm-calc-res-arrow">→</div>
+          <div class="comm-calc-res-item">
+            <span class="comm-calc-res-lbl">Ce qui vous revient</span>
+            <span class="comm-calc-res-val" id="commCalcYou">—</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title" style="margin:32px 0 16px"><h2>Diffusion de votre offre</h2></div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:18px">Choisissez votre formule de diffusion. Abonnement mensuel, sans engagement — votre offre reste active tant que l'abonnement est en cours.</p>
+      <div class="vente-plans">
+        <div class="vente-plan" id="ventePlanStd" onclick="selectVentePlan('std')">
+          <p class="vente-plan-name">Diffusion standard</p>
+          <p class="vente-plan-price">149€<small>/mois</small></p>
+          <ul class="vente-plan-feats">
+            <li>Offre visible dans le catalogue closers</li>
+            <li>Accès à tous les closers de France</li>
+            <li>Stacker prélève 15% sur chaque vente</li>
+            <li>Suivi des ventes en temps réel</li>
+          </ul>
+          <div class="vente-plan-check">Choisir</div>
+        </div>
+        <div class="vente-plan featured" id="ventePlanPremium" onclick="selectVentePlan('premium')">
+          <span class="vente-plan-tag">Recommandé</span>
+          <p class="vente-plan-name">Mise en avant</p>
+          <p class="vente-plan-price">349€<small>/mois</small></p>
+          <ul class="vente-plan-feats">
+            <li>Tout le standard, plus :</li>
+            <li>Offre poussée en haut du catalogue</li>
+            <li>Badge « Recommandé » visible</li>
+            <li>Priorité auprès des meilleurs closers</li>
+            <li>Volume de ventes maximisé</li>
+          </ul>
+          <div class="vente-plan-check">Choisir</div>
+        </div>
+      </div>
+
+      <div class="section-title" style="margin:32px 0 8px"><h2>Déclarer mon offre</h2></div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:18px">Chaque offre est étudiée par notre équipe avant sa mise en ligne, afin de garantir aux closers des produits sérieux et vendables. Vous recevez une réponse sous 48h.</p>
+      <div class="vente-form">
+        <div style="margin-bottom:14px">
+          <label class="ugc-label">Nom de votre offre / service</label>
+          <input class="ugc-input" id="venteOffer" placeholder="Ex : Installation de panneaux solaires" />
+        </div>
+        <div style="margin-bottom:14px">
+          <label class="ugc-label">Prix de vente moyen (€)</label>
+          <input class="ugc-input" id="ventePrice" type="number" placeholder="3000" oninput="updateVenteEstimate()" />
+        </div>
+        <div style="margin-bottom:18px">
+          <label class="ugc-label">Argumentaire — pourquoi acheter votre offre ?</label>
+          <textarea class="ugc-input" id="venteBrief" rows="3" placeholder="Décrivez les bénéfices clés, les aides, les arguments de vente que les closers devront utiliser..."></textarea>
+        </div>
+        <div class="vente-recap" id="venteRecap">
+          <div class="vente-recap-row"><span>Formule de diffusion</span><span id="venteRecapPlan">Standard — 149€/mois</span></div>
+          <div class="vente-recap-row"><span>Part Stacker par vente (15%)</span><span id="venteRecapStacker">—</span></div>
+          <div class="vente-recap-row"><span>Ce qui vous revient par vente</span><span id="venteRecapYou">—</span></div>
+        </div>
+        <button class="ugc-confirm-btn" onclick="submitVenteOffer()">Soumettre mon offre à validation · <span id="venteBtnPrice">149€/mois</span></button>
+      </div>
     </div>
 
     <!-- ── TAB : CRÉDITS ── -->
@@ -1318,8 +2069,8 @@ function renderRdvList(filtered) {
 
   grid.innerHTML = filtered.map(r => {
     const tagHtml = r.tag ? '<span class="rdv-tag ' + (r.tag === 'populaire' ? 'tag-hot' : 'tag-new') + '">' + (r.tag === 'populaire' ? 'Populaire' : 'Nouveau') + '</span>' : '';
-    const iconBg = r.category === 'renovation' ? 'rgba(181,35,48,0.08)' : r.category === 'isolation' ? 'rgba(201,168,76,0.1)' : r.category === 'pac' ? 'rgba(0,112,74,0.08)' : 'rgba(21,101,192,0.08)';
-    const iconColor = r.category === 'renovation' ? '#b52330' : r.category === 'isolation' ? '#9a7a28' : r.category === 'pac' ? '#00704a' : '#1565c0';
+    const iconBg = r.category === 'renovation' ? 'rgba(181,35,48,0.08)' : r.category === 'isolation' ? 'rgba(201,168,76,0.1)' : r.category === 'pac' ? 'rgba(181,35,48,0.08)' : 'rgba(27,28,28,0.06)';
+    const iconColor = r.category === 'renovation' ? '#b52330' : r.category === 'isolation' ? '#9a7a28' : r.category === 'pac' ? '#b52330' : '#1b1c1c';
     const iconPath = r.category === 'renovation' ? 'M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z' : r.category === 'isolation' ? 'M12 3L2 12h3v8h6v-5h2v5h6v-8h3z' : r.category === 'pac' ? 'M13 2.05v2.02c3.95.49 7 3.85 7 7.93 0 3.21-1.81 6-4.72 7.28L13 17v5h5l-1.22-1.22C19.91 19.07 22 15.76 22 12c0-5.18-3.95-9.45-9-9.95zM11 2.05C5.95 2.55 2 6.82 2 12c0 3.76 2.09 7.07 5.22 8.78L6 22h5V2.05z' : 'M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.79 1.42-1.41zM4 10.5H1v2h3v-2zm9-9.95h-2V3.5h2V.55zm7.45 3.91l-1.41-1.41-1.79 1.79 1.41 1.41 1.79-1.79zm-3.21 13.7l1.79 1.8 1.41-1.41-1.8-1.79-1.4 1.4zM20 10.5v2h3v-2h-3zm-8-5c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm-1 16.95h2V19.5h-2v2.95zm-7.45-3.91l1.41 1.41 1.79-1.8-1.41-1.41-1.79 1.8z';
     return `
     <div class="rdv-card ${r.tag ? 'featured' : ''}" style="position:relative">
@@ -1446,6 +2197,7 @@ function selectRegionByName(region) {
   }
 }
 async function loadRegionsFromSupabase() {
+  if (typeof sbPro === 'undefined' || !sbPro) return null;
   try {
     var result = await sbPro.from('rdv').select('region, departement, id').eq('status', 'disponible');
     if (result.error) throw result.error;
@@ -1458,7 +2210,6 @@ async function loadRegionsFromSupabase() {
     });
     return Object.keys(regionMap).length > 0 ? regionMap : null;
   } catch(e) {
-    console.warn('Supabase fallback:', e.message);
     return null;
   }
 }
@@ -1756,9 +2507,193 @@ function renderOrders() {
   renderBilling();
 }
 
+// ── FORCE DE VENTE ──────────────────────────────────────────
+var STACKER_PCT = 0.15;
+
+function renderVenteGrid() { /* obsolète — modèle 15% */ }
+
+var venteSelectedPlan = 'std';
+var VENTE_PLANS = { std: { name:'Standard', price:149 }, premium: { name:'Mise en avant', price:349 } };
+
+function selectVentePlan(plan) {
+  venteSelectedPlan = plan;
+  document.getElementById('ventePlanStd').classList.toggle('selected', plan === 'std');
+  document.getElementById('ventePlanPremium').classList.toggle('selected', plan === 'premium');
+  var p = VENTE_PLANS[plan];
+  document.getElementById('venteRecapPlan').textContent = p.name + ' — ' + p.price + '€/mois';
+  document.getElementById('venteBtnPrice').textContent = p.price + '€/mois';
+}
+
+// Calculateur de la section rémunération
+function updateCommCalc() {
+  var price = parseFloat(document.getElementById('commCalcPrice').value) || 0;
+  var stackerEl = document.getElementById('commCalcStacker');
+  var youEl = document.getElementById('commCalcYou');
+  if (price > 0) {
+    var stackerPart = price * STACKER_PCT;
+    stackerEl.textContent = stackerPart.toFixed(2) + ' €';
+    youEl.textContent = (price - stackerPart).toFixed(2) + ' €';
+  } else {
+    stackerEl.textContent = '—';
+    youEl.textContent = '—';
+  }
+}
+
+// Récap dans le formulaire de déclaration d'offre
+function updateVenteEstimate() {
+  var price = parseFloat(document.getElementById('ventePrice').value) || 0;
+  var stackerEl = document.getElementById('venteRecapStacker');
+  var youEl = document.getElementById('venteRecapYou');
+  if (price > 0) {
+    var stackerPart = price * STACKER_PCT;
+    if (stackerEl) stackerEl.textContent = stackerPart.toFixed(2) + ' €';
+    if (youEl) youEl.textContent = (price - stackerPart).toFixed(2) + ' €';
+  } else {
+    if (stackerEl) stackerEl.textContent = '—';
+    if (youEl) youEl.textContent = '—';
+  }
+}
+
+function submitVenteOffer() {
+  var offer = document.getElementById('venteOffer').value.trim();
+  var price = parseFloat(document.getElementById('ventePrice').value) || 0;
+  var brief = document.getElementById('venteBrief').value.trim();
+  if (!offer) { showToast('Indiquez le nom de votre offre'); return; }
+  if (price <= 0) { showToast('Indiquez le prix de vente moyen'); return; }
+  if (!brief) { showToast('Rédigez un argumentaire pour les closers'); return; }
+
+  var stackerPart = price * STACKER_PCT;
+  var plan = VENTE_PLANS[venteSelectedPlan];
+  var offers = JSON.parse(localStorage.getItem('sp_vente_offers') || '[]');
+  offers.unshift({
+    offer: offer, price: price,
+    stackerPct: 15,
+    stackerPart: stackerPart,
+    yourPart: price - stackerPart,
+    plan: plan.name, planPrice: plan.price,
+    brief: brief, date: new Date().toISOString(), status: "en cours d'analyse"
+  });
+  localStorage.setItem('sp_vente_offers', JSON.stringify(offers));
+
+  document.getElementById('venteOffer').value = '';
+  document.getElementById('ventePrice').value = '';
+  document.getElementById('venteBrief').value = '';
+  updateVenteEstimate();
+  showToast("Offre soumise — notre équipe l'analyse et revient vers vous sous 48h");
+}
+
 function showInfo(id) {
   const r = RDV_DATA.find(x => x.id === id);
   if (r) showToast('Profil : ' + r.profile);
+}
+
+// ── UGC / PUB ──────────────────────────────────────────────
+var UGC_UNIT = 15;
+var campDays = 7;
+
+function setCampDuration(days, el) {
+  campDays = days;
+  document.querySelectorAll('.camp-dur-btn').forEach(function(b){ b.classList.remove('active'); });
+  el.classList.add('active');
+  updateCamp();
+}
+function updateCamp() {
+  var daily = Math.max(15, parseFloat(document.getElementById('campDailyBudget').value) || 0);
+  var perDay = Math.floor(daily / UGC_UNIT);
+  if (perDay < 1) perDay = 1;
+  var totalVideos = perDay * campDays;
+  var total = daily * campDays;
+  var set = function(id,v){ var e=document.getElementById(id); if(e) e.textContent=v; };
+  set('campPerDay', perDay + (perDay > 1 ? ' / jour' : ' / jour'));
+  set('campDuration', campDays + ' jours');
+  set('campVideos', totalVideos);
+  set('campCreators', totalVideos);
+  set('campTotal', total.toFixed(0) + ' €');
+}
+function launchCampaign() {
+  var daily = Math.max(15, parseFloat(document.getElementById('campDailyBudget').value) || 0);
+  var perDay = Math.max(1, Math.floor(daily / UGC_UNIT));
+  var totalVideos = perDay * campDays;
+  var total = daily * campDays;
+  ugcSelectedPack = { qty: totalVideos, unit: UGC_UNIT, campaign: true, days: campDays, perDay: perDay };
+  document.getElementById('ugcSummaryQty').textContent = totalVideos + ' vidéos · ' + perDay + '/jour pendant ' + campDays + ' jours';
+  document.getElementById('ugcSummaryPrice').textContent = total + ' €';
+  document.getElementById('ugcModalOverlay').classList.add('open');
+}
+
+var UGC_PACKS = [  { qty:1, unit:15, tag:null },
+  { qty:5, unit:15, tag:null },
+  { qty:10, unit:15, tag:'Populaire' },
+  { qty:20, unit:15, tag:null },
+  { qty:50, unit:15, tag:null },
+  { qty:100, unit:15, tag:'Volume' },
+  { qty:500, unit:15, tag:null },
+];
+var ugcSelectedPack = null;
+
+function renderUgcPacks() {
+  var wrap = document.getElementById('ugcPacks');
+  if (!wrap) return;
+  var html = '';
+  UGC_PACKS.forEach(function(p, i) {
+    var total = p.qty * p.unit;
+    html += '<div class="ugc-pack' + (p.tag === 'Populaire' || p.tag === 'Volume' ? ' popular' : '') + '" onclick="openUgcModal(' + i + ')">';
+    if (p.tag) html += '<span class="ugc-pack-tag">' + p.tag + '</span>';
+    html += '<p class="ugc-pack-qty">' + p.qty + ' <small>' + (p.qty > 1 ? 'vidéos' : 'vidéo') + '</small></p>';
+    html += '<p class="ugc-pack-label">+30 secondes chacune</p>';
+    html += '<p class="ugc-pack-price">' + total + ' €</p>';
+    html += '<p class="ugc-pack-unit">' + p.unit + ' € / vidéo</p>';
+    html += '</div>';
+  });
+  wrap.innerHTML = html;
+}
+
+function openUgcModal(packIdx) {
+  ugcSelectedPack = UGC_PACKS[packIdx];
+  var total = ugcSelectedPack.qty * ugcSelectedPack.unit;
+  document.getElementById('ugcSummaryQty').textContent = ugcSelectedPack.qty + (ugcSelectedPack.qty > 1 ? ' vidéos UGC' : ' vidéo UGC');
+  document.getElementById('ugcSummaryPrice').textContent = total + ' €';
+  document.getElementById('ugcModalOverlay').classList.add('open');
+}
+function closeUgcModal() {
+  document.getElementById('ugcModalOverlay').classList.remove('open');
+}
+function toggleUgcPlat(btn) {
+  btn.classList.toggle('active');
+}
+function confirmUgcOrder() {
+  var product = document.getElementById('ugcProduct').value.trim();
+  var brief = document.getElementById('ugcBrief').value.trim();
+  if (!product) { showToast('Indiquez ce qu\'il faut mettre en avant'); return; }
+  if (!brief) { showToast('Rédigez un brief pour les créateurs'); return; }
+  var plats = [];
+  document.querySelectorAll('#ugcPlatformSelect .ugc-plat-btn.active').forEach(function(b){ plats.push(b.getAttribute('data-plat')); });
+  if (plats.length === 0) { showToast('Sélectionnez au moins une plateforme'); return; }
+
+  var total = ugcSelectedPack.qty * ugcSelectedPack.unit;
+  // Enregistre la commande UGC
+  var ugcOrders = JSON.parse(localStorage.getItem('sp_ugc_orders') || '[]');
+  ugcOrders.unshift({
+    qty: ugcSelectedPack.qty, total: total, product: product, brief: brief,
+    platforms: plats, ref: document.getElementById('ugcRef').value.trim(),
+    date: new Date().toISOString(), status: 'en cours'
+  });
+  localStorage.setItem('sp_ugc_orders', JSON.stringify(ugcOrders));
+
+  // Ajoute aussi dans les commandes générales pour la facturation
+  orders.unshift({
+    sector: ugcSelectedPack.qty + ' vidéos UGC', city: plats.join(', '), zone: plats.join(', '),
+    qty: ugcSelectedPack.qty, total: total, date: new Date().toISOString(), status: 'pending', result: null
+  });
+  localStorage.setItem('sp_orders_v2', JSON.stringify(orders));
+  renderOrders();
+
+  closeUgcModal();
+  // Reset form
+  document.getElementById('ugcProduct').value = '';
+  document.getElementById('ugcBrief').value = '';
+  document.getElementById('ugcRef').value = '';
+  showToast(ugcSelectedPack.qty + ' vidéo(s) commandée(s) — brief transmis aux créateurs');
 }
 
 function renderBilling() {
@@ -1900,8 +2835,71 @@ function showToast(msg) {
 function showTab(name) {
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
   document.getElementById('content-' + name).classList.add('active');
+  var bh = document.getElementById('backHome');
+  if (bh) bh.style.display = (name === 'accueil') ? 'none' : 'inline-flex';
+  window.scrollTo({top:0, behavior:'smooth'});
   if (name === 'profil') renderProfil();
   if (name === 'factures') renderInvoices();
+  if (name === 'ugc') { renderUgcPacks(); updateCamp(); }
+  if (name === 'vente') { renderVenteGrid(); selectVentePlan('std'); }
+  if (name === 'accueil') renderHomeGreeting();
+  if (name === 'catalogue') {
+    setTimeout(function() {
+      if (typeof map !== 'undefined' && map) {
+        map.invalidateSize();
+        updateMapMarkers(RDV_DATA);
+      } else {
+        initMap();
+        setTimeout(function(){ if (map) { map.invalidateSize(); updateMapMarkers(RDV_DATA); } }, 300);
+      }
+    }, 250);
+  }
+}
+
+function renderHomeGreeting() {
+  var p = JSON.parse(localStorage.getItem('sp_profile') || '{}');
+  var prenom = p.prenom || p.raisonSociale || '';
+  var hour = new Date().getHours();
+  var g = hour < 12 ? 'Bonjour' : hour < 18 ? 'Bon après-midi' : 'Bonsoir';
+  var el = document.getElementById('homeGreeting');
+  if (el) el.textContent = prenom ? g + ', ' + prenom : g;
+  renderHomeStats();
+}
+
+function renderHomeStats() {
+  var thisMonth = new Date().toISOString().slice(0,7);
+  var monthOrders = orders.filter(function(o){ return o.date && o.date.slice(0,7) === thisMonth; });
+  var rdvCount = monthOrders.reduce(function(s,o){ return s + (o.qty||1); }, 0);
+  var spent = monthOrders.reduce(function(s,o){ return s + (o.total||0); }, 0);
+  var set = function(id,v){ var e=document.getElementById(id); if(e) e.textContent=v; };
+  set('homeStatRdv', rdvCount);
+  set('homeStatSpent', spent + ' €');
+  set('homeStatCredits', credits);
+  set('homeStatDispo', RDV_DATA.reduce(function(s,r){ return s+(r.dispo||0); }, 0));
+  renderAccActivity();
+}
+
+function renderAccActivity() {
+  var list = document.getElementById('accActivityList');
+  if (!list) return;
+  if (!orders || orders.length === 0) {
+    list.innerHTML = '<p class="acc-act-empty">Aucune activité pour le moment. Activez un levier pour démarrer.</p>';
+    return;
+  }
+  var months = ['jan','fév','mar','avr','mai','jun','jul','aoû','sep','oct','nov','déc'];
+  var html = '';
+  orders.slice(0, 5).forEach(function(o) {
+    var d = new Date(o.date);
+    var icon = 'event';
+    if (o.sector && o.sector.indexOf('vidéo') !== -1) icon = 'videocam';
+    html += '<div class="acc-act-row">';
+    html += '<div class="acc-act-ic"><span class="material-symbols-outlined" style="font-size:18px;color:var(--muted)">' + icon + '</span></div>';
+    html += '<div class="acc-act-info"><p class="acc-act-t">' + o.sector + '</p>';
+    html += '<p class="acc-act-d">' + (o.city || '') + ' · ' + d.getDate() + ' ' + months[d.getMonth()] + '</p></div>';
+    html += '<span class="acc-act-amt">' + (o.total||0) + ' €</span>';
+    html += '</div>';
+  });
+  list.innerHTML = html;
 }
 
 function setActive(el) {
@@ -1912,10 +2910,10 @@ function setActive(el) {
 function initMap() {
   if (map) return;
   map = L.map('rdvMap', { zoomControl: false, scrollWheelZoom: false, dragging: false, doubleClickZoom: false, attributionControl: false }).setView([46.8, 2.3], 6);
-  L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap France',
-    subdomains: ['a','b','c'],
-    maxZoom: 18
+  L.tileLayer('https://api.maptiler.com/maps/dataviz/{z}/{x}/{y}.png?key=rRAo6tnRcCTu8pQtqaQ2&language=fr', {
+    attribution: '&copy; MapTiler &copy; OpenStreetMap',
+    maxZoom: 20,
+    crossOrigin: true
   }).addTo(map);
 }
 
@@ -1946,10 +2944,10 @@ function openFullMap() {
   document.getElementById('mapFullOverlay').classList.add('open');
   if (!mapFull) {
     mapFull = L.map('rdvMapFull', { zoomControl: true, scrollWheelZoom: true }).setView([46.8, 2.3], 6);
-    L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap France',
-      subdomains: ['a','b','c'],
-      maxZoom: 18
+    L.tileLayer('https://api.maptiler.com/maps/dataviz/{z}/{x}/{y}.png?key=rRAo6tnRcCTu8pQtqaQ2&language=fr', {
+      attribution: '&copy; MapTiler &copy; OpenStreetMap',
+      maxZoom: 20,
+      crossOrigin: true
     }).addTo(mapFull);
   }
   setTimeout(() => {
@@ -2194,7 +3192,7 @@ function renderFiche(dept, count) {
     var honorRate = 88 + Math.floor(Math.random() * 10); // 88-97%
     var recontactH = 1 + Math.floor(Math.random() * 5);
     html += '<div class="fiche-rdv-trust">';
-    html += '<span class="trust-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="#00704a"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>Coordonnées vérifiées</span>';
+    html += '<span class="trust-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="#b52330"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>Coordonnées vérifiées</span>';
     html += '<span class="trust-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="#2563eb"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>Recontacté il y a ' + recontactH + 'h</span>';
     html += '<span class="trust-chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="#d97706"><path d="M12 2l2.4 7.4H22l-6 4.6 2.3 7.4-6.3-4.6L5.7 21.4 8 14 2 9.4h7.6z"/></svg>' + honorRate + '% honorés (zone)</span>';
     html += '</div>';
@@ -2554,6 +3552,7 @@ renderRegionGrid();
 renderOrders();
 renderStats();
 renderWelcome();
+renderHomeGreeting();
 renderChart();
 renderHonorList();
 renderAlerts();
@@ -2565,6 +3564,60 @@ setTimeout(() => {
     updateMapMarkers(RDV_DATA);
   }, 400);
 }, 200);
+
+// ── ONBOARDING IMMERSIF ──────────────────────────────────────
+var onb2Current = 0;
+var onb2Total = 5;
+var onb2CountersRun = false;
+
+function onb2Show(i) {
+  onb2Current = i;
+  document.querySelectorAll('.onb2-stage').forEach(function(s, idx) {
+    s.classList.toggle('active', idx === i);
+  });
+  document.querySelectorAll('.onb2-dot').forEach(function(d, idx) {
+    d.classList.toggle('active', idx === i);
+  });
+}
+function onb2Next() { if (onb2Current < onb2Total - 1) onb2Show(onb2Current + 1); }
+function onb2Close() {
+  var ov = document.getElementById('onb2');
+  ov.classList.add('closing');
+  localStorage.setItem('sp_onboarded', '1');
+  setTimeout(function() { ov.style.display = 'none'; }, 500);
+}
+function onb2RunCounters() {
+  document.querySelectorAll('.onb2-count').forEach(function(el) {
+    var target = parseInt(el.getAttribute('data-target'));
+    var dur = 1400, start = performance.now();
+    function tick(now) {
+      var p = Math.min((now - start) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.floor(eased * target).toLocaleString('fr-FR');
+      if (p < 1) requestAnimationFrame(tick);
+      else el.textContent = target.toLocaleString('fr-FR');
+    }
+    requestAnimationFrame(tick);
+  });
+}
+
+(function() {
+  var ov = document.getElementById('onb2');
+  if (!ov) return;
+  // FORCÉ pour test — toujours afficher
+  if (false) {
+    ov.style.display = 'none';
+  } else {
+    // Swipe tactile
+    var startX = 0;
+    ov.addEventListener('touchstart', function(e){ startX = e.touches[0].clientX; }, {passive:true});
+    ov.addEventListener('touchend', function(e){
+      var dx = e.changedTouches[0].clientX - startX;
+      if (dx < -50) onb2Next();
+      else if (dx > 50 && onb2Current > 0) onb2Show(onb2Current - 1);
+    }, {passive:true});
+  }
+})();
 </script>
 
 <!-- DRAWER MOBILE -->
@@ -2600,6 +3653,14 @@ setTimeout(() => {
   <a class="nav-item" onclick="showTab('factures');closeDrawer()">
     <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
     <span class="nav-text">Mes factures</span>
+  </a>
+  <a class="nav-item" onclick="showTab('ugc');closeDrawer()">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+    <span class="nav-text">Pub / UGC</span>
+  </a>
+  <a class="nav-item" onclick="showTab('vente');closeDrawer()">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+    <span class="nav-text">Force de vente</span>
   </a>
 </div>
 
@@ -2668,6 +3729,45 @@ setTimeout(() => {
     </div>
   </div>
 </div>
+<!-- UGC BRIEF MODAL -->
+<div class="stat-modal-overlay" id="ugcModalOverlay" onclick="if(event.target===this)closeUgcModal()">
+  <div class="stat-modal" style="max-width:560px">
+    <div class="stat-modal-handle"></div>
+    <p class="stat-modal-title" id="ugcModalTitle">Commander des vidéos</p>
+    <div id="ugcModalSummary" style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between">
+      <span style="font-size:13px;font-weight:600;color:var(--dark)" id="ugcSummaryQty">—</span>
+      <span style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:18px;color:var(--red)" id="ugcSummaryPrice">—</span>
+    </div>
+
+    <div style="margin-bottom:14px">
+      <label class="ugc-label">Plateformes souhaitées</label>
+      <div class="ugc-platform-select" id="ugcPlatformSelect">
+        <button class="ugc-plat-btn active" data-plat="TikTok" onclick="toggleUgcPlat(this)">TikTok</button>
+        <button class="ugc-plat-btn" data-plat="Instagram" onclick="toggleUgcPlat(this)">Instagram</button>
+        <button class="ugc-plat-btn" data-plat="Snapchat" onclick="toggleUgcPlat(this)">Snapchat</button>
+      </div>
+    </div>
+
+    <div style="margin-bottom:14px">
+      <label class="ugc-label">Que faut-il mettre en avant ?</label>
+      <input class="ugc-input" id="ugcProduct" placeholder="Ex : notre nouvelle offre d'isolation à 1€" />
+    </div>
+
+    <div style="margin-bottom:14px">
+      <label class="ugc-label">Brief créatif — angle, ton, consignes</label>
+      <textarea class="ugc-input" id="ugcBrief" rows="4" placeholder="Ex : Vidéo dynamique face caméra, ton enthousiaste, montrer le logo à la fin, mentionner le site web, hashtags #renovation #aides..."></textarea>
+    </div>
+
+    <div style="margin-bottom:20px">
+      <label class="ugc-label">Lien / fichiers de référence (optionnel)</label>
+      <input class="ugc-input" id="ugcRef" placeholder="Lien Drive, site web, compte à taguer..." />
+    </div>
+
+    <p style="font-size:11px;color:var(--muted);font-weight:500;line-height:1.5;margin-bottom:14px;text-align:center">Chaque vidéo sera vérifiée par notre équipe avant publication, puis archivée dans votre espace où vous pourrez la consulter et demander une révision si besoin.</p>
+    <button class="ugc-confirm-btn" onclick="confirmUgcOrder()">Valider la commande</button>
+  </div>
+</div>
+
 <!-- ALERT MODAL -->
 <div class="stat-modal-overlay" id="alertModalOverlay" onclick="if(event.target===this)closeAlertModal()">
   <div class="stat-modal">
