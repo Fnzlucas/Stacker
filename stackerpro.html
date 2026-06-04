@@ -721,6 +721,92 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
 .signal-confirm:hover{opacity:0.85}
 .signal-confirm:disabled{opacity:0.4;cursor:default}
 .signal-cancel{width:100%;padding:10px;border-radius:11px;background:transparent;color:var(--muted);font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:13px;border:none;cursor:pointer}
+
+/* ── MES RDV : CARD ACCUEIL ── */
+.mesrdv-card{display:flex;align-items:center;justify-content:space-between;gap:16px;background:var(--white);border:1px solid var(--border);border-radius:16px;padding:18px 20px;margin-bottom:32px;cursor:pointer;transition:border-color .15s,transform .15s,box-shadow .15s}
+.mesrdv-card:hover{border-color:rgba(181,35,48,0.35);transform:translateY(-2px);box-shadow:0 10px 28px -14px rgba(17,17,18,0.18)}
+.mesrdv-card-left{display:flex;align-items:center;gap:14px;min-width:0}
+.mesrdv-card-ic{width:46px;height:46px;border-radius:12px;background:var(--red-soft);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mesrdv-card-ic .material-symbols-outlined{font-size:24px;color:var(--red)}
+.mesrdv-card-title{font-weight:800;font-size:16px;letter-spacing:-0.02em;color:var(--dark)}
+.mesrdv-card-sub{font-size:12.5px;color:var(--muted);font-weight:500;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mesrdv-card-right{display:flex;align-items:center;gap:12px;flex-shrink:0}
+.mesrdv-card-count{font-family:'JetBrains Mono';font-weight:700;font-size:13px;color:#fff;background:var(--red);min-width:26px;height:26px;padding:0 8px;border-radius:8px;display:flex;align-items:center;justify-content:center}
+.mesrdv-card-arrow{font-size:20px;color:var(--muted2);transition:transform .15s}
+.mesrdv-card:hover .mesrdv-card-arrow{transform:translateX(3px);color:var(--red)}
+
+/* ── MES RDV : PAGE ── */
+.mesrdv-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+.mesrdv-stat{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:18px 16px;text-align:center}
+.mesrdv-stat-val{font-weight:800;font-size:28px;letter-spacing:-0.03em;color:var(--dark)}
+.mesrdv-stat-lbl{font-size:11.5px;color:var(--muted);font-weight:600;margin-top:4px;text-transform:uppercase;letter-spacing:0.04em}
+/* ── MES RDV : CALENDRIER ── */
+.mesrdv-cal{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:18px 18px 14px;margin-bottom:24px}
+.mesrdv-cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.mesrdv-cal-title{font-weight:800;font-size:16px;letter-spacing:-0.02em;color:var(--dark);text-transform:capitalize}
+.mesrdv-cal-nav{width:32px;height:32px;border-radius:9px;border:1px solid var(--border);background:var(--white);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted);transition:.15s}
+.mesrdv-cal-nav:hover{background:var(--surface);color:var(--dark)}
+.mesrdv-cal-nav .material-symbols-outlined{font-size:20px}
+.mesrdv-cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px}
+.mesrdv-cal-weekdays span{text-align:center;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--muted2)}
+.mesrdv-cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.mesrdv-cal-cell{position:relative;aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:10px;font-size:13.5px;font-weight:600;color:var(--dark)}
+.mesrdv-cal-cell.empty{visibility:hidden}
+.mesrdv-cal-cell.today{background:var(--surface);font-weight:800}
+.mesrdv-cal-cell.has-rdv{cursor:pointer;transition:background .15s}
+.mesrdv-cal-cell.has-rdv:hover{background:var(--red-soft)}
+.mesrdv-cal-cell.selected{background:var(--dark);color:#fff}
+.mesrdv-cal-cell.selected .mesrdv-cal-dot{box-shadow:0 0 0 2px var(--dark)}
+.mesrdv-cal-num{line-height:1}
+.mesrdv-cal-dot{position:absolute;bottom:5px;left:50%;transform:translateX(-50%);width:6px;height:6px;border-radius:50%}
+.mesrdv-cal-dot.ok{background:var(--green)}
+.mesrdv-cal-dot.wait{background:#d97706}
+@media(max-width:600px){.mesrdv-cal-cell{font-size:12px}.mesrdv-cal-dot{width:5px;height:5px;bottom:4px}}
+
+.mesrdv-filters{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+.mesrdv-filter{font-family:inherit;font-size:13px;font-weight:600;padding:8px 16px;border-radius:9px;border:1px solid var(--border);background:var(--white);color:var(--muted);cursor:pointer;transition:.15s}
+.mesrdv-filter:hover{border-color:var(--muted2)}
+.mesrdv-filter.active{background:var(--dark);color:#fff;border-color:var(--dark)}
+.mesrdv-list{display:flex;flex-direction:column;gap:10px}
+.mesrdv-item{display:flex;align-items:center;gap:16px;background:var(--white);border:1px solid var(--border);border-radius:14px;padding:14px 18px;transition:border-color .15s}
+.mesrdv-item:hover{border-color:rgba(181,35,48,0.25)}
+.mesrdv-item-date{width:52px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--surface);border-radius:10px;padding:8px 0}
+.mesrdv-item-day{font-weight:800;font-size:20px;line-height:1;color:var(--dark)}
+.mesrdv-item-month{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-top:2px}
+.mesrdv-item-main{flex:1;min-width:0}
+.mesrdv-item-name{font-weight:700;font-size:15px;color:var(--dark);letter-spacing:-0.01em}
+.mesrdv-item-meta{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--muted);font-weight:500;margin-top:3px}
+.mesrdv-item-meta .material-symbols-outlined{font-size:15px;color:var(--muted2)}
+.mesrdv-item-status{flex-shrink:0;font-size:11.5px;font-weight:700;padding:5px 11px;border-radius:7px;white-space:nowrap}
+.mesrdv-item-status.ok{background:var(--green-soft);color:var(--green)}
+.mesrdv-item-status.wait{background:rgba(217,119,6,0.1);color:#b45309}
+
+/* ── FICHE RDV (modal) ── */
+.rdv-fiche-box{max-width:460px;width:calc(100% - 32px)}
+.rdv-fiche-box .modal-body{max-height:70vh;overflow-y:auto}
+.fiche-card{border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:14px}
+.fiche-card:last-child{margin-bottom:0}
+.fiche-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.fiche-name{font-weight:800;font-size:17px;letter-spacing:-0.02em;color:var(--dark)}
+.fiche-type{font-size:12.5px;color:var(--muted);font-weight:600;margin-top:2px}
+.fiche-rows{display:flex;flex-direction:column;gap:13px}
+.fiche-row{display:flex;align-items:flex-start;gap:11px}
+.fiche-row-ic{font-size:19px;color:var(--red);flex-shrink:0;margin-top:1px}
+.fiche-row-txt{display:flex;flex-direction:column;min-width:0}
+.fiche-row-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--muted2)}
+.fiche-row-val{font-size:14px;font-weight:600;color:var(--dark);margin-top:1px;word-break:break-word}
+.fiche-link{color:var(--red);text-decoration:none}
+.fiche-link:hover{text-decoration:underline}
+.fiche-notes{margin-top:14px;background:var(--surface);border-radius:11px;padding:12px 14px}
+.fiche-notes-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--muted2);margin-bottom:4px}
+.fiche-notes-txt{font-size:13.5px;color:var(--dark);font-weight:500;line-height:1.45}
+.fiche-actions{display:flex;gap:10px;margin-top:16px}
+.fiche-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:11px;border-radius:11px;border:1px solid var(--border);background:var(--white);color:var(--dark);font-family:inherit;font-weight:700;font-size:13.5px;cursor:pointer;text-decoration:none;transition:.15s}
+.fiche-btn:hover{background:var(--surface)}
+.fiche-btn .material-symbols-outlined{font-size:18px}
+.fiche-btn.primary{background:var(--red);color:#fff;border-color:var(--red)}
+.fiche-btn.primary:hover{opacity:.9;background:var(--red)}
+@media(max-width:600px){.mesrdv-stat-val{font-size:23px}.mesrdv-item{padding:12px 14px;gap:12px}}
 </style>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 </head>
@@ -870,6 +956,11 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
       <a class="nav-item" onclick="showTab('vente');setActive(this)">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
         <span class="nav-text">Force de vente</span>
+      </a>
+      <a class="nav-item" id="navMesRdv" onclick="showTab('mesrdv');setActive(this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-7 5h5v5h-5v-5z"/></svg>
+        <span class="nav-text">Mes RDV</span>
+        <span class="nav-count" id="navMesRdvCount" style="background:var(--red);color:#fff">0</span>
       </a>
       <a class="nav-item" onclick="showTab('commandes');setActive(this)">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/></svg>
@@ -1033,7 +1124,7 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
       <div class="trust-testimonials">
         <div class="trust-testi">
           <div class="trust-testi-stars">★★★★★</div>
-          <p class="trust-testi-text">"En trois semaines, j'ai eu plus de rendez-vous qu'en six mois de prospection seul. Je signe, c'est tout."</p>
+          <p class="trust-testi-text">"Sur 8 RDV pris le mois dernier, j'en ai signé 3. Tous ne se transforment pas, mais à ce prix-là et payé au résultat, je m'y retrouve largement."</p>
           <div class="trust-testi-author">
             <div class="trust-testi-avatar">KM</div>
             <div><p class="trust-testi-name">Karim M.</p><p class="trust-testi-role">Rénovation énergétique · Avignon</p></div>
@@ -1041,15 +1132,15 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
         </div>
         <div class="trust-testi">
           <div class="trust-testi-stars">★★★★★</div>
-          <p class="trust-testi-text">"La campagne vidéo a explosé ma visibilité. Mon salon était plein le week-end suivant, du jamais vu."</p>
+          <p class="trust-testi-text">"Les RDV sont vraiment des gens qui ont un projet, pas du démarchage à froid. J'ai eu un ou deux lapins, remboursés sans discuter."</p>
           <div class="trust-testi-author">
             <div class="trust-testi-avatar">SL</div>
-            <div><p class="trust-testi-name">Sophie L.</p><p class="trust-testi-role">Institut de beauté · Nîmes</p></div>
+            <div><p class="trust-testi-name">Sébastien L.</p><p class="trust-testi-role">Pompe à chaleur · Nîmes</p></div>
           </div>
         </div>
         <div class="trust-testi">
-          <div class="trust-testi-stars">★★★★★</div>
-          <p class="trust-testi-text">"Les closers vendent mieux que moi. Je paie qu'à la vente, donc je ne prends aucun risque. Imparable."</p>
+          <div class="trust-testi-stars">★★★★☆</div>
+          <p class="trust-testi-text">"Je teste depuis deux mois. C'est pas magique, faut closer derrière, mais ça remplit mon agenda les semaines creuses."</p>
           <div class="trust-testi-author">
             <div class="trust-testi-avatar">TD</div>
             <div><p class="trust-testi-name">Thomas D.</p><p class="trust-testi-role">Panneaux solaires · Montpellier</p></div>
@@ -1169,14 +1260,20 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
         </div>
       </div>
 
-      <!-- RDV A HONORER (déplacé en bas, discret) -->
-      <div class="db-block" style="margin-top:20px">
-        <div class="db-block-head">
-          <p class="db-block-title">Vos RDV à honorer</p>
-          <span class="db-badge red" id="honorBadge">0 à venir</span>
+      <!-- CARD MES RDV (ouvre la page dédiée) -->
+      <div class="mesrdv-card" style="margin-top:20px" onclick="showTab('mesrdv');setActive(document.getElementById('navMesRdv'))">
+        <div class="mesrdv-card-left">
+          <div class="mesrdv-card-ic">
+            <span class="material-symbols-outlined">event_available</span>
+          </div>
+          <div>
+            <p class="mesrdv-card-title">Mes RDV à honorer</p>
+            <p class="mesrdv-card-sub" id="mesRdvCardSub">Aucun RDV planifié pour l'instant</p>
+          </div>
         </div>
-        <div class="db-honor-list" id="honorList">
-          <p class="db-empty">Aucun RDV planifié</p>
+        <div class="mesrdv-card-right">
+          <span class="mesrdv-card-count" id="mesRdvCardCount">0</span>
+          <span class="material-symbols-outlined mesrdv-card-arrow">arrow_forward</span>
         </div>
       </div>
 
@@ -1312,6 +1409,57 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
           </tbody>
         </table>
       </div>
+    </div>
+
+    <!-- ── TAB : MES RDV ── -->
+    <div class="tab-content" id="content-mesrdv">
+      <div class="section-title" style="margin-bottom:8px">
+        <h2>Mes RDV</h2>
+      </div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:24px">Retrouvez ici tous les rendez-vous que vous avez achetés, à honorer auprès de vos prospects.</p>
+
+      <!-- STATS -->
+      <div class="mesrdv-stats">
+        <div class="mesrdv-stat">
+          <p class="mesrdv-stat-val" id="mesRdvStatTotal">0</p>
+          <p class="mesrdv-stat-lbl">RDV à venir</p>
+        </div>
+        <div class="mesrdv-stat">
+          <p class="mesrdv-stat-val" id="mesRdvStatConfirmes">0</p>
+          <p class="mesrdv-stat-lbl">Confirmés</p>
+        </div>
+        <div class="mesrdv-stat">
+          <p class="mesrdv-stat-val" id="mesRdvStatAttente">0</p>
+          <p class="mesrdv-stat-lbl">En attente</p>
+        </div>
+      </div>
+
+      <!-- CALENDRIER -->
+      <div class="mesrdv-cal">
+        <div class="mesrdv-cal-head">
+          <button class="mesrdv-cal-nav" onclick="changeRdvMonth(-1)" aria-label="Mois précédent">
+            <span class="material-symbols-outlined">chevron_left</span>
+          </button>
+          <span class="mesrdv-cal-title" id="mesRdvCalTitle">—</span>
+          <button class="mesrdv-cal-nav" onclick="changeRdvMonth(1)" aria-label="Mois suivant">
+            <span class="material-symbols-outlined">chevron_right</span>
+          </button>
+        </div>
+        <div class="mesrdv-cal-weekdays">
+          <span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span>Ven</span><span>Sam</span><span>Dim</span>
+        </div>
+        <div class="mesrdv-cal-grid" id="mesRdvCalGrid"></div>
+      </div>
+
+      <!-- FILTRES -->
+      <div class="mesrdv-filters">
+        <button class="mesrdv-filter active" onclick="filterMesRdv('all',this)">Tous</button>
+        <button class="mesrdv-filter" onclick="filterMesRdv('ok',this)">Confirmés</button>
+        <button class="mesrdv-filter" onclick="filterMesRdv('wait',this)">En attente</button>
+      </div>
+
+      <!-- LISTE -->
+      <div class="mesrdv-list" id="mesRdvList"></div>
     </div>
 
     <!-- ── TAB : FACTURES ── -->
@@ -1607,6 +1755,22 @@ html,body{background:var(--bg);color:var(--dark);font-family:'Plus Jakarta Sans'
   </div>
 </div>
 
+<!-- MODAL FICHE RDV -->
+<div class="modal-overlay" id="rdvFicheOverlay" onclick="closeRdvFiche(event)">
+  <div class="modal-box rdv-fiche-box">
+    <div class="modal-head">
+      <div class="modal-head-top">
+        <p class="modal-title" id="rdvFicheTitle">Détail du RDV</p>
+        <button class="modal-close-btn" onclick="closeRdvFicheDirect()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--muted)"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </div>
+      <p class="modal-sub" id="rdvFicheSub"></p>
+    </div>
+    <div class="modal-body" id="rdvFicheBody"></div>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast">
   <svg width="14" height="14" viewBox="0 0 24 24" fill="#4ade80"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
@@ -1844,7 +2008,7 @@ let map = null;
 let markers = [];
 
 const RDV_DATA = [
-  { id:1, sector:'Rénovation énergétique', zone:'Lyon & périphérie', city:'Lyon', price:25, dispo:4, tag:'populaire', category:'renovation', quality:'simple', profile:'Propriétaire, DPE E/F, >50 ans, revenus modestes' },
+  { id:1, sector:'Rénovation énergétique', zone:'Lyon & périphérie', city:'Lyon', price:25, region:'Auvergne-Rhône-Alpes', dispo:4, tag:'populaire', category:'renovation', quality:'simple', profile:'Propriétaire, DPE E/F, >50 ans, revenus modestes' },
   { id:2, sector:'Isolation combles', zone:'Marseille Sud', city:'Marseille', price:25, region:'Provence-Alpes-Côte d\'Azur', dispo:2, tag:'nouveau', category:'isolation', quality:'simple', profile:'Propriétaire maison individuelle, intéressé prime CEE' },
   { id:3, sector:'Pompe à chaleur', zone:'Bordeaux Métropole', city:'Bordeaux', price:80, region:'Nouvelle-Aquitaine', dispo:3, tag:'populaire', category:'pac', quality:'qualifie', profile:'Propriétaire, projet PAC confirmé, demande de devis active' },
   { id:4, sector:'Panneaux solaires', zone:'Toulouse & alentours', city:'Toulouse', price:25, region:'Occitanie', dispo:1, tag:'nouveau', category:'solaire', quality:'simple', profile:'Propriétaire maison, toit sud exposé, primo-intéressé' },
@@ -1897,26 +2061,257 @@ function renderChart() {
   wrap.innerHTML = html;
 }
 
+// ── SOURCE DE DONNÉES PARTAGÉE DES RDV ──
+// Le bloc "RDV à honorer", la card "Mes RDV" et la page dédiée tirent tous d'ici.
+// Quand tu brancheras Supabase, il suffira de remplacer le contenu de cette fonction.
+function getRdvData() {
+  var stored = JSON.parse(localStorage.getItem('sp_rdv') || 'null');
+  if (stored && Array.isArray(stored) && stored.length) {
+    return stored.map(function(r){ return { name:r.name, city:r.city, date:new Date(r.date), status:r.status, type:r.type }; });
+  }
+  // Démo par défaut (remplaçable par tes vraies données)
+  return [
+    {name:'M. Bernard Dupont', city:'Marseille 13', date:new Date(Date.now()+86400000), status:'ok', type:'Rénovation énergétique',
+     heure:'14:30', tel:'06 12 34 56 78', adresse:'18 rue de la République, 13002 Marseille', prix:35,
+     notes:'Maison individuelle de 1995, souhaite refaire l\'isolation et changer la chaudière. Éligible MaPrimeRénov\'.'},
+    {name:'Mme Sylvie Martin', city:'Montpellier 34', date:new Date(Date.now()+2*86400000), status:'ok', type:'Pompe à chaleur',
+     heure:'10:00', tel:'06 98 76 54 32', adresse:'7 avenue des Cévennes, 34070 Montpellier', prix:40,
+     notes:'Remplacement d\'une chaudière fioul en fin de vie. Projet validé, recherche un devis rapidement.'},
+    {name:'M. Jacques Lebrun', city:'Avignon 84', date:new Date(Date.now()+3*86400000), status:'wait', type:'Isolation combles',
+     heure:'16:15', tel:'07 45 23 11 89', adresse:'3 chemin des Oliviers, 84000 Avignon', prix:30,
+     notes:'Combles perdus à isoler, ~80m². Disponible en fin de journée.'},
+  ];
+}
+
+var MONTHS_FR = ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
+
 function renderHonorList() {
   var list = document.getElementById('honorList');
   var badge = document.getElementById('honorBadge');
+  var data = getRdvData();
+  if (badge) badge.textContent = data.length + ' à venir';
+  // met à jour la card + le compteur sidebar dès que les données changent
+  updateMesRdvCard(data);
   if (!list) return;
-  var demo = [
-    {name:'M. Bernard Dupont', city:'Marseille 13', date:new Date(Date.now()+86400000), status:'ok', type:'Rénovation énergétique'},
-    {name:'Mme Sylvie Martin', city:'Montpellier 34', date:new Date(Date.now()+2*86400000), status:'ok', type:'Pompe à chaleur'},
-    {name:'M. Jacques Lebrun', city:'Avignon 84', date:new Date(Date.now()+3*86400000), status:'wait', type:'Isolation combles'},
-  ];
-  var months=['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
-  if (badge) badge.textContent = demo.length + ' à venir';
+  if (!data.length) { list.innerHTML = '<p class="db-empty">Aucun RDV planifié</p>'; return; }
   var html = '';
-  demo.forEach(function(r) {
+  data.forEach(function(r) {
     html += '<div class="db-honor-item">';
     html += '<div class="db-honor-top">';
-    html += '<div class="db-honor-date-box"><span class="db-honor-day">'+r.date.getDate()+'</span><span class="db-honor-month">'+months[r.date.getMonth()]+'</span></div>';
+    html += '<div class="db-honor-date-box"><span class="db-honor-day">'+r.date.getDate()+'</span><span class="db-honor-month">'+MONTHS_FR[r.date.getMonth()]+'</span></div>';
     html += '<span class="db-honor-status '+r.status+'">'+(r.status==='ok'?'Confirmé':'En attente')+'</span>';
     html += '</div>';
     html += '<p class="db-honor-name">'+r.name+'</p>';
     html += '<p class="db-honor-meta">'+r.city+' · '+r.type+'</p>';
+    html += '</div>';
+  });
+  list.innerHTML = html;
+}
+
+// Met à jour la card "Mes RDV" de l'accueil + le badge de la sidebar
+function updateMesRdvCard(data) {
+  data = data || getRdvData();
+  var count = data.length;
+  var setTxt = function(id,v){ var e=document.getElementById(id); if(e) e.textContent=v; };
+  setTxt('mesRdvCardCount', count);
+  setTxt('navMesRdvCount', count);
+  var sub = document.getElementById('mesRdvCardSub');
+  if (sub) {
+    if (!count) { sub.textContent = "Aucun RDV planifié pour l'instant"; }
+    else {
+      var next = data.slice().sort(function(a,b){ return a.date - b.date; })[0];
+      sub.textContent = 'Prochain : ' + next.name + ' · ' + next.date.getDate() + ' ' + MONTHS_FR[next.date.getMonth()];
+    }
+  }
+}
+
+var _mesRdvFilter = 'all';
+var _mesRdvSelectedDay = null;   // clé 'YYYY-M-D' du jour sélectionné, ou null
+var _mesRdvCalDate = null;       // 1er jour du mois affiché dans le calendrier
+
+function _dayKey(d){ return d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate(); }
+
+function filterMesRdv(f, btn) {
+  _mesRdvFilter = f;
+  document.querySelectorAll('.mesrdv-filter').forEach(function(b){ b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  renderMesRdvList();
+}
+
+function changeRdvMonth(delta) {
+  if (!_mesRdvCalDate) _mesRdvCalDate = new Date();
+  _mesRdvCalDate = new Date(_mesRdvCalDate.getFullYear(), _mesRdvCalDate.getMonth() + delta, 1);
+  _mesRdvSelectedDay = null;       // on réinitialise le filtre jour en changeant de mois
+  renderRdvCalendar();
+  renderMesRdvList();
+}
+
+function selectRdvDay(key) {
+  _mesRdvSelectedDay = (_mesRdvSelectedDay === key) ? null : key; // re-clic = désélection
+  renderRdvCalendar();
+  renderMesRdvList();
+}
+
+// Ouvre la fiche complète du/des RDV d'un jour donné (clé 'YYYY-M-D')
+function openRdvFiche(key) {
+  var rdvs = getRdvData().filter(function(r){ return _dayKey(r.date) === key; })
+                         .sort(function(a,b){ return (a.heure||'').localeCompare(b.heure||''); });
+  if (!rdvs.length) return;
+
+  var titleEl = document.getElementById('rdvFicheTitle');
+  var subEl = document.getElementById('rdvFicheSub');
+  var body = document.getElementById('rdvFicheBody');
+  var d = rdvs[0].date;
+  var dateLabel = d.getDate() + ' ' + MONTHS_FR[d.getMonth()] + ' ' + d.getFullYear();
+
+  if (rdvs.length === 1) {
+    titleEl.textContent = 'Fiche RDV';
+    subEl.textContent = dateLabel;
+  } else {
+    titleEl.textContent = rdvs.length + ' RDV ce jour';
+    subEl.textContent = dateLabel;
+  }
+
+  var esc = function(s){ return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); };
+  var row = function(icon, label, val){
+    if (!val) return '';
+    return '<div class="fiche-row">'
+         +   '<span class="material-symbols-outlined fiche-row-ic">'+icon+'</span>'
+         +   '<div class="fiche-row-txt"><span class="fiche-row-lbl">'+label+'</span><span class="fiche-row-val">'+esc(val)+'</span></div>'
+         + '</div>';
+  };
+  var telRow = function(tel){
+    if (!tel) return '';
+    var clean = String(tel).replace(/\s/g,'');
+    return '<div class="fiche-row">'
+         +   '<span class="material-symbols-outlined fiche-row-ic">call</span>'
+         +   '<div class="fiche-row-txt"><span class="fiche-row-lbl">Téléphone</span>'
+         +     '<a class="fiche-row-val fiche-link" href="tel:'+clean+'">'+esc(tel)+'</a></div>'
+         + '</div>';
+  };
+
+  var html = '';
+  rdvs.forEach(function(r){
+    var statusTxt = r.status==='ok' ? 'Confirmé' : 'En attente';
+    html += '<div class="fiche-card">';
+    html +=   '<div class="fiche-card-head">';
+    html +=     '<div><p class="fiche-name">'+esc(r.name)+'</p><p class="fiche-type">'+esc(r.type)+'</p></div>';
+    html +=     '<span class="mesrdv-item-status '+r.status+'">'+statusTxt+'</span>';
+    html +=   '</div>';
+    html +=   '<div class="fiche-rows">';
+    html +=     row('schedule', 'Horaire', r.heure ? (r.heure) : null);
+    html +=     telRow(r.tel);
+    html +=     row('place', 'Adresse', r.adresse || r.city);
+    html +=     row('construction', 'Projet', r.type);
+    html +=     (r.prix ? row('sell', 'Payé pour ce RDV', r.prix + ' €') : '');
+    html +=   '</div>';
+    if (r.notes) {
+      html += '<div class="fiche-notes"><p class="fiche-notes-lbl">Notes du prospect</p><p class="fiche-notes-txt">'+esc(r.notes)+'</p></div>';
+    }
+    html +=   '<div class="fiche-actions">';
+    html +=     (r.tel ? '<a class="fiche-btn primary" href="tel:'+String(r.tel).replace(/\s/g,'')+'"><span class="material-symbols-outlined">call</span>Appeler</a>' : '');
+    html +=     (r.adresse ? '<a class="fiche-btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(r.adresse)+'"><span class="material-symbols-outlined">map</span>Itinéraire</a>' : '');
+    html +=   '</div>';
+    html += '</div>';
+  });
+  body.innerHTML = html;
+
+  document.getElementById('rdvFicheOverlay').classList.add('open');
+}
+function closeRdvFiche(e){ if (e && e.target.id !== 'rdvFicheOverlay') return; document.getElementById('rdvFicheOverlay').classList.remove('open'); }
+function closeRdvFicheDirect(){ document.getElementById('rdvFicheOverlay').classList.remove('open'); }
+
+function renderRdvCalendar() {
+  var grid = document.getElementById('mesRdvCalGrid');
+  var titleEl = document.getElementById('mesRdvCalTitle');
+  if (!grid) return;
+  if (!_mesRdvCalDate) _mesRdvCalDate = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+
+  var year = _mesRdvCalDate.getFullYear();
+  var month = _mesRdvCalDate.getMonth();
+  var MONTHS_FULL = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+  if (titleEl) titleEl.textContent = MONTHS_FULL[month] + ' ' + year;
+
+  // Regroupe les RDV par jour du mois affiché
+  var byDay = {}; // jour(num) -> { count, hasWait }
+  getRdvData().forEach(function(r){
+    if (r.date.getFullYear() === year && r.date.getMonth() === month) {
+      var d = r.date.getDate();
+      if (!byDay[d]) byDay[d] = { count:0, hasWait:false };
+      byDay[d].count++;
+      if (r.status === 'wait') byDay[d].hasWait = true;
+    }
+  });
+
+  var firstDow = (new Date(year, month, 1).getDay() + 6) % 7; // 0 = Lundi
+  var daysInMonth = new Date(year, month + 1, 0).getDate();
+  var today = new Date();
+  var isThisMonth = (today.getFullYear() === year && today.getMonth() === month);
+
+  var html = '';
+  for (var i = 0; i < firstDow; i++) html += '<div class="mesrdv-cal-cell empty"></div>';
+  for (var day = 1; day <= daysInMonth; day++) {
+    var info = byDay[day];
+    var key = year + '-' + month + '-' + day;
+    var cls = 'mesrdv-cal-cell';
+    if (info) cls += ' has-rdv';
+    if (isThisMonth && day === today.getDate()) cls += ' today';
+    if (_mesRdvSelectedDay === key) cls += ' selected';
+    var onclick = info ? ' onclick="openRdvFiche(\'' + key + '\')"' : '';
+    html += '<div class="' + cls + '"' + onclick + '>';
+    html +=   '<span class="mesrdv-cal-num">' + day + '</span>';
+    if (info) {
+      var dotCls = info.hasWait ? 'wait' : 'ok';
+      html += '<span class="mesrdv-cal-dot ' + dotCls + '"></span>';
+    }
+    html += '</div>';
+  }
+  grid.innerHTML = html;
+}
+
+// Rendu complet de la page (calendrier + stats + liste)
+function renderMesRdv() {
+  renderRdvCalendar();
+  renderMesRdvList();
+}
+
+// Rendu de la liste seule (stats + items), en tenant compte des filtres statut + jour
+function renderMesRdvList() {
+  var list = document.getElementById('mesRdvList');
+  if (!list) return;
+  var data = getRdvData().slice().sort(function(a,b){ return a.date - b.date; });
+
+  // stats (toujours sur le total, pas les filtres)
+  var confirmes = data.filter(function(r){ return r.status==='ok'; }).length;
+  var attente = data.filter(function(r){ return r.status==='wait'; }).length;
+  var setTxt = function(id,v){ var e=document.getElementById(id); if(e) e.textContent=v; };
+  setTxt('mesRdvStatTotal', data.length);
+  setTxt('mesRdvStatConfirmes', confirmes);
+  setTxt('mesRdvStatAttente', attente);
+
+  // filtre statut
+  var rows = (_mesRdvFilter === 'all') ? data : data.filter(function(r){ return r.status === _mesRdvFilter; });
+  // filtre jour (si un jour est sélectionné dans le calendrier)
+  if (_mesRdvSelectedDay) {
+    rows = rows.filter(function(r){ return _dayKey(r.date) === _mesRdvSelectedDay; });
+  }
+
+  if (!rows.length) {
+    var msg = _mesRdvSelectedDay ? 'Aucun RDV ce jour-là' : 'Aucun RDV dans cette catégorie';
+    list.innerHTML = '<p class="db-empty" style="padding:48px 0">' + msg + '</p>';
+    return;
+  }
+
+  var html = '';
+  rows.forEach(function(r) {
+    var statusTxt = r.status==='ok' ? 'Confirmé' : 'En attente';
+    html += '<div class="mesrdv-item">';
+    html +=   '<div class="mesrdv-item-date"><span class="mesrdv-item-day">'+r.date.getDate()+'</span><span class="mesrdv-item-month">'+MONTHS_FR[r.date.getMonth()]+'</span></div>';
+    html +=   '<div class="mesrdv-item-main">';
+    html +=     '<p class="mesrdv-item-name">'+r.name+'</p>';
+    html +=     '<p class="mesrdv-item-meta"><span class="material-symbols-outlined">place</span>'+r.city+' · '+r.type+'</p>';
+    html +=   '</div>';
+    html +=   '<span class="mesrdv-item-status '+r.status+'">'+statusTxt+'</span>';
     html += '</div>';
   });
   list.innerHTML = html;
@@ -2156,6 +2551,7 @@ let currentRegion = null;
 function getRegions() {
   const map = {};
   RDV_DATA.forEach(r => {
+    if (!r.region) return; // ignore les RDV sans région pour éviter une catégorie "undefined"
     if (!map[r.region]) map[r.region] = { total: 0, dispo: 0 };
     map[r.region].total++;
     map[r.region].dispo += r.dispo;
@@ -2889,6 +3285,7 @@ function showTab(name) {
   if (name === 'ugc') { renderUgcPacks(); updateCamp(); }
   if (name === 'vente') { renderVenteGrid(); selectVentePlan('std'); }
   if (name === 'accueil') renderHomeGreeting();
+  if (name === 'mesrdv') renderMesRdv();
   if (name === 'catalogue') {
     setTimeout(function() {
       if (typeof map !== 'undefined' && map) {
@@ -3676,21 +4073,37 @@ function onb2RunCounters() {
     </button>
   </div>
   <span class="sidebar-label">Navigation</span>
-  <a class="nav-item" onclick="showTab('catalogue');closeDrawer()">
-    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/></svg>
-    <span class="nav-text">Catalogue RDV</span>
+  <a class="nav-item" onclick="showTab('accueil');closeDrawer()">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    <span class="nav-text">Accueil</span>
   </a>
-  <a class="nav-item" onclick="showTab('abonnement');closeDrawer()">
-    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
-    <span class="nav-text">Abonnement</span>
+  <a class="nav-item" onclick="showTab('mesrdv');closeDrawer()">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-7 5h5v5h-5v-5z"/></svg>
+    <span class="nav-text">Mes RDV</span>
   </a>
   <a class="nav-item" onclick="showTab('commandes');closeDrawer()">
     <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/></svg>
     <span class="nav-text">Mes commandes</span>
   </a>
-  <a class="nav-item" onclick="showTab('profil');closeDrawer()">
-    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-    <span class="nav-text">Mon profil</span>
+
+  <span class="sidebar-label" style="margin-top:20px">Leviers de croissance</span>
+  <a class="nav-item" onclick="showTab('catalogue');closeDrawer()">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/></svg>
+    <span class="nav-text">RDV qualifiés</span>
+  </a>
+  <a class="nav-item" onclick="showTab('ugc');closeDrawer()">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+    <span class="nav-text">Visibilité / UGC</span>
+  </a>
+  <a class="nav-item" onclick="showTab('vente');closeDrawer()">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+    <span class="nav-text">Force de vente</span>
+  </a>
+
+  <span class="sidebar-label" style="margin-top:20px">Mon compte</span>
+  <a class="nav-item" onclick="showTab('abonnement');closeDrawer()">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+    <span class="nav-text">Abonnement</span>
   </a>
   <a class="nav-item" onclick="showTab('credits');closeDrawer()">
     <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
@@ -3700,13 +4113,9 @@ function onb2RunCounters() {
     <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
     <span class="nav-text">Mes factures</span>
   </a>
-  <a class="nav-item" onclick="showTab('ugc');closeDrawer()">
-    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>
-    <span class="nav-text">Pub / UGC</span>
-  </a>
-  <a class="nav-item" onclick="showTab('vente');closeDrawer()">
-    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
-    <span class="nav-text">Force de vente</span>
+  <a class="nav-item" onclick="showTab('profil');closeDrawer()">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+    <span class="nav-text">Mon profil</span>
   </a>
 </div>
 
