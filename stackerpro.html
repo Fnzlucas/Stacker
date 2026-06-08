@@ -915,6 +915,132 @@ html,body{background:var(--bg);color:var(--dark);font-family:'DM Sans',sans-seri
   </div>
 </div>
 
+
+<div class="fvonb" id="fvonb">
+  <button class="fvonb-skip" onclick="fvonbClose()">Passer →</button>
+
+  <!-- ÉTAPE 0 : LA PUISSANCE -->
+  <div class="fvonb-stage active" data-fv="0">
+    <div class="fvonb-inner">
+      <p class="fvonb-kicker">Force de vente Stacker</p>
+      <h1 class="fvonb-mega">Une armée de commerciaux<br>vend <span>vos offres</span><br>partout en France</h1>
+      <p class="fvonb-lead">Des centaines de Stackers indépendants attaquent par tous les canaux — téléphone, porte-à-porte, réseaux, emailing — pour vendre vos produits. Vous ne payez qu'à la vente conclue.</p>
+      <div class="fvonb-stats">
+        <div class="fvonb-stat"><span class="fvonb-stat-num" data-fvcount="1247">0</span><span class="fvonb-stat-lbl">Stackers actifs</span></div>
+        <div class="fvonb-stat"><span class="fvonb-stat-num" data-fvcount="320">0</span><span class="fvonb-stat-lbl">villes couvertes</span></div>
+        <div class="fvonb-stat"><span class="fvonb-stat-num" data-fvcount="10000">0</span><span class="fvonb-stat-lbl">appels / jour</span></div>
+      </div>
+      <button class="fvonb-go" onclick="fvonbNext()">Comment mettre mon offre en ligne <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>
+    </div>
+  </div>
+
+  <!-- ÉTAPE 1 : LES ÉTAPES -->
+  <div class="fvonb-stage" data-fv="1">
+    <div class="fvonb-inner">
+      <p class="fvonb-kicker">En 3 étapes</p>
+      <h2 class="fvonb-mega">Mettez votre offre<br>en ligne en <span>5 minutes</span></h2>
+      <div class="fvonb-steps">
+        <div class="fvonb-step"><div class="fvonb-step-num">1</div><div class="fvonb-step-txt"><p class="fvonb-step-t">Décrivez votre offre</p><p class="fvonb-step-d">Produit, prix, cible, arguments clés. Plus c'est clair, plus les Stackers vendent vite.</p></div></div>
+        <div class="fvonb-step"><div class="fvonb-step-num">2</div><div class="fvonb-step-txt"><p class="fvonb-step-t">Fixez la commission</p><p class="fvonb-step-d">Vous décidez la commission reversée au closer. Le standard est 15% — plus elle est attractive, plus les Stackers se battent pour votre offre.</p></div></div>
+        <div class="fvonb-step"><div class="fvonb-step-num">3</div><div class="fvonb-step-txt"><p class="fvonb-step-t">Validez et c'est parti</p><p class="fvonb-step-d">Votre offre est déployée auprès du réseau. Les premières ventes peuvent tomber dans la journée.</p></div></div>
+      </div>
+      <button class="fvonb-go" onclick="fvonbNext()">Et ensuite ? <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>
+    </div>
+  </div>
+
+  <!-- ÉTAPE 2 : SUIVI + ZÉRO RISQUE -->
+  <div class="fvonb-stage" data-fv="2">
+    <div class="fvonb-inner">
+      <p class="fvonb-kicker">Vous gardez le contrôle</p>
+      <h2 class="fvonb-mega">Suivez tout<br>en <span>temps réel</span></h2>
+      <p class="fvonb-lead">Chaque vente conclue apparaît dans votre tableau de bord. Vous suivez les performances, les Stackers les plus efficaces, et vous ne payez la commission qu'une fois la vente confirmée.</p>
+      <div class="fvonb-steps">
+        <div class="fvonb-step"><div class="fvonb-step-num" style="background:#006c4c">✓</div><div class="fvonb-step-txt"><p class="fvonb-step-t">0 vente = 0€</p><p class="fvonb-step-d">Aucun coût fixe, aucun salaire. Vous payez uniquement au résultat.</p></div></div>
+        <div class="fvonb-step"><div class="fvonb-step-num" style="background:#006c4c">✓</div><div class="fvonb-step-txt"><p class="fvonb-step-t">Sans engagement</p><p class="fvonb-step-d">Mettez votre offre en pause ou retirez-la quand vous voulez.</p></div></div>
+      </div>
+      <button class="fvonb-go" onclick="fvonbClose()">Créer mon offre maintenant</button>
+    </div>
+  </div>
+
+  <div class="fvonb-dots">
+    <span class="fvonb-dot active"></span><span class="fvonb-dot"></span><span class="fvonb-dot"></span>
+  </div>
+</div>
+
+
+<div class="rdvonb" id="rdvonb">
+  <button class="rdvonb-skip" onclick="rdvonbClose()">Passer →</button>
+
+  <!-- ÉTAPE 0 : LE CONCEPT -->
+  <div class="rdvonb-stage active" data-rdv="0">
+    <div class="rdvonb-inner">
+      <p class="rdvonb-kicker">Rendez-vous qualifiés</p>
+      <h1 class="rdvonb-mega">Des prospects<br>qui <span>vous attendent</span></h1>
+      <p class="rdvonb-lead">Achetez des rendez-vous qualifiés près de chez vous — sans devis, sans contrat, sans engagement. Des prospects intéressés, vérifiés, prêts à vous recevoir.</p>
+      <div class="rdvonb-stats">
+        <div class="rdvonb-stat"><span class="rdvonb-stat-num" data-rdvcount="2840">0</span><span class="rdvonb-stat-lbl">RDV disponibles</span></div>
+        <div class="rdvonb-stat"><span class="rdvonb-stat-num" data-rdvcount="91" data-suffix="%">0</span><span class="rdvonb-stat-lbl">RDV honorés</span></div>
+        <div class="rdvonb-stat"><span class="rdvonb-stat-num" data-rdvcount="48" data-suffix="h">0</span><span class="rdvonb-stat-lbl">premiers RDV</span></div>
+      </div>
+      <button class="rdvonb-go" onclick="rdvonbNext()">Comment ça marche <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>
+    </div>
+  </div>
+
+  <!-- ÉTAPE 1 : LA FLEXIBILITÉ -->
+  <div class="rdvonb-stage" data-rdv="1">
+    <div class="rdvonb-inner">
+      <p class="rdvonb-kicker">Vous choisissez</p>
+      <h2 class="rdvonb-mega">1 RDV ou 100,<br><span>comme vous voulez</span></h2>
+      <p class="rdvonb-lead">Une heure de libre cet après-midi ? Prenez 1 RDV. Besoin de volume régulier ? Passez en abonnement et recevez vos RDV automatiquement.</p>
+      <div class="rdvonb-flex">
+        <div class="rdvonb-flex-card">
+          <div class="rdvonb-flex-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="#ff5c6a"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm-2 14l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg></div>
+          <p class="rdvonb-flex-t">À l'unité</p>
+          <p class="rdvonb-flex-d">Achetez exactement le nombre de RDV dont vous avez besoin, quand vous voulez</p>
+        </div>
+        <div class="rdvonb-flex-card">
+          <div class="rdvonb-flex-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="#ff5c6a"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg></div>
+          <p class="rdvonb-flex-t">En abonnement</p>
+          <p class="rdvonb-flex-d">Recevez vos RDV automatiquement chaque mois, jusqu'à -20%</p>
+        </div>
+      </div>
+      <button class="rdvonb-go" onclick="rdvonbNext()">Et concrètement ? <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>
+    </div>
+  </div>
+
+  <!-- ÉTAPE 2 : COMMENT ÇA MARCHE -->
+  <div class="rdvonb-stage" data-rdv="2">
+    <div class="rdvonb-inner">
+      <p class="rdvonb-kicker">En 3 étapes</p>
+      <h2 class="rdvonb-mega">De la carte<br>au <span>rendez-vous</span></h2>
+      <div class="rdvonb-steps">
+        <div class="rdvonb-step"><div class="rdvonb-step-num">1</div><div class="rdvonb-step-txt"><p class="rdvonb-step-t">Choisissez votre zone</p><p class="rdvonb-step-d">Cliquez sur un département de la carte pour voir les RDV disponibles près de chez vous.</p></div></div>
+        <div class="rdvonb-step"><div class="rdvonb-step-num">2</div><div class="rdvonb-step-txt"><p class="rdvonb-step-t">Vérifiez et achetez</p><p class="rdvonb-step-d">Date, heure, secteur, ville — tout est affiché. Coordonnées vérifiées, taux d'honoration de la zone.</p></div></div>
+        <div class="rdvonb-step"><div class="rdvonb-step-num">3</div><div class="rdvonb-step-txt"><p class="rdvonb-step-t">Recevez les coordonnées</p><p class="rdvonb-step-d">Dès l'achat, les coordonnées du prospect sont débloquées. Il vous attend.</p></div></div>
+      </div>
+      <button class="rdvonb-go" onclick="rdvonbNext()">Et si ça se passe mal ? <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></button>
+    </div>
+  </div>
+
+  <!-- ÉTAPE 3 : ZÉRO RISQUE -->
+  <div class="rdvonb-stage" data-rdv="3">
+    <div class="rdvonb-inner">
+      <p class="rdvonb-kicker">Zéro risque</p>
+      <h2 class="rdvonb-mega">Un RDV non honoré ?<br><span>Remboursé.</span></h2>
+      <p class="rdvonb-lead">Si un prospect ne se présente pas, vous êtes automatiquement remboursé ou le RDV est remplacé. Vous ne payez que pour des rendez-vous réels.</p>
+      <div class="rdvonb-steps">
+        <div class="rdvonb-step"><div class="rdvonb-step-num" style="background:#006c4c">✓</div><div class="rdvonb-step-txt"><p class="rdvonb-step-t">Remboursé si non honoré</p><p class="rdvonb-step-d">Remboursement ou remplacement automatique, sans réclamation.</p></div></div>
+        <div class="rdvonb-step"><div class="rdvonb-step-num" style="background:#006c4c">✓</div><div class="rdvonb-step-txt"><p class="rdvonb-step-t">Coordonnées vérifiées</p><p class="rdvonb-step-d">Chaque prospect est confirmé avant d'être mis en vente.</p></div></div>
+      </div>
+      <button class="rdvonb-go" onclick="rdvonbClose()">Voir les RDV disponibles</button>
+    </div>
+  </div>
+
+  <div class="rdvonb-dots">
+    <span class="rdvonb-dot active"></span><span class="rdvonb-dot"></span><span class="rdvonb-dot"></span><span class="rdvonb-dot"></span>
+  </div>
+</div>
+
 <!-- HEADER -->
 <header class="header">
   <div style="display:flex;align-items:center;gap:10px">
@@ -1188,6 +1314,10 @@ html,body{background:var(--bg);color:var(--dark);font-family:'DM Sans',sans-seri
         <div>
           <h1 class="rdv-head-title">Rendez-vous qualifiés</h1>
           <p class="rdv-head-sub">Achetez des RDV près de chez vous, sans engagement.</p>
+          <button onclick="rdvonbOpen()" style="margin-top:12px;display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:10px;background:#f4f4f5;border:1px solid rgba(0,0,0,0.08);color:#111112;font-family:'DM Sans',sans-serif;font-weight:600;font-size:12.5px;cursor:pointer">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+            Revoir le guide
+          </button>
         </div>
         <div class="rdv-head-kpis">
           <div class="rdv-head-kpi">
@@ -1597,41 +1727,49 @@ html,body{background:var(--bg);color:var(--dark);font-family:'DM Sans',sans-seri
           <span class="vente-hero-badge">Vente à la performance</span>
           <h2 class="vente-hero-title">Une force de vente déployée partout en France</h2>
           <p class="vente-hero-sub">Nos closers vendent votre produit ou service en direct. Vous ne payez qu'à la vente réalisée — aucun coût fixe, aucun risque.</p>
+          <button onclick="fvonbOpen()" style="margin-top:16px;display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:10px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;font-family:'DM Sans',sans-serif;font-weight:600;font-size:13px;cursor:pointer">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+            Revoir le guide
+          </button>
         </div>
       </div>
 
-      <div class="section-title" style="margin:32px 0 16px"><h2>Notre rémunération : simple et transparente</h2></div>
-      <p style="font-size:13px;color:var(--muted);margin-bottom:18px">Stacker se rémunère uniquement quand vous gagnez. Aucune commission cachée, aucun frais à la performance pour vous.</p>
+      <div class="section-title" style="margin:32px 0 16px"><h2>La commission que vous fixez</h2></div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:18px">Vous décidez de la commission reversée au closer sur chaque vente. Le standard chez Stacker est de 15% — plus elle est attractive, plus les closers se battent pour votre offre.</p>
 
       <div class="comm-model">
         <div class="comm-model-big">
           <span class="comm-model-pct">15%</span>
-          <span class="comm-model-pct-lbl">prélevés par Stacker</span>
+          <span class="comm-model-pct-lbl">commission standard</span>
         </div>
         <div class="comm-model-rows">
           <div class="comm-model-row">
             <span class="material-symbols-outlined comm-model-ic">bolt</span>
-            <div><p class="comm-model-t">Sur chaque vente one-shot</p><p class="comm-model-d">15% du montant de la vente conclue par le closer</p></div>
+            <div><p class="comm-model-t">Sur chaque vente one-shot</p><p class="comm-model-d">Le closer touche le % que vous fixez sur la vente conclue</p></div>
           </div>
           <div class="comm-model-row">
             <span class="material-symbols-outlined comm-model-ic">autorenew</span>
-            <div><p class="comm-model-t">Sur chaque abonnement récurrent</p><p class="comm-model-d">15% chaque mois, tant que l'abonnement client est actif</p></div>
+            <div><p class="comm-model-t">Sur chaque abonnement récurrent</p><p class="comm-model-d">Le closer touche sa commission chaque mois, tant que l'abonnement client est actif</p></div>
           </div>
         </div>
       </div>
 
       <!-- CALCULATEUR -->
       <div class="comm-calc">
-        <p class="comm-calc-title">Simulez votre part</p>
-        <div class="comm-calc-row">
-          <div class="comm-calc-field">
+        <p class="comm-calc-title">Simulez la commission</p>
+        <div class="comm-calc-row" style="display:flex;gap:12px;flex-wrap:wrap">
+          <div class="comm-calc-field" style="flex:1;min-width:140px">
             <label class="ugc-label">Prix de votre vente / abonnement (€)</label>
             <input class="ugc-input" id="commCalcPrice" type="number" placeholder="3000" oninput="updateCommCalc()" />
+          </div>
+          <div class="comm-calc-field" style="flex:1;min-width:140px">
+            <label class="ugc-label">Commission closer (%)</label>
+            <input class="ugc-input" id="commCalcRate" type="number" value="15" min="1" max="50" oninput="updateCommCalc()" />
           </div>
         </div>
         <div class="comm-calc-result" id="commCalcResult">
           <div class="comm-calc-res-item">
-            <span class="comm-calc-res-lbl">Part Stacker (15%)</span>
+            <span class="comm-calc-res-lbl">Commission closer</span>
             <span class="comm-calc-res-val accent" id="commCalcStacker">—</span>
           </div>
           <div class="comm-calc-res-arrow">→</div>
@@ -1651,7 +1789,7 @@ html,body{background:var(--bg);color:var(--dark);font-family:'DM Sans',sans-seri
           <ul class="vente-plan-feats">
             <li>Offre visible dans le catalogue closers</li>
             <li>Accès à tous les closers de France</li>
-            <li>Stacker prélève 15% sur chaque vente</li>
+            <li>Vous fixez la commission (15% recommandé)</li>
             <li>Suivi des ventes en temps réel</li>
           </ul>
           <div class="vente-plan-check">Choisir</div>
@@ -2001,6 +2139,69 @@ html,body{background:var(--bg);color:var(--dark);font-family:'DM Sans',sans-seri
 .abo-dd-item{padding:11px 14px;font-size:13.5px;font-family:'DM Sans',sans-serif;font-weight:500;color:#111112;cursor:pointer;transition:background 0.12s}
 .abo-dd-item:hover{background:#f7f7f8}
 .abo-dd-item.active{background:#111112;color:#fff;font-weight:700}
+
+.fvonb{position:fixed;inset:0;z-index:9998;background:radial-gradient(ellipse at 70% 20%,#2a0e12,#0a0a0b 60%);display:none;align-items:center;justify-content:center;overflow:hidden}
+.fvonb.show{display:flex}
+.fvonb.closing{animation:onb2Fade 0.5s forwards}
+.fvonb-skip{position:absolute;top:22px;right:24px;z-index:20;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);font-family:'DM Sans',sans-serif;font-weight:600;font-size:13px;padding:8px 16px;border-radius:99px;cursor:pointer}
+.fvonb-skip:hover{background:rgba(255,255,255,0.14);color:#fff}
+.fvonb-stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:60px 32px 100px;opacity:0;pointer-events:none;transform:translateY(20px);transition:opacity 0.6s,transform 0.6s;overflow-y:auto}
+.fvonb-stage.active{opacity:1;pointer-events:all;transform:translateY(0)}
+.fvonb-inner{max-width:560px;width:100%;text-align:center;position:relative;z-index:2}
+.fvonb-kicker{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#ff5c6a;margin-bottom:18px}
+.fvonb-mega{font-family:'DM Sans',sans-serif;font-weight:800;font-size:42px;letter-spacing:-0.045em;color:#fff;line-height:1.05;margin-bottom:20px}
+.fvonb-mega span{color:#ff5c6a}
+.fvonb-lead{font-size:15.5px;color:rgba(255,255,255,0.55);line-height:1.65;max-width:470px;margin:0 auto 32px;font-weight:400}
+.fvonb-stats{display:flex;justify-content:center;gap:14px;margin-bottom:30px;flex-wrap:wrap}
+.fvonb-stat{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:16px;padding:20px 26px;display:flex;flex-direction:column;gap:5px;min-width:120px;backdrop-filter:blur(8px);transition:all 0.3s}
+.fvonb-stat-num{font-family:'DM Sans',sans-serif;font-weight:800;font-size:32px;letter-spacing:-0.04em;color:#fff;line-height:1;font-feature-settings:"tnum"}
+.fvonb-stat-lbl{font-size:11px;color:rgba(255,255,255,0.45);font-weight:600}
+.fvonb-steps{display:flex;flex-direction:column;gap:12px;max-width:460px;margin:0 auto 30px;text-align:left}
+.fvonb-step{display:flex;align-items:flex-start;gap:15px;background:rgba(255,255,255,0.035);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:18px 20px;transition:all 0.25s}
+.fvonb-step-num{width:32px;height:32px;border-radius:10px;background:#b52330;color:#fff;font-family:'DM Sans',sans-serif;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 14px -3px rgba(181,35,48,0.5)}
+.fvonb-step-txt{flex:1}
+.fvonb-step-t{font-family:'DM Sans',sans-serif;font-weight:700;font-size:15px;color:#fff;margin-bottom:4px;letter-spacing:-0.01em}
+.fvonb-step-d{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.5}
+.fvonb-go{display:inline-flex;align-items:center;gap:8px;background:#b52330;color:#fff;border:none;font-family:'DM Sans',sans-serif;font-weight:700;font-size:15px;padding:16px 34px;border-radius:14px;cursor:pointer;transition:all 0.25s;letter-spacing:-0.01em;box-shadow:0 8px 28px -8px rgba(181,35,48,0.6)}
+.fvonb-go:hover{background:#9b1d28;transform:translateY(-2px);box-shadow:0 10px 30px -8px rgba(181,35,48,0.5)}
+.fvonb-dots{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:20}
+.fvonb-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.2);transition:all 0.3s}
+.fvonb-dot.active{background:#b52330;width:24px;border-radius:99px}
+@media(max-width:600px){.fvonb-mega{font-size:28px}.fvonb-stage{padding:32px 20px 90px;align-items:flex-start}.fvonb-stats{gap:8px}.fvonb-stat{padding:14px 16px;min-width:90px}}
+
+.rdvonb{position:fixed;inset:0;z-index:9998;background:radial-gradient(ellipse at 70% 20%,#2a0e12,#0a0a0b 60%);display:none;align-items:center;justify-content:center;overflow:hidden}
+.rdvonb.show{display:flex}
+.rdvonb.closing{animation:onb2Fade 0.5s forwards}
+.rdvonb-skip{position:absolute;top:22px;right:24px;z-index:20;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);font-family:'DM Sans',sans-serif;font-weight:600;font-size:13px;padding:8px 16px;border-radius:99px;cursor:pointer}
+.rdvonb-skip:hover{background:rgba(255,255,255,0.14);color:#fff}
+.rdvonb-stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:60px 32px 100px;opacity:0;pointer-events:none;transform:translateY(20px);transition:opacity 0.6s,transform 0.6s;overflow-y:auto}
+.rdvonb-stage.active{opacity:1;pointer-events:all;transform:translateY(0)}
+.rdvonb-inner{max-width:560px;width:100%;text-align:center;position:relative;z-index:2}
+.rdvonb-kicker{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#ff5c6a;margin-bottom:18px}
+.rdvonb-mega{font-family:'DM Sans',sans-serif;font-weight:800;font-size:42px;letter-spacing:-0.045em;color:#fff;line-height:1.05;margin-bottom:20px}
+.rdvonb-mega span{color:#ff5c6a}
+.rdvonb-lead{font-size:15.5px;color:rgba(255,255,255,0.55);line-height:1.65;max-width:470px;margin:0 auto 32px;font-weight:400}
+.rdvonb-stats{display:flex;justify-content:center;gap:14px;margin-bottom:30px;flex-wrap:wrap}
+.rdvonb-stat{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:16px;padding:20px 26px;display:flex;flex-direction:column;gap:5px;min-width:120px;backdrop-filter:blur(8px)}
+.rdvonb-stat-num{font-family:'DM Sans',sans-serif;font-weight:800;font-size:32px;letter-spacing:-0.04em;color:#fff;line-height:1;font-feature-settings:"tnum"}
+.rdvonb-stat-lbl{font-size:11px;color:rgba(255,255,255,0.45);font-weight:600}
+.rdvonb-steps{display:flex;flex-direction:column;gap:12px;max-width:460px;margin:0 auto 30px;text-align:left}
+.rdvonb-step{display:flex;align-items:flex-start;gap:15px;background:rgba(255,255,255,0.035);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:18px 20px}
+.rdvonb-step-num{width:32px;height:32px;border-radius:10px;background:#b52330;color:#fff;font-family:'DM Sans',sans-serif;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 14px -3px rgba(181,35,48,0.5)}
+.rdvonb-step-txt{flex:1}
+.rdvonb-step-t{font-family:'DM Sans',sans-serif;font-weight:700;font-size:15px;color:#fff;margin-bottom:4px;letter-spacing:-0.01em}
+.rdvonb-step-d{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.5}
+.rdvonb-flex{display:flex;gap:12px;max-width:460px;margin:0 auto 30px}
+.rdvonb-flex-card{flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:16px;padding:22px 18px;text-align:center}
+.rdvonb-flex-ic{width:44px;height:44px;border-radius:12px;background:rgba(181,35,48,0.15);display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.rdvonb-flex-t{font-family:'DM Sans',sans-serif;font-weight:700;font-size:15px;color:#fff;margin-bottom:4px;letter-spacing:-0.01em}
+.rdvonb-flex-d{font-size:12.5px;color:rgba(255,255,255,0.5);line-height:1.45}
+.rdvonb-go{display:inline-flex;align-items:center;gap:8px;background:#b52330;color:#fff;border:none;font-family:'DM Sans',sans-serif;font-weight:700;font-size:15px;padding:16px 34px;border-radius:14px;cursor:pointer;transition:all 0.25s;letter-spacing:-0.01em;box-shadow:0 8px 28px -8px rgba(181,35,48,0.6)}
+.rdvonb-go:hover{background:#9b1d28;transform:translateY(-2px)}
+.rdvonb-dots{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:20}
+.rdvonb-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.2);transition:all 0.3s}
+.rdvonb-dot.active{background:#b52330;width:24px;border-radius:99px}
+@media(max-width:600px){.rdvonb-mega{font-size:28px}.rdvonb-stage{padding:32px 20px 90px;align-items:flex-start}.rdvonb-stats{gap:8px}.rdvonb-stat{padding:14px 16px;min-width:90px}.rdvonb-flex{flex-direction:column}}
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -3061,12 +3262,13 @@ function selectVentePlan(plan) {
 // Calculateur de la section rémunération
 function updateCommCalc() {
   var price = parseFloat(document.getElementById('commCalcPrice').value) || 0;
+  var rate = parseFloat((document.getElementById('commCalcRate')||{}).value) || 15;
   var stackerEl = document.getElementById('commCalcStacker');
   var youEl = document.getElementById('commCalcYou');
   if (price > 0) {
-    var stackerPart = price * STACKER_PCT;
-    stackerEl.textContent = stackerPart.toFixed(2) + ' €';
-    youEl.textContent = (price - stackerPart).toFixed(2) + ' €';
+    var commission = price * (rate/100);
+    stackerEl.textContent = commission.toFixed(2) + ' €';
+    youEl.textContent = (price - commission).toFixed(2) + ' €';
   } else {
     stackerEl.textContent = '—';
     youEl.textContent = '—';
@@ -3375,7 +3577,7 @@ function showTab(name) {
   if (name === 'profil') renderProfil();
   if (name === 'factures') renderInvoices();
   if (name === 'ugc') { renderUgcPacks(); updateCamp(); }
-  if (name === 'vente') { renderVenteGrid(); selectVentePlan('std'); }
+  if (name === 'vente') { renderVenteGrid(); selectVentePlan('std'); if(!localStorage.getItem('sp_fvonb_seen')){setTimeout(function(){if(typeof fvonbOpen==='function')fvonbOpen();},350);} }
   if (name === 'accueil') renderHomeGreeting();
   if (name === 'mesrdv') renderMesRdv();
   if (name === 'catalogue') {
@@ -3388,6 +3590,7 @@ function showTab(name) {
         setTimeout(function(){ if (map) { map.invalidateSize(); updateMapMarkers(RDV_DATA); } }, 300);
       }
     }, 250);
+    if(!localStorage.getItem('sp_rdvonb_seen')){setTimeout(function(){if(typeof rdvonbOpen==='function')rdvonbOpen();},350);}
   }
 }
 
@@ -4540,6 +4743,81 @@ function toggleAboDrop(){document.getElementById("aboSecteurDrop").classList.tog
 function selectAboSecteur(val,el){document.getElementById("aboSecteurVal").textContent=val;document.querySelectorAll("#aboSecteurMenu .abo-dd-item").forEach(function(i){i.classList.remove("active");});el.classList.add("active");document.getElementById("aboSecteurDrop").classList.remove("open");}
 document.addEventListener("click",function(e){var d=document.getElementById("aboSecteurDrop");if(d&&!d.contains(e.target))d.classList.remove("open");});
 window.toggleAboDrop=toggleAboDrop;window.selectAboSecteur=selectAboSecteur;
+
+
+// ===== ONBOARDING FORCE DE VENTE =====
+var fvCurrent=0,fvTotal=3;
+function fvonbShow(i){
+  fvCurrent=i;
+  document.querySelectorAll(".fvonb-stage").forEach(function(s,idx){s.classList.toggle("active",idx===i);});
+  document.querySelectorAll(".fvonb-dot").forEach(function(d,idx){d.classList.toggle("active",idx===i);});
+  if(i===0)fvonbCounters();
+}
+function fvonbNext(){if(fvCurrent<fvTotal-1)fvonbShow(fvCurrent+1);}
+function fvonbClose(){
+  var ov=document.getElementById("fvonb");
+  ov.classList.add("closing");
+  localStorage.setItem("sp_fvonb_seen","1");
+  setTimeout(function(){ov.classList.remove("show","closing");},500);
+}
+function fvonbOpen(){
+  var ov=document.getElementById("fvonb");
+  fvCurrent=0;fvonbShow(0);
+  ov.classList.add("show");
+}
+function fvonbCounters(){
+  document.querySelectorAll("#fvonb .fvonb-stat-num").forEach(function(el){
+    var target=parseInt(el.getAttribute("data-fvcount"));
+    var dur=1400,start=performance.now();
+    function tick(now){
+      var p=Math.min((now-start)/dur,1);
+      var eased=1-Math.pow(1-p,3);
+      el.textContent=Math.floor(eased*target).toLocaleString("fr-FR");
+      if(p<1)requestAnimationFrame(tick);
+      else el.textContent=target.toLocaleString("fr-FR");
+    }
+    requestAnimationFrame(tick);
+  });
+}
+
+// ===== ONBOARDING RDV =====
+var rdvCurrent=0,rdvTotal=4;
+function rdvonbShow(i){
+  rdvCurrent=i;
+  document.querySelectorAll(".rdvonb-stage").forEach(function(s,idx){s.classList.toggle("active",idx===i);});
+  document.querySelectorAll(".rdvonb-dot").forEach(function(d,idx){d.classList.toggle("active",idx===i);});
+  if(i===0)rdvonbCounters();
+}
+function rdvonbNext(){if(rdvCurrent<rdvTotal-1)rdvonbShow(rdvCurrent+1);}
+function rdvonbClose(){
+  var ov=document.getElementById("rdvonb");
+  ov.classList.add("closing");
+  localStorage.setItem("sp_rdvonb_seen","1");
+  setTimeout(function(){ov.classList.remove("show","closing");},500);
+}
+function rdvonbOpen(){
+  var ov=document.getElementById("rdvonb");
+  rdvCurrent=0;rdvonbShow(0);
+  ov.classList.add("show");
+}
+function rdvonbCounters(){
+  document.querySelectorAll("#rdvonb .rdvonb-stat-num").forEach(function(el){
+    var target=parseInt(el.getAttribute("data-rdvcount"));
+    var suffix=el.getAttribute("data-suffix")||"";
+    var dur=1400,start=performance.now();
+    function tick(now){
+      var p=Math.min((now-start)/dur,1);
+      var eased=1-Math.pow(1-p,3);
+      el.textContent=Math.floor(eased*target).toLocaleString("fr-FR")+suffix;
+      if(p<1)requestAnimationFrame(tick);
+      else el.textContent=target.toLocaleString("fr-FR")+suffix;
+    }
+    requestAnimationFrame(tick);
+  });
+}
+window.rdvonbOpen=rdvonbOpen;window.rdvonbNext=rdvonbNext;window.rdvonbClose=rdvonbClose;
+
+window.fvonbOpen=fvonbOpen;window.fvonbNext=fvonbNext;window.fvonbClose=fvonbClose;
 
 window.openAbo=openAbo;
 
