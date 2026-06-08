@@ -5,47 +5,47 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tableau de bord · Stacker</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=JetBrains+Mono:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 <script>
 tailwind.config = {
   theme: { extend: { colors: {
     "primary":"#b52330","primary-container":"#ff5a5f","primary-fixed":"#ffdad8","on-primary":"#ffffff",
     "tertiary":"#006c4c","tertiary-container":"#00a879","tertiary-fixed":"#78fac4",
-    "background":"#fcf9f8","surface-container-lowest":"#ffffff","surface-container-low":"#f6f3f2",
-    "surface-container":"#f0eded","surface-container-high":"#eae7e7","surface-container-highest":"#e5e2e1",
-    "on-surface":"#1b1c1c","on-surface-variant":"#5a403f","outline-variant":"#e2bebc"
-  }, fontFamily: { "headline":["Plus Jakarta Sans"],"body":["Inter"],"mono":["JetBrains Mono"] } } }
+    "background":"#ffffff","surface-container-lowest":"#ffffff","surface-container-low":"#f4f4f5",
+    "surface-container":"#f0f0f0","surface-container-high":"#e5e5e6","surface-container-highest":"#dddde0",
+    "on-surface":"#1b1c1c","on-surface-variant":"#71717a","outline-variant":"#e4e4e7"
+  }, fontFamily: { "headline":["DM Sans"],"body":["DM Sans"],"mono":["JetBrains Mono"] } } }
 }
 </script>
 <style>
 .modal-rdv-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:500;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s;backdrop-filter:blur(4px)}
 .modal-rdv-overlay.open{opacity:1;pointer-events:all}
-.modal-rdv-sheet{background:#faf7f4;border-radius:20px 20px 0 0;width:100%;max-width:680px;max-height:90vh;overflow-y:auto;transform:translateY(20px);transition:transform 0.3s cubic-bezier(0.22,1,0.36,1)}
+.modal-rdv-sheet{background:#ffffff;border-radius:20px 20px 0 0;width:100%;max-width:680px;max-height:90vh;overflow-y:auto;transform:translateY(20px);transition:transform 0.3s cubic-bezier(0.22,1,0.36,1)}
 .modal-rdv-overlay.open .modal-rdv-sheet{transform:translateY(0)}
 .modal-rdv-handle{width:32px;height:3px;background:rgba(27,28,28,0.15);border-radius:99px;margin:12px auto 0}
-.modal-rdv-head{padding:16px 20px;border-bottom:1px solid rgba(226,190,188,0.4);display:flex;align-items:center;justify-content:space-between}
-.modal-rdv-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:16px;letter-spacing:-0.03em;color:#1b1c1c}
+.modal-rdv-head{padding:16px 20px;border-bottom:1px solid rgba(228,228,231,0.4);display:flex;align-items:center;justify-content:space-between}
+.modal-rdv-title{font-family:'DM Sans',sans-serif;font-weight:900;font-size:16px;letter-spacing:-0.03em;color:#1b1c1c}
 .modal-rdv-close{width:28px;height:28px;border-radius:7px;background:rgba(27,28,28,0.07);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .modal-rdv-body{padding:18px 20px 32px}
 .rdv-field{margin-bottom:12px}
-.rdv-field-label{display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#6b5550;margin-bottom:5px;font-weight:600}
-.rdv-field-input{width:100%;padding:11px 13px;border-radius:10px;border:1.5px solid rgba(226,190,188,0.6);background:#fff;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:500;color:#1b1c1c;outline:none;transition:border-color 0.2s}
+.rdv-field-label{display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#6b7280;margin-bottom:5px;font-weight:600}
+.rdv-field-input{width:100%;padding:11px 13px;border-radius:10px;border:1.5px solid rgba(228,228,231,0.6);background:#fff;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:500;color:#1b1c1c;outline:none;transition:border-color 0.2s}
 .rdv-field-input:focus{border-color:#1b1c1c}
 .rdv-field-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%236b5550'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
 .rdv-field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.rdv-submit-btn{width:100%;padding:13px;border-radius:12px;background:#1b1c1c;color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:14px;border:none;cursor:pointer;transition:background 0.2s;margin-top:8px}
+.rdv-submit-btn{width:100%;padding:13px;border-radius:12px;background:#1b1c1c;color:#fff;font-family:'DM Sans',sans-serif;font-weight:800;font-size:14px;border:none;cursor:pointer;transition:background 0.2s;margin-top:8px}
 .rdv-submit-btn:hover{background:#b52330}
 .rdv-submit-btn:disabled{opacity:0.4;cursor:default}
 
-body{font-family:'Inter',sans-serif;background:#faf7f4}
-:root{--gold:#c9a84c;--gold2:#e8c96a}
-.font-headline{font-family:'Plus Jakarta Sans',sans-serif}
+body{font-family:'DM Sans',sans-serif;background:#ffffff}
+:root{--red:#b52330;--red2:#e8323f}
+.font-headline{font-family:'DM Sans',sans-serif}
 .font-mono{font-family:'JetBrains Mono',monospace}
 .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
 .filled{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24 !important}
-.glass-nav{backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);background:rgba(250,247,244,0.92);border-bottom:1px solid rgba(226,190,188,0.35)}
+.glass-nav{backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);background:rgba(255,255,255,0.92);border-bottom:1px solid rgba(228,228,231,0.35)}
 .cta-gradient{background:linear-gradient(135deg,#b52330 0%,#ff5a5f 100%)}
-.soft-shadow{box-shadow:0 2px 16px -4px rgba(27,28,28,0.07),0 0 0 1px rgba(226,190,188,0.3)}
+.soft-shadow{box-shadow:0 2px 16px -4px rgba(27,28,28,0.07),0 0 0 1px rgba(228,228,231,0.3)}
 .float-shadow{box-shadow:0 20px 40px -12px rgba(27,28,28,0.08)}
 .display-tight{letter-spacing:-0.03em}
 .metric-num{letter-spacing:-0.045em;font-feature-settings:"tnum"}
@@ -53,8 +53,8 @@ body{font-family:'Inter',sans-serif;background:#faf7f4}
 .dark-card{transition:transform 0.35s cubic-bezier(0.22,1,0.36,1),box-shadow 0.35s ease}
 .dark-card:hover{transform:translateY(-3px);box-shadow:0 24px 48px -12px rgba(0,0,0,0.4)}
 @keyframes cardGlow{0%,100%{box-shadow:0 0 0 0 rgba(181,35,48,0)}50%{box-shadow:0 0 24px 2px rgba(181,35,48,0.18)}}
-.gold-gradient{background:linear-gradient(135deg,#1f1d18 0%,#2a2620 50%,#1f1d18 100%);border:1px solid rgba(255,197,0,0.25)}
-.gold-text{background:linear-gradient(135deg,#ffd700 0%,#ffed4a 50%,#b8860b 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.dark-surface{background:#1a1a1a;border:1px solid rgba(181,35,48,0.2)}
+.accent-text{color:#b52330;font-weight:800}
 .hover-lift{transition:transform 0.3s cubic-bezier(0.22,1,0.36,1),box-shadow 0.3s ease}
 .hover-lift:hover{transform:translateY(-2px);box-shadow:0 16px 32px -12px rgba(27,28,28,0.12)}
 @keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
@@ -64,23 +64,23 @@ body{font-family:'Inter',sans-serif;background:#faf7f4}
 @keyframes flame{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
 .flame{animation:flame 1.6s ease-in-out infinite}
 @keyframes shimmer{0%,100%{background-position:0% 0%}50%{background-position:100% 100%}}
-.shimmer::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 30%,rgba(255,197,0,0.06) 50%,transparent 70%);background-size:200% 200%;animation:shimmer 6s ease infinite;pointer-events:none}
+.shimmer::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 30%,rgba(181,35,48,0.06) 50%,transparent 70%);background-size:200% 200%;animation:shimmer 6s ease infinite;pointer-events:none}
 .scroll-hide::-webkit-scrollbar{display:none}.scroll-hide{scrollbar-width:none}
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:#e5e2e1;border-radius:99px}
-.divider-soft{background:linear-gradient(90deg,transparent,rgba(226,190,188,0.3) 50%,transparent);height:1px}
-.eyebrow-gold{display:inline-flex;align-items:center;gap:8px;margin-bottom:10px}
-.eyebrow-gold::before{content:'';width:18px;height:1px;background:var(--gold);display:block}
-.eyebrow-gold span{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold)}
-.card-premium{background:#fff;border-radius:22px;border:1px solid rgba(226,190,188,0.45);box-shadow:0 2px 20px -6px rgba(27,28,28,0.08)}
+.divider-soft{background:linear-gradient(90deg,transparent,rgba(228,228,231,0.3) 50%,transparent);height:1px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;margin-bottom:10px}
+.eyebrow::before{content:'';width:18px;height:1px;background:#e4e4e7;display:block}
+.eyebrow span{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:0em;text-transform:none;color:#71717a}
+.card-premium{background:#fff;border-radius:22px;border:1px solid rgba(228,228,231,0.45);box-shadow:0 2px 20px -6px rgba(27,28,28,0.08)}
 .tag{display:inline-flex;align-items:center;gap:.375rem;padding:.25rem .625rem;border-radius:9999px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
 /* Nav */
-.hamburger-panel{position:fixed;top:0;left:0;width:340px;max-width:100vw;height:100vh;background:#fcf9f8;z-index:75;transform:translateX(-100%);transition:transform 0.4s cubic-bezier(0.22,1,0.36,1);display:flex;flex-direction:column;box-shadow:20px 0 60px -10px rgba(0,0,0,0.15)}
+.hamburger-panel{position:fixed;top:0;left:0;width:340px;max-width:100vw;height:100vh;background:#ffffff;z-index:75;transform:translateX(-100%);transition:transform 0.4s cubic-bezier(0.22,1,0.36,1);display:flex;flex-direction:column;box-shadow:20px 0 60px -10px rgba(0,0,0,0.15)}
 .hamburger-panel.open{transform:translateX(0)}
 .hamburger-backdrop{position:fixed;inset:0;background:rgba(27,28,28,0.4);backdrop-filter:blur(4px);z-index:72;opacity:0;pointer-events:none;transition:opacity 0.3s ease}
 .hamburger-backdrop.open{opacity:1;pointer-events:auto}
 .nav-item{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;transition:background 0.2s ease;cursor:pointer;text-decoration:none;color:inherit}
-.nav-item:hover{background:#f6f3f2}
-.nav-item.active{background:#ffdad8}
+.nav-item:hover{background:#f4f4f5}
+.nav-item.active{background:#fee2e2}
 .nav-item.active .nav-item-label{color:#b52330;font-weight:700}
 /* Streak */
 .streak-fire{font-size:28px;filter:drop-shadow(0 0 8px rgba(255,120,0,0.5))}
@@ -92,13 +92,13 @@ body{font-family:'Inter',sans-serif;background:#faf7f4}
 /* DEAL POPUP */
 .deal-popup{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);z-index:150;opacity:0;pointer-events:none;transition:all 0.4s cubic-bezier(0.22,1,0.36,1);width:calc(100% - 40px);max-width:400px}
 .deal-popup.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
-.deal-popup-inner{background:#fff;border-radius:20px;border:1px solid rgba(226,190,188,0.5);box-shadow:0 16px 48px -8px rgba(27,28,28,0.18);padding:14px 16px;display:flex;align-items:center;gap:12px}
+.deal-popup-inner{background:#fff;border-radius:20px;border:1px solid rgba(228,228,231,0.5);box-shadow:0 16px 48px -8px rgba(27,28,28,0.18);padding:14px 16px;display:flex;align-items:center;gap:12px}
 .deal-popup-icon{width:38px;height:38px;border-radius:11px;background:rgba(27,28,28,0.06);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .deal-popup-icon .material-symbols-outlined{font-size:18px;color:#1b1c1c;font-variation-settings:'FILL' 1}
 .deal-popup-text{flex:1;min-width:0}
 .deal-popup-title{font-size:13px;font-weight:700;color:#1b1c1c;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.deal-popup-sub{font-size:11px;color:#6b5550}
-.deal-popup-com{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:14px;color:#006c4c;letter-spacing:-0.02em;flex-shrink:0}
+.deal-popup-sub{font-size:11px;color:#6b7280}
+.deal-popup-com{font-family:'DM Sans',sans-serif;font-weight:900;font-size:14px;color:#006c4c;letter-spacing:-0.02em;flex-shrink:0}
 .deal-popup-live{display:flex;align-items:center;gap:3px;margin-bottom:2px;justify-content:flex-end}
 .deal-popup-live span.dot{width:5px;height:5px;border-radius:50%;background:#b52330;display:block;animation:pulse-dot 2s ease-in-out infinite}
 .deal-popup-live span.label{font-size:9px;font-weight:700;color:#b52330;letter-spacing:0.08em;text-transform:uppercase}
@@ -109,9 +109,9 @@ body{font-family:'Inter',sans-serif;background:#faf7f4}
 .coach-panel.open{transform:translateY(0)}
 .coach-backdrop{position:fixed;inset:0;background:rgba(27,28,28,0.4);backdrop-filter:blur(4px);z-index:79;opacity:0;pointer-events:none;transition:opacity 0.3s ease}
 .coach-backdrop.open{opacity:1;pointer-events:auto}
-.objection-card{border:1.5px solid #e2bebc;border-radius:14px;padding:14px 16px;cursor:pointer;transition:all 0.18s;background:#fff}
+.objection-card{border:1.5px solid #e4e4e7;border-radius:14px;padding:14px 16px;cursor:pointer;transition:all 0.18s;background:#fff}
 .objection-card:hover{border-color:#b52330;background:#faf8f7}
-.objection-card.active{border-color:#b52330;background:#ffdad8}
+.objection-card.active{border-color:#b52330;background:#fee2e2}
 /* Page enter */
 @keyframes pageEnter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .page-enter{animation:pageEnter 0.5s cubic-bezier(0.22,1,0.36,1) both}
@@ -121,89 +121,89 @@ body{font-family:'Inter',sans-serif;background:#faf7f4}
 /* XP bar */
 .xp-fill{height:6px;border-radius:99px;background:linear-gradient(90deg,#b52330,#ff5a5f);transition:width 1s cubic-bezier(0.22,1,0.36,1)}
 /* Row styles */
-.mission-row{display:grid;grid-template-columns:1fr auto auto auto;gap:16px;padding:16px 20px;align-items:center;border-bottom:1px solid rgba(226,190,188,0.15);transition:background 0.15s;cursor:pointer;text-decoration:none;color:inherit}
+.mission-row{display:grid;grid-template-columns:1fr auto auto auto;gap:16px;padding:16px 20px;align-items:center;border-bottom:1px solid rgba(228,228,231,0.15);transition:background 0.15s;cursor:pointer;text-decoration:none;color:inherit}
 .mission-row:last-child{border-bottom:none}
-.mission-row:hover{background:#f6f3f2}
-.row-content .row-sector{font-size:10px;text-transform:uppercase;letter-spacing:.15em;color:#8e706f;font-weight:600;margin-bottom:3px}
+.mission-row:hover{background:#f4f4f5}
+.row-content .row-sector{font-size:10px;text-transform:uppercase;letter-spacing:.15em;color:#71717a;font-weight:600;margin-bottom:3px}
 .row-content .row-title{font-size:14px;font-weight:600;color:#1b1c1c}
-.row-amount .amount-main{font-family:'Plus Jakarta Sans';font-weight:800;font-size:16px;color:#1b1c1c;letter-spacing:-.04em;text-align:right}
-.row-amount .amount-unit{font-size:10px;color:#8e706f;text-align:right}
-.row-arrow{color:#8e706f;transition:transform 0.2s,color 0.2s}
+.row-amount .amount-main{font-family:'DM Sans';font-weight:800;font-size:16px;color:#1b1c1c;letter-spacing:-.04em;text-align:right}
+.row-amount .amount-unit{font-size:10px;color:#71717a;text-align:right}
+.row-arrow{color:#71717a;transition:transform 0.2s,color 0.2s}
 .mission-row:hover .row-arrow{color:#b52330;transform:translateX(3px)}
 /* Reward card */
-.reward-card{border:1px solid rgba(226,190,188,0.55);border-radius:22px;padding:18px;background:#fff;transition:all 0.2s;cursor:pointer;position:relative;overflow:hidden;box-shadow:0 2px 12px -4px rgba(27,28,28,0.06)}
+.reward-card{border:1px solid rgba(228,228,231,0.55);border-radius:22px;padding:18px;background:#fff;transition:all 0.2s;cursor:pointer;position:relative;overflow:hidden;box-shadow:0 2px 12px -4px rgba(27,28,28,0.06)}
 .reward-card:hover{border-color:rgba(181,35,48,0.4);transform:translateY(-2px);box-shadow:0 12px 32px -8px rgba(27,28,28,0.12)}
-.reward-card.unlocked{border-color:#ffd700;background:linear-gradient(135deg,#fffbeb,#fff)}
+.reward-card.unlocked{border-color:#b52330;background:linear-gradient(135deg,#fff1f2,#fff)}
 /* Simulator */
-input[type=range]{-webkit-appearance:none;appearance:none;height:6px;border-radius:99px;background:#e2bebc;outline:none}
+input[type=range]{-webkit-appearance:none;appearance:none;height:6px;border-radius:99px;background:#e4e4e7;outline:none}
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#b52330;cursor:pointer;box-shadow:0 2px 8px rgba(181,35,48,0.3)}
 /* Explore card */
-.explore-card{display:flex;flex-direction:column;gap:4px;padding:18px;background:#fff;border:1px solid rgba(226,190,188,0.45);border-radius:20px;text-decoration:none;transition:all 0.2s;cursor:pointer;box-shadow:0 2px 12px -4px rgba(27,28,28,0.05)}
+.explore-card{display:flex;flex-direction:column;gap:4px;padding:18px;background:#fff;border:1px solid rgba(228,228,231,0.45);border-radius:20px;text-decoration:none;transition:all 0.2s;cursor:pointer;box-shadow:0 2px 12px -4px rgba(27,28,28,0.05)}
 .explore-card:hover{border-color:rgba(181,35,48,0.3);box-shadow:0 8px 24px -6px rgba(27,28,28,0.1);transform:translateY(-2px)}
-.explore-label{font-family:'Plus Jakarta Sans';font-weight:700;font-size:13px;color:#1b1c1c;letter-spacing:-.02em}
-.explore-meta{font-size:11px;color:#8e706f}
-.explore-card-gold{background:linear-gradient(135deg,#fffbeb,#fff8dc);border-color:rgba(255,197,0,0.4)}
+.explore-label{font-family:'DM Sans';font-weight:700;font-size:13px;color:#1b1c1c;letter-spacing:-.02em}
+.explore-meta{font-size:11px;color:#71717a}
+.explore-card-neutral{background:#fff;border-color:rgba(228,228,231,0.5)}
 
 /* ── ROUE DE LA FORTUNE ── */
 .wheel-overlay{position:fixed;inset:0;background:rgba(10,10,10,0.94);z-index:700;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s;backdrop-filter:blur(12px)}
 .wheel-overlay.open{opacity:1;pointer-events:all}
 .wheel-container{display:flex;flex-direction:column;align-items:center;gap:20px;padding:28px 20px 32px;width:100%;max-width:400px}
 .wheel-header{text-align:center}
-.wheel-eyebrow{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,197,0,0.7);margin-bottom:6px}
-.wheel-title{font-family:"Plus Jakarta Sans",sans-serif;font-weight:900;font-size:24px;letter-spacing:-0.04em;color:#fff;margin-bottom:3px;line-height:1}
+.wheel-eyebrow{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(181,35,48,0.7);margin-bottom:6px}
+.wheel-title{font-family:"DM Sans",sans-serif;font-weight:900;font-size:24px;letter-spacing:-0.04em;color:#fff;margin-bottom:3px;line-height:1}
 .wheel-subtitle{font-size:11px;color:rgba(255,255,255,0.35);font-weight:500}
 .wheel-tokens{display:none}
 .wheel-tokens-val{display:none}
 .wheel-tokens-label{display:none}
-.wheel-title{font-family:"Plus Jakarta Sans",sans-serif;font-weight:900;font-size:20px;letter-spacing:-0.04em;color:#fff;margin-bottom:4px;line-height:1}
+.wheel-title{font-family:"DM Sans",sans-serif;font-weight:900;font-size:20px;letter-spacing:-0.04em;color:#fff;margin-bottom:4px;line-height:1}
 .wheel-subtitle{font-size:13px;color:rgba(255,255,255,0.45);font-weight:500;margin:0}
 .wheel-wrap{position:relative;width:320px;height:320px;flex-shrink:0;filter:drop-shadow(0 20px 60px rgba(181,35,48,0.3))}
 .wheel-canvas-wrap{position:relative;width:320px;height:320px}
 #wheelCanvas{transition:transform 4.5s cubic-bezier(0.15,0.85,0.1,1.0);width:320px;height:320px}
 .wheel-pointer{position:absolute;top:-4px;left:50%;transform:translateX(-50%);z-index:10;width:20px;height:28px}
-.wheel-pointer::before{content:'';display:block;width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;border-top:22px solid #ffd700;filter:drop-shadow(0 2px 8px rgba(255,197,0,0.6))}
-.wheel-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;background:#0a0a0a;border:3px solid rgba(255,197,0,0.6);display:flex;align-items:center;justify-content:center;z-index:10;box-shadow:0 0 20px rgba(255,197,0,0.2),inset 0 0 12px rgba(0,0,0,0.5)}
-.wheel-spin-btn{width:100%;max-width:320px;padding:16px;border-radius:14px;background:linear-gradient(135deg,#ffd700 0%,#f59e0b 100%);color:#0a0a0a;font-family:"Plus Jakarta Sans",sans-serif;font-weight:900;font-size:15px;border:none;cursor:pointer;transition:all 0.2s;letter-spacing:-0.02em;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 8px 28px rgba(245,158,11,0.35)}
-.wheel-spin-btn:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(245,158,11,0.5)}
+.wheel-pointer::before{content:'';display:block;width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;border-top:22px solid #b52330;filter:drop-shadow(0 2px 8px rgba(181,35,48,0.6))}
+.wheel-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;background:#0a0a0a;border:3px solid rgba(181,35,48,0.6);display:flex;align-items:center;justify-content:center;z-index:10;box-shadow:0 0 20px rgba(181,35,48,0.2),inset 0 0 12px rgba(0,0,0,0.5)}
+.wheel-spin-btn{width:100%;max-width:320px;padding:16px;border-radius:14px;background:linear-gradient(135deg,#b52330 0%,#b52330 100%);color:#0a0a0a;font-family:"DM Sans",sans-serif;font-weight:900;font-size:15px;border:none;cursor:pointer;transition:all 0.2s;letter-spacing:-0.02em;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 8px 28px rgba(181,35,48,0.35)}
+.wheel-spin-btn:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(181,35,48,0.5)}
 .wheel-spin-btn:disabled{opacity:0.35;cursor:default;transform:none;box-shadow:none}
 .wheel-result{display:none;flex-direction:column;align-items:center;gap:10px;padding:18px 22px;border-radius:16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);width:100%;max-width:320px;text-align:center;animation:slideUp 0.4s cubic-bezier(0.22,1,0.36,1)}
 .wheel-result.show{display:flex}
 .wheel-result-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto}
-.wheel-result-title{font-family:"Plus Jakarta Sans",sans-serif;font-weight:900;font-size:17px;letter-spacing:-0.03em;color:#fff}
+.wheel-result-title{font-family:"DM Sans",sans-serif;font-weight:900;font-size:17px;letter-spacing:-0.03em;color:#fff}
 .wheel-result-desc{font-size:11px;color:rgba(255,255,255,0.45);font-weight:500;line-height:1.6}
-.wheel-result-btn{padding:10px 24px;border-radius:10px;background:#fff;color:#1b1c1c;font-family:"Plus Jakarta Sans",sans-serif;font-weight:800;font-size:13px;border:none;cursor:pointer;transition:all 0.2s;margin-top:2px}
+.wheel-result-btn{padding:10px 24px;border-radius:10px;background:#fff;color:#1b1c1c;font-family:"DM Sans",sans-serif;font-weight:800;font-size:13px;border:none;cursor:pointer;transition:all 0.2s;margin-top:2px}
 .wheel-result-btn:hover{background:#f0eded}
 .wheel-close-btn{font-size:11px;color:rgba(255,255,255,0.2);background:none;border:none;cursor:pointer;font-family:"JetBrains Mono",monospace;letter-spacing:0.1em;text-transform:uppercase;padding:4px 8px;transition:color 0.2s}
 .wheel-close-btn:hover{color:rgba(255,255,255,0.5)}
 .wheel-entry{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:99px;font-size:10px;font-weight:700;letter-spacing:0.05em;cursor:pointer;transition:all 0.2s;border:1px solid transparent}
-.wheel-entry.has-spins{background:rgba(255,197,0,0.1);border-color:rgba(255,197,0,0.3);color:#ffd700;animation:pulse-dot 2s ease-in-out infinite}
+.wheel-entry.has-spins{background:rgba(181,35,48,0.1);border-color:rgba(181,35,48,0.3);color:#b52330;animation:pulse-dot 2s ease-in-out infinite}
 .wheel-entry.no-spins{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.07);color:rgba(255,255,255,0.25)}
 
 /* ── SEPA CLOSING MODAL ── */
 .sepa-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:600;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s;backdrop-filter:blur(6px)}
 .sepa-overlay.open{opacity:1;pointer-events:all}
-.sepa-sheet{background:#faf7f4;border-radius:24px 24px 0 0;width:100%;max-width:680px;max-height:92vh;overflow-y:auto;transform:translateY(24px);transition:transform 0.35s cubic-bezier(0.22,1,0.36,1)}
+.sepa-sheet{background:#ffffff;border-radius:24px 24px 0 0;width:100%;max-width:680px;max-height:92vh;overflow-y:auto;transform:translateY(24px);transition:transform 0.35s cubic-bezier(0.22,1,0.36,1)}
 .sepa-overlay.open .sepa-sheet{transform:translateY(0)}
 .sepa-handle{width:32px;height:3px;background:rgba(27,28,28,0.15);border-radius:99px;margin:12px auto 0}
-.sepa-head{padding:16px 20px 14px;border-bottom:1px solid rgba(226,190,188,0.4);display:flex;align-items:center;justify-content:space-between}
+.sepa-head{padding:16px 20px 14px;border-bottom:1px solid rgba(228,228,231,0.4);display:flex;align-items:center;justify-content:space-between}
 .sepa-head-left{display:flex;align-items:center;gap:10px}
 .sepa-head-icon{width:36px;height:36px;border-radius:10px;background:#1b1c1c;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.sepa-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:16px;letter-spacing:-0.03em;color:#1b1c1c}
-.sepa-subtitle{font-size:11px;color:#8e706f;font-weight:500;margin-top:1px}
+.sepa-title{font-family:'DM Sans',sans-serif;font-weight:900;font-size:16px;letter-spacing:-0.03em;color:#1b1c1c}
+.sepa-subtitle{font-size:11px;color:#71717a;font-weight:500;margin-top:1px}
 .sepa-close{width:28px;height:28px;border-radius:7px;background:rgba(27,28,28,0.07);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .sepa-body{padding:20px 20px 36px}
 
 /* Mode selector */
 .sepa-modes{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
-.sepa-mode-btn{padding:14px 12px;border-radius:14px;border:1.5px solid rgba(226,190,188,0.6);background:#fff;cursor:pointer;transition:all 0.2s;text-align:left;display:flex;flex-direction:column;gap:6px}
+.sepa-mode-btn{padding:14px 12px;border-radius:14px;border:1.5px solid rgba(228,228,231,0.6);background:#fff;cursor:pointer;transition:all 0.2s;text-align:left;display:flex;flex-direction:column;gap:6px}
 .sepa-mode-btn:hover{border-color:rgba(27,28,28,0.3)}
 .sepa-mode-btn.active{border-color:#1b1c1c;background:#1b1c1c}
 .sepa-mode-icon{width:32px;height:32px;border-radius:9px;background:rgba(27,28,28,0.07);display:flex;align-items:center;justify-content:center;transition:background 0.2s}
 .sepa-mode-btn.active .sepa-mode-icon{background:rgba(255,255,255,0.12)}
 .sepa-mode-btn.active .sepa-mode-icon .material-symbols-outlined{color:#fff}
-.sepa-mode-label{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:13px;color:#1b1c1c;letter-spacing:-0.02em;transition:color 0.2s}
+.sepa-mode-label{font-family:'DM Sans',sans-serif;font-weight:800;font-size:13px;color:#1b1c1c;letter-spacing:-0.02em;transition:color 0.2s}
 .sepa-mode-btn.active .sepa-mode-label{color:#fff}
-.sepa-mode-desc{font-size:11px;color:#8e706f;font-weight:500;line-height:1.4;transition:color 0.2s}
+.sepa-mode-desc{font-size:11px;color:#71717a;font-weight:500;line-height:1.4;transition:color 0.2s}
 .sepa-mode-btn.active .sepa-mode-desc{color:rgba(255,255,255,0.5)}
 
 /* Panel content */
@@ -212,8 +212,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
 
 /* Fields */
 .sepa-field{margin-bottom:12px}
-.sepa-label{display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#6b5550;margin-bottom:5px;font-weight:600}
-.sepa-input{width:100%;padding:12px 14px;border-radius:11px;border:1.5px solid rgba(226,190,188,0.6);background:#fff;font-size:14px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;color:#1b1c1c;outline:none;transition:border-color 0.2s;letter-spacing:0.02em}
+.sepa-label{display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#6b7280;margin-bottom:5px;font-weight:600}
+.sepa-input{width:100%;padding:12px 14px;border-radius:11px;border:1.5px solid rgba(228,228,231,0.6);background:#fff;font-size:14px;font-family:'DM Sans',sans-serif;font-weight:600;color:#1b1c1c;outline:none;transition:border-color 0.2s;letter-spacing:0.02em}
 .sepa-input:focus{border-color:#1b1c1c}
 .sepa-input::placeholder{color:rgba(27,28,28,0.25);font-weight:400;letter-spacing:0}
 .sepa-input.iban-input{font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.08em}
@@ -221,41 +221,41 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
 .sepa-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 
 /* Mandate checkbox */
-.sepa-mandate{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:11px;background:rgba(27,28,28,0.04);border:1.5px solid rgba(226,190,188,0.5);margin-bottom:14px;cursor:pointer;transition:border-color 0.2s}
+.sepa-mandate{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:11px;background:rgba(27,28,28,0.04);border:1.5px solid rgba(228,228,231,0.5);margin-bottom:14px;cursor:pointer;transition:border-color 0.2s}
 .sepa-mandate:hover{border-color:rgba(27,28,28,0.2)}
 .sepa-mandate-check{width:18px;height:18px;border-radius:5px;border:2px solid rgba(27,28,28,0.3);background:#fff;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
 .sepa-mandate-check.checked{background:#1b1c1c;border-color:#1b1c1c}
-.sepa-mandate-text{font-size:11px;color:#5a403f;line-height:1.55;font-weight:500}
+.sepa-mandate-text{font-size:11px;color:#52525b;line-height:1.55;font-weight:500}
 .sepa-mandate-text strong{color:#1b1c1c;font-weight:700}
 
 /* SMS link panel */
 .sepa-phone-row{display:flex;gap:8px;margin-bottom:14px}
-.sepa-phone-input{flex:1;padding:12px 14px;border-radius:11px;border:1.5px solid rgba(226,190,188,0.6);background:#fff;font-size:14px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;color:#1b1c1c;outline:none;transition:border-color 0.2s}
+.sepa-phone-input{flex:1;padding:12px 14px;border-radius:11px;border:1.5px solid rgba(228,228,231,0.6);background:#fff;font-size:14px;font-family:'DM Sans',sans-serif;font-weight:600;color:#1b1c1c;outline:none;transition:border-color 0.2s}
 .sepa-phone-input:focus{border-color:#1b1c1c}
-.sepa-send-btn{padding:0 18px;border-radius:11px;background:#1b1c1c;color:#fff;border:none;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:13px;white-space:nowrap;transition:background 0.15s;display:flex;align-items:center;gap:6px}
+.sepa-send-btn{padding:0 18px;border-radius:11px;background:#1b1c1c;color:#fff;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:700;font-size:13px;white-space:nowrap;transition:background 0.15s;display:flex;align-items:center;gap:6px}
 .sepa-send-btn:hover{background:#b52330}
 .sepa-send-btn:disabled{opacity:0.4;cursor:default;background:#1b1c1c}
 
 /* Status indicator */
-.sepa-status{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:11px;border:1.5px solid rgba(226,190,188,0.5);background:#fff;margin-bottom:14px}
+.sepa-status{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:11px;border:1.5px solid rgba(228,228,231,0.5);background:#fff;margin-bottom:14px}
 .sepa-status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .sepa-status-dot.waiting{background:#e5b800;animation:pulse-dot 2s ease-in-out infinite}
 .sepa-status-dot.signed{background:#006c4c}
 .sepa-status-dot.idle{background:rgba(27,28,28,0.2)}
-.sepa-status-text{font-size:12px;font-weight:600;color:#5a403f}
+.sepa-status-text{font-size:12px;font-weight:600;color:#52525b}
 .sepa-status-text strong{color:#1b1c1c}
 
 /* Confirm button */
-.sepa-confirm{width:100%;padding:14px;border-radius:12px;background:#1b1c1c;color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:14px;border:none;cursor:pointer;transition:all 0.2s;letter-spacing:-0.01em;display:flex;align-items:center;justify-content:center;gap:8px}
+.sepa-confirm{width:100%;padding:14px;border-radius:12px;background:#1b1c1c;color:#fff;font-family:'DM Sans',sans-serif;font-weight:800;font-size:14px;border:none;cursor:pointer;transition:all 0.2s;letter-spacing:-0.01em;display:flex;align-items:center;justify-content:center;gap:8px}
 .sepa-confirm:hover{background:#b52330}
 .sepa-confirm:disabled{opacity:0.4;cursor:default;background:#1b1c1c}
 .sepa-confirm.success{background:#006c4c}
-.sepa-note{text-align:center;font-size:10px;color:#8e706f;margin-top:10px;font-weight:500;line-height:1.5}
+.sepa-note{text-align:center;font-size:10px;color:#71717a;margin-top:10px;font-weight:500;line-height:1.5}
 
 /* Amount badge */
 .sepa-amount-badge{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:11px;background:rgba(0,108,76,0.07);border:1.5px solid rgba(0,108,76,0.2);margin-bottom:16px}
 .sepa-amount-label{font-size:12px;font-weight:600;color:#006c4c}
-.sepa-amount-val{font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:18px;color:#006c4c;letter-spacing:-0.03em}
+.sepa-amount-val{font-family:'DM Sans',sans-serif;font-weight:900;font-size:18px;color:#006c4c;letter-spacing:-0.03em}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -337,66 +337,150 @@ async function submitRdvToSupabase(rdvData) {
 <!-- Hamburger -->
 <div id="hamburgerBackdrop" class="hamburger-backdrop" onclick="closeHamburger()"></div>
 <aside id="hamburgerPanel" class="hamburger-panel">
-  <div class="px-5 pt-6 pb-4 border-b border-outline-variant/30 flex items-center justify-between">
-    <div>
-      <p class="text-[10px] uppercase tracking-[0.25em] font-bold text-on-surface-variant">Stacker</p>
-      <h2 class="font-headline font-extrabold text-xl text-on-surface mt-0.5">Navigation</h2>
+
+  <!-- HEADER -->
+  <div style="padding:20px 20px 16px;border-bottom:1px solid rgba(228,228,231,0.6);display:flex;align-items:center;justify-content:space-between">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-white text-[10px] font-bold" id="navAvatar">?</div>
+      <div>
+        <p class="text-sm font-bold text-on-surface" id="navName">Mon profil</p>
+        <p class="text-[10px] text-on-surface-variant" id="navLevel">Rookie</p>
+      </div>
     </div>
-    <button onclick="closeHamburger()" class="p-2 rounded-full hover:bg-surface-container-high transition">
-      <span class="material-symbols-outlined">close</span>
+    <button onclick="closeHamburger()" style="width:32px;height:32px;border-radius:8px;background:#f4f4f5;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center">
+      <span class="material-symbols-outlined" style="font-size:18px">close</span>
     </button>
   </div>
-  <div class="flex-1 overflow-y-auto px-4 py-4">
-    <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-on-surface-variant px-3 mb-2">Principal</p>
-    <a href="index.html" class="nav-item active">
-      <div class="w-9 h-9 rounded-lg bg-primary-fixed flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-primary filled" style="font-size:18px">space_dashboard</span></div>
-      <span class="nav-item-label text-sm font-semibold flex-1">Tableau de bord</span>
+
+  <!-- CONTENU -->
+  <div class="flex-1 overflow-y-auto" style="padding:16px 12px">
+
+    <!-- Accueil -->
+    <a href="index.html" class="nav-item active" style="margin-bottom:2px">
+      <div style="width:36px;height:36px;border-radius:10px;background:#fee2e2;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <span class="material-symbols-outlined" style="font-size:18px;color:#b52330;font-variation-settings:'FILL' 1">space_dashboard</span>
+      </div>
+      <span class="nav-item-label text-sm font-semibold">Tableau de bord</span>
     </a>
-    <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-on-surface-variant px-3 mt-4 mb-2">Vendre</p>
-    <a href="offres.html" class="nav-item">
-      <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface" style="font-size:18px">inventory_2</span></div>
-      <div class="flex-1 min-w-0"><p class="nav-item-label text-sm font-semibold">Nos offres</p><p class="text-[11px] text-on-surface-variant">13 produits · scripts + contrats</p></div>
+
+    <p style="font-size:9px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#71717a;padding:14px 4px 6px">Gagner de l'argent</p>
+
+    <a href="rdv.html" class="nav-item" style="margin-bottom:2px">
+      <div style="width:36px;height:36px;border-radius:10px;background:#f4f4f5;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <span class="material-symbols-outlined" style="font-size:18px;color:#000;font-variation-settings:'FILL' 1">phone_in_talk</span>
+      </div>
+      <div>
+        <p class="nav-item-label text-sm font-semibold">Prise de RDV</p>
+        <p style="font-size:11px;color:#71717a">Appels · Scripts · Missions</p>
+      </div>
     </a>
-    <a href="#" onclick="openCoach();closeHamburger()" class="nav-item">
-      <div class="w-9 h-9 rounded-lg bg-on-surface flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-white" style="font-size:18px">headset_mic</span></div>
-      <div class="flex-1 min-w-0"><p class="nav-item-label text-sm font-semibold">Coach IA en call</p><p class="text-[11px] text-on-surface-variant">Objections en temps réel</p></div>
+
+    <a href="offres.html" class="nav-item" style="margin-bottom:2px">
+      <div style="width:36px;height:36px;border-radius:10px;background:#f4f4f5;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <span class="material-symbols-outlined" style="font-size:18px;color:#000;font-variation-settings:'FILL' 1">storefront</span>
+      </div>
+      <div>
+        <p class="nav-item-label text-sm font-semibold">Force de vente</p>
+        <p style="font-size:11px;color:#71717a">13 produits · Com 25%</p>
+      </div>
     </a>
-    <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-on-surface-variant px-3 mt-4 mb-2">Performance</p>
-    <a href="#" class="nav-item">
-      <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface" style="font-size:18px">leaderboard</span></div>
-      <div class="flex-1 min-w-0"><p class="nav-item-label text-sm font-semibold">Classement</p><p class="text-[11px] text-on-surface-variant" id="navRank">–</p></div>
+
+    <a href="ugc.html" class="nav-item" style="margin-bottom:2px">
+      <div style="width:36px;height:36px;border-radius:10px;background:#f4f4f5;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <span class="material-symbols-outlined" style="font-size:18px;color:#000;font-variation-settings:'FILL' 1">videocam</span>
+      </div>
+      <div>
+        <p class="nav-item-label text-sm font-semibold">UGC</p>
+        <p style="font-size:11px;color:#71717a">Contenu vidéo · 5 € par post</p>
+      </div>
     </a>
-    <a href="#" class="nav-item">
-      <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface" style="font-size:18px">trending_up</span></div>
-      <div class="flex-1 min-w-0"><p class="nav-item-label text-sm font-semibold">Performance</p><p class="text-[11px] text-on-surface-variant" id="navPerf">0 € ce mois</p></div>
+
+    <a href="#" class="nav-item" style="margin-bottom:2px">
+      <div style="width:36px;height:36px;border-radius:10px;background:#f4f4f5;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <span class="material-symbols-outlined" style="font-size:18px;color:#000;font-variation-settings:'FILL' 1">group_add</span>
+      </div>
+      <div>
+        <p class="nav-item-label text-sm font-semibold">Affiliation</p>
+        <p style="font-size:11px;color:#71717a">5% sur tes filleuls à vie</p>
+      </div>
     </a>
-    <a href="deals.html" class="nav-item">
-      <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface" style="font-size:18px">handshake</span></div>
-      <div class="flex-1 min-w-0"><p class="nav-item-label text-sm font-semibold">Mes deals</p><p class="text-[11px] text-on-surface-variant">Commissions & historique</p></div>
+
+    <p style="font-size:9px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#71717a;padding:14px 4px 6px">Mes résultats</p>
+
+    <a href="deals.html" class="nav-item" style="margin-bottom:2px">
+      <div style="width:36px;height:36px;border-radius:10px;background:#f4f4f5;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <span class="material-symbols-outlined" style="font-size:18px;color:#000;font-variation-settings:'FILL' 1">handshake</span>
+      </div>
+      <div>
+        <p class="nav-item-label text-sm font-semibold">Mes deals</p>
+        <p style="font-size:11px;color:#71717a" id="navPerf">0 € ce mois</p>
+      </div>
     </a>
-    <a href="pipeline.html" class="nav-item">
-      <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface" style="font-size:18px">account_tree</span></div>
-      <div class="flex-1 min-w-0"><p class="nav-item-label text-sm font-semibold">Pipeline</p><p class="text-[11px] text-on-surface-variant">Mes prospects</p></div>
+
+    <a href="pipeline.html" class="nav-item" style="margin-bottom:2px">
+      <div style="width:36px;height:36px;border-radius:10px;background:#f4f4f5;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <span class="material-symbols-outlined" style="font-size:18px;color:#000;font-variation-settings:'FILL' 1">account_tree</span>
+      </div>
+      <div>
+        <p class="nav-item-label text-sm font-semibold">Pipeline</p>
+        <p style="font-size:11px;color:#71717a">Mes prospects en cours</p>
+      </div>
     </a>
-    <a href="statut.html" class="nav-item">
-      <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface" style="font-size:18px">workspace_premium</span></div>
-      <div class="flex-1 min-w-0"><p class="nav-item-label text-sm font-semibold">Statuts & Avantages</p><p class="text-[11px] text-on-surface-variant">Standard · Elite · Égérie</p></div>
+
+    <a href="#" class="nav-item" style="margin-bottom:2px">
+      <div style="width:36px;height:36px;border-radius:10px;background:#f4f4f5;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <span class="material-symbols-outlined" style="font-size:18px;color:#000;font-variation-settings:'FILL' 1">leaderboard</span>
+      </div>
+      <div>
+        <p class="nav-item-label text-sm font-semibold">Classement</p>
+        <p style="font-size:11px;color:#71717a" id="navRank">–</p>
+      </div>
     </a>
-    <a href="#" class="nav-item">
-      <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center flex-shrink-0"><span class="material-symbols-outlined text-on-surface" style="font-size:18px">card_giftcard</span></div>
-      <div class="flex-1 min-w-0"><p class="nav-item-label text-sm font-semibold">Mes récompenses</p><p class="text-[11px] text-on-surface-variant" id="navRewards">0 € de CA</p></div>
+
+    <p style="font-size:9px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#71717a;padding:14px 4px 6px">Mon compte</p>
+
+    <a href="statut.html" class="nav-item" style="margin-bottom:2px">
+      <div style="width:36px;height:36px;border-radius:10px;background:#f4f4f5;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <span class="material-symbols-outlined" style="font-size:18px;color:#000;font-variation-settings:'FILL' 1">workspace_premium</span>
+      </div>
+      <div>
+        <p class="nav-item-label text-sm font-semibold">Mon statut</p>
+        <p style="font-size:11px;color:#71717a">Standard · Elite · Égérie</p>
+      </div>
     </a>
+
+    <a href="#" class="nav-item" style="margin-bottom:2px">
+      <div style="width:36px;height:36px;border-radius:10px;background:#f4f4f5;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <span class="material-symbols-outlined" style="font-size:18px;color:#000;font-variation-settings:'FILL' 1">card_giftcard</span>
+      </div>
+      <div>
+        <p class="nav-item-label text-sm font-semibold">Récompenses</p>
+        <p style="font-size:11px;color:#71717a" id="navRewards">0 € de CA</p>
+      </div>
+    </a>
+
+    <a href="profil.html" class="nav-item" style="margin-bottom:2px">
+      <div style="width:36px;height:36px;border-radius:10px;background:#f4f4f5;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <span class="material-symbols-outlined" style="font-size:18px;color:#000;font-variation-settings:'FILL' 1">person</span>
+      </div>
+      <div>
+        <p class="nav-item-label text-sm font-semibold">Mon profil</p>
+        <p style="font-size:11px;color:#71717a">Infos & IBAN</p>
+      </div>
+    </a>
+
   </div>
-  <div class="px-5 py-4 border-t border-outline-variant/30 flex items-center justify-between">
-    <div class="flex items-center gap-2">
-      <div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-white text-[10px] font-bold" id="navAvatar">?</div>
-      <a href="profil.html" style="text-decoration:none"><div><p class="text-xs font-bold text-on-surface" id="navName">Mon profil</p><p class="text-[10px] text-on-surface-variant" id="navLevel">Rookie</p></div></a>
-    </div>
-    <div class="flex items-center gap-1 px-2 py-1 rounded-full bg-surface-container">
-      <span class="material-symbols-outlined filled flame" style="font-size:18px;color:#f97316;font-variation-settings:'FILL' 1">local_fire_department</span>
-      <span class="font-headline font-bold text-sm text-on-surface" id="navStreak">0</span>
+
+  <!-- FOOTER STREAK -->
+  <div style="padding:14px 16px;border-top:1px solid rgba(228,228,231,0.6);display:flex;align-items:center;justify-content:space-between">
+    <p style="font-size:11px;color:#71717a"><span style="color:#000;font-weight:700">Stack</span><span style="color:#b52330;font-weight:700">er</span></p>
+    <div style="display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:99px;background:#f4f4f5">
+      <span class="material-symbols-outlined" style="font-size:14px;color:#b52330;font-variation-settings:'FILL' 1">bolt</span>
+      <span style="font-family:'DM Sans',sans-serif;font-weight:700;font-size:13px;color:#000" id="navStreak">0</span>
+      <span style="font-size:11px;color:#71717a">j. de streak</span>
     </div>
   </div>
+
 </aside>
 
 <!-- NAV -->
@@ -407,7 +491,7 @@ async function submitRdvToSupabase(rdvData) {
         <span class="material-symbols-outlined">menu</span>
       </button>
       <a href="index.html" class="flex items-baseline gap-0.5">
-        <span class="text-xl font-black text-primary tracking-tighter font-headline">Stacker</span>
+        <span class="text-xl font-black tracking-tighter font-headline"><span style="color:#000">Stack</span><span style="color:#b52330">er</span></span>
         <span class="w-1 h-1 bg-on-surface mb-0.5 inline-block"></span>
       </a>
     </div>
@@ -419,12 +503,12 @@ async function submitRdvToSupabase(rdvData) {
       </div>
       <!-- XP niveau -->
       <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-high">
-        <span class="material-symbols-outlined filled text-primary" style="font-size:14px">military_tech</span>
+        <span class="material-symbols-outlined filled text-primary" style="font-size:14px">star</span>
         <span class="font-semibold text-xs text-on-surface" id="levelBadge">Rookie</span>
       </div>
-      <!-- Roue -->
-      <button id="wheelEntryBtn" onclick="openWheelModal()" class="flex items-center gap-1 px-3 py-1.5 rounded-full bg-surface-container-high transition hover:bg-surface-container-highest active:scale-95" title="Roue de la fortune">
-        <span class="material-symbols-outlined" style="font-size:16px;color:#f59e0b;font-variation-settings:'FILL' 1">casino</span>
+      <!-- Roue masquée -->
+      <button id="wheelEntryBtn" style="display:none" onclick="openWheelModal()" class="flex items-center gap-1 px-3 py-1.5 rounded-full bg-surface-container-high transition hover:bg-surface-container-highest active:scale-95" title="Roue de la fortune">
+        <span class="material-symbols-outlined" style="font-size:16px;color:#b52330;font-variation-settings:'FILL' 1">casino</span>
         <span class="font-headline font-bold text-sm text-on-surface" id="wheelEntryLabel">0</span>
       </button>
       <!-- Avatar -->
@@ -452,11 +536,11 @@ async function submitRdvToSupabase(rdvData) {
       <div class="px-6 py-5 flex items-center justify-between border-b border-outline-variant/20">
         <div>
           <p class="font-mono text-[9px] tracking-[0.2em] uppercase text-on-surface-variant mb-1">Par où commencer</p>
-          <h2 class="font-headline font-extrabold text-lg text-on-surface" style="letter-spacing:-0.03em">Tes 4 premières actions</h2>
+          <h2 class="font-headline font-extrabold text-lg text-on-surface" style="letter-spacing:-0.03em">Tes 4 façons de gagner</h2>
         </div>
         <div class="relative w-11 h-11 flex-shrink-0 ml-4">
           <svg class="w-11 h-11 -rotate-90" viewBox="0 0 36 36">
-            <circle cx="18" cy="18" r="15" fill="none" stroke="#e2bebc" stroke-width="3"/>
+            <circle cx="18" cy="18" r="15" fill="none" stroke="#e4e4e7" stroke-width="3"/>
             <circle cx="18" cy="18" r="15" fill="none" stroke="#006c4c" stroke-width="3" stroke-linecap="round" stroke-dasharray="94.2" stroke-dashoffset="94.2" id="progressCircle"/>
           </svg>
           <span class="absolute inset-0 flex items-center justify-center font-headline font-extrabold text-xs text-on-surface" id="progressCount">0/4</span>
@@ -464,23 +548,35 @@ async function submitRdvToSupabase(rdvData) {
       </div>
       <div class="divide-y divide-outline-variant/20" id="checklistSteps">
         <div class="flex items-start gap-4 px-5 py-4 cursor-pointer hover:bg-surface-container-low transition" id="cstep-1" onclick="doStep(1)">
-          <div class="w-8 h-8 rounded-full border-2 border-outline-variant flex items-center justify-center flex-shrink-0 mt-0.5 transition" id="scircle-1"><span class="material-symbols-outlined text-on-surface-variant" style="font-size:16px">inventory_2</span></div>
-          <div class="flex-1"><p class="font-headline font-bold text-sm text-on-surface mb-0.5">Choisis ton premier produit à vendre</p><p class="text-[12px] text-on-surface-variant">Consulte le catalogue et clique sur l'offre qui t'intéresse.</p></div>
+          <div class="w-8 h-8 rounded-full border-2 border-outline-variant flex items-center justify-center flex-shrink-0 mt-0.5 transition" id="scircle-1"><span class="material-symbols-outlined text-on-surface-variant" style="font-size:16px">phone_in_talk</span></div>
+          <div class="flex-1">
+            <p class="font-headline font-bold text-sm text-on-surface mb-0.5">Découvre la prise de RDV</p>
+            <p class="text-[12px] text-on-surface-variant">Tu appelles, tu décroches un RDV, tu touches 7 €. Pas de déplacement.</p>
+          </div>
           <span class="material-symbols-outlined text-on-surface-variant mt-1 flex-shrink-0" style="font-size:18px">chevron_right</span>
         </div>
         <div class="flex items-start gap-4 px-5 py-4 cursor-pointer hover:bg-surface-container-low transition opacity-40 pointer-events-none" id="cstep-2" onclick="doStep(2)">
-          <div class="w-8 h-8 rounded-full border-2 border-outline-variant flex items-center justify-center flex-shrink-0 mt-0.5 transition" id="scircle-2"><span class="material-symbols-outlined text-on-surface-variant" style="font-size:16px">record_voice_over</span></div>
-          <div class="flex-1"><p class="font-headline font-bold text-sm text-on-surface mb-0.5">Lis le script à voix haute une fois</p><p class="text-[12px] text-on-surface-variant">Sur la page de l'offre, lis le script téléphone. Tu vas voir, c'est simple.</p></div>
+          <div class="w-8 h-8 rounded-full border-2 border-outline-variant flex items-center justify-center flex-shrink-0 mt-0.5 transition" id="scircle-2"><span class="material-symbols-outlined text-on-surface-variant" style="font-size:16px">storefront</span></div>
+          <div class="flex-1">
+            <p class="font-headline font-bold text-sm text-on-surface mb-0.5">Choisis une offre à vendre</p>
+            <p class="text-[12px] text-on-surface-variant">13 produits disponibles. Lis le script, appelle, close — 25% de com par vente signée.</p>
+          </div>
           <span class="material-symbols-outlined text-on-surface-variant mt-1 flex-shrink-0" style="font-size:18px">chevron_right</span>
         </div>
         <div class="flex items-start gap-4 px-5 py-4 cursor-pointer hover:bg-surface-container-low transition opacity-40 pointer-events-none" id="cstep-3" onclick="doStep(3)">
-          <div class="w-8 h-8 rounded-full border-2 border-outline-variant flex items-center justify-center flex-shrink-0 mt-0.5 transition" id="scircle-3"><span class="material-symbols-outlined text-on-surface-variant" style="font-size:16px">contacts</span></div>
-          <div class="flex-1"><p class="font-headline font-bold text-sm text-on-surface mb-0.5">Trouve tes 10 premiers prospects</p><p class="text-[12px] text-on-surface-variant">Utilise l'outil de leads pour trouver des contacts qualifiés.</p></div>
+          <div class="w-8 h-8 rounded-full border-2 border-outline-variant flex items-center justify-center flex-shrink-0 mt-0.5 transition" id="scircle-3"><span class="material-symbols-outlined text-on-surface-variant" style="font-size:16px">videocam</span></div>
+          <div class="flex-1">
+            <p class="font-headline font-bold text-sm text-on-surface mb-0.5">Poste ta première vidéo UGC</p>
+            <p class="text-[12px] text-on-surface-variant">Une marque te paie 5 € par vidéo postée depuis ton compte. Zéro abonné requis.</p>
+          </div>
           <span class="material-symbols-outlined text-on-surface-variant mt-1 flex-shrink-0" style="font-size:18px">chevron_right</span>
         </div>
         <div class="flex items-start gap-4 px-5 py-4 cursor-pointer hover:bg-surface-container-low transition opacity-40 pointer-events-none" id="cstep-4" onclick="doStep(4)">
-          <div class="w-8 h-8 rounded-full border-2 border-outline-variant flex items-center justify-center flex-shrink-0 mt-0.5 transition" id="scircle-4"><span class="material-symbols-outlined text-on-surface-variant" style="font-size:16px">call</span></div>
-          <div class="flex-1"><p class="font-headline font-bold text-sm text-on-surface mb-0.5">Fais ton premier appel</p><p class="text-[12px] text-on-surface-variant">Appelle avec le script. Log le résultat. C'est parti.</p></div>
+          <div class="w-8 h-8 rounded-full border-2 border-outline-variant flex items-center justify-center flex-shrink-0 mt-0.5 transition" id="scircle-4"><span class="material-symbols-outlined text-on-surface-variant" style="font-size:16px">group_add</span></div>
+          <div class="flex-1">
+            <p class="font-headline font-bold text-sm text-on-surface mb-0.5">Partage ton lien d'affiliation</p>
+            <p class="text-[12px] text-on-surface-variant">Recrute un Stacker via ton lien — touche 5% sur toutes ses ventes à vie, sans rien faire.</p>
+          </div>
           <span class="material-symbols-outlined text-on-surface-variant mt-1 flex-shrink-0" style="font-size:18px">chevron_right</span>
         </div>
       </div>
@@ -495,7 +591,7 @@ async function submitRdvToSupabase(rdvData) {
   <section class="reveal" style="animation-delay:0.05s">
     <div class="flex items-center justify-between gap-3">
       <div>
-        <p class="text-[9px] font-bold tracking-[0.25em] uppercase mb-2" id="heroDate" style="color:var(--gold)">–</p>
+        <p class="text-[9px] font-bold tracking-[0.25em] uppercase mb-2" id="heroDate" style="color:#71717a">–</p>
         <h1 class="font-headline font-extrabold display-tight text-on-surface" style="font-size:clamp(24px,6vw,36px);letter-spacing:-0.04em;line-height:1.05">Bonjour <span id="heroName" style="text-transform:none;color:#b52330">!</span></h1>
       </div>
       <div class="flex items-center gap-2">
@@ -511,8 +607,8 @@ async function submitRdvToSupabase(rdvData) {
       </div>
     </div>
   </section>
-  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.25) 50%,transparent);margin:0 4px"></div>
-  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.25) 50%,transparent);margin:0 4px"></div>
+  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(228,228,231,0.5) 50%,transparent);margin:0 4px"></div>
+  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(228,228,231,0.5) 50%,transparent);margin:0 4px"></div>
 
   <!-- SECTION PHARE — RDV COLD CALL -->
   <section class="reveal">
@@ -527,7 +623,7 @@ async function submitRdvToSupabase(rdvData) {
                 <span style="width:6px;height:6px;border-radius:50%;background:#ff5a5f;display:block;animation:pulse-dot 2s ease-in-out infinite"></span>
                 <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,90,95,0.8)">Section phare</span>
               </div>
-              <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:24px;letter-spacing:-0.04em;line-height:1.05;color:#fff;margin-bottom:6px">Prise de RDV<br>Cold Call</h2>
+              <h2 style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:24px;letter-spacing:-0.04em;line-height:1.05;color:#fff;margin-bottom:6px">Prise de RDV<br>Cold Call</h2>
               <p style="font-size:13px;color:rgba(255,255,255,0.45);line-height:1.5;max-width:260px">Tu appelles, tu prends le RDV. Un commercial se déplace. Toi tu encaisses.</p>
             </div>
             <div style="width:52px;height:52px;border-radius:16px;background:#ffffff;border:none;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 16px rgba(255,255,255,0.15)">
@@ -536,17 +632,17 @@ async function submitRdvToSupabase(rdvData) {
           </div>
           <div style="display:flex;align-items:center;gap:16px;margin-bottom:18px">
             <div>
-              <p style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:28px;color:#fff;letter-spacing:-0.04em;line-height:1">7 €</p>
+              <p style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:28px;color:#fff;letter-spacing:-0.04em;line-height:1">7 €</p>
               <p style="font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.1em">par RDV validé</p>
             </div>
             <div style="width:1px;height:36px;background:rgba(255,255,255,0.1)"></div>
             <div>
-              <p style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:28px;color:#fff;letter-spacing:-0.04em;line-height:1" id="homeRdvCount">0</p>
+              <p style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:28px;color:#fff;letter-spacing:-0.04em;line-height:1" id="homeRdvCount">0</p>
               <p style="font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.1em">mes RDV</p>
             </div>
             <div style="width:1px;height:36px;background:rgba(255,255,255,0.1)"></div>
             <div>
-              <p style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:28px;color:#fff;letter-spacing:-0.04em;line-height:1" id="homeRdvCom">0 €</p>
+              <p style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:28px;color:#fff;letter-spacing:-0.04em;line-height:1" id="homeRdvCom">0 €</p>
               <p style="font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.1em">gagnés</p>
             </div>
           </div>
@@ -564,7 +660,7 @@ async function submitRdvToSupabase(rdvData) {
       </div>
     </a>
   </section>
-  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.25) 50%,transparent);margin:0 4px"></div>
+  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(228,228,231,0.5) 50%,transparent);margin:0 4px"></div>
 
   <!-- MISSION DU JOUR — section principale -->
   <section class="reveal" style="animation-delay:0.07s">
@@ -615,16 +711,16 @@ async function submitRdvToSupabase(rdvData) {
       <!-- Actions bonus -->
       <div class="px-5 py-3 flex items-center gap-3 flex-wrap">
         <p class="text-[10px] font-bold uppercase tracking-[0.12em] text-on-surface-variant">En plus :</p>
-        <button onclick="logAction('pap')" class="flex items-center gap-1 px-2.5 py-1.5 rounded-full text-[11px] font-semibold transition" id="btn-pap" style="background:#f0eded;color:#5a403f">
+        <button onclick="logAction('pap')" class="flex items-center gap-1 px-2.5 py-1.5 rounded-full text-[11px] font-semibold transition" id="btn-pap" style="background:#f0eded;color:#52525b">
           <span class="material-symbols-outlined" style="font-size:13px">directions_walk</span>PAP
         </button>
-        <button onclick="logAction('dm')" class="flex items-center gap-1 px-2.5 py-1.5 rounded-full text-[11px] font-semibold transition" id="btn-dm" style="background:#f0eded;color:#5a403f">
+        <button onclick="logAction('dm')" class="flex items-center gap-1 px-2.5 py-1.5 rounded-full text-[11px] font-semibold transition" id="btn-dm" style="background:#f0eded;color:#52525b">
           <span class="material-symbols-outlined" style="font-size:13px">chat</span>DM
         </button>
-        <button onclick="logAction('email')" class="flex items-center gap-1 px-2.5 py-1.5 rounded-full text-[11px] font-semibold transition" id="btn-email" style="background:#f0eded;color:#5a403f">
+        <button onclick="logAction('email')" class="flex items-center gap-1 px-2.5 py-1.5 rounded-full text-[11px] font-semibold transition" id="btn-email" style="background:#f0eded;color:#52525b">
           <span class="material-symbols-outlined" style="font-size:13px">mail</span>Email
         </button>
-        <button onclick="logAction('social')" class="flex items-center gap-1 px-2.5 py-1.5 rounded-full text-[11px] font-semibold transition" id="btn-social" style="background:#f0eded;color:#5a403f">
+        <button onclick="logAction('social')" class="flex items-center gap-1 px-2.5 py-1.5 rounded-full text-[11px] font-semibold transition" id="btn-social" style="background:#f0eded;color:#52525b">
           <span class="material-symbols-outlined" style="font-size:13px">thumb_up</span>Réseaux
         </button>
       </div>
@@ -649,22 +745,22 @@ async function submitRdvToSupabase(rdvData) {
       </div>
     </div>
   </section>
-  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.25) 50%,transparent);margin:0 4px"></div>
+  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(228,228,231,0.5) 50%,transparent);margin:0 4px"></div>
   <!-- KPI STATS -->
   <section class="reveal" style="animation-delay:0.1s">
     <div class="grid grid-cols-3 gap-3">
       <div class="card-premium p-5">
-        <p class="text-[9px] uppercase tracking-[0.2em] text-on-surface-variant font-bold mb-2" style="color:var(--gold)">Commissions</p>
+        <p class="text-[9px] uppercase tracking-[0.2em] text-on-surface-variant font-bold mb-2" style="color:#71717a">Commissions</p>
         <p class="font-headline font-extrabold text-xl text-on-surface metric-num" id="kpiCom">0 €</p>
         <p class="text-[10px] text-on-surface-variant mt-0.5">ce mois</p>
       </div>
       <div class="card-premium p-5">
-        <p class="text-[9px] uppercase tracking-[0.2em] text-on-surface-variant font-bold mb-2" style="color:var(--gold)">Deals</p>
+        <p class="text-[9px] uppercase tracking-[0.2em] text-on-surface-variant font-bold mb-2" style="color:#71717a">Deals</p>
         <p class="font-headline font-extrabold text-xl text-on-surface metric-num" id="kpiDeals">0</p>
         <p class="text-[10px] text-on-surface-variant mt-0.5">signés</p>
       </div>
       <div class="card-premium p-5">
-        <p class="text-[9px] uppercase tracking-[0.2em] text-on-surface-variant font-bold mb-2" style="color:var(--gold)">Streak</p>
+        <p class="text-[9px] uppercase tracking-[0.2em] text-on-surface-variant font-bold mb-2" style="color:#71717a">Streak</p>
         <div class="flex items-center gap-1.5">
           <span class="material-symbols-outlined filled flame" style="font-size:20px;color:#f97316;font-variation-settings:'FILL' 1">local_fire_department</span>
           <p class="font-headline font-extrabold text-xl text-on-surface metric-num" id="kpiStreak">0</p>
@@ -673,7 +769,7 @@ async function submitRdvToSupabase(rdvData) {
       </div>
     </div>
   </section>
-  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.25) 50%,transparent);margin:0 4px"></div>
+  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(228,228,231,0.5) 50%,transparent);margin:0 4px"></div>
   <!-- OFFRE DE LA SEMAINE -->
   <section class="reveal" style="animation-delay:0.13s">
     <div class="flex items-center gap-2 mb-3">
@@ -713,7 +809,7 @@ async function submitRdvToSupabase(rdvData) {
       </div>
     </a>
   </section>
-  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.25) 50%,transparent);margin:0 4px"></div>
+  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(228,228,231,0.5) 50%,transparent);margin:0 4px"></div>
   <!-- RÉCOMPENSES -->
   <section class="reveal" style="animation-delay:0.16s;margin-top:20px">
     <div class="flex items-center justify-between mb-3">
@@ -754,40 +850,40 @@ async function submitRdvToSupabase(rdvData) {
         <p class="text-[11px] text-on-surface-variant mb-2">7 500 € de CA</p>
         <div class="h-1 rounded-full bg-surface-container-high"><div class="reward-fill h-full rounded-full bg-tertiary" id="rbar-3" style="width:0%"></div></div>
       </div>
-      <div class="reward-card cursor-pointer relative overflow-hidden" id="reward-4" onclick="window.location.href='cadeau.html?id=4'" style="background:#ffffff;border:1.5px solid rgba(255,197,0,0.5)">
-        <div class="absolute top-0 left-0 right-0 h-0.5" style="background:linear-gradient(90deg,#ffd700,#b8860b)"></div>
+      <div class="reward-card cursor-pointer relative overflow-hidden" id="reward-4" onclick="window.location.href='cadeau.html?id=4'" style="background:#ffffff;border:1.5px solid rgba(181,35,48,0.5)">
+        <div class="absolute top-0 left-0 right-0 h-0.5" style="background:linear-gradient(90deg,#b52330,#9b1d28)"></div>
         <div class="w-full rounded-xl overflow-hidden mb-2 bg-surface-container-high flex items-center justify-center" style="height:120px">
           <img src="assets/cadeaux/rolex-daytona.jpg" alt="Rolex Daytona" class="w-full h-full object-contain p-3" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-          <span class="material-symbols-outlined filled" style="font-size:36px;display:none;color:#b8860b;font-variation-settings:'FILL' 1">watch</span>
+          <span class="material-symbols-outlined filled" style="font-size:36px;display:none;color:#9b1d28;font-variation-settings:'FILL' 1">watch</span>
         </div>
-        <p class="font-headline font-bold text-sm mb-0.5" style="color:#b8860b">Rolex Daytona</p>
+        <p class="font-headline font-bold text-sm mb-0.5" style="color:#9b1d28">Rolex Daytona</p>
         <p class="text-[11px] text-on-surface-variant mb-2">40 000 € de CA</p>
-        <div class="h-1 rounded-full bg-surface-container-high"><div class="reward-fill h-full rounded-full" style="background:linear-gradient(90deg,#ffd700,#b8860b)" id="rbar-4"></div></div>
+        <div class="h-1 rounded-full bg-surface-container-high"><div class="reward-fill h-full rounded-full" style="background:linear-gradient(90deg,#b52330,#9b1d28)" id="rbar-4"></div></div>
       </div>
     </div>
   </section>
-  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.25) 50%,transparent);margin:0 4px"></div>
-  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.25) 50%,transparent);margin:0 4px"></div>
+  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(228,228,231,0.5) 50%,transparent);margin:0 4px"></div>
+  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(228,228,231,0.5) 50%,transparent);margin:0 4px"></div>
 
   <!-- CITATION -->
   <section class="reveal" style="animation-delay:0.2s;padding:8px 4px">
     <p class="font-headline font-extrabold text-on-surface leading-snug mb-2" style="font-size:20px;letter-spacing:-0.025em;max-width:520px" id="motivText">–</p>
     <p class="font-mono text-[10px] font-bold tracking-[0.18em] uppercase text-on-surface-variant" id="motivAuthor"></p>
   </section>
-  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.25) 50%,transparent);margin:0 4px"></div>
+  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(228,228,231,0.5) 50%,transparent);margin:0 4px"></div>
 
   <!-- STACKER ELITE BANNER -->
   <section class="reveal" style="animation-delay:0.23s">
     <a href="elite.html"><img src="assets/banners/elite.jpg" alt="Stacker Elite Gathering" class="w-full rounded-2xl" style="display:block;object-fit:cover;max-height:320px;cursor:pointer" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-    <div style="display:none;height:200px;border-radius:16px;background:#f0eded;align-items:center;justify-content:center;flex-direction:column;gap:8px;border:2px dashed #e2bebc">
+    <div style="display:none;height:200px;border-radius:16px;background:#f0eded;align-items:center;justify-content:center;flex-direction:column;gap:8px;border:2px dashed #e4e4e7">
       <span class="material-symbols-outlined text-on-surface-variant" style="font-size:32px">image</span>
       <p class="text-[12px] font-semibold text-on-surface-variant">assets/banners/elite.jpg</p>
     </div></a>
     <div class="mt-4 flex items-start justify-between gap-4">
       <div>
-        <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full mb-2" style="background:rgba(255,197,0,0.1);border:1px solid rgba(255,197,0,0.25)">
-          <span class="material-symbols-outlined filled" style="font-size:12px;color:#b8860b;font-variation-settings:'FILL' 1">workspace_premium</span>
-          <span class="font-mono text-[9px] font-bold tracking-[0.15em] uppercase" style="color:#b8860b">Stacker Elite</span>
+        <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full mb-2" style="background:rgba(181,35,48,0.1);border:1px solid rgba(181,35,48,0.25)">
+          <span class="material-symbols-outlined filled" style="font-size:12px;color:#9b1d28;font-variation-settings:'FILL' 1">workspace_premium</span>
+          <span class="font-mono text-[9px] font-bold tracking-[0.15em] uppercase" style="color:#9b1d28">Stacker Elite</span>
         </div>
         <h3 class="font-headline font-extrabold text-on-surface mb-1" style="font-size:17px;letter-spacing:-0.025em;line-height:1.2">Fais partie de l’élite des Stackers.</h3>
         <p class="text-[13px] text-on-surface-variant leading-relaxed">Rejoins les meilleurs closers de la plateforme et participe à l’événement annuel réservé aux plus performants.</p>
@@ -797,12 +893,12 @@ async function submitRdvToSupabase(rdvData) {
       </div>
     </div>
   </section>
-  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.25) 50%,transparent);margin:0 4px"></div>
+  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(228,228,231,0.5) 50%,transparent);margin:0 4px"></div>
 
 
   <!-- MICRO-INFLUENCE -->
   <section class="reveal" style="animation-delay:0.23s">
-    <div class="eyebrow-gold mb-3"><span style="color:#1b1c1c">Micro-influence</span></div>
+    <div class="eyebrow mb-3"><span style="color:#1b1c1c">Micro-influence</span></div>
     <a href="influence.html" style="text-decoration:none;display:block">
       <div class="dark-card" style="background:#1b1c1c;border-radius:22px;overflow:hidden;position:relative">
         <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#ff5a5f 40%,#b52330 70%,transparent)"></div>
@@ -813,7 +909,7 @@ async function submitRdvToSupabase(rdvData) {
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
                 <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.4)">Nouveau</span>
               </div>
-              <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:22px;letter-spacing:-0.04em;line-height:1.05;color:#fff;margin-bottom:6px">Poste.<br>Encaisse.</h2>
+              <h2 style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:22px;letter-spacing:-0.04em;line-height:1.05;color:#fff;margin-bottom:6px">Poste.<br>Encaisse.</h2>
               <p style="font-size:13px;color:rgba(255,255,255,0.45);line-height:1.5;max-width:260px">Des marques te payent 5 € par vidéo postée depuis ton compte.</p>
             </div>
             <div style="width:52px;height:52px;border-radius:16px;background:#ffffff;border:none;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 16px rgba(255,255,255,0.15)">
@@ -822,17 +918,17 @@ async function submitRdvToSupabase(rdvData) {
           </div>
           <div style="display:flex;align-items:center;gap:16px;margin-bottom:18px">
             <div>
-              <p style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:26px;color:#fff;letter-spacing:-0.04em;line-height:1">5 €</p>
+              <p style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:26px;color:#fff;letter-spacing:-0.04em;line-height:1">5 €</p>
               <p style="font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.1em">par vidéo postée</p>
             </div>
             <div style="width:1px;height:36px;background:rgba(255,255,255,0.1)"></div>
             <div>
-              <p style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:26px;color:#fff;letter-spacing:-0.04em;line-height:1" id="influencePostsCount">0</p>
+              <p style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:26px;color:#fff;letter-spacing:-0.04em;line-height:1" id="influencePostsCount">0</p>
               <p style="font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.1em">mes posts</p>
             </div>
             <div style="width:1px;height:36px;background:rgba(255,255,255,0.1)"></div>
             <div>
-              <p style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:26px;color:#fff;letter-spacing:-0.04em;line-height:1" id="influenceEarnings">0 €</p>
+              <p style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:26px;color:#fff;letter-spacing:-0.04em;line-height:1" id="influenceEarnings">0 €</p>
               <p style="font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.1em">gagnés</p>
             </div>
           </div>
@@ -861,7 +957,7 @@ async function submitRdvToSupabase(rdvData) {
       </div>
     </a>
   </section>
-  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.25) 50%,transparent);margin:0 4px"></div>
+  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(228,228,231,0.5) 50%,transparent);margin:0 4px"></div>
 
   <!-- BANNIÈRE OFFRES -->
   <section class="reveal" style="animation-delay:0.21s">
@@ -888,24 +984,24 @@ async function submitRdvToSupabase(rdvData) {
       </div>
     </a>
   </section>
-  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.25) 50%,transparent);margin:0 4px"></div>
+  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(228,228,231,0.5) 50%,transparent);margin:0 4px"></div>
 
-  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.25) 50%,transparent);margin:0 4px"></div>
+  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(228,228,231,0.5) 50%,transparent);margin:0 4px"></div>
 
   <!-- FEED LIVE -->
   <section class="reveal">
-    <div class="eyebrow-gold mb-3"><span>Deals en direct</span></div>
+    <div class="eyebrow mb-3"><span>Deals en direct</span></div>
     <div id="liveFeed" style="display:flex;flex-direction:column;gap:8px"></div>
   </section>
-  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.25) 50%,transparent);margin:0 4px"></div>
+  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(228,228,231,0.5) 50%,transparent);margin:0 4px"></div>
 
   <!-- ACC&#200;S RAPIDES -->
   <section class="reveal" style="animation-delay:0.22s">
-    <div class="eyebrow-gold mb-3"><span>Accès rapides</span></div>
+    <div class="eyebrow mb-3"><span>Accès rapides</span></div>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
       <a href="offres.html" class="explore-card"><p class="explore-label">Nos offres</p><p class="explore-meta">13 produits · scripts</p></a>
       <a href="#" onclick="openCoach();return false" class="explore-card"><p class="explore-label">Coach IA</p><p class="explore-meta">Objections en live</p></a>
-      <a href="#" class="explore-card explore-card-gold"><p class="explore-label">Top closers</p><p class="explore-meta">Classement national</p></a>
+      <a href="#" class="explore-card explore-card-neutral"><p class="explore-label">Top closers</p><p class="explore-meta">Classement national</p></a>
       <a href="#" onclick="openSepaModal();return false" class="explore-card" style="border-color:rgba(0,108,76,0.3);background:linear-gradient(135deg,rgba(0,108,76,0.05),#fff)">
         <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
           <span class="material-symbols-outlined" style="font-size:14px;color:#006c4c;font-variation-settings:'FILL' 1">payments</span>
@@ -1733,16 +1829,16 @@ function renderFeed() {
       icon = 'phone_in_talk';
       city = r.city;
       line1 = r.closer + ' · <span style="color:#b52330">' + r.city + '</span>';
-      line2 = '<span style="font-size:11px;color:#6b5550">' + r.sector + '</span><span style="width:3px;height:3px;border-radius:50%;background:#e2bebc;display:inline-block;margin:0 6px"></span><span style="font-size:11px;font-weight:700;padding:2px 7px;border-radius:5px;background:rgba(181,35,48,0.08);color:#b52330">RDV validé · +7 €</span>';
+      line2 = '<span style="font-size:11px;color:#6b7280">' + r.sector + '</span><span style="width:3px;height:3px;border-radius:50%;background:#e4e4e7;display:inline-block;margin:0 6px"></span><span style="font-size:11px;font-weight:700;padding:2px 7px;border-radius:5px;background:rgba(181,35,48,0.08);color:#b52330">RDV validé · +7 €</span>';
     } else {
       const d = item.deal;
       const isElite = item.closer.includes('Elite') || item.closer.includes('Égérie');
       icon = 'handshake';
       city = d.city;
       line1 = (isElite ? '⭐ ' : '') + item.closer + ' · <span style="color:#b52330">' + d.city + '</span>';
-      line2 = '<span style="font-size:11px;color:#6b5550">' + d.product + '</span><span style="width:3px;height:3px;border-radius:50%;background:#e2bebc;display:inline-block;margin:0 6px"></span><span style="font-size:12px;font-weight:800;color:#006c4c;font-family:Plus Jakarta Sans,sans-serif;letter-spacing:-0.02em">+' + d.com + ' €<span style="font-size:10px;font-weight:500;color:#6b5550">/mois</span></span>';
+      line2 = '<span style="font-size:11px;color:#6b7280">' + d.product + '</span><span style="width:3px;height:3px;border-radius:50%;background:#e4e4e7;display:inline-block;margin:0 6px"></span><span style="font-size:12px;font-weight:800;color:#006c4c;font-family:Plus Jakarta Sans,sans-serif;letter-spacing:-0.02em">+' + d.com + ' €<span style="font-size:10px;font-weight:500;color:#6b7280">/mois</span></span>';
     }
-    const inner = `<div style="display:flex;align-items:center;gap:14px;padding:14px 16px;background:#fff;border-radius:18px;border:1px solid rgba(226,190,188,0.4);box-shadow:0 1px 12px -4px rgba(27,28,28,0.07);${isNew?'animation:slideUp 0.4s cubic-bezier(0.22,1,0.36,1) both;'+'':''}">
+    const inner = `<div style="display:flex;align-items:center;gap:14px;padding:14px 16px;background:#fff;border-radius:18px;border:1px solid rgba(228,228,231,0.4);box-shadow:0 1px 12px -4px rgba(27,28,28,0.07);${isNew?'animation:slideUp 0.4s cubic-bezier(0.22,1,0.36,1) both;'+'':''}">
         <div style="width:40px;height:40px;border-radius:12px;background:rgba(27,28,28,0.06);display:flex;align-items:center;justify-content:center;flex-shrink:0">
           <span class="material-symbols-outlined" style="font-size:20px;color:#1b1c1c;font-variation-settings:'FILL' 1">${icon}</span>
         </div>
@@ -1752,7 +1848,7 @@ function renderFeed() {
         </div>
         <div style="flex-shrink:0;text-align:right">
           ${isNew ? '<div style="display:flex;align-items:center;gap:4px;justify-content:flex-end;margin-bottom:3px"><span style="width:5px;height:5px;border-radius:50%;background:#b52330;display:block;animation:pulse-dot 2s ease-in-out infinite"></span><span style="font-size:9px;font-weight:700;color:#b52330;letter-spacing:0.08em;text-transform:uppercase">Live</span></div>' : ''}
-          <span style="font-size:10px;color:#8e706f;white-space:nowrap">${ago}</span>
+          <span style="font-size:10px;color:#71717a;white-space:nowrap">${ago}</span>
         </div>
       </div>`;
     if (i === 2) {
@@ -1892,7 +1988,7 @@ document.addEventListener('DOMContentLoaded', function() {
           <div class="sepa-status-dot idle"></div>
           <p class="sepa-status-text">Remplis les champs et envoie le lien</p>
         </div>
-        <p style="font-size:11px;color:#8e706f;margin-bottom:14px;line-height:1.6;font-weight:500">Le prospect reçoit un SMS avec un lien sécurisé. Il entre lui-même son IBAN et signe le mandat. Tu reçois une confirmation ici en temps réel.</p>
+        <p style="font-size:11px;color:#71717a;margin-bottom:14px;line-height:1.6;font-weight:500">Le prospect reçoit un SMS avec un lien sécurisé. Il entre lui-même son IBAN et signe le mandat. Tu reçois une confirmation ici en temps réel.</p>
         <button class="sepa-confirm" id="distConfirmBtn" disabled>
           <span class="material-symbols-outlined" style="font-size:18px">pending</span>
           En attente de signature
@@ -1939,14 +2035,14 @@ document.addEventListener('DOMContentLoaded', function() {
   <div class="wheel-container">
     <div class="wheel-header" id="wheelHeader">
       <p class="wheel-title" id="wheelHeaderTitle">Roue de la Fortune</p>
-      <p class="wheel-subtitle" id="wheelHeaderSub">Tu as <span id="wheelSpinsLeft" style="color:#ffd700;font-weight:900">0</span> tour disponible</p>
+      <p class="wheel-subtitle" id="wheelHeaderSub">Tu as <span id="wheelSpinsLeft" style="color:#b52330;font-weight:900">0</span> tour disponible</p>
     </div>
 
     <div class="wheel-wrap">
       <div class="wheel-pointer"></div>
       <canvas id="wheelCanvas" width="320" height="320" style="border-radius:50%;display:block"></canvas>
       <div class="wheel-center">
-        <span class="material-symbols-outlined" style="font-size:20px;color:#ffd700;font-variation-settings:'FILL' 1">star</span>
+        <span class="material-symbols-outlined" style="font-size:20px;color:#b52330;font-variation-settings:'FILL' 1">star</span>
       </div>
     </div>
 
@@ -2237,7 +2333,7 @@ function buildWheel() {
     ctx.closePath();
     ctx.fillStyle = COLORS[i % COLORS.length];
     ctx.fill();
-    ctx.strokeStyle = 'rgba(255,197,0,0.2)';
+    ctx.strokeStyle = 'rgba(181,35,48,0.2)';
     ctx.lineWidth = 1.5;
     ctx.stroke();
 
@@ -2254,11 +2350,11 @@ function buildWheel() {
     ctx.textBaseline = 'middle';
     var hasTwo = prize.line2 && prize.line2 !== '!';
     ctx.fillStyle = '#ffffff';
-    ctx.font = '800 12px "Plus Jakarta Sans", sans-serif';
+    ctx.font = '800 12px "DM Sans", sans-serif';
     ctx.fillText(prize.line1, 0, hasTwo ? -7 : 0);
     if (hasTwo) {
       ctx.fillStyle = 'rgba(255,255,255,0.6)';
-      ctx.font = '600 9px "Plus Jakarta Sans", sans-serif';
+      ctx.font = '600 9px "DM Sans", sans-serif';
       ctx.fillText(prize.line2, 0, 7);
     }
     ctx.restore();
@@ -2269,16 +2365,16 @@ function buildWheel() {
   // Gold outer ring
   ctx.beginPath();
   ctx.arc(cx, cy, r, 0, 2 * Math.PI);
-  ctx.strokeStyle = 'rgba(255,197,0,0.6)';
+  ctx.strokeStyle = 'rgba(181,35,48,0.6)';
   ctx.lineWidth = 3;
   ctx.stroke();
 
-  // 8 gold dots
+  // 8 dots
   for (var d = 0; d < 8; d++) {
     var da = (d / 8) * 2 * Math.PI;
     ctx.beginPath();
     ctx.arc(cx + r * Math.cos(da), cy + r * Math.sin(da), 4, 0, 2 * Math.PI);
-    ctx.fillStyle = '#ffd700';
+    ctx.fillStyle = '#b52330';
     ctx.fill();
   }
 
@@ -2290,7 +2386,7 @@ function buildWheel() {
   grad.addColorStop(1, '#0a0a0a');
   ctx.fillStyle = grad;
   ctx.fill();
-  ctx.strokeStyle = 'rgba(255,197,0,0.5)';
+  ctx.strokeStyle = 'rgba(181,35,48,0.5)';
   ctx.lineWidth = 2;
   ctx.stroke();
 }
@@ -2373,7 +2469,7 @@ function applyWheelReward(idx) {
   document.getElementById('wheelResult').classList.add('show');
   var sl = document.getElementById('wheelSpinsLeft'); if(sl) sl.textContent = wheelSpins;
   var sub = document.getElementById('wheelHeaderSub');
-  if (sub && !sub.innerHTML.includes('Offert')) sub.innerHTML = 'Tu as <span id="wheelSpinsLeft" style="color:#ffd700;font-weight:900">'+wheelSpins+'</span> tour disponible';
+  if (sub && !sub.innerHTML.includes('Offert')) sub.innerHTML = 'Tu as <span id="wheelSpinsLeft" style="color:#b52330;font-weight:900">'+wheelSpins+'</span> tour disponible';
 
   if (wheelSpins > 0) {
     setTimeout(function() { document.getElementById('wheelSpinBtn').disabled = false; }, 500);
@@ -2390,7 +2486,7 @@ function openWheelModal() {
   buildWheel();
   var sl = document.getElementById('wheelSpinsLeft'); if(sl) sl.textContent = wheelSpins;
   var sub = document.getElementById('wheelHeaderSub');
-  if (sub && !sub.innerHTML.includes('Offert')) sub.innerHTML = 'Tu as <span id="wheelSpinsLeft" style="color:#ffd700;font-weight:900">'+wheelSpins+'</span> tour disponible';
+  if (sub && !sub.innerHTML.includes('Offert')) sub.innerHTML = 'Tu as <span id="wheelSpinsLeft" style="color:#b52330;font-weight:900">'+wheelSpins+'</span> tour disponible';
   document.getElementById('wheelResult').classList.remove('show');
   document.getElementById('wheelSpinBtn').disabled = wheelSpins <= 0;
   document.getElementById('wheelOverlay').classList.add('open');
@@ -2410,18 +2506,18 @@ function updateWheelEntry() {
   if (!btn) return;
   var sl = document.getElementById('wheelSpinsLeft'); if(sl) sl.textContent = wheelSpins;
   var sub = document.getElementById('wheelHeaderSub');
-  if (sub && !sub.innerHTML.includes('Offert')) sub.innerHTML = 'Tu as <span id="wheelSpinsLeft" style="color:#ffd700;font-weight:900">'+wheelSpins+'</span> tour disponible';
+  if (sub && !sub.innerHTML.includes('Offert')) sub.innerHTML = 'Tu as <span id="wheelSpinsLeft" style="color:#b52330;font-weight:900">'+wheelSpins+'</span> tour disponible';
   label.textContent = wheelSpins;
   var icon = btn.querySelector('.material-symbols-outlined');
   if (wheelSpins > 0) {
-    if (icon) icon.style.color = '#f59e0b';
+    if (icon) icon.style.color = '#b52330';
     btn.style.position = 'relative';
     // Badge de notification
     var badge = btn.querySelector('.wheel-badge');
     if (!badge) {
       badge = document.createElement('span');
       badge.className = 'wheel-badge';
-      badge.style.cssText = 'position:absolute;top:-4px;right:-4px;width:14px;height:14px;border-radius:50%;background:#b52330;border:2px solid #fcf9f8;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:#fff;font-family:Plus Jakarta Sans,sans-serif';
+      badge.style.cssText = 'position:absolute;top:-4px;right:-4px;width:14px;height:14px;border-radius:50%;background:#b52330;border:2px solid #ffffff;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:#fff;font-family:Plus Jakarta Sans,sans-serif';
       btn.appendChild(badge);
     }
     badge.textContent = wheelSpins;
@@ -2438,7 +2534,7 @@ function grantWheelSpin(reason) {
   wheelSpins++;
   localStorage.setItem('stacker_wheel_spins', wheelSpins);
   updateWheelEntry();
-  showToast('Tour de roue gagné — ' + (reason || 'bravo !') + ' 🎰', 'success');
+  showToast('Tour de roue gagné — ' + (reason || 'bravo !') + ', 'success');
 }
 
 // Hook sur le deal closé PAP
@@ -2469,7 +2565,7 @@ function checkDailyWheel() {
     buildWheel();
     var sl = document.getElementById('wheelSpinsLeft'); if(sl) sl.textContent = wheelSpins;
   var sub = document.getElementById('wheelHeaderSub');
-  if (sub && !sub.innerHTML.includes('Offert')) sub.innerHTML = 'Tu as <span id="wheelSpinsLeft" style="color:#ffd700;font-weight:900">'+wheelSpins+'</span> tour disponible';
+  if (sub && !sub.innerHTML.includes('Offert')) sub.innerHTML = 'Tu as <span id="wheelSpinsLeft" style="color:#b52330;font-weight:900">'+wheelSpins+'</span> tour disponible';
     document.getElementById('wheelResult').classList.remove('show');
     document.getElementById('wheelSpinBtn').disabled = false;
     // Titre daily
@@ -2482,7 +2578,6 @@ function checkDailyWheel() {
 }
 
 // Lance le check daily au démarrage
-localStorage.removeItem('stacker_wheel_daily'); // DEV: force daily popup
 if (document.readyState === 'complete') {
   setTimeout(checkDailyWheel, 1000);
 } else {
