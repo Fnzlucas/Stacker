@@ -1167,7 +1167,8 @@ let flash1 = 120, flash2 = 2700;
 function init() {
   // Init check — but always render week offer regardless
   renderWeekOffer();
-  if (!localStorage.getItem('stacker_onboarded')) { window.location.href = 'onboarding.html'; return; }
+  if (!localStorage.getItem('stacker_onboarded') && window.self === window.top) { window.location.href = 'onboarding.html'; return; }
+  if (!localStorage.getItem('stacker_onboarded')) { localStorage.setItem('stacker_onboarded','1'); localStorage.setItem('stacker_steps','0'); localStorage.setItem('stacker_iban_set','1'); }
 
   // IBAN
   if (localStorage.getItem('stacker_iban_set') === '0') document.getElementById('ibanBanner').classList.remove('hidden');
