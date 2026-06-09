@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UGC · Stacker</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=JetBrains+Mono:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+tailwind.config = {
+  theme: { extend: { colors: {
+    "primary":"#b52330","primary-container":"#ff5a5f","primary-fixed":"#ffdad8","on-primary":"#ffffff",
+    "tertiary":"#006c4c","tertiary-container":"#00a879","tertiary-fixed":"#78fac4",
+    "background":"#ffffff","surface-container-lowest":"#ffffff","surface-container-low":"#f4f4f5",
+    "surface-container":"#f0f0f0","surface-container-high":"#e5e5e6","surface-container-highest":"#dddde0",
+    "on-surface":"#1b1c1c","on-surface-variant":"#71717a","outline-variant":"#e4e4e7"
+  }, fontFamily: { "headline":["DM Sans"],"body":["DM Sans"],"mono":["JetBrains Mono"] } } }
+}
+</script>
+<style>
+body{font-family:'DM Sans',sans-serif;background:#ffffff}
+:root{--red:#b52330;--red2:#e8323f}
+.font-headline{font-family:'DM Sans',sans-serif}
+.font-mono{font-family:'JetBrains Mono',monospace}
+.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+.filled{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24 !important}
+.glass-nav{backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);background:rgba(255,255,255,0.92);border-bottom:1px solid rgba(228,228,231,0.35)}
+.soft-shadow{box-shadow:0 2px 16px -4px rgba(27,28,28,0.07),0 0 0 1px rgba(228,228,231,0.3)}
+.hover-lift{transition:transform 0.3s cubic-bezier(0.22,1,0.36,1),box-shadow 0.3s ease}
+.hover-lift:hover{transform:translateY(-2px);box-shadow:0 16px 32px -12px rgba(27,28,28,0.12)}
+
+/* NAV SIDEBAR */
+.nav-item{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;transition:background 0.2s ease;cursor:pointer;text-decoration:none;color:inherit}
+.nav-item:hover{background:#f4f4f5}
+.nav-item.active{background:#fee2e2}
+.nav-item.active .nav-item-label{color:#b52330;font-weight:700}
+
+/* HAMBURGER */
+.hamburger-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:200;opacity:0;pointer-events:none;transition:opacity 0.3s}
+.hamburger-overlay.open{opacity:1;pointer-events:all}
+.hamburger-panel{position:fixed;top:0;left:0;bottom:0;width:300px;background:#fff;z-index:201;transform:translateX(-100%);transition:transform 0.38s cubic-bezier(0.22,1,0.36,1);display:flex;flex-direction:column;overflow:hidden}
+.hamburger-panel.open{transform:translateX(0)}
+
+/* MISSION CARD */
+.mission-card{background:#fff;border:1px solid rgba(228,228,231,0.8);border-radius:16px;overflow:hidden;cursor:pointer;transition:all 0.25s cubic-bezier(0.22,1,0.36,1)}
+.mission-card:hover{transform:translateY(-2px);box-shadow:0 16px 32px -8px rgba(27,28,28,0.1)}
+.mission-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:99px;font-size:11px;font-weight:700;font-family:'DM Sans',sans-serif}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:500;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s;backdrop-filter:blur(4px)}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-sheet{background:#fff;border-radius:20px 20px 0 0;width:100%;max-width:680px;max-height:92vh;overflow-y:auto;transform:translateY(20px);transition:transform 0.3s cubic-bezier(0.22,1,0.36,1)}
+.modal-overlay.open .modal-sheet{transform:translateY(0)}
+
+/* SECTION BRIEF */
+.brief-section{background:#f8f8f8;border-radius:12px;padding:16px}
+.brief-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#71717a;font-weight:600;margin-bottom:8px}
+.brief-content{font-size:14px;color:#1b1c1c;line-height:1.6}
+
+/* SCRIPT SCENE */
+.scene-block{border-left:2px solid #e4e4e7;padding-left:14px;margin-bottom:16px}
+.scene-num{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#b52330;margin-bottom:4px}
+.scene-text{font-size:13px;color:#1b1c1c;line-height:1.6}
+
+/* COPY BUTTON */
+.copy-btn{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;background:#f4f4f5;border:none;cursor:pointer;font-size:12px;font-weight:600;color:#71717a;transition:all 0.2s;font-family:'DM Sans',sans-serif}
+.copy-btn:hover{background:#e5e5e6;color:#1b1c1c}
+.copy-btn.copied{background:#dcfce7;color:#16a34a}
+
+/* STATUS TABS */
+.status-tab{padding:8px 16px;border-radius:99px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;border:none;background:transparent;color:#71717a}
+.status-tab.active{background:#1b1c1c;color:#fff}
+
+@keyframes pageEnter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.page-enter{animation:pageEnter 0.4s ease forwards}
+</style>
+</head>
+<body class="bg-background">
+
+<!-- HAMBURGER OVERLAY -->
+<div class="hamburger-overlay" id="hamburgerOverlay" onclick="closeHamburger()"></div>
+<aside class="hamburger-panel" id="hamburgerPanel">
+  <div style="padding:20px 20px 16px;border-bottom:1px solid rgba(228,228,231,0.6);display:flex;align-items:center;justify-content:space-between">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-white text-[10px] font-bold" id="navAvatar">?</div>
+      <div>
+        <p class="text-sm font-bold text-on-surface" id="navName">Mon profil</p>
+        <p class="text-[10px] text-on-surface-variant" id="navLevel">Rookie</p>
+      </div>
+    </div>
+    <button onclick="closeHamburger()" style="width:32px;height:32px;border-radius:8px;background:#f4f4f5;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center">
+      <span class="material-symbols-outlined" style="font-size:18px">close</span>
+    </button>
+  </div>
+  <div class="flex-1 overflow-y-auto" style="padding:16px 12px">
+    <a href="index.html" class="nav-item" style="margin-bottom:2px">
+      <div style="width:36px;height:36px;border-radius:10px;background:#f4f4f5;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <span class="material-symbols-outlined" style="font-size:18px;color:#000;font-variation-settings:'FILL' 1">space_dashboard</span>
+      </div>
+      <span class="nav-item-label text-sm font-semibold">Tableau de bord</span>
+    </a>
+    <p style="font-size:9px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#71717a;padding:14px 4px 6px">Gagner de l'argent</p>
+    <a href="rdv.html" class="nav-item" style="margin-bottom:2px">
+      <div style="width:36px;height:36px;border-radius:10px;background:#f4f4f5;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <span class="material-symbols-outlined" style="font-size:18px;color:#000;font-variation-settings:'FILL' 1">phone_in_talk</span>
+      </div>
+      <div><p class="nav-item-label text-sm font-semibold">Prise de RDV</p><p style="font-size:11px;color:#71717a">Appels · Scripts · Missions</p></div>
+    </a>
+    <a href="offres.html" class="nav-item" style="margin-bottom:2px">
+      <div style="width:36px;height:36px;border-radius:10px;background:#f4f4f5;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <span class="material-symbols-outlined" style="font-size:18px;color:#000;font-variation-settings:'FILL' 1">storefront</span>
+      </div>
+      <div><p class="nav-item-label text-sm font-semibold">Force de vente</p><p style="font-size:11px;color:#71717a">13 produits · Com 25%</p></div>
+    </a>
+    <a href="ugc.html" class="nav-item active" style="margin-bottom:2px">
+      <div style="width:36px;height:36px;border-radius:10px;background:#fee2e2;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <span class="material-symbols-outlined" style="font-size:18px;color:#b52330;font-variation-settings:'FILL' 1">videocam</span>
+      </div>
+      <div><p class="nav-item-label text-sm font-semibold">UGC</p><p style="font-size:11px;color:#71717a">Contenu vidéo · 5 € par post</p></div>
+    </a>
+    <a href="#" class="nav-item" style="margin-bottom:2px">
+      <div style="width:36px;height:36px;border-radius:10px;background:#f4f4f5;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <span class="material-symbols-outlined" style="font-size:18px;color:#000;font-variation-settings:'FILL' 1">group_add</span>
+      </div>
+      <div><p class="nav-item-label text-sm font-semibold">Affiliation</p><p style="font-size:11px;color:#71717a">5% sur tes filleuls à vie</p></div>
+    </a>
+    <p style="font-size:9px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#71717a;padding:14px 4px 6px">Mes résultats</p>
+    <a href="deals.html" class="nav-item" style="margin-bottom:2px">
+      <div style="width:36px;height:36px;border-radius:10px;background:#f4f4f5;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <span class="material-symbols-outlined" style="font-size:18px;color:#000;font-variation-settings:'FILL' 1">handshake</span>
+      </div>
+      <div><p class="nav-item-label text-sm font-semibold">Mes deals</p><p style="font-size:11px;color:#71717a" id="navPerf">0 € ce mois</p></div>
+    </a>
+  </div>
+</aside>
+
+<!-- HEADER -->
+<header class="sticky top-0 w-full z-50 px-5 py-4 glass-nav">
+  <nav class="flex justify-between items-center max-w-[1100px] mx-auto">
+    <div class="flex items-center gap-3">
+      <button onclick="openHamburger()" class="p-2 rounded-full hover:bg-surface-container-high transition">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+      <a href="index.html" class="flex items-baseline gap-0.5">
+        <span class="text-xl font-black tracking-tighter font-headline"><span style="color:#000">Stack</span><span style="color:#b52330">er</span></span>
+        <span class="w-1 h-1 bg-on-surface mb-0.5 inline-block"></span>
+      </a>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="flex items-center gap-1 px-3 py-1.5 rounded-full bg-surface-container-high">
+        <span class="material-symbols-outlined filled" style="font-size:18px;color:#f97316;font-variation-settings:'FILL' 1">local_fire_department</span>
+        <span class="font-headline font-bold text-sm text-on-surface" id="streakCount">0</span>
+      </div>
+      <div class="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-white text-xs font-bold cursor-pointer" id="headerAvatar" onclick="openHamburger()">?</div>
+    </div>
+  </nav>
+</header>
+
+<main class="max-w-[1100px] mx-auto px-5 py-8 page-enter" style="display:flex;flex-direction:column;gap:28px">
+
+  <!-- HERO -->
+  <div style="background:#1b1c1c;border-radius:20px;padding:28px 32px;position:relative;overflow:hidden">
+    <div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:rgba(181,35,48,0.15)"></div>
+    <div style="position:absolute;bottom:-60px;left:-20px;width:160px;height:160px;border-radius:50%;background:rgba(255,90,95,0.06)"></div>
+    <div style="position:relative;z-index:1">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+        <div style="width:36px;height:36px;border-radius:10px;background:rgba(181,35,48,0.25);display:flex;align-items:center;justify-content:center">
+          <span class="material-symbols-outlined filled" style="font-size:20px;color:#ff5a5f;font-variation-settings:'FILL' 1">videocam</span>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.45)">Missions UGC</span>
+      </div>
+      <h1 style="font-size:clamp(22px,4vw,32px);font-weight:900;color:#fff;letter-spacing:-0.035em;line-height:1.1;margin-bottom:10px">Poste, <span style="color:#ff5a5f">touche.</span></h1>
+      <p style="font-size:14px;color:rgba(255,255,255,0.55);line-height:1.55;max-width:440px;margin-bottom:20px">Des marques te payent <strong style="color:#fff">5 € par vidéo</strong> postée depuis ton compte TikTok ou Instagram. Zéro abonné requis. Tu lis le brief, tu tournes, tu postes, tu gagnes.</p>
+      <div style="display:flex;gap:16px;flex-wrap:wrap">
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <span style="font-size:22px;font-weight:900;color:#fff;letter-spacing:-0.04em" id="heroMissionCount">3</span>
+          <span style="font-size:11px;color:rgba(255,255,255,0.4);font-family:'JetBrains Mono',monospace;letter-spacing:0.05em">missions actives</span>
+        </div>
+        <div style="width:1px;background:rgba(255,255,255,0.08)"></div>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <span style="font-size:22px;font-weight:900;color:#ff5a5f;letter-spacing:-0.04em">5 €</span>
+          <span style="font-size:11px;color:rgba(255,255,255,0.4);font-family:'JetBrains Mono',monospace;letter-spacing:0.05em">par vidéo postée</span>
+        </div>
+        <div style="width:1px;background:rgba(255,255,255,0.08)"></div>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <span style="font-size:22px;font-weight:900;color:#fff;letter-spacing:-0.04em" id="heroEarnings">0 €</span>
+          <span style="font-size:11px;color:rgba(255,255,255,0.4);font-family:'JetBrains Mono',monospace;letter-spacing:0.05em">gagnés ce mois</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMMENT ÇA MARCHE -->
+  <div>
+    <p class="font-mono text-[9px] tracking-[0.2em] uppercase text-on-surface-variant mb-4">Comment ça marche</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px">
+      <div style="display:flex;align-items:flex-start;gap:12px;padding:16px;background:#f8f8f8;border-radius:12px">
+        <div style="width:32px;height:32px;border-radius:8px;background:#1b1c1c;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#fff">01</span>
+        </div>
+        <div><p style="font-size:13px;font-weight:700;color:#1b1c1c;margin-bottom:3px">Choisis une mission</p><p style="font-size:12px;color:#71717a;line-height:1.5">Lis le brief, le script et les consignes de la marque.</p></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:12px;padding:16px;background:#f8f8f8;border-radius:12px">
+        <div style="width:32px;height:32px;border-radius:8px;background:#1b1c1c;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#fff">02</span>
+        </div>
+        <div><p style="font-size:13px;font-weight:700;color:#1b1c1c;margin-bottom:3px">Tourne ta vidéo</p><p style="font-size:12px;color:#71717a;line-height:1.5">Suis le script scène par scène. Utilise la musique indiquée.</p></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:12px;padding:16px;background:#f8f8f8;border-radius:12px">
+        <div style="width:32px;height:32px;border-radius:8px;background:#1b1c1c;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#fff">03</span>
+        </div>
+        <div><p style="font-size:13px;font-weight:700;color:#1b1c1c;margin-bottom:3px">Poste & confirme</p><p style="font-size:12px;color:#71717a;line-height:1.5">Colle le texte du post, poste et valide dans l'app.</p></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:12px;padding:16px;background:#f8f8f8;border-radius:12px">
+        <div style="width:32px;height:32px;border-radius:8px;background:#b52330;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <span class="material-symbols-outlined filled" style="font-size:16px;color:#fff;font-variation-settings:'FILL' 1">payments</span>
+        </div>
+        <div><p style="font-size:13px;font-weight:700;color:#1b1c1c;margin-bottom:3px">Touche 5 €</p><p style="font-size:12px;color:#71717a;line-height:1.5">Versement automatique à J+7 sur ton IBAN.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MISSIONS -->
+  <div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div>
+        <p class="font-mono text-[9px] tracking-[0.2em] uppercase text-on-surface-variant mb-1">Disponibles maintenant</p>
+        <h2 style="font-size:18px;font-weight:900;color:#1b1c1c;letter-spacing:-0.025em">Missions actives</h2>
+      </div>
+      <div style="display:flex;gap:4px;background:#f4f4f5;border-radius:99px;padding:4px">
+        <button class="status-tab active" id="tabAll" onclick="filterMissions('all')">Toutes</button>
+        <button class="status-tab" id="tabNew" onclick="filterMissions('new')">Nouvelles</button>
+        <button class="status-tab" id="tabDone" onclick="filterMissions('done')">Faites</button>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px" id="missionGrid"></div>
+  </div>
+
+</main>
+
+<!-- MODAL DÉTAIL MISSION -->
+<div class="modal-overlay" id="missionModal">
+  <div class="modal-sheet">
+    <div style="position:sticky;top:0;background:#fff;border-bottom:1px solid rgba(228,228,231,0.5);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;z-index:10">
+      <div>
+        <p class="font-mono" style="font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#71717a;margin-bottom:2px">Mission UGC</p>
+        <p style="font-size:16px;font-weight:900;color:#1b1c1c;letter-spacing:-0.025em" id="modalTitle">–</p>
+      </div>
+      <button onclick="closeModal()" style="width:32px;height:32px;border-radius:8px;background:#f4f4f5;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <span class="material-symbols-outlined" style="font-size:18px">close</span>
+      </button>
+    </div>
+
+    <div style="padding:20px" id="modalContent">
+      <!-- Injecté par JS -->
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== SUPABASE =====
+const _SB_URL = 'https://vfvarvdrlyzmuytdzram.supabase.co';
+const _SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmdmFydmRybHl6bXV5dGR6cmFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNjUxNzgsImV4cCI6MjA5NTY0MTE3OH0.seyW-Ooxvf-T44TASVcb0Sk7Bos3sYJpQDz5SfkHd0g';
+const sbClient = window.supabase.createClient(_SB_URL, _SB_KEY);
+
+// ===== MISSIONS HARDCODÉES =====
+const MISSIONS = [
+  {
+    id: 'mission-001',
+    brand: 'Stacker',
+    logo: 'layers',
+    logoColor: '#b52330',
+    title: 'Présente Stacker à ta communauté',
+    reward: 5,
+    platform: 'TikTok',
+    duration: '15–30 sec',
+    status: 'new',
+    brief: "Parle de Stacker comme d'une découverte personnelle. Montre l'app, explique le concept en mode naturel et décontracté. Pas de ton publicitaire — tu partages quelque chose qui t'a aidé à gagner de l'argent en plus.",
+    scenes: [
+      { num: '01', title: 'Accroche (0–3s)', text: "Commence par une question directe en regardant la caméra : « Tu veux gagner de l'argent depuis ton téléphone sans aucune compétence particulière ? »" },
+      { num: '02', title: 'Présentation (3–12s)', text: "Montre l'écran de l'app Stacker. Explique : « J'ai trouvé cette appli qui te donne des missions — des appels à passer, des posts à faire — et tu touches une commission à chaque fois. »" },
+      { num: '03', title: 'Preuve (12–22s)', text: "Montre tes gains ou la liste des missions. « Moi j'ai déjà touché [montant] ce mois. C'est pas énorme mais c'est 0 risque, 0 investissement. »" },
+      { num: '04', title: 'Call to action (22–30s)', text: "Regarde la caméra : « Le lien est en bio, c'est gratuit. » Reste naturel, pas de voix forcée." }
+    ],
+    postText: "Je viens de découvrir une app qui te paie pour passer des appels et poster des vidéos 👀 Pas de compétences requises, pas d'investissement. Lien en bio 🔗 #stacker #gagnerdelargent #argent #sideHustle #opportunite",
+    music: { name: 'original sound - motivational', tiktokSearch: 'motivational hustle background', note: 'Cherche un son trending sur TikTok avec un bon BPM énergique. Évite la musique trop connue pour ne pas être coupé.' },
+    link: 'https://stacker-topaz.vercel.app/',
+    tips: "Tourne en verticale 9:16. Lumière naturelle de face. Pas besoin de montage complexe — les vidéos brutes marchent mieux."
+  },
+  {
+    id: 'mission-002',
+    brand: 'Alma Company',
+    logo: 'web',
+    logoColor: '#1b1c1c',
+    title: 'Vidéo témoignage site web',
+    reward: 5,
+    platform: 'TikTok / Instagram',
+    duration: '20–40 sec',
+    status: 'new',
+    brief: "Joue le rôle d'un client satisfait qui vient de recevoir son site web pro en 7 jours. Montre le site sur ton téléphone ou ordi. Le ton doit être sincère, pas surjoué.",
+    scenes: [
+      { num: '01', title: 'Accroche (0–4s)', text: "« J'avais besoin d'un site pour mon activité et j'avais pas le budget pour une agence classique. »" },
+      { num: '02', title: 'Découverte (4–15s)', text: "« J'ai contacté Alma Company — site livré en 7 jours, 49€/mois tout compris. » Montre le site sur l'écran." },
+      { num: '03', title: 'Résultat (15–30s)', text: "« Franchement le résultat est top. Design pro, mobile, tout est inclus. » Scroll sur le site visible à l'écran." },
+      { num: '04', title: 'CTA (30–40s)', text: "« Le lien est en dessous si t'as besoin d'un site rapidement. »" }
+    ],
+    postText: "Site web pro livré en 7 jours à partir de 49€/mois — j'aurais dû connaître ça avant 😅 Lien en bio ⬇️ #siteweb #creation #entrepreneur #freelance #webdesign #business",
+    music: { name: 'Son positif / success vibe', tiktokSearch: 'success motivation upbeat', note: 'Son léger et positif, pas trop chargé. Préfère un son instrumental pour que la voix soit bien audible.' },
+    link: 'https://alma.company',
+    tips: "Montre vraiment un écran de site — tu peux utiliser n'importe quel beau site pour simuler. Tourne en lumière naturelle. Le scroll sur l'écran est très important pour crédibiliser."
+  },
+  {
+    id: 'mission-003',
+    brand: 'Huntlist',
+    logo: 'keyboard_double_arrow_right',
+    logoColor: '#3b82f6',
+    title: 'Démo Huntlist — prospection auto',
+    reward: 5,
+    platform: 'TikTok / LinkedIn',
+    duration: '30–45 sec',
+    status: 'new',
+    brief: "Présente Huntlist comme un outil de prospection automatisée pour les entrepreneurs et indépendants. Cible : freelances, consultants, agences. Ton : sérieux mais accessible.",
+    scenes: [
+      { num: '01', title: 'Problème (0–5s)', text: "« Tu passes des heures à chercher des clients manuellement ? J'avais le même problème. »" },
+      { num: '02', title: 'Solution (5–20s)', text: "Montre l'interface Huntlist (huntlist.fr). « Avec Huntlist, tu rentres ta cible et l'IA trouve les prospects, rédige les emails et les envoie automatiquement depuis ton Gmail. »" },
+      { num: '03', title: 'Résultat (20–35s)', text: "« Résultat : des RDV qualifiés sans lever le petit doigt. La prospection tourne en arrière-plan pendant que je bosse sur mes clients. »" },
+      { num: '04', title: 'CTA (35–45s)', text: "« 14 jours gratuits — lien en bio. »" }
+    ],
+    postText: "Cette IA trouve mes prospects, rédige les emails et les envoie depuis mon Gmail automatiquement 🤖 J'ai des RDV sans rien faire. Lien en bio ⬇️ #prospection #ia #automation #freelance #entrepreneur #business #croissance",
+    music: { name: 'Son tech / futuriste', tiktokSearch: 'tech innovation sound effect', note: 'Son qui évoque l\'IA et la technologie. Pas trop envahissant, laisse la voix passer.' },
+    link: 'https://huntlist.fr',
+    tips: "Montre vraiment l'interface de Huntlist sur ton écran. La démo en direct est bien plus efficace que les explications. LinkedIn recommandé pour cette mission — cible pro."
+  }
+];
+
+let filteredMissions = [...MISSIONS];
+let doneMissions = JSON.parse(localStorage.getItem('ugc_done') || '[]');
+
+// ===== RENDER MISSIONS =====
+function renderMissions() {
+  const grid = document.getElementById('missionGrid');
+  const list = filteredMissions.filter(m => {
+    if (currentFilter === 'done') return doneMissions.includes(m.id);
+    if (currentFilter === 'new') return !doneMissions.includes(m.id);
+    return true;
+  });
+
+  if (list.length === 0) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px 0"><span class="material-symbols-outlined" style="font-size:40px;color:#e4e4e7;margin-bottom:12px;display:block">videocam_off</span><p style="font-size:14px;color:#71717a">Aucune mission dans cette catégorie.</p></div>';
+    return;
+  }
+
+  grid.innerHTML = list.map(m => {
+    const done = doneMissions.includes(m.id);
+    return `
+    <div class="mission-card hover-lift" onclick="openMission('${m.id}')">
+      <div style="padding:18px 18px 14px;display:flex;align-items:flex-start;gap:14px">
+        <div style="width:44px;height:44px;border-radius:12px;background:${m.logoColor}15;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <span class="material-symbols-outlined filled" style="font-size:22px;color:${m.logoColor};font-variation-settings:'FILL' 1">${m.logo}</span>
+        </div>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;flex-wrap:wrap">
+            <span class="mission-badge" style="background:${done ? '#dcfce7' : '#f4f4f5'};color:${done ? '#16a34a' : '#71717a'}">
+              ${done ? '✓ Fait' : '● Disponible'}
+            </span>
+            <span class="mission-badge" style="background:#f4f4f5;color:#71717a">${m.platform}</span>
+          </div>
+          <p style="font-size:14px;font-weight:800;color:#1b1c1c;letter-spacing:-0.015em;margin-bottom:3px;line-height:1.3">${m.title}</p>
+          <p style="font-size:12px;color:#71717a">par ${m.brand} · ${m.duration}</p>
+        </div>
+      </div>
+      <div style="border-top:1px solid rgba(228,228,231,0.6);padding:12px 18px;display:flex;align-items:center;justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:6px">
+          <span class="material-symbols-outlined filled" style="font-size:16px;color:#16a34a;font-variation-settings:'FILL' 1">payments</span>
+          <span style="font-size:15px;font-weight:900;color:#1b1c1c;letter-spacing:-0.025em">${m.reward} €</span>
+          <span style="font-size:11px;color:#71717a">par vidéo</span>
+        </div>
+        <button style="display:flex;align-items:center;gap:5px;padding:8px 14px;border-radius:8px;background:#1b1c1c;color:#fff;border:none;cursor:pointer;font-size:12px;font-weight:700;font-family:'DM Sans',sans-serif">
+          Voir le brief <span class="material-symbols-outlined" style="font-size:14px">arrow_forward</span>
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ===== OPEN MISSION =====
+function openMission(id) {
+  const m = MISSIONS.find(x => x.id === id);
+  if (!m) return;
+
+  document.getElementById('modalTitle').textContent = m.title;
+
+  const done = doneMissions.includes(m.id);
+
+  document.getElementById('modalContent').innerHTML = `
+    <!-- INFOS RAPIDES -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px">
+      <span class="mission-badge" style="background:#f4f4f5;color:#1b1c1c">
+        <span class="material-symbols-outlined" style="font-size:13px">smartphone</span> ${m.platform}
+      </span>
+      <span class="mission-badge" style="background:#f4f4f5;color:#1b1c1c">
+        <span class="material-symbols-outlined" style="font-size:13px">timer</span> ${m.duration}
+      </span>
+      <span class="mission-badge" style="background:#dcfce7;color:#16a34a">
+        <span class="material-symbols-outlined" style="font-size:13px">payments</span> ${m.reward} € par vidéo
+      </span>
+    </div>
+
+    <!-- BRIEF -->
+    <div class="brief-section" style="margin-bottom:16px">
+      <p class="brief-label">📋 Brief marque</p>
+      <p class="brief-content">${m.brief}</p>
+    </div>
+
+    <!-- SCRIPT -->
+    <div style="margin-bottom:16px">
+      <p class="brief-label" style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#71717a;font-weight:600;margin-bottom:12px">🎬 Script scène par scène</p>
+      ${m.scenes.map(s => `
+        <div class="scene-block">
+          <p class="scene-num">${s.num} · ${s.title}</p>
+          <p class="scene-text">${s.text}</p>
+        </div>
+      `).join('')}
+    </div>
+
+    <!-- TEXTE DU POST -->
+    <div style="background:#f8f8f8;border-radius:12px;padding:16px;margin-bottom:16px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <p class="brief-label" style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#71717a;font-weight:600;margin:0">✏️ Texte du post</p>
+        <button class="copy-btn" id="copyPostBtn" onclick="copyText('${m.postText.replace(/'/g, "\\'")}', 'copyPostBtn')">
+          <span class="material-symbols-outlined" style="font-size:14px">content_copy</span> Copier
+        </button>
+      </div>
+      <p style="font-size:13px;color:#1b1c1c;line-height:1.65;white-space:pre-wrap">${m.postText}</p>
+    </div>
+
+    <!-- MUSIQUE -->
+    <div style="background:#f8f8f8;border-radius:12px;padding:16px;margin-bottom:16px">
+      <p class="brief-label" style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#71717a;font-weight:600;margin-bottom:10px">🎵 Musique à utiliser</p>
+      <div style="display:flex;align-items:flex-start;gap:10px">
+        <div style="width:36px;height:36px;border-radius:8px;background:#1b1c1c;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <span class="material-symbols-outlined filled" style="font-size:18px;color:#fff;font-variation-settings:'FILL' 1">music_note</span>
+        </div>
+        <div>
+          <p style="font-size:13px;font-weight:700;color:#1b1c1c;margin-bottom:3px">${m.music.name}</p>
+          <p style="font-size:12px;color:#71717a;margin-bottom:8px">Recherche sur TikTok : <em>"${m.music.tiktokSearch}"</em></p>
+          <p style="font-size:12px;color:#71717a;line-height:1.5">${m.music.note}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- LIEN -->
+    <div style="background:#f8f8f8;border-radius:12px;padding:16px;margin-bottom:16px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <p class="brief-label" style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#71717a;font-weight:600;margin:0">🔗 Lien à mettre en bio</p>
+        <button class="copy-btn" id="copyLinkBtn" onclick="copyText('${m.link}', 'copyLinkBtn')">
+          <span class="material-symbols-outlined" style="font-size:14px">content_copy</span> Copier
+        </button>
+      </div>
+      <p style="font-size:13px;font-weight:700;color:#b52330;font-family:'JetBrains Mono',monospace">${m.link}</p>
+    </div>
+
+    <!-- TIPS -->
+    <div style="border:1px solid rgba(228,228,231,0.8);border-radius:12px;padding:14px;margin-bottom:24px">
+      <p class="brief-label" style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#71717a;font-weight:600;margin-bottom:8px">💡 Conseils tournage</p>
+      <p style="font-size:13px;color:#1b1c1c;line-height:1.6">${m.tips}</p>
+    </div>
+
+    <!-- CTA -->
+    ${done ? `
+    <div style="display:flex;align-items:center;gap:10px;padding:16px;background:#dcfce7;border-radius:12px">
+      <span class="material-symbols-outlined filled" style="font-size:20px;color:#16a34a;font-variation-settings:'FILL' 1">check_circle</span>
+      <p style="font-size:14px;font-weight:700;color:#16a34a">Mission validée — 5 € en cours de traitement</p>
+    </div>` : `
+    <button onclick="confirmPost('${m.id}')" style="width:100%;padding:15px;border-radius:14px;background:#1b1c1c;color:#fff;border:none;cursor:pointer;font-size:14px;font-weight:800;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;transition:background 0.2s" onmouseover="this.style.background='#b52330'" onmouseout="this.style.background='#1b1c1c'">
+      <span class="material-symbols-outlined" style="font-size:18px">check_circle</span>
+      J'ai posté ma vidéo — Valider la mission
+    </button>
+    <p style="text-align:center;font-size:11px;color:#71717a;margin-top:10px">Versement de 5 € sous 7 jours après vérification</p>`}
+  `;
+
+  document.getElementById('missionModal').classList.add('open');
+}
+
+// ===== CONFIRM POST =====
+function confirmPost(id) {
+  if (!doneMissions.includes(id)) {
+    doneMissions.push(id);
+    localStorage.setItem('ugc_done', JSON.stringify(doneMissions));
+  }
+  closeModal();
+  renderMissions();
+  // Notification légère
+  const banner = document.createElement('div');
+  banner.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1b1c1c;color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:700;z-index:1000;display:flex;align-items:center;gap:8px;box-shadow:0 8px 24px rgba(0,0,0,0.2)';
+  banner.innerHTML = '<span style="color:#4ade80">✓</span> Mission validée ! 5 € en cours de traitement';
+  document.body.appendChild(banner);
+  setTimeout(() => banner.remove(), 3000);
+}
+
+// ===== COPY =====
+function copyText(text, btnId) {
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById(btnId);
+    if (btn) {
+      btn.classList.add('copied');
+      btn.innerHTML = '<span class="material-symbols-outlined" style="font-size:14px">check</span> Copié !';
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        btn.innerHTML = '<span class="material-symbols-outlined" style="font-size:14px">content_copy</span> Copier';
+      }, 2000);
+    }
+  });
+}
+
+// ===== MODAL =====
+function closeModal() {
+  document.getElementById('missionModal').classList.remove('open');
+}
+
+// ===== FILTER =====
+let currentFilter = 'all';
+function filterMissions(filter) {
+  currentFilter = filter;
+  document.querySelectorAll('.status-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab' + filter.charAt(0).toUpperCase() + filter.slice(1)).classList.add('active');
+  renderMissions();
+}
+
+// ===== HAMBURGER =====
+function openHamburger() {
+  document.getElementById('hamburgerOverlay').classList.add('open');
+  document.getElementById('hamburgerPanel').classList.add('open');
+}
+function closeHamburger() {
+  document.getElementById('hamburgerOverlay').classList.remove('open');
+  document.getElementById('hamburgerPanel').classList.remove('open');
+}
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', () => {
+  renderMissions();
+  // Earnings
+  const earnings = doneMissions.length * 5;
+  document.getElementById('heroEarnings').textContent = earnings + ' €';
+  document.getElementById('heroMissionCount').textContent = MISSIONS.length;
+});
+</script>
+</body>
+</html>
