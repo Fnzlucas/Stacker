@@ -60,7 +60,7 @@ body{font-family:'DM Sans',sans-serif;background:#ffffff}
 
 /* SCRIPT SCENE */
 .scene-block{border-left:2px solid #e4e4e7;padding-left:14px;margin-bottom:16px}
-.scene-num{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#b52330;margin-bottom:4px}
+.scene-num{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#b52330;margin-bottom:4px}
 .scene-text{font-size:13px;color:#1b1c1c;line-height:1.6}
 
 /* COPY BUTTON */
@@ -285,7 +285,7 @@ const MISSIONS = [
       { num: '03', title: 'Preuve (12–22s)', text: "Montre tes gains ou la liste des missions. « Moi j'ai déjà touché [montant] ce mois. C'est pas énorme mais c'est 0 risque, 0 investissement. »" },
       { num: '04', title: 'Call to action (22–30s)', text: "Regarde la caméra : « Le lien est en bio, c'est gratuit. » Reste naturel, pas de voix forcée." }
     ],
-    postText: "Je viens de découvrir une app qui te paie pour passer des appels et poster des vidéos 👀 Pas de compétences requises, pas d'investissement. Lien en bio 🔗 #stacker #gagnerdelargent #argent #sideHustle #opportunite",
+    postText: "Je viens de découvrir une app qui te paie pour passer des appels et poster des vidéos  Pas de compétences requises, pas d'investissement. Lien en bio  #stacker #gagnerdelargent #argent #sideHustle #opportunite",
     music: { name: 'original sound - motivational', tiktokSearch: 'motivational hustle background', note: 'Cherche un son trending sur TikTok avec un bon BPM énergique. Évite la musique trop connue pour ne pas être coupé.' },
     link: 'https://stacker-topaz.vercel.app/',
     tips: "Tourne en verticale 9:16. Lumière naturelle de face. Pas besoin de montage complexe — les vidéos brutes marchent mieux."
@@ -307,7 +307,7 @@ const MISSIONS = [
       { num: '03', title: 'Résultat (15–30s)', text: "« Franchement le résultat est top. Design pro, mobile, tout est inclus. » Scroll sur le site visible à l'écran." },
       { num: '04', title: 'CTA (30–40s)', text: "« Le lien est en dessous si t'as besoin d'un site rapidement. »" }
     ],
-    postText: "Site web pro livré en 7 jours à partir de 49€/mois — j'aurais dû connaître ça avant 😅 Lien en bio ⬇️ #siteweb #creation #entrepreneur #freelance #webdesign #business",
+    postText: "Site web pro livré en 7 jours à partir de 49€/mois — j'aurais dû connaître ça avant  Lien en bio  #siteweb #creation #entrepreneur #freelance #webdesign #business",
     music: { name: 'Son positif / success vibe', tiktokSearch: 'success motivation upbeat', note: 'Son léger et positif, pas trop chargé. Préfère un son instrumental pour que la voix soit bien audible.' },
     link: 'https://alma.company',
     tips: "Montre vraiment un écran de site — tu peux utiliser n'importe quel beau site pour simuler. Tourne en lumière naturelle. Le scroll sur l'écran est très important pour crédibiliser."
@@ -329,7 +329,7 @@ const MISSIONS = [
       { num: '03', title: 'Résultat (20–35s)', text: "« Résultat : des RDV qualifiés sans lever le petit doigt. La prospection tourne en arrière-plan pendant que je bosse sur mes clients. »" },
       { num: '04', title: 'CTA (35–45s)', text: "« 14 jours gratuits — lien en bio. »" }
     ],
-    postText: "Cette IA trouve mes prospects, rédige les emails et les envoie depuis mon Gmail automatiquement 🤖 J'ai des RDV sans rien faire. Lien en bio ⬇️ #prospection #ia #automation #freelance #entrepreneur #business #croissance",
+    postText: "Cette IA trouve mes prospects, rédige les emails et les envoie depuis mon Gmail automatiquement  J'ai des RDV sans rien faire. Lien en bio  #prospection #ia #automation #freelance #entrepreneur #business #croissance",
     music: { name: 'Son tech / futuriste', tiktokSearch: 'tech innovation sound effect', note: 'Son qui évoque l\'IA et la technologie. Pas trop envahissant, laisse la voix passer.' },
     link: 'https://huntlist.fr',
     tips: "Montre vraiment l'interface de Huntlist sur ton écran. La démo en direct est bien plus efficace que les explications. LinkedIn recommandé pour cette mission — cible pro."
@@ -364,7 +364,7 @@ function renderMissions() {
         <div style="flex:1;min-width:0">
           <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;flex-wrap:wrap">
             <span class="mission-badge" style="background:${done ? '#dcfce7' : '#f4f4f5'};color:${done ? '#16a34a' : '#71717a'}">
-              ${done ? '✓ Fait' : '● Disponible'}
+              ${done ? ' Fait' : ' Disponible'}
             </span>
             <span class="mission-badge" style="background:#f4f4f5;color:#71717a">${m.platform}</span>
           </div>
@@ -411,13 +411,13 @@ function openMission(id) {
 
     <!-- BRIEF -->
     <div class="brief-section" style="margin-bottom:16px">
-      <p class="brief-label">📋 Brief marque</p>
+      <p class="brief-label"> Brief marque</p>
       <p class="brief-content">${m.brief}</p>
     </div>
 
     <!-- SCRIPT -->
     <div style="margin-bottom:16px">
-      <p class="brief-label" style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#71717a;font-weight:600;margin-bottom:12px">🎬 Script scène par scène</p>
+      <p class="brief-label" style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#71717a;font-weight:700;margin-bottom:12px"> Script scène par scène</p>
       ${m.scenes.map(s => `
         <div class="scene-block">
           <p class="scene-num">${s.num} · ${s.title}</p>
@@ -429,7 +429,7 @@ function openMission(id) {
     <!-- TEXTE DU POST -->
     <div style="background:#f8f8f8;border-radius:12px;padding:16px;margin-bottom:16px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-        <p class="brief-label" style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#71717a;font-weight:600;margin:0">✏️ Texte du post</p>
+        <p class="brief-label" style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#71717a;font-weight:700;margin:0"> Texte du post</p>
         <button class="copy-btn" id="copyPostBtn" onclick="copyText('${m.postText.replace(/'/g, "\\'")}', 'copyPostBtn')">
           <span class="material-symbols-outlined" style="font-size:14px">content_copy</span> Copier
         </button>
@@ -439,7 +439,7 @@ function openMission(id) {
 
     <!-- MUSIQUE -->
     <div style="background:#f8f8f8;border-radius:12px;padding:16px;margin-bottom:16px">
-      <p class="brief-label" style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#71717a;font-weight:600;margin-bottom:10px">🎵 Musique à utiliser</p>
+      <p class="brief-label" style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#71717a;font-weight:700;margin-bottom:10px"> Musique à utiliser</p>
       <div style="display:flex;align-items:flex-start;gap:10px">
         <div style="width:36px;height:36px;border-radius:8px;background:#1b1c1c;display:flex;align-items:center;justify-content:center;flex-shrink:0">
           <span class="material-symbols-outlined filled" style="font-size:18px;color:#fff;font-variation-settings:'FILL' 1">music_note</span>
@@ -455,7 +455,7 @@ function openMission(id) {
     <!-- LIEN -->
     <div style="background:#f8f8f8;border-radius:12px;padding:16px;margin-bottom:16px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-        <p class="brief-label" style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#71717a;font-weight:600;margin:0">🔗 Lien à mettre en bio</p>
+        <p class="brief-label" style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#71717a;font-weight:700;margin:0"> Lien à mettre en bio</p>
         <button class="copy-btn" id="copyLinkBtn" onclick="copyText('${m.link}', 'copyLinkBtn')">
           <span class="material-symbols-outlined" style="font-size:14px">content_copy</span> Copier
         </button>
@@ -465,7 +465,7 @@ function openMission(id) {
 
     <!-- TIPS -->
     <div style="border:1px solid rgba(228,228,231,0.8);border-radius:12px;padding:14px;margin-bottom:24px">
-      <p class="brief-label" style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#71717a;font-weight:600;margin-bottom:8px">💡 Conseils tournage</p>
+      <p class="brief-label" style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#71717a;font-weight:700;margin-bottom:8px"> Conseils tournage</p>
       <p style="font-size:13px;color:#1b1c1c;line-height:1.6">${m.tips}</p>
     </div>
 
@@ -496,7 +496,7 @@ function confirmPost(id) {
   // Notification légère
   const banner = document.createElement('div');
   banner.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1b1c1c;color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:700;z-index:1000;display:flex;align-items:center;gap:8px;box-shadow:0 8px 24px rgba(0,0,0,0.2)';
-  banner.innerHTML = '<span style="color:#4ade80">✓</span> Mission validée ! 5 € en cours de traitement';
+  banner.innerHTML = '<span style="color:#4ade80"></span> Mission validée ! 5 € en cours de traitement';
   document.body.appendChild(banner);
   setTimeout(() => banner.remove(), 3000);
 }
