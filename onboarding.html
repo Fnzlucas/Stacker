@@ -278,7 +278,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;heigh
       </div>
     </div>
     <div class="screen-bottom">
-      <button class="btn-next cta" id="btnNextProfil" onclick="goTo('1b')" disabled style="opacity:0.4;cursor:not-allowed">
+      <button class="btn-next cta" id="btnNextProfil" onclick="goTo(2)" disabled style="opacity:0.4;cursor:not-allowed">
         Continuer <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span>
       </button>
     </div>
@@ -642,7 +642,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;heigh
 const TOTAL = 9;
 let cur = 1;
 let ageChoice = null;
-let checks = { check1: false, check2: false, check3: false };
+let checks = { check1: false, check2: false, check3: false, check4: false };
 let ibanSkipped = false;
 let selectedCanaux = [];
 let selectedOffers = [];
@@ -663,16 +663,14 @@ const OFFERS = [
 ];
 
 function goTo(n) {
-  if (typeof n === 'number' && (n < 1 || n > TOTAL)) return;
   const prev = document.getElementById('s' + cur);
   const next = document.getElementById('s' + n);
   if (!next) return;
-  prev.classList.remove('active');
-  prev.classList.add('out');
-  setTimeout(() => prev.classList.remove('out'), 450);
+  if (prev) { prev.classList.remove('active'); prev.classList.add('out'); setTimeout(() => prev.classList.remove('out'), 450); }
   next.classList.add('active');
   cur = n;
-  const pct = n === 1 ? 0 : Math.round(((n - 1) / (TOTAL - 1)) * 100);
+  const numN = typeof n === 'number' ? n : 1;
+  const pct = numN <= 1 ? 0 : Math.round(((numN - 1) / (TOTAL - 1)) * 100);
   document.getElementById('progressBar').style.width = pct + '%';
   if (n === 5) renderOffers();
   if (n === 9) buildSuccess();
@@ -727,7 +725,7 @@ function toggleCheck(id) {
 }
 
 function updateSignBtn() {
-  const all = checks.check1 && checks.check2 && checks.check3;
+  const all = checks.check1 && checks.check2 && checks.check3 && checks.check4;
   const btn = document.getElementById('btnSign');
   btn.disabled = !all;
   btn.style.opacity = all ? '1' : '0.4';
@@ -742,7 +740,7 @@ function checkConvScroll() {
 }
 
 function validateS4() {
-  if (!checks.check1 || !checks.check2 || !checks.check3) { showError('Coche toutes les cases pour continuer.'); return; }
+  if (!checks.check1 || !checks.check2 || !checks.check3 || !checks.check4) { showError('Coche toutes les cases pour continuer.'); return; }
   goTo(5);
 }
 
