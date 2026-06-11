@@ -252,7 +252,7 @@
         <div>
           <p class="text-[10px] font-semibold tracking-[0.25em] text-on-surface-variant uppercase mb-2">Catalogue commercial</p>
           <h1 class="font-headline font-extrabold text-3xl md:text-4xl display-tight text-on-surface">Nos offres</h1>
-          <p class="text-sm text-on-surface-variant mt-2">8 produits · scripts, tarifs et contrats inclus</p>
+          <p class="text-sm text-on-surface-variant mt-2">10 produits & packs · scripts, tarifs et contrats inclus</p>
         </div>
         <div class="relative">
           <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" style="font-size:18px">search</span>
@@ -304,17 +304,17 @@
           <p class="text-white/60 text-base md:text-lg mb-8 max-w-xl">SEO + IA pour propulser n'importe quel commerce en tête de Google. Script validé, audit gratuit comme accroche.</p>
           <div class="flex items-center gap-8 flex-wrap">
             <div>
-              <p class="font-headline font-extrabold text-3xl text-white" style="letter-spacing:-0.045em">98 €</p>
-              <p class="text-xs text-white/50">com. mensuelle · Pack Pro</p>
+              <p class="font-headline font-extrabold text-3xl text-white" style="letter-spacing:-0.045em">17,50 €</p>
+              <p class="text-xs text-white/50">com. mensuelle · Pack Starter</p>
             </div>
             <div class="h-10 w-px bg-white/20"></div>
             <div>
-              <p class="font-headline font-extrabold text-3xl text-white" style="letter-spacing:-0.045em">349 €</p>
+              <p class="font-headline font-extrabold text-3xl text-white" style="letter-spacing:-0.045em">34,99 €</p>
               <p class="text-xs text-white/50">abonnement client</p>
             </div>
             <div class="h-10 w-px bg-white/20"></div>
             <div>
-              <p class="font-headline font-extrabold text-3xl text-white" style="letter-spacing:-0.045em">20%</p>
+              <p class="font-headline font-extrabold text-3xl text-white" style="letter-spacing:-0.045em">25%</p>
               <p class="text-xs text-white/50">commission récurrente</p>
             </div>
           </div>
@@ -324,7 +324,7 @@
 
     <!-- Liste compacte -->
     <section class="reveal" style="animation-delay:0.3s">
-      <div class="grid grid-cols-2 gap-3" id="productGrid"></div>
+      <div class="grid grid-cols-2 gap-x-3 gap-y-5" id="productGrid"></div>
     </section>
 
     <div class="flex justify-center mt-6" id="noResults" style="display:none">
@@ -510,6 +510,57 @@
 <script>
 const PRODUCTS = [
  {
+ id:'pack-starter', name:'Pack Starter', category:'Pack · Site + SEO',
+ tagline:'Site web professionnel + suivi SEO — tout inclus',
+ icon:'rocket_launch', color:'#b52330',
+ tags:['Pack','Site web','SEO','Débutant','Meilleure vente'],
+ desc:"Le pack d'entrée idéal pour les commerçants et entrepreneurs qui veulent une présence en ligne complète sans se ruiner. Un site vitrine professionnel livré en 7 jours + un suivi SEO mensuel pour être trouvé sur Google. Tout inclus, aucune surprise.",
+ problems:["Un site sans SEO ne sert à rien — les clients ne trouvent pas","Les agences facturent le site et le SEO séparément, ça explose le budget","Le commerçant ne sait pas par où commencer"],
+ args:["Site 5 pages livré en 7 jours + SEO de base dès le lancement","Un seul interlocuteur, une seule facture, un seul abonnement","Dès 54,99€/mois — moins cher que séparément","Résultats Google visibles dès le 1er mois"],
+ target:"Commerçants, artisans et entrepreneurs sans site ou avec un site obsolète, qui veulent être visibles sur Google sans gérer deux prestataires.",
+ plans:[
+ {name:'Pack Starter',price:54.99,engagement:'12 mois',comRate:0.25,features:['Site vitrine 5 pages','Livraison en 7 jours','SEO de base mensuel','Hébergement inclus','Support email'],rec:false},
+ {name:'Pack Visibilité',price:74.99,engagement:'12 mois',comRate:0.25,features:['Site jusqu\'à 15 pages','Blog intégré','SEO avancé + Google My Business','E-Réputation Google','Support prioritaire'],rec:true},
+ {name:'Pack Digital Complet',price:99.99,engagement:'12 mois',comRate:0.25,features:['Pages illimitées','SEO premium + IA (ChatGPT/Perplexity)','Gestion réseaux sociaux','Modifications illimitées','Manager dédié'],rec:false},
+ ],
+ scripts:{
+ tel:{intro:"Bonjour, je suis [Prénom]. Je vous appelle car on vient de lancer une offre qui combine site web professionnel ET référencement Google en un seul abonnement. Est-ce que vous avez un site internet actuellement ?",arg:"Pour 54,99€ par mois, vous avez un site professionnel livré en 7 jours ET le SEO mensuel pour être trouvé sur Google. Fini les 5 000€ d'agence, fini les deux prestataires séparés. Un seul abonnement, tout inclus.",close:"Je vous propose de commencer par un audit gratuit de votre visibilité actuelle. Vous avez 5 minutes maintenant ?"},
+ pap:{intro:"Bonjour ! Je représente Alma Company. On vient de sortir un pack Site + SEO qui révolutionne le budget digital des commerçants comme vous. Je peux vous montrer en 2 minutes ?",arg:"54,99€ par mois — site professionnel livré en 7 jours + SEO Google mensuel. Tout inclus. Moins cher que votre abonnement téléphone. Et vos clients vous trouvent sur Google.",close:"Je vous fais un devis sur place maintenant. Ça prend 3 minutes."},
+ rdv:{intro:"Merci de me recevoir. J'ai préparé une analyse de votre visibilité en ligne et quelques maquettes de site dans votre secteur.",arg:"Voilà le problème : un site sans SEO c'est invisible. Du SEO sans site c'est inutile. On les combine pour 54,99€/mois. Livraison en 7 jours. Premiers résultats Google en 30 jours.",close:"On part sur quel pack ? Le Visibilité est notre best-seller — site + SEO + GMB pour 74,99€/mois."},
+ social:{intro:"Tu paies une agence pour ton site ET une autre pour le SEO ? Stop.",arg:"Alma Company combine les deux pour 54,99€/mois. Site professionnel en 7 jours + SEO Google mensuel. Tout inclus, un seul abonnement.",close:"DM pour un audit gratuit de ta visibilité Google."}
+ },
+ objections:[
+ {q:"54,99€ c'est trop cher pour moi",a:"C'est moins de 2€ par jour. Un seul nouveau client par mois via Google rembourse l'intégralité de l'abonnement. Et séparément, un site + le SEO vous coûterait le double."},
+ {q:"J'ai déjà un site",a:"Parfait — dans ce cas on s'occupe uniquement du SEO à 34,99€/mois pour vous rendre visible sur Google. Ou on refait votre site en même temps si il a plus de 3 ans."},
+ {q:"Combien de temps avant de voir des résultats SEO ?",a:"Premiers positionnements visibles dès le 1er mois. Résultats significatifs à 3 mois. Vous avez un rapport mensuel détaillé avec vos positions."},
+ ]
+ },
+ {
+ id:'pack-local', name:'Pack Local Pro', category:'Pack · Visibilité Locale Complète',
+ tagline:'Site + SEO + Réseaux sociaux + Carte fidélité — tout pour dominer localement',
+ icon:'store', color:'#006c4c',
+ tags:['Pack','Commerce local','SEO','Réseaux','Fidélité'],
+ desc:"Le pack tout-en-un pour les commerçants qui veulent dominer leur zone de chalandise. Site web + SEO local + gestion réseaux sociaux + carte de fidélité digitale. Tout géré par une seule équipe, une seule facture.",
+ problems:["Le commerçant jongle avec 3-4 prestataires différents pour sa présence digitale","Pas le temps de gérer les réseaux sociaux en plus du reste","Les clients fidèles ne sont pas suffisamment retenus"],
+ args:["4 services en 1 seul abonnement — économie de 40% vs séparé","Gestion 100% externalisée — le commerçant ne touche à rien","Carte fidélité digitale dans le wallet de chaque client","Présence locale dominante : Google + Réseaux + Fidélité"],
+ target:"Commerçants établis — restaurant, boutique, salon, artisan — voulant une présence digitale complète et dominer leur marché local sans gérer eux-mêmes.",
+ plans:[
+ {name:'Pack Local Pro',price:119.99,engagement:'12 mois',comRate:0.25,features:['Site web professionnel','SEO local + GMB','2 posts réseaux/semaine','Carte fidélité digitale','Support prioritaire'],rec:true},
+ {name:'Pack Local Elite',price:159.99,engagement:'12 mois',comRate:0.25,features:['Tout Local Pro inclus','SEO avancé + IA','5 posts réseaux/semaine + stories','UGC vidéo mensuelle','Manager dédié'],rec:false},
+ ],
+ scripts:{
+ tel:{intro:"Bonjour, je suis [Prénom]. On a créé un pack spécialement pour les commerçants locaux qui veulent tout déléguer leur présence digitale en un seul abonnement. Vous gérez ça vous-même actuellement ?",arg:"Pour 119,99€ par mois : on gère votre site, votre SEO Google, vos réseaux sociaux ET votre carte de fidélité digitale. Tout est géré par notre équipe. Vous, vous vous concentrez sur votre commerce.",close:"Je vous propose un audit gratuit de votre présence en ligne actuelle cette semaine — ça prend 15 minutes et vous voyez exactement ce qui manque. Quand êtes-vous disponible ?"},
+ pap:{intro:"Bonjour ! Je représente Alma Company. On a un pack spécialement pour les commerçants comme vous — site, SEO, réseaux et fidélité, tout géré en un seul abonnement. Vous avez 2 minutes ?",arg:"119,99€ par mois et on s'occupe de tout : votre site est à jour, Google vous trouve, vos clients voient vos posts sur Instagram, et votre carte fidélité est dans le téléphone de chaque client. Rien à faire de votre côté.",close:"Je vous fais voir concrètement sur mon téléphone ce que ça donne pour un commerce comme le vôtre ?"},
+ rdv:{intro:"Merci de me recevoir. J'ai analysé votre présence en ligne — voici ce que votre concurrent direct fait et ce que vous pourriez faire mieux.",arg:"Votre concurrent est visible sur Google, actif sur Instagram et a une carte fidélité digitale. Tout ça pour 119,99€/mois avec notre Pack Local Pro — on gère tout, vous gérez votre commerce.",close:"On signe aujourd'hui et vous êtes opérationnel dans 7 jours."},
+ social:{intro:"Tu gères ton site, ton SEO, tes réseaux et ta fidélité tout seul ? Arrête.",arg:"Pack Local Pro : site + SEO + réseaux + carte fidélité. 119,99€/mois, tout géré par notre équipe. Tu te concentres sur ton commerce.",close:"DM pour un audit gratuit de ta présence locale."}
+ },
+ objections:[
+ {q:"C'est beaucoup d'argent chaque mois",a:"Calculez ce que vous payez actuellement séparément : hébergement, prestataire SEO, community manager, programme fidélité. Notre pack coûte moins cher que chaque élément pris séparément. Et tout est géré par une seule équipe."},
+ {q:"J'ai déjà quelqu'un pour les réseaux",a:"Parfait — dans ce cas on adapte le pack en retirant les réseaux et on ajuste le prix. On peut partir sur le Pack Starter à 54,99€ pour le site + SEO uniquement."},
+ {q:"Vous connaissez mon secteur ?",a:"On a des clients dans la restauration, le commerce de détail, les salons de beauté, les artisans. On produit du contenu adapté à votre secteur, votre ton et votre clientèle."},
+ ]
+ },
+ {
  id:'qrvitrine', name:'QR Avis Google', category:'Collecte d\'avis Google instantanée',
  tagline:'Un QR code physique — le client scanne, il laisse un avis en 10 secondes',
  icon:'qr_code_2', color:'#006c4c',
@@ -546,9 +597,9 @@ const PRODUCTS = [
  args:["Visible sur Google classique ET sur ChatGPT, Perplexity, Google AI Overview","SEO traditionnel + optimisation contenu IA en une seule stratégie","Résultats de positionnement visibles dès le 1er mois","On gère tout de A à Z — aucune action requise de sa part"],
  target:"Tout commerçant local avec un site internet — restaurant, boutique, salon, artisan, cabinet, hôtel. Peu importe le secteur, peu importe la taille. Si le client a un site et des concurrents, on peut l'aider.",
  plans:[
- {name:'Starter',price:199,engagement:'6 mois',comRate:0.25,features:['Audit SEO complet du site','Optimisation on-page et technique','Référencement IA de base (ChatGPT)','Rapport mensuel détaillé'],rec:false},
- {name:'Pro',price:349,engagement:'9 mois',comRate:0.25,features:['Tout Starter inclus','Contenu IA publié chaque semaine','Optimisation Google AI Overview + Perplexity','SEO local Google My Business','Support prioritaire 24h'],rec:true},
- {name:'Premium',price:490,engagement:'12 mois',comRate:0.25,features:['Tout Pro inclus','Stratégie IA sur mesure multi-plateformes','Session stratégique mensuelle 1h','Manager SEO dédié'],rec:false},
+ {name:'Starter',price:34.99,engagement:'6 mois',comRate:0.25,features:['Audit SEO complet du site','Optimisation on-page et technique','Référencement IA de base (ChatGPT)','Rapport mensuel détaillé'],rec:false},
+ {name:'Pro',price:64.99,engagement:'9 mois',comRate:0.25,features:['Tout Starter inclus','Contenu IA publié chaque semaine','Optimisation Google AI Overview + Perplexity','SEO local Google My Business','Support prioritaire 24h'],rec:true},
+ {name:'Premium',price:99.99,engagement:'12 mois',comRate:0.25,features:['Tout Pro inclus','Stratégie IA sur mesure multi-plateformes','Session stratégique mensuelle 1h','Manager SEO dédié'],rec:false},
  ],
  scripts:{
  tel:{intro:"Bonjour, je suis [Prénom] de Seoia Partners. Je vous appelle car aujourd'hui quand quelqu'un cherche [métier] à [ville] — que ce soit sur Google ou en posant une question à ChatGPT — vous n'apparaissez pas. Ça représente des clients perdus chaque jour.",arg:"On a développé une stratégie qui combine le SEO Google classique avec le référencement sur les moteurs de recherche IA — ChatGPT, Perplexity, Google AI Overview. On est les seuls à faire les deux en même temps. Résultats visibles dès le premier mois, vous n'avez rien à faire.",close:"Je vous propose un audit gratuit cette semaine pour vous montrer exactement ce qui bloque votre visibilité sur Google et sur les IA. On se fait ça quand ?"},
@@ -676,15 +727,15 @@ const PRODUCTS = [
  args:["Design professionnel sur mesure livré en 7 jours chrono","SEO de base intégré dès la création pour être trouvé sur Google","Hébergement, maintenance et mises à jour inclus sans surcoût","Modifications incluses — vous n'êtes jamais bloqué"],
  target:"Entrepreneurs, artisans, commerçants et PME sans site internet ou avec un site obsolète, voulant une présence professionnelle en ligne sans investissement initial massif.",
  plans:[
- {name:'Starter',price:49,engagement:'12 mois',comRate:0.25,features:['Site vitrine 5 pages','Design professionnel','Hébergement inclus','SEO de base intégré','Support email'],rec:false},
- {name:'Pro',price:99,engagement:'12 mois',comRate:0.25,features:['Max 15 pages','Blog intégré','Formulaires avancés','3 modifications/mois','Support prioritaire'],rec:true},
- {name:'Premium',price:199,engagement:'12 mois',comRate:0.25,features:['Pages illimitées','E-commerce complet','Modifications illimitées','SEO avancé mensuel','Manager dédié'],rec:false},
+ {name:'Starter',price:39.99,engagement:'12 mois',comRate:0.25,features:['Site vitrine 5 pages','Design professionnel','Hébergement inclus','SEO de base intégré','Support email'],rec:false},
+ {name:'Pro',price:69.99,engagement:'12 mois',comRate:0.25,features:['Max 15 pages','Blog intégré','Formulaires avancés','3 modifications/mois','Support prioritaire'],rec:true},
+ {name:'Premium',price:119.99,engagement:'12 mois',comRate:0.25,features:['Pages illimitées','E-commerce complet','Modifications illimitées','SEO avancé mensuel','Manager dédié'],rec:false},
  ],
  scripts:{
- tel:{intro:"Bonjour, je suis [Prénom] d'Alma Company. On crée des sites web professionnels pour les entrepreneurs et commerçants. Est-ce que vous avez un site internet actuellement ?",arg:"On livre un site professionnel, moderne et optimisé Google en 7 jours chrono, avec hébergement et maintenance inclus, dès 49€/mois. Fini les 5 000€ en one shot chez une agence. Tout est inclus, aucune mauvaise surprise.",close:"Je peux vous montrer des exemples de réalisations récentes maintenant. Vous avez 5 minutes ?"},
- pap:{intro:"Bonjour ! Je passe vous voir de la part d'Alma Company — on crée des sites web professionnels pour les commerçants et entrepreneurs locaux. Vous avez un site internet actuellement ?",arg:"Site professionnel livré en 7 jours, dès 49€/mois tout inclus. On s'occupe de A à Z — design, hébergement, maintenance, mises à jour. Vous n'avez rien à faire.",close:"Je vous montre des exemples de réalisations sur mon téléphone ?"},
- rdv:{intro:"Merci de me recevoir. J'ai préparé quelques maquettes dans votre secteur d'activité pour vous donner une idée très concrète du rendu final.",arg:"Voici des sites qu'on a livrés en 7 jours pour des professionnels dans votre domaine. Design professionnel, rapide, optimisé Google. Nos clients reçoivent leurs premiers contacts web dès la première semaine de mise en ligne.",close:"On commence quand vous voulez — je prends vos informations aujourd'hui et l'équipe design vous contacte dès demain matin."},
- social:{intro:"Ton site web fait fuir tes clients ? Ou tu n'en as toujours pas ?",arg:"Alma Company te livre un site professionnel en 7 jours. Design moderne, SEO inclus, hébergement inclus, modifications incluses. Dès 49€/mois — sans les 5 000€ d'une agence traditionnelle.",close:"DM pour voir nos réalisations. Ou lien en bio pour démarrer directement."}
+ tel:{intro:"Bonjour, je suis [Prénom] d'Alma Company. On crée des sites web professionnels pour les entrepreneurs et commerçants. Est-ce que vous avez un site internet actuellement ?",arg:"On livre un site professionnel, moderne et optimisé Google en 7 jours chrono, avec hébergement et maintenance inclus, à partir de 39,99€/mois. Fini les 5 000€ en one shot chez une agence. Tout est inclus, aucune mauvaise surprise.",close:"Je peux vous montrer des exemples de réalisations récentes maintenant. Vous avez 5 minutes ?"},
+ pap:{intro:"Bonjour ! Je passe vous voir de la part d'Alma Company — on crée des sites web professionnels pour les commerçants et entrepreneurs locaux. Vous avez un site internet actuellement ?",arg:"Site professionnel livré en 7 jours, à partir de 39,99€/mois tout inclus. On s'occupe de A à Z — design, hébergement, maintenance, mises à jour. Vous n'avez rien à faire.",close:"Je vous montre des exemples de réalisations sur mon téléphone ?"},
+ rdv:{intro:"Merci de me recevoir. J'ai préparé quelques maquettes dans votre secteur d'activité pour vous donner une idée très concrète du rendu final.",arg:"Voici des sites qu'on a livrés en 7 jours pour des professionnels dans votre domaine. Design professionnel, rapide, optimisé Google. Dès 39,99€/mois tout inclus — nos clients reçoivent leurs premiers contacts web dès la première semaine.",close:"On commence quand vous voulez — je prends vos informations aujourd'hui et l'équipe design vous contacte dès demain matin."},
+ social:{intro:"Ton site web fait fuir tes clients ? Ou tu n'en as toujours pas ?",arg:"Alma Company te livre un site professionnel en 7 jours. Design moderne, SEO inclus, hébergement inclus, modifications incluses. À partir de 39,99€/mois — sans les 5 000€ d'une agence traditionnelle.",close:"DM pour voir nos réalisations. Ou lien en bio pour démarrer directement."}
  },
  objections:[
  {q:"J'ai déjà un site",a:"Très bien — quand a-t-il été refait pour la dernière fois ? Un site de plus de 3 ans perd des clients car il n'est pas adapté au mobile et n'est plus optimisé pour Google. On peut faire une analyse gratuite en 5 minutes."},
@@ -884,6 +935,7 @@ let activeLevel = 'all';
 function renderGrid() { buildRows(PRODUCTS); }
 
 const TAG_MAP = {
+  'pack-starter': ['Commerce','Pack'], 'pack-local': ['Commerce','Pack'],
   qrvitrine: ['Commerce','PAP'], seoia: ['Commerce','SEO'], fastfood: ['Commerce','Restauration'],
   huntlist: ['B2B'], rhpme: ['B2B'], fidelite: ['Commerce'],
   alma: ['Commerce','B2B'], inroom: ['Hôtellerie'], tradebot: ['Crypto'],
@@ -891,6 +943,7 @@ const TAG_MAP = {
   energie: ['Particuliers'], rachat: ['Particuliers','Finance']
 };
 const LEVEL_MAP = {
+  'pack-starter': 'debutant', 'pack-local': 'debutant',
   qrvitrine: 'debutant', seoia: 'experimente', fastfood: 'debutant', huntlist: 'experimente',
   rhpme: 'experimente', fidelite: 'debutant', alma: 'debutant',
   inroom: 'experimente', tradebot: 'experimente',
