@@ -676,6 +676,17 @@ async function submitRdvToSupabase(rdvData) {
   </nav>
 </header>
 
+<!-- Bandeau blocage versements (seuil 1000€ sans statut) -->
+<div id="payoutLockBanner" style="display:none" class="max-w-[1100px] mx-auto px-5 pt-4">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 18px;border-radius:16px;background:rgba(181,35,48,0.06);border:1px solid rgba(181,35,48,0.18)">
+    <div style="display:flex;align-items:center;gap:12px">
+      <span class="material-symbols-outlined" style="font-size:20px;color:#b52330;flex-shrink:0">lock</span>
+      <p style="font-size:13px;font-weight:600;color:#1b1c1c;line-height:1.4">Tu as dépassé 1 000 € gagnés. Crée ton statut auto-entrepreneur pour débloquer tes versements.</p>
+    </div>
+    <a href="statut.html" style="flex-shrink:0;padding:9px 16px;border-radius:10px;background:linear-gradient(145deg,#c62b39,#8f1a24);color:#fff;font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap">Créer mon statut</a>
+  </div>
+</div>
+
 <!-- IBAN Banner -->
 <div id="ibanBanner" class="hidden max-w-[1100px] mx-auto px-5 pt-4">
   <div class="flex items-center justify-between gap-4 px-5 py-3.5 rounded-2xl bg-surface-container border border-outline-variant/50">
@@ -1904,6 +1915,44 @@ function loadRdvStats() {
   if(el2) el2.textContent = com + ' €';
   const kR = document.getElementById('kpiRdv'); if(kR) kR.textContent = total;
   const kC = document.getElementById('kpiCagnotte'); if(kC) kC.textContent = com + ' €';
+  checkStatutThreshold(com);
+}
+
+// ─── SEUIL STATUT 1000€ ──────────────────────────────
+const STATUT_THRESHOLD = 1000; // CA cumulé (€) déclenchant l'obligation de statut
+function getCumulativeCA() {
+  // CA cumulé de toutes les sources (RDV confirmés + ventes + UGC)
+  const rdvs = JSON.parse(localStorage.getItem('stacker_rdvs') || '[]');
+  const rdvCom = rdvs.filter(r => r.status === 'confirmed').length * 5;
+  const otherCA = parseFloat(localStorage.getItem('stacker_ca_autres') || '0'); // ventes + UGC cumulés
+  return rdvCom + otherCA;
+}
+function statutIsSet() {
+  return localStorage.getItem('stacker_statut_ok') === '1';
+}
+function checkStatutThreshold(comRdv) {
+  const ca = getCumulativeCA();
+  // si seuil atteint ET statut pas encore créé ET pas déjà affiché dans cette session
+  if (ca >= STATUT_THRESHOLD && !statutIsSet() && localStorage.getItem('stacker_statut_prompted') !== '1') {
+    showStatutThreshold();
+  }
+  // le blocage visuel des paiements se met à jour quel que soit le cas
+  updatePayoutLock(ca);
+}
+function showStatutThreshold() {
+  const ov = document.getElementById('statutThresholdOverlay');
+  if (ov) ov.style.display = 'flex';
+}
+function dismissStatutThreshold() {
+  const ov = document.getElementById('statutThresholdOverlay');
+  if (ov) ov.style.display = 'none';
+  localStorage.setItem('stacker_statut_prompted', '1'); // ne pas re-spammer à chaque reload
+}
+function updatePayoutLock(ca) {
+  // si au-dessus du seuil sans statut : les versements sont bloqués (indicateur visuel)
+  const locked = (ca >= STATUT_THRESHOLD && !statutIsSet());
+  const banner = document.getElementById('payoutLockBanner');
+  if (banner) banner.style.display = locked ? 'block' : 'none';
 }
 
 // ─── FEED LIVE ───────────────────────────────────────
@@ -2251,6 +2300,27 @@ document.addEventListener('DOMContentLoaded', function() {
     <button class="wheel-close-btn" onclick="closeWheelModal()">Fermer</button>
   </div>
 </div>
+<!-- MODAL SEUIL STATUT (1000€) -->
+<div id="statutThresholdOverlay" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(15,10,11,0.6);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px">
+  <div style="max-width:420px;width:100%;background:linear-gradient(150deg,#242526 0%,#1b1c1c 48%,#2a0e12 100%);border:1px solid rgba(255,255,255,0.08);border-radius:26px;overflow:clip;position:relative;box-shadow:0 30px 70px -15px rgba(0,0,0,0.6)">
+    <div style="position:absolute;top:0;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent)"></div>
+    <div style="position:absolute;top:-70px;right:-40px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(181,35,48,0.4),transparent 68%);pointer-events:none"></div>
+    <div style="position:relative;padding:32px 28px;text-align:center">
+      <div style="width:64px;height:64px;border-radius:20px;margin:0 auto 18px;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#e0596a,#b52330);box-shadow:0 10px 30px -6px rgba(181,35,48,0.6),inset 0 1px 1px rgba(255,255,255,0.4)">
+        <span class="material-symbols-outlined filled" style="font-size:34px;color:#fff;font-variation-settings:'FILL' 1">trophy</span>
+      </div>
+      <p style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.05em;color:#e0596a;margin-bottom:8px;font-weight:700">félicitations</p>
+      <h2 style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:26px;letter-spacing:-0.03em;line-height:1.1;color:#fff;margin-bottom:12px">Tu as passé la barre<br>des <span style="color:#ff7d88">1 000 €</span> gagnés</h2>
+      <p style="font-size:14px;color:rgba(255,255,255,0.6);line-height:1.5;margin-bottom:24px">Tu deviens officiellement un vrai indépendant. Pour débloquer tes paiements et continuer à encaisser, crée ton statut auto-entrepreneur — <strong style="color:rgba(255,255,255,0.85)">c'est gratuit et ça prend 10 minutes</strong>. On te guide pas à pas.</p>
+      <a href="statut.html" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:15px;border-radius:14px;background:linear-gradient(145deg,#c62b39,#8f1a24);border:1px solid rgba(255,255,255,0.18);box-shadow:0 12px 30px -8px rgba(181,35,48,0.55),inset 0 1px 1px rgba(255,255,255,0.25);color:#fff;font-weight:800;font-size:15px;text-decoration:none;margin-bottom:12px">
+        Créer mon statut <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span>
+      </a>
+      <button onclick="dismissStatutThreshold()" style="background:none;border:none;color:rgba(255,255,255,0.4);font-size:13px;font-weight:600;cursor:pointer;padding:6px">Plus tard</button>
+      <p style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:14px;line-height:1.4">Tes commissions au-delà de 1 000 € sont sécurisées et versées dès ton statut créé.</p>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL SOUMETTRE RDV -->
 <div class="modal-rdv-overlay" id="modalRdvOverlay" onclick="closeRdvModal(event)">
   <div class="modal-rdv-sheet">
