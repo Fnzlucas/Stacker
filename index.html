@@ -409,6 +409,25 @@ button.bg-on-surface:hover{
 /* mobile : 2 colonnes */
 @media(max-width:560px){.kpi-widgets{grid-template-columns:repeat(2,1fr);}}
 
+
+/* ============================================================
+   ÉVOLUTION CARRIÈRE — échelle des paliers jusqu'au CDI
+   ============================================================ */
+.career-step{display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);transition:background .3s,transform .3s cubic-bezier(.22,1,.36,1)}
+.career-step:hover{background:rgba(255,255,255,0.07);transform:translateX(2px)}
+.career-dot{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.75);border:1px solid rgba(255,255,255,0.12)}
+.career-info{flex:1;min-width:0}
+.career-name{font-family:'DM Sans',sans-serif;font-weight:800;font-size:15px;color:rgba(255,255,255,0.92);letter-spacing:-0.01em;line-height:1.2}
+.career-sub{font-size:11px;color:rgba(255,255,255,0.45);line-height:1.3;margin-top:2px}
+.career-xp{font-family:'DM Sans',sans-serif;font-weight:800;font-size:13px;color:rgba(255,255,255,0.5);flex-shrink:0;letter-spacing:-0.02em}
+/* niveau actuel du stacker : surligné bordeaux */
+.career-step.is-current{background:rgba(181,35,48,0.15);border-color:rgba(181,35,48,0.4)}
+.career-step.is-current .career-dot{background:linear-gradient(145deg,#e0596a,#b52330);color:#fff;border-color:transparent}
+.career-step.is-current .career-name{color:#fff}
+/* palier CDI : traitement doré premium */
+.career-cdi{background:linear-gradient(135deg,rgba(224,197,106,0.14),rgba(181,35,48,0.1));border:1px solid rgba(224,197,106,0.35);box-shadow:0 8px 24px -8px rgba(224,197,106,0.2)}
+.career-dot-gold{background:linear-gradient(145deg,#f0d98a,#d4af37)!important;color:#1b1c1c!important;border-color:transparent!important;box-shadow:0 4px 14px -2px rgba(224,197,106,0.5)}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -1093,6 +1112,81 @@ async function submitRdvToSupabase(rdvData) {
   <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(228,228,231,0.5) 50%,transparent);margin:0 4px"></div>
 
 
+  <!-- ÉVOLUTION CARRIÈRE -->
+  <section class="reveal" style="animation-delay:0.23s">
+    <div style="background:linear-gradient(150deg,#242526 0%,#1b1c1c 48%,#2a0e12 100%);border-radius:22px;overflow:clip;position:relative;border:1px solid rgba(255,255,255,0.07);box-shadow:0 20px 50px -14px rgba(20,20,22,0.35);padding:26px 22px">
+      <div style="position:absolute;top:0;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent);pointer-events:none"></div>
+      <div style="position:absolute;top:-70px;right:-40px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(181,35,48,0.42) 0%,transparent 68%);pointer-events:none"></div>
+
+      <div style="position:relative">
+        <p style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.05em;color:#e0596a;margin-bottom:6px;font-weight:700">ton évolution</p>
+        <h2 style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:24px;letter-spacing:-0.03em;line-height:1.1;color:#fff;margin-bottom:8px">Grimpe les paliers.<br>Les meilleurs vont loin.</h2>
+        <p style="font-size:13px;color:rgba(255,255,255,0.55);line-height:1.5;margin-bottom:22px;max-width:340px">Chaque vente te fait monter. Au sommet, les stackers les plus performants peuvent accéder à un poste en CDI, véhicule de fonction inclus.</p>
+
+        <!-- échelle des paliers -->
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="career-step" data-lvl="Rookie">
+            <div class="career-dot"><span class="material-symbols-outlined" style="font-size:16px">sprint</span></div>
+            <div class="career-info"><p class="career-name">Rookie</p><p class="career-sub">Le départ. Tu prends tes premières missions.</p></div>
+            <span class="career-xp">0 €</span>
+          </div>
+          <div class="career-step" data-lvl="Closer">
+            <div class="career-dot"><span class="material-symbols-outlined" style="font-size:16px">handshake</span></div>
+            <div class="career-info"><p class="career-name">Closer</p><p class="career-sub">Tu signes régulièrement.</p></div>
+            <span class="career-xp">500 €</span>
+          </div>
+          <div class="career-step" data-lvl="Pro">
+            <div class="career-dot"><span class="material-symbols-outlined" style="font-size:16px">military_tech</span></div>
+            <div class="career-info"><p class="career-name">Pro</p><p class="career-sub">Tu vis de tes commissions.</p></div>
+            <span class="career-xp">1 500 €</span>
+          </div>
+          <div class="career-step" data-lvl="Elite">
+            <div class="career-dot"><span class="material-symbols-outlined" style="font-size:16px">workspace_premium</span></div>
+            <div class="career-info"><p class="career-name">Elite</p><p class="career-sub">Le haut du panier. Accès aux offres premium.</p></div>
+            <span class="career-xp">3 500 €</span>
+          </div>
+          <div class="career-step" data-lvl="Legend">
+            <div class="career-dot"><span class="material-symbols-outlined" style="font-size:16px">star</span></div>
+            <div class="career-info"><p class="career-name">Legend</p><p class="career-sub">Une référence sur la plateforme.</p></div>
+            <span class="career-xp">7 000 €</span>
+          </div>
+          <!-- palier CDI, mis en avant -->
+          <div class="career-step career-cdi" data-lvl="Recrue Stacker">
+            <div class="career-dot career-dot-gold"><span class="material-symbols-outlined filled" style="font-size:18px;font-variation-settings:'FILL' 1">directions_car</span></div>
+            <div class="career-info">
+              <p class="career-name" style="color:#fff">Recrue Stacker <span style="font-size:10px;font-weight:700;color:#1b1c1c;background:#e0c56a;padding:2px 8px;border-radius:99px;margin-left:6px;vertical-align:middle">CDI</span></p>
+              <p class="career-sub" style="color:rgba(255,255,255,0.7)">Poste de commercial terrain en CDI + véhicule de fonction. Sur sélection.</p>
+            </div>
+            <span class="career-xp" style="color:#e0c56a">15 000 €+</span>
+          </div>
+
+          <!-- détail de l'offre CDI -->
+          <div style="margin-top:4px;padding:16px 18px;border-radius:14px;background:linear-gradient(135deg,rgba(224,197,106,0.1),rgba(181,35,48,0.08));border:1px solid rgba(224,197,106,0.25)">
+            <p style="font-size:10px;letter-spacing:0.05em;color:#e0c56a;font-weight:700;margin-bottom:12px">ce que tu décroches</p>
+            <div style="display:flex;gap:20px;flex-wrap:wrap">
+              <div style="flex:1;min-width:120px">
+                <p style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:22px;letter-spacing:-0.03em;color:#fff;line-height:1">3 200 €<span style="font-size:13px;font-weight:700;color:rgba(255,255,255,0.5)"> net/mois</span></p>
+                <p style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:3px">Salaire fixe garanti</p>
+              </div>
+              <div style="flex:1;min-width:120px">
+                <p style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:22px;letter-spacing:-0.03em;color:#fff;line-height:1">+15 %<span style="font-size:13px;font-weight:700;color:rgba(255,255,255,0.5)"> / vente</span></p>
+                <p style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:3px">Commission déplafonnée</p>
+              </div>
+              <div style="flex:1;min-width:120px">
+                <p style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:22px;letter-spacing:-0.03em;color:#fff;line-height:1">Voiture</p>
+                <p style="font-size:11px;color:rgba(255,255,255,0.5);margin-top:3px">Véhicule de fonction</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:18px;line-height:1.4">L'accès au CDI se fait sur sélection, selon les performances et les besoins de Stacker. Ce n'est pas automatique — c'est une opportunité offerte aux meilleurs.</p>
+      </div>
+    </div>
+  </section>
+  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(228,228,231,0.5) 50%,transparent);margin:0 4px"></div>
+
+
   <!-- MICRO-INFLUENCE -->
   <section class="reveal" style="animation-delay:0.23s">
     <div class="eyebrow mb-3"><span style="color:#1b1c1c">Micro-influence</span></div>
@@ -1297,7 +1391,8 @@ const LEVELS = [
   { name:'Closer', min:500, max:1500 },
   { name:'Pro', min:1500, max:3500 },
   { name:'Elite', min:3500, max:7000 },
-  { name:'Legend', min:7000, max:Infinity }
+  { name:'Legend', min:7000, max:15000 },
+  { name:'Recrue Stacker', min:15000, max:Infinity }
 ];
 
 const PRODUCTS_OBJECTIONS = {
@@ -1526,6 +1621,7 @@ function renderStats() {
   document.getElementById('levelBadge').textContent = level.name;
   const kL = document.getElementById('kpiLevel'); if(kL) kL.textContent = level.name;
   document.getElementById('navLevel').textContent = level.name + ' · ' + xp + ' XP';
+  highlightCareerStep(level.name);
   (document.getElementById('xpCurrent') || {})["textContent"] = xp + ' XP';
   (document.getElementById('xpNext') || {})["textContent"] = (nextLevel ? nextLevel.min : xp) + ' XP';
   (document.getElementById('xpBar') || {style:{}}).style.width = pct + '%';
@@ -1903,6 +1999,14 @@ window.closeHamburger = function() {
 };
 
 
+
+
+// ─── ÉVOLUTION CARRIÈRE ──────────────────────────────
+function highlightCareerStep(levelName){
+  document.querySelectorAll('.career-step').forEach(s=>{
+    s.classList.toggle('is-current', s.getAttribute('data-lvl') === levelName);
+  });
+}
 
 // ─── RDV STATS HOME ──────────────────────────────────
 function loadRdvStats() {
