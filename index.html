@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tableau de bord · Stacker</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=JetBrains+Mono:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 <script>
 tailwind.config = {
   theme: { extend: { colors: {
@@ -14,7 +14,7 @@ tailwind.config = {
     "background":"#ffffff","surface-container-lowest":"#ffffff","surface-container-low":"#f4f4f5",
     "surface-container":"#f0f0f0","surface-container-high":"#e5e5e6","surface-container-highest":"#dddde0",
     "on-surface":"#1b1c1c","on-surface-variant":"#71717a","outline-variant":"#e4e4e7"
-  }, fontFamily: { "headline":["DM Sans"],"body":["DM Sans"],"mono":["JetBrains Mono"] } } }
+  }, fontFamily: { "headline":["DM Sans"],"body":["DM Sans"],"mono":["DM Sans"] } } }
 }
 </script>
 <style>
@@ -28,7 +28,7 @@ tailwind.config = {
 .modal-rdv-close{width:28px;height:28px;border-radius:7px;background:rgba(27,28,28,0.07);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .modal-rdv-body{padding:18px 20px 32px}
 .rdv-field{margin-bottom:12px}
-.rdv-field-label{display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#6b7280;margin-bottom:5px;font-weight:600}
+.rdv-field-label{display:block;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0;color:#6b7280;margin-bottom:5px;font-weight:500}
 .rdv-field-input{width:100%;padding:11px 13px;border-radius:10px;border:1.5px solid rgba(228,228,231,0.6);background:#fff;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:500;color:#1b1c1c;outline:none;transition:border-color 0.2s}
 .rdv-field-input:focus{border-color:#1b1c1c}
 .rdv-field-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%236b5550'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
@@ -42,7 +42,7 @@ tailwind.config = {
 body{font-family:'DM Sans',sans-serif;background:#ffffff}
 :root{--red:#b52330;--red2:#e8323f}
 .font-headline{font-family:'DM Sans',sans-serif}
-.font-mono{font-family:'JetBrains Mono',monospace}
+.font-mono{font-family:'DM Sans',sans-serif;text-transform:none!important;letter-spacing:0;font-weight:500}
 .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
 .filled{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24 !important}
 .glass-nav{backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);background:rgba(255,255,255,0.92);border-bottom:1px solid rgba(228,228,231,0.35)}
@@ -76,7 +76,7 @@ body{font-family:'DM Sans',sans-serif;background:#ffffff}
 .eyebrow::before{content:'';width:18px;height:1px;background:#e4e4e7;display:block}
 .eyebrow span{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:0em;text-transform:none;color:#71717a}
 .card-premium{background:#fff;border-radius:22px;border:1px solid rgba(228,228,231,0.45);box-shadow:0 2px 20px -6px rgba(27,28,28,0.08)}
-.tag{display:inline-flex;align-items:center;gap:.375rem;padding:.25rem .625rem;border-radius:9999px;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.tag{display:inline-flex;align-items:center;gap:.375rem;padding:.25rem .625rem;border-radius:9999px;font-size:10px;font-weight:700;letter-spacing:.12em;}
 /* Nav */
 .hamburger-panel{position:fixed;top:0;left:0;width:340px;max-width:100vw;height:100vh;background:#ffffff;z-index:75;transform:translateX(-100%);transition:transform 0.4s cubic-bezier(0.22,1,0.36,1);display:flex;flex-direction:column;box-shadow:20px 0 60px -10px rgba(0,0,0,0.15)}
 .hamburger-panel.open{transform:translateX(0)}
@@ -105,7 +105,7 @@ body{font-family:'DM Sans',sans-serif;background:#ffffff}
 .deal-popup-com{font-family:'DM Sans',sans-serif;font-weight:900;font-size:14px;color:#006c4c;letter-spacing:-0.02em;flex-shrink:0}
 .deal-popup-live{display:flex;align-items:center;gap:3px;margin-bottom:2px;justify-content:flex-end}
 .deal-popup-live span.dot{width:5px;height:5px;border-radius:50%;background:#b52330;display:block;animation:pulse-dot 2s ease-in-out infinite}
-.deal-popup-live span.label{font-size:9px;font-weight:700;color:#b52330;letter-spacing:0.08em;text-transform:uppercase}
+.deal-popup-live span.label{font-size:9px;font-weight:700;color:#b52330;letter-spacing:0.08em;}
 
 /* Coach modal */
 .coach-modal{position:fixed;inset:0;z-index:80;display:flex;align-items:flex-end;justify-content:center;padding:0}
@@ -128,7 +128,7 @@ body{font-family:'DM Sans',sans-serif;background:#ffffff}
 .mission-row{display:grid;grid-template-columns:1fr auto auto auto;gap:16px;padding:16px 20px;align-items:center;border-bottom:1px solid rgba(228,228,231,0.15);transition:background 0.15s;cursor:pointer;text-decoration:none;color:inherit}
 .mission-row:last-child{border-bottom:none}
 .mission-row:hover{background:#f4f4f5}
-.row-content .row-sector{font-size:10px;text-transform:uppercase;letter-spacing:.15em;color:#71717a;font-weight:600;margin-bottom:3px}
+.row-content .row-sector{font-size:10px;letter-spacing:.15em;color:#71717a;font-weight:600;margin-bottom:3px}
 .row-content .row-title{font-size:14px;font-weight:600;color:#1b1c1c}
 .row-amount .amount-main{font-family:'DM Sans';font-weight:800;font-size:16px;color:#1b1c1c;letter-spacing:-.04em;text-align:right}
 .row-amount .amount-unit{font-size:10px;color:#71717a;text-align:right}
@@ -153,7 +153,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
 .wheel-overlay.open{opacity:1;pointer-events:all}
 .wheel-container{display:flex;flex-direction:column;align-items:center;gap:20px;padding:28px 20px 32px;width:100%;max-width:400px}
 .wheel-header{text-align:center}
-.wheel-eyebrow{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(181,35,48,0.7);margin-bottom:6px}
+.wheel-eyebrow{font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:0.02em;color:rgba(181,35,48,0.7);margin-bottom:6px}
 .wheel-title{font-family:"DM Sans",sans-serif;font-weight:900;font-size:24px;letter-spacing:-0.04em;color:#fff;margin-bottom:3px;line-height:1}
 .wheel-subtitle{font-size:11px;color:rgba(255,255,255,0.35);font-weight:500}
 .wheel-tokens{display:none}
@@ -177,7 +177,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
 .wheel-result-desc{font-size:11px;color:rgba(255,255,255,0.45);font-weight:500;line-height:1.6}
 .wheel-result-btn{padding:10px 24px;border-radius:10px;background:#fff;color:#1b1c1c;font-family:"DM Sans",sans-serif;font-weight:800;font-size:13px;border:none;cursor:pointer;transition:all 0.2s;margin-top:2px}
 .wheel-result-btn:hover{background:#f0eded}
-.wheel-close-btn{font-size:11px;color:rgba(255,255,255,0.2);background:none;border:none;cursor:pointer;font-family:"JetBrains Mono",monospace;letter-spacing:0.1em;text-transform:uppercase;padding:4px 8px;transition:color 0.2s}
+.wheel-close-btn{font-size:11px;color:rgba(255,255,255,0.2);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:0.1em;padding:4px 8px;transition:color 0.2s}
 .wheel-close-btn:hover{color:rgba(255,255,255,0.5)}
 .wheel-entry{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:99px;font-size:10px;font-weight:700;letter-spacing:0.05em;cursor:pointer;transition:all 0.2s;border:1px solid transparent}
 .wheel-entry.has-spins{background:rgba(181,35,48,0.1);border-color:rgba(181,35,48,0.3);color:#b52330;animation:pulse-dot 2s ease-in-out infinite}
@@ -216,11 +216,11 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
 
 /* Fields */
 .sepa-field{margin-bottom:12px}
-.sepa-label{display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:#6b7280;margin-bottom:5px;font-weight:600}
+.sepa-label{display:block;font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:0.02em;color:#6b7280;margin-bottom:5px;font-weight:700}
 .sepa-input{width:100%;padding:12px 14px;border-radius:11px;border:1.5px solid rgba(228,228,231,0.6);background:#fff;font-size:14px;font-family:'DM Sans',sans-serif;font-weight:600;color:#1b1c1c;outline:none;transition:border-color 0.2s;letter-spacing:0.02em}
 .sepa-input:focus{border-color:#1b1c1c}
 .sepa-input::placeholder{color:rgba(27,28,28,0.25);font-weight:400;letter-spacing:0}
-.sepa-input.iban-input{font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.08em}
+.sepa-input.iban-input{font-family:'DM Sans',sans-serif;font-size:13px;letter-spacing:0.08em}
 .sepa-input.error{border-color:#b52330;background:rgba(181,35,48,0.03)}
 .sepa-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 
@@ -379,6 +379,36 @@ button.bg-on-surface:hover{
   -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
   border:1px solid rgba(255,255,255,0.25);}
 
+
+/* ============================================================
+   WIDGETS KPI — mini-dashboard (façon Apple), calibrés petit format
+   ============================================================ */
+.kpi-widgets{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
+}
+.kpi-w{
+  background:#fff;border:1px solid rgba(228,228,231,0.7);border-radius:20px;
+  padding:16px;min-height:104px;display:flex;flex-direction:column;
+  box-shadow:0 2px 12px -4px rgba(27,28,28,0.06);
+  transition:transform .35s cubic-bezier(.22,1,.36,1),box-shadow .35s;
+}
+.kpi-w:hover{transform:translateY(-3px);box-shadow:0 14px 30px -10px rgba(27,28,28,0.16);}
+.kpi-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:auto;color:#a1a1aa;}
+.kpi-tag{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:0;text-transform:none;
+  background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.35);padding:3px 7px;border-radius:99px;}
+.kpi-val{font-family:'DM Sans',sans-serif;font-weight:900;font-size:26px;letter-spacing:-0.04em;line-height:1;color:#1b1c1c;margin-top:12px;}
+.kpi-lbl{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:0;color:#8a8a8f;margin-top:5px;}
+/* widget accent bordeaux (cagnotte = le plus important) */
+.kpi-w-accent{
+  background:linear-gradient(150deg,#c62b39,#8f1a24);border:1px solid rgba(255,255,255,0.15);
+  box-shadow:0 12px 30px -10px rgba(181,35,48,0.5);
+}
+.kpi-w-accent .kpi-top{color:rgba(255,255,255,0.85);}
+.kpi-w-accent .kpi-val{color:#fff;}
+.kpi-w-accent .kpi-lbl{color:rgba(255,255,255,0.7);}
+/* mobile : 2 colonnes */
+@media(max-width:560px){.kpi-widgets{grid-template-columns:repeat(2,1fr);}}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -412,7 +442,7 @@ async function submitRdvToSupabase(rdvData) {
       <span class="material-symbols-outlined filled text-white" style="font-size:22px;font-variation-settings:'FILL' 1">format_quote</span>
     </div>
     <p class="font-headline font-bold text-lg text-on-surface leading-snug mb-3 display-tight" id="quoteText" style="letter-spacing:-0.02em"></p>
-    <p class="font-mono text-[11px] text-on-surface-variant tracking-[0.08em] mb-6" id="quoteAuthor"></p>
+    <p class="font-mono text-[11px] text-on-surface-variant  mb-6" id="quoteAuthor"></p>
     <button onclick="closeQuote()" class="w-full py-3.5 rounded-xl cta-gradient text-white font-headline font-bold text-sm hover:opacity-95 transition active:scale-[0.99]" style="box-shadow:0 6px 20px rgba(181,35,48,0.2)">
       Allons-y
     </button>
@@ -441,14 +471,14 @@ async function submitRdvToSupabase(rdvData) {
       </button>
     </div>
     <div class="px-5 py-4">
-      <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-3">Clique sur l'objection que tu entends</p>
+      <p class="text-[10px] font-bold  text-on-surface-variant mb-3">Clique sur l'objection que tu entends</p>
       <div class="flex flex-col gap-2" id="coachObjections"></div>
       <div id="coachAnswer" class="hidden mt-4 p-4 rounded-2xl bg-tertiary-fixed border border-tertiary/20">
-        <p class="text-[10px] font-bold uppercase tracking-[0.15em] text-tertiary mb-2">Ta réponse</p>
+        <p class="text-[10px] font-bold  text-tertiary mb-2">Ta réponse</p>
         <p class="text-sm text-on-surface leading-relaxed" id="coachAnswerText"></p>
       </div>
       <div class="mt-4 pt-4 border-t border-outline-variant/30">
-        <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-3">Produit actif</p>
+        <p class="text-[10px] font-bold  text-on-surface-variant mb-3">Produit actif</p>
         <select id="coachProductSelect" onchange="loadCoachProduct()" class="w-full px-3 py-2.5 rounded-xl border border-outline-variant bg-surface-container text-sm text-on-surface outline-none focus:border-primary transition">
           <option value="">Choisir un produit...</option>
         </select>
@@ -486,7 +516,7 @@ async function submitRdvToSupabase(rdvData) {
       <span class="nav-item-label text-sm font-semibold">Tableau de bord</span>
     </a>
 
-    <p style="font-size:9px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#71717a;padding:14px 4px 6px">Gagner de l'argent</p>
+    <p style="font-size:9px;font-weight:700;letter-spacing:0.02em;color:#71717a;padding:14px 4px 6px">Gagner de l'argent</p>
 
     <a href="rdv.html" class="nav-item" style="margin-bottom:2px">
       <div style="width:36px;height:36px;border-radius:10px;background:#f4f4f5;display:flex;align-items:center;justify-content:center;flex-shrink:0">
@@ -528,7 +558,7 @@ async function submitRdvToSupabase(rdvData) {
       </div>
     </a>
 
-    <p style="font-size:9px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#71717a;padding:14px 4px 6px">Mes résultats</p>
+    <p style="font-size:9px;font-weight:700;letter-spacing:0.02em;color:#71717a;padding:14px 4px 6px">Mes résultats</p>
 
     <a href="deals.html" class="nav-item" style="margin-bottom:2px">
       <div style="width:36px;height:36px;border-radius:10px;background:#f4f4f5;display:flex;align-items:center;justify-content:center;flex-shrink:0">
@@ -560,7 +590,7 @@ async function submitRdvToSupabase(rdvData) {
       </div>
     </a>
 
-    <p style="font-size:9px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#71717a;padding:14px 4px 6px">Mon compte</p>
+    <p style="font-size:9px;font-weight:700;letter-spacing:0.02em;color:#71717a;padding:14px 4px 6px">Mon compte</p>
 
     <a href="statut.html" class="nav-item" style="margin-bottom:2px">
       <div style="width:36px;height:36px;border-radius:10px;background:#f4f4f5;display:flex;align-items:center;justify-content:center;flex-shrink:0">
@@ -627,17 +657,21 @@ async function submitRdvToSupabase(rdvData) {
         <span class="font-headline font-bold text-sm text-on-surface" id="streakCount">0</span>
       </div>
       <!-- XP niveau -->
-      <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-high">
-        <span class="material-symbols-outlined filled text-primary" style="font-size:14px">star</span>
+      <div class="hidden md:flex items-center gap-2" style="padding:5px 12px 5px 5px;border-radius:99px;background:rgba(255,255,255,0.55);-webkit-backdrop-filter:blur(16px) saturate(160%);backdrop-filter:blur(16px) saturate(160%);border:1px solid rgba(255,255,255,0.7);box-shadow:0 4px 16px rgba(27,28,28,0.08),inset 0 1px 1px rgba(255,255,255,0.9)">
+        <span style="width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#e0596a,#b52330);box-shadow:0 2px 8px rgba(181,35,48,0.4);inset 0 1px 1px rgba(255,255,255,0.5);flex-shrink:0">
+          <span class="material-symbols-outlined filled" style="font-size:15px;color:#fff;font-variation-settings:'FILL' 1">star</span>
+        </span>
         <span class="font-semibold text-xs text-on-surface" id="levelBadge">Rookie</span>
       </div>
       <!-- Roue masquée -->
-      <button id="wheelEntryBtn" style="display:none" onclick="openWheelModal()" class="flex items-center gap-1 px-3 py-1.5 rounded-full bg-surface-container-high transition hover:bg-surface-container-highest active:scale-95" title="Roue de la fortune">
-        <span class="material-symbols-outlined" style="font-size:16px;color:#b52330;font-variation-settings:'FILL' 1">casino</span>
+      <button id="wheelEntryBtn" style="display:none;padding:5px 12px 5px 5px;border-radius:99px;background:rgba(255,255,255,0.55);-webkit-backdrop-filter:blur(16px) saturate(160%);backdrop-filter:blur(16px) saturate(160%);border:1px solid rgba(255,255,255,0.7);box-shadow:0 4px 16px rgba(27,28,28,0.08),inset 0 1px 1px rgba(255,255,255,0.9);align-items:center;gap:8px" onclick="openWheelModal()" class="flex transition active:scale-95" title="Roue de la fortune">
+        <span style="width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#e0596a,#b52330);box-shadow:0 2px 8px rgba(181,35,48,0.4);flex-shrink:0">
+          <span class="material-symbols-outlined filled" style="font-size:15px;color:#fff;font-variation-settings:'FILL' 1">casino</span>
+        </span>
         <span class="font-headline font-bold text-sm text-on-surface" id="wheelEntryLabel">0</span>
       </button>
       <!-- Avatar -->
-      <div class="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-white text-xs font-bold cursor-pointer" id="headerAvatar" onclick="openHamburger()">?</div>
+      <div class="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-bold cursor-pointer" id="headerAvatar" onclick="openHamburger()" style="background:linear-gradient(145deg,#e0596a,#b52330);box-shadow:0 4px 14px -2px rgba(181,35,48,0.5),inset 0 1px 1px rgba(255,255,255,0.4)">?</div>
     </div>
   </nav>
 </header>
@@ -660,7 +694,7 @@ async function submitRdvToSupabase(rdvData) {
     <div class="bg-surface-container-lowest rounded-2xl soft-shadow overflow-hidden">
       <div class="px-6 py-5 flex items-center justify-between border-b border-outline-variant/20">
         <div>
-          <p class="font-mono text-[9px] tracking-[0.2em] uppercase text-on-surface-variant mb-1">Par où commencer</p>
+          <p class="font-mono text-[9px]  text-on-surface-variant mb-1">Par où commencer</p>
           <h2 class="font-headline font-extrabold text-lg text-on-surface" style="letter-spacing:-0.03em">Tes 4 façons de gagner</h2>
         </div>
         <div class="relative w-11 h-11 flex-shrink-0 ml-4">
@@ -716,7 +750,7 @@ async function submitRdvToSupabase(rdvData) {
   <section class="reveal" style="animation-delay:0.05s">
     <div class="flex items-center justify-between gap-3">
       <div>
-        <p class="text-[9px] font-bold tracking-[0.25em] uppercase mb-2" id="heroDate" style="color:#71717a">–</p>
+        <p class="text-[9px] font-bold  mb-2" id="heroDate" style="color:#71717a">–</p>
         <h1 class="font-headline font-extrabold display-tight text-on-surface" style="font-size:clamp(24px,6vw,36px);letter-spacing:-0.04em;line-height:1.05">Bonjour <span id="heroName" style="text-transform:none;color:#b52330">!</span></h1>
       </div>
       <div class="flex items-center gap-2">
@@ -733,6 +767,30 @@ async function submitRdvToSupabase(rdvData) {
     </div>
   </section>
   <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(228,228,231,0.5) 50%,transparent);margin:0 4px"></div>
+
+  <!-- WIDGETS KPI — mini dashboard façon Apple -->
+  <section class="reveal kpi-widgets" style="animation-delay:0.06s">
+    <div class="kpi-w kpi-w-accent">
+      <div class="kpi-top"><span class="material-symbols-outlined" style="font-size:18px">account_balance_wallet</span><span class="kpi-tag">Ce mois</span></div>
+      <div class="kpi-val" id="kpiCagnotte">0 €</div>
+      <div class="kpi-lbl">Cagnotte</div>
+    </div>
+    <div class="kpi-w">
+      <div class="kpi-top"><span class="material-symbols-outlined" style="font-size:18px;color:#b52330">event_available</span></div>
+      <div class="kpi-val" id="kpiRdv">0</div>
+      <div class="kpi-lbl">RDV validés</div>
+    </div>
+    <div class="kpi-w">
+      <div class="kpi-top"><span class="material-symbols-outlined" style="font-size:18px;color:#f97316">local_fire_department</span></div>
+      <div class="kpi-val" id="kpiStreak">0</div>
+      <div class="kpi-lbl">Jours de suite</div>
+    </div>
+    <div class="kpi-w">
+      <div class="kpi-top"><span class="material-symbols-outlined" style="font-size:18px;color:#b52330">military_tech</span></div>
+      <div class="kpi-val" id="kpiLevel" style="font-size:20px">Rookie</div>
+      <div class="kpi-lbl">Ton niveau</div>
+    </div>
+  </section>
   <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(228,228,231,0.5) 50%,transparent);margin:0 4px"></div>
 
   <!-- SECTION PHARE — RDV COLD CALL -->
@@ -747,7 +805,7 @@ async function submitRdvToSupabase(rdvData) {
             <div>
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
                 <span style="width:6px;height:6px;border-radius:50%;background:#ff5a5f;display:block;animation:pulse-dot 2s ease-in-out infinite"></span>
-                <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,90,95,0.8)">Section phare</span>
+                <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:0.02em;color:rgba(255,90,95,0.8)">Section phare</span>
               </div>
               <h2 style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:24px;letter-spacing:-0.04em;line-height:1.05;color:#fff;margin-bottom:6px">Prise de RDV<br>Cold Call</h2>
               <p style="font-size:13px;color:rgba(255,255,255,0.45);line-height:1.5;max-width:260px">Tu appelles, tu prends le RDV. Un commercial se déplace. Toi tu encaisses.</p>
@@ -759,17 +817,17 @@ async function submitRdvToSupabase(rdvData) {
           <div style="display:flex;align-items:center;gap:16px;margin-bottom:18px">
             <div>
               <p style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:28px;letter-spacing:-0.04em;line-height:1;background:linear-gradient(180deg,#ffffff 0%,#cfcfcd 100%);-webkit-background-clip:text;background-clip:text;color:transparent">7 €</p>
-              <p style="font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.1em">par RDV validé</p>
+              <p style="font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:0.1em">par RDV validé</p>
             </div>
             <div style="width:1px;height:36px;background:rgba(255,255,255,0.1)"></div>
             <div>
               <p style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:28px;color:#fff;letter-spacing:-0.04em;line-height:1" id="homeRdvCount">0</p>
-              <p style="font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.1em">mes RDV</p>
+              <p style="font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:0.1em">mes RDV</p>
             </div>
             <div style="width:1px;height:36px;background:rgba(255,255,255,0.1)"></div>
             <div>
               <p style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:28px;color:#fff;letter-spacing:-0.04em;line-height:1" id="homeRdvCom">0 €</p>
-              <p style="font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.1em">gagnés</p>
+              <p style="font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:0.1em">gagnés</p>
             </div>
           </div>
           <div style="display:flex;align-items:center;justify-content:space-between">
@@ -838,7 +896,7 @@ async function submitRdvToSupabase(rdvData) {
       </div>
       <!-- Actions bonus -->
       <div class="px-5 py-3 flex items-center gap-3 flex-wrap">
-        <p class="text-[10px] font-bold uppercase tracking-[0.12em] text-on-surface-variant">En plus :</p>
+        <p class="text-[10px] font-bold  text-on-surface-variant">En plus :</p>
         <button onclick="logAction('pap')" class="flex items-center gap-1 px-2.5 py-1.5 rounded-full text-[11px] font-semibold transition" id="btn-pap" style="background:#f0eded;color:#52525b">
           <span class="material-symbols-outlined" style="font-size:13px">directions_walk</span>PAP
         </button>
@@ -878,17 +936,17 @@ async function submitRdvToSupabase(rdvData) {
   <section class="reveal" style="animation-delay:0.1s">
     <div class="grid grid-cols-3 gap-3">
       <div class="card-premium p-5">
-        <p class="text-[9px] uppercase tracking-[0.2em] text-on-surface-variant font-bold mb-2" style="color:#71717a">Commissions</p>
+        <p class="text-[9px]  text-on-surface-variant font-bold mb-2" style="color:#71717a">Commissions</p>
         <p class="font-headline font-extrabold text-xl text-on-surface metric-num" id="kpiCom">0 €</p>
         <p class="text-[10px] text-on-surface-variant mt-0.5">ce mois</p>
       </div>
       <div class="card-premium p-5">
-        <p class="text-[9px] uppercase tracking-[0.2em] text-on-surface-variant font-bold mb-2" style="color:#71717a">Deals</p>
+        <p class="text-[9px]  text-on-surface-variant font-bold mb-2" style="color:#71717a">Deals</p>
         <p class="font-headline font-extrabold text-xl text-on-surface metric-num" id="kpiDeals">0</p>
         <p class="text-[10px] text-on-surface-variant mt-0.5">signés</p>
       </div>
       <div class="card-premium p-5">
-        <p class="text-[9px] uppercase tracking-[0.2em] text-on-surface-variant font-bold mb-2" style="color:#71717a">Streak</p>
+        <p class="text-[9px]  text-on-surface-variant font-bold mb-2" style="color:#71717a">Streak</p>
         <div class="flex items-center gap-1.5">
           <span class="material-symbols-outlined filled flame" style="font-size:20px;color:#f97316;font-variation-settings:'FILL' 1">local_fire_department</span>
           <p class="font-headline font-extrabold text-xl text-on-surface metric-num" id="kpiStreak">0</p>
@@ -901,7 +959,7 @@ async function submitRdvToSupabase(rdvData) {
   <!-- OFFRE DE LA SEMAINE -->
   <section class="reveal" style="animation-delay:0.13s">
     <div class="flex items-center gap-2 mb-3">
-      <p class="text-[10px] uppercase tracking-[0.25em] text-on-surface-variant font-bold">Offre de la semaine</p>
+      <p class="text-[10px]  text-on-surface-variant font-bold">Offre de la semaine</p>
       <div class="flex items-center gap-1.5 ml-auto px-3 py-1 rounded-full bg-surface-container-high">
         <span class="material-symbols-outlined text-on-surface-variant" style="font-size:13px">schedule</span>
         <span class="font-mono text-[11px] font-semibold text-on-surface-variant" id="weekCountdown">–</span>
@@ -910,7 +968,7 @@ async function submitRdvToSupabase(rdvData) {
     <a href="offres.html" id="weekOfferCard" class="hero-dark rounded-3xl block p-6 hover-lift" style="text-decoration:none">
       <div class="flex items-start justify-between gap-4 mb-4">
         <div>
-          <p class="font-mono text-[9px] tracking-[0.16em] uppercase text-white/40 mb-2" id="weekOfferCat">–</p>
+          <p class="font-mono text-[9px]  text-white/40 mb-2" id="weekOfferCat">–</p>
           <h2 class="font-headline font-extrabold text-xl display-tight text-white mb-1 leading-tight" id="weekOfferName">–</h2>
           <p class="text-sm text-white/55" id="weekOfferTagline">–</p>
         </div>
@@ -926,7 +984,7 @@ async function submitRdvToSupabase(rdvData) {
         <div><p class="font-headline font-extrabold text-lg text-white metric-num" id="weekOfferLevel">–</p><p class="text-[10px] text-white/40">niveau</p></div>
       </div>
       <div class="rounded-xl p-3" style="background:rgba(255,255,255,0.09);-webkit-backdrop-filter:blur(12px) saturate(160%);backdrop-filter:blur(12px) saturate(160%);border:1px solid rgba(255,255,255,0.22);box-shadow:inset 0 1px 1px rgba(255,255,255,0.18)">
-        <p class="text-[9px] font-bold uppercase tracking-[0.12em] text-white/40 mb-1">Accroche</p>
+        <p class="text-[9px] font-bold  text-white/40 mb-1">Accroche</p>
         <p class="text-xs text-white/70 leading-relaxed italic" id="weekOfferScript">–</p>
       </div>
       <div class="mt-3 flex items-center justify-between">
@@ -941,7 +999,7 @@ async function submitRdvToSupabase(rdvData) {
   <!-- RÉCOMPENSES -->
   <section class="reveal" style="animation-delay:0.16s;margin-top:20px">
     <div class="flex items-center justify-between mb-3">
-      <p class="text-[10px] uppercase tracking-[0.25em] text-on-surface-variant font-bold">Récompenses</p>
+      <p class="text-[10px]  text-on-surface-variant font-bold">Récompenses</p>
       <p class="font-headline font-extrabold text-sm text-on-surface metric-num"><span id="caTotal">0</span> € / <span id="caTarget">500</span> €</p>
     </div>
     <div class="bg-surface-container-lowest rounded-2xl p-4 soft-shadow mb-3">
@@ -996,7 +1054,7 @@ async function submitRdvToSupabase(rdvData) {
   <!-- CITATION -->
   <section class="reveal" style="animation-delay:0.2s;padding:8px 4px">
     <p class="font-headline font-extrabold text-on-surface leading-snug mb-2" style="font-size:20px;letter-spacing:-0.025em;max-width:520px" id="motivText">–</p>
-    <p class="font-mono text-[10px] font-bold tracking-[0.18em] uppercase text-on-surface-variant" id="motivAuthor"></p>
+    <p class="font-mono text-[10px] font-bold  text-on-surface-variant" id="motivAuthor"></p>
   </section>
   <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(228,228,231,0.5) 50%,transparent);margin:0 4px"></div>
 
@@ -1011,7 +1069,7 @@ async function submitRdvToSupabase(rdvData) {
       <div>
         <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full mb-2" style="background:rgba(181,35,48,0.1);border:1px solid rgba(181,35,48,0.25)">
           <span class="material-symbols-outlined filled" style="font-size:12px;color:#9b1d28;font-variation-settings:'FILL' 1">workspace_premium</span>
-          <span class="font-mono text-[9px] font-bold tracking-[0.15em] uppercase" style="color:#9b1d28">Stacker Elite</span>
+          <span class="font-mono text-[9px] font-bold " style="color:#9b1d28">Stacker Elite</span>
         </div>
         <h3 class="font-headline font-extrabold text-on-surface mb-1" style="font-size:17px;letter-spacing:-0.025em;line-height:1.2">Fais partie de l’élite des Stackers.</h3>
         <p class="text-[13px] text-on-surface-variant leading-relaxed">Rejoins les meilleurs closers de la plateforme et participe à l’événement annuel réservé aux plus performants.</p>
@@ -1036,7 +1094,7 @@ async function submitRdvToSupabase(rdvData) {
           <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px">
             <div>
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-                <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.4)">Nouveau</span>
+                <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:0.02em;color:rgba(255,255,255,0.4)">Nouveau</span>
               </div>
               <h2 style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:22px;letter-spacing:-0.04em;line-height:1.05;color:#fff;margin-bottom:6px">Poste.<br>Encaisse.</h2>
               <p style="font-size:13px;color:rgba(255,255,255,0.45);line-height:1.5;max-width:260px">Des marques te payent 5 € par vidéo postée depuis ton compte.</p>
@@ -1048,17 +1106,17 @@ async function submitRdvToSupabase(rdvData) {
           <div style="display:flex;align-items:center;gap:16px;margin-bottom:18px">
             <div>
               <p style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:26px;color:#fff;letter-spacing:-0.04em;line-height:1">5 €</p>
-              <p style="font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.1em">par vidéo postée</p>
+              <p style="font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:0.1em">par vidéo postée</p>
             </div>
             <div style="width:1px;height:36px;background:rgba(255,255,255,0.1)"></div>
             <div>
               <p style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:26px;color:#fff;letter-spacing:-0.04em;line-height:1" id="influencePostsCount">0</p>
-              <p style="font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.1em">mes posts</p>
+              <p style="font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:0.1em">mes posts</p>
             </div>
             <div style="width:1px;height:36px;background:rgba(255,255,255,0.1)"></div>
             <div>
               <p style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:26px;color:#fff;letter-spacing:-0.04em;line-height:1" id="influenceEarnings">0 €</p>
-              <p style="font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.1em">gagnés</p>
+              <p style="font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:0.1em">gagnés</p>
             </div>
           </div>
           <div style="display:flex;align-items:center;justify-content:space-between">
@@ -1095,7 +1153,7 @@ async function submitRdvToSupabase(rdvData) {
         <div style="position:absolute;top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:rgba(181,35,48,0.1);pointer-events:none"></div>
         <div class="flex items-center justify-between gap-4 relative">
           <div>
-            <p class="font-mono text-[9px] tracking-[0.2em] uppercase mb-2" style="color:rgba(255,255,255,0.3)">Catalogue complet</p>
+            <p class="font-mono text-[9px]  mb-2" style="color:rgba(255,255,255,0.3)">Catalogue complet</p>
             <h3 class="font-headline font-extrabold text-white mb-1" style="font-size:22px;letter-spacing:-0.03em;line-height:1.1">Toutes nos offres</h3>
             <p style="font-size:13px;color:rgba(255,255,255,0.45)">13 produits · scripts · objections · fiches</p>
           </div>
@@ -1442,6 +1500,7 @@ function renderStats() {
   document.getElementById('kpiDeals').textContent = deals;
   document.getElementById('kpiStreak').textContent = streak;
   const sc = document.getElementById('streakCount'); if(sc) sc.textContent = streak;
+  const kS = document.getElementById('kpiStreak'); if(kS) kS.textContent = streak;
   document.getElementById('navStreak').textContent = streak;
   document.getElementById('navPerf').textContent = com + ' € ce mois';
   document.getElementById('navRewards').textContent = ca + ' € de CA';
@@ -1454,6 +1513,7 @@ function renderStats() {
   const pct = nextLevel ? Math.round(((xp - level.min) / (nextLevel.min - level.min)) * 100) : 100;
   (document.getElementById('kpiLevel') || {})["textContent"] = level.name;
   document.getElementById('levelBadge').textContent = level.name;
+  const kL = document.getElementById('kpiLevel'); if(kL) kL.textContent = level.name;
   document.getElementById('navLevel').textContent = level.name + ' · ' + xp + ' XP';
   (document.getElementById('xpCurrent') || {})["textContent"] = xp + ' XP';
   (document.getElementById('xpNext') || {})["textContent"] = (nextLevel ? nextLevel.min : xp) + ' XP';
@@ -1842,6 +1902,8 @@ function loadRdvStats() {
   const el2 = document.getElementById('homeRdvCom');
   if(el1) el1.textContent = total;
   if(el2) el2.textContent = com + ' €';
+  const kR = document.getElementById('kpiRdv'); if(kR) kR.textContent = total;
+  const kC = document.getElementById('kpiCagnotte'); if(kC) kC.textContent = com + ' €';
 }
 
 // ─── FEED LIVE ───────────────────────────────────────
@@ -1977,7 +2039,7 @@ function renderFeed() {
           <div style="display:flex;align-items:center;flex-wrap:wrap;gap:2px">${line2}</div>
         </div>
         <div style="flex-shrink:0;text-align:right">
-          ${isNew ? '<div style="display:flex;align-items:center;gap:4px;justify-content:flex-end;margin-bottom:3px"><span style="width:5px;height:5px;border-radius:50%;background:#b52330;display:block;animation:pulse-dot 2s ease-in-out infinite"></span><span style="font-size:9px;font-weight:700;color:#b52330;letter-spacing:0.08em;text-transform:uppercase">Live</span></div>' : ''}
+          ${isNew ? '<div style="display:flex;align-items:center;gap:4px;justify-content:flex-end;margin-bottom:3px"><span style="width:5px;height:5px;border-radius:50%;background:#b52330;display:block;animation:pulse-dot 2s ease-in-out infinite"></span><span style="font-size:9px;font-weight:700;color:#b52330;letter-spacing:0.08em;">Live</span></div>' : ''}
           <span style="font-size:10px;color:#71717a;white-space:nowrap">${ago}</span>
         </div>
       </div>`;
