@@ -33,8 +33,10 @@ tailwind.config = {
 .rdv-field-input:focus{border-color:#1b1c1c}
 .rdv-field-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%236b5550'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
 .rdv-field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.rdv-submit-btn{width:100%;padding:13px;border-radius:12px;background:#1b1c1c;color:#fff;font-family:'DM Sans',sans-serif;font-weight:800;font-size:14px;border:none;cursor:pointer;transition:background 0.2s;margin-top:8px}
-.rdv-submit-btn:hover{background:#b52330}
+.rdv-submit-btn{width:100%;padding:14px;border-radius:14px;background:linear-gradient(145deg,#2a2b2c,#1b1c1c);color:#fff;font-family:'DM Sans',sans-serif;font-weight:800;font-size:14px;border:1px solid rgba(255,255,255,0.08);cursor:pointer;transition:transform 0.35s cubic-bezier(0.22,1,0.36,1),box-shadow 0.35s;margin-top:8px;box-shadow:0 10px 30px -8px rgba(27,28,28,0.5),inset 0 1px 1px rgba(255,255,255,0.12)}
+.rdv-submit-btn:hover{transform:translateY(-2px);box-shadow:0 18px 44px -10px rgba(181,35,48,0.5),inset 0 1px 1px rgba(255,255,255,0.15);background:linear-gradient(145deg,#c62b39,#8f1a24)}
+.rdv-dash-btn:hover{transform:translateY(-2px);box-shadow:0 18px 44px -8px rgba(181,35,48,0.7),inset 0 1px 1px rgba(255,255,255,0.3)}
+.rdv-dash-btn:hover .rdv-arrow,.glass-cta:hover .rdv-arrow{transform:translateX(4px)}
 .rdv-submit-btn:disabled{opacity:0.4;cursor:default}
 
 body{font-family:'DM Sans',sans-serif;background:#ffffff}
@@ -45,11 +47,13 @@ body{font-family:'DM Sans',sans-serif;background:#ffffff}
 .filled{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24 !important}
 .glass-nav{backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);background:rgba(255,255,255,0.92);border-bottom:1px solid rgba(228,228,231,0.35)}
 .cta-gradient{background:linear-gradient(135deg,#b52330 0%,#ff5a5f 100%)}
+.cta-premium{background:linear-gradient(145deg,#c62b39,#8f1a24);box-shadow:0 12px 34px -8px rgba(181,35,48,0.5),inset 0 1px 1px rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.15);transition:transform 0.35s cubic-bezier(0.22,1,0.36,1),box-shadow 0.35s}
+.cta-premium:hover{transform:translateY(-2px);box-shadow:0 20px 50px -10px rgba(181,35,48,0.6)}
 .soft-shadow{box-shadow:0 2px 16px -4px rgba(27,28,28,0.07),0 0 0 1px rgba(228,228,231,0.3)}
 .float-shadow{box-shadow:0 20px 40px -12px rgba(27,28,28,0.08)}
 .display-tight{letter-spacing:-0.03em}
 .metric-num{letter-spacing:-0.045em;font-feature-settings:"tnum"}
-.hero-dark{background:radial-gradient(ellipse at top right,rgba(181,35,48,0.18),transparent 60%),radial-gradient(ellipse at bottom left,rgba(255,90,95,0.08),transparent 50%),#1b1c1c}
+.hero-dark{background:radial-gradient(ellipse at top right,rgba(181,35,48,0.32),transparent 60%),radial-gradient(ellipse at bottom left,rgba(255,90,95,0.08),transparent 50%),linear-gradient(150deg,#242526 0%,#1b1c1c 48%,#2a0e12 100%);border:1px solid rgba(255,255,255,0.07)}
 .dark-card{transition:transform 0.35s cubic-bezier(0.22,1,0.36,1),box-shadow 0.35s ease}
 .dark-card:hover{transform:translateY(-3px);box-shadow:0 24px 48px -12px rgba(0,0,0,0.4)}
 @keyframes cardGlow{0%,100%{box-shadow:0 0 0 0 rgba(181,35,48,0)}50%{box-shadow:0 0 24px 2px rgba(181,35,48,0.18)}}
@@ -246,7 +250,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
 .sepa-status-text strong{color:#1b1c1c}
 
 /* Confirm button */
-.sepa-confirm{width:100%;padding:14px;border-radius:12px;background:#1b1c1c;color:#fff;font-family:'DM Sans',sans-serif;font-weight:800;font-size:14px;border:none;cursor:pointer;transition:all 0.2s;letter-spacing:-0.01em;display:flex;align-items:center;justify-content:center;gap:8px}
+.sepa-confirm{width:100%;padding:15px;border-radius:14px;background:linear-gradient(145deg,#2a2b2c,#1b1c1c);color:#fff;font-family:'DM Sans',sans-serif;font-weight:800;font-size:14px;border:1px solid rgba(255,255,255,0.08);cursor:pointer;transition:transform 0.35s cubic-bezier(0.22,1,0.36,1),box-shadow 0.35s;letter-spacing:-0.01em;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 10px 30px -8px rgba(27,28,28,0.5),inset 0 1px 1px rgba(255,255,255,0.12)}
 .sepa-confirm:hover{background:#b52330}
 .sepa-confirm:disabled{opacity:0.4;cursor:default;background:#1b1c1c}
 .sepa-confirm.success{background:#006c4c}
@@ -256,6 +260,125 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
 .sepa-amount-badge{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:11px;background:rgba(0,108,76,0.07);border:1.5px solid rgba(0,108,76,0.2);margin-bottom:16px}
 .sepa-amount-label{font-size:12px;font-weight:600;color:#006c4c}
 .sepa-amount-val{font-family:'DM Sans',sans-serif;font-weight:900;font-size:18px;color:#006c4c;letter-spacing:-0.03em}
+
+/* ============================================================
+   STACKER — SYSTÈME PREMIUM UNIFIÉ
+   Règle d'or : verre transparent sur zones SOMBRES uniquement
+   (le verre prend la couleur du fond ; sur blanc il grise).
+   Zones claires : glossy solide (dégradé + reflet + ombre colorée).
+   ============================================================ */
+:root{
+  --gl-bg:rgba(255,255,255,0.13);
+  --gl-bg-hover:rgba(255,255,255,0.22);
+  --gl-border:rgba(255,255,255,0.45);
+  --gl-blur:blur(20px) saturate(180%);
+  --gl-blur-hover:blur(30px) saturate(200%);
+  --gl-shadow:0 8px 28px rgba(0,0,0,0.25),inset 0 1px 1px rgba(255,255,255,0.55);
+  --gl-shadow-hover:0 14px 36px rgba(0,0,0,0.30),inset 0 1px 2px rgba(255,255,255,0.70);
+  --ease-premium:cubic-bezier(0.22,1,0.36,1);
+}
+
+/* ---------- VERRE TRANSPARENT (fonds sombres) ---------- */
+/* bouton "Soumettre un RDV" sur la carte hero sombre */
+.rdv-dash-btn,.glass-cta{
+  background:var(--gl-bg);
+  -webkit-backdrop-filter:var(--gl-blur);backdrop-filter:var(--gl-blur);
+  border:1px solid var(--gl-border);
+  box-shadow:var(--gl-shadow);
+  transform:translateZ(0);
+  transition:transform .35s var(--ease-premium),background .35s,box-shadow .35s,backdrop-filter .35s,-webkit-backdrop-filter .35s;
+}
+.rdv-dash-btn:hover,.glass-cta:hover{
+  background:var(--gl-bg-hover);
+  -webkit-backdrop-filter:var(--gl-blur-hover);backdrop-filter:var(--gl-blur-hover);
+  box-shadow:var(--gl-shadow-hover);
+  transform:translateY(-2px);
+}
+.rdv-dash-btn:hover .rdv-arrow,.glass-cta:hover .rdv-arrow{transform:translateX(4px)}
+
+/* chips "Pas de déplacement" / "Paiement immédiat" sur la carte hero */
+.glass-chip{
+  background:rgba(255,255,255,0.11);
+  -webkit-backdrop-filter:blur(14px) saturate(170%);backdrop-filter:blur(14px) saturate(170%);
+  border:1px solid rgba(255,255,255,0.32);
+  box-shadow:inset 0 1px 1px rgba(255,255,255,0.35);
+  transform:translateZ(0);
+  transition:background .3s,transform .3s var(--ease-premium);
+}
+.glass-chip:hover{background:rgba(255,255,255,0.19);transform:translateY(-1px)}
+
+/* ---------- GLOSSY SOLIDE (fonds clairs) ---------- */
+/* CTA bordeaux — scoping sur button/a pour ne pas toucher barres de progression et icônes */
+button.cta-gradient,a.cta-gradient{
+  background:linear-gradient(160deg,#d8394a 0%,#b52330 45%,#8f1a24 100%) !important;
+  border:1px solid rgba(255,255,255,0.22);
+  box-shadow:0 10px 28px -6px rgba(181,35,48,0.45),inset 0 1px 1px rgba(255,255,255,0.35),inset 0 -8px 16px rgba(0,0,0,0.15);
+  transform:translateZ(0);
+  transition:transform .35s var(--ease-premium),box-shadow .35s,filter .35s !important;
+}
+button.cta-gradient:hover,a.cta-gradient:hover{
+  transform:translateY(-2px);
+  box-shadow:0 18px 44px -8px rgba(181,35,48,0.60),inset 0 1px 1px rgba(255,255,255,0.45),inset 0 -8px 16px rgba(0,0,0,0.12);
+  filter:brightness(1.05);
+}
+/* boutons obsidian (Coach IA etc.) — même logique glossy */
+button.bg-on-surface{
+  background:linear-gradient(160deg,#33342f 0%,#1b1c1c 60%) !important;
+  border:1px solid rgba(255,255,255,0.10);
+  box-shadow:0 8px 22px -6px rgba(27,28,28,0.45),inset 0 1px 1px rgba(255,255,255,0.14);
+  transform:translateZ(0);
+  transition:transform .35s var(--ease-premium),box-shadow .35s !important;
+}
+button.bg-on-surface:hover{
+  transform:translateY(-2px);
+  box-shadow:0 16px 38px -8px rgba(27,28,28,0.55),inset 0 1px 1px rgba(255,255,255,0.20);
+}
+
+/* ============================================================
+   MISSION DU JOUR — carte sombre + éléments glass
+   ============================================================ */
+.mission-dark .text-on-surface{color:#fff !important}
+.mission-dark .text-on-surface-variant{color:rgba(255,255,255,0.5) !important}
+.mission-dark .border-outline-variant\/20{border-color:rgba(255,255,255,0.08) !important}
+.mission-dark .bg-surface-container-high{background:rgba(255,255,255,0.1) !important}
+.mission-dark .text-primary{color:#ff7d88 !important}
+.mission-dark .text-primary\/60{color:rgba(255,125,136,0.7) !important}
+/* badge accumulés -> glass */
+.mission-dark [style*="background:rgba(181,35,48,0.08)"]{
+  background:rgba(255,255,255,0.12) !important;border:1px solid rgba(255,255,255,0.4) !important;
+  -webkit-backdrop-filter:blur(14px) saturate(180%);backdrop-filter:blur(14px) saturate(180%);
+  box-shadow:inset 0 1px 1px rgba(255,255,255,0.25);
+}
+/* bouton +1 appel -> verre bordeaux */
+.mission-dark button[onclick="logCallMission()"]{
+  background:rgba(255,255,255,0.13) !important;
+  -webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);
+  border:1px solid rgba(255,255,255,0.45);
+  box-shadow:0 8px 28px rgba(0,0,0,0.25),inset 0 1px 1px rgba(255,255,255,0.55);
+  transform:translateZ(0);
+  transition:transform .35s cubic-bezier(.22,1,.36,1),background .35s,backdrop-filter .35s !important;
+}
+.mission-dark button[onclick="logCallMission()"]:hover{
+  background:rgba(255,255,255,0.22) !important;transform:translateY(-2px);
+  -webkit-backdrop-filter:blur(30px) saturate(200%);backdrop-filter:blur(30px) saturate(200%);
+  box-shadow:0 14px 36px rgba(0,0,0,0.3),inset 0 1px 2px rgba(255,255,255,0.7);
+}
+/* tags PAP/DM/Email/Réseaux -> chips glass */
+.mission-dark #btn-pap,.mission-dark #btn-dm,.mission-dark #btn-email,.mission-dark #btn-social{
+  background:rgba(255,255,255,0.12) !important;color:rgba(255,255,255,0.85) !important;
+  -webkit-backdrop-filter:blur(12px) saturate(170%);backdrop-filter:blur(12px) saturate(170%);
+  border:1px solid rgba(255,255,255,0.28);
+  box-shadow:inset 0 1px 1px rgba(255,255,255,0.3);transform:translateZ(0);
+  transition:transform .3s cubic-bezier(.22,1,.36,1),background .3s !important;
+}
+.mission-dark #btn-pap:hover,.mission-dark #btn-dm:hover,.mission-dark #btn-email:hover,.mission-dark #btn-social:hover{
+  background:rgba(255,255,255,0.22) !important;transform:translateY(-1px);
+}
+/* icône call ronde -> blanche sur verre */
+.mission-dark .bg-on-surface{background:rgba(255,255,255,0.14) !important;
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,0.25);}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -497,8 +620,10 @@ async function submitRdvToSupabase(rdvData) {
     </div>
     <div class="flex items-center gap-2">
       <!-- Streak -->
-      <div class="flex items-center gap-1 px-3 py-1.5 rounded-full bg-surface-container-high">
-        <span class="material-symbols-outlined filled flame" style="font-size:18px;color:#f97316;font-variation-settings:'FILL' 1">local_fire_department</span>
+      <div class="flex items-center gap-2" style="padding:5px 12px 5px 5px;border-radius:99px;background:rgba(255,255,255,0.55);-webkit-backdrop-filter:blur(16px) saturate(160%);backdrop-filter:blur(16px) saturate(160%);border:1px solid rgba(255,255,255,0.7);box-shadow:0 4px 16px rgba(27,28,28,0.08),inset 0 1px 1px rgba(255,255,255,0.9)">
+        <span style="width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#ff8a3d,#f2560b);box-shadow:0 2px 8px rgba(242,86,11,0.45),inset 0 1px 1px rgba(255,255,255,0.5);flex-shrink:0">
+          <span class="material-symbols-outlined filled" style="font-size:16px;color:#fff;font-variation-settings:'FILL' 1">local_fire_department</span>
+        </span>
         <span class="font-headline font-bold text-sm text-on-surface" id="streakCount">0</span>
       </div>
       <!-- XP niveau -->
@@ -613,9 +738,10 @@ async function submitRdvToSupabase(rdvData) {
   <!-- SECTION PHARE — RDV COLD CALL -->
   <section class="reveal">
     <a href="rdv.html" style="text-decoration:none;display:block">
-      <div class="dark-card" style="background:#1b1c1c;border-radius:22px;overflow:hidden;position:relative">
+      <div class="dark-card" style="background:linear-gradient(150deg,#242526 0%,#1b1c1c 48%,#2a0e12 100%);border-radius:22px;overflow:clip;position:relative;border:1px solid rgba(255,255,255,0.07)">
         <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#ff5a5f 40%,#b52330 70%,transparent)"></div>
-        <div style="position:absolute;top:-50px;right:-50px;width:180px;height:180px;border-radius:50%;background:rgba(181,35,48,0.1);pointer-events:none"></div>
+        <div style="position:absolute;top:0;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.5),transparent);pointer-events:none"></div>
+        <div style="position:absolute;top:-70px;right:-50px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(181,35,48,0.4) 0%,transparent 68%);pointer-events:none"></div>
         <div style="padding:24px 24px 20px;position:relative">
           <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px">
             <div>
@@ -632,7 +758,7 @@ async function submitRdvToSupabase(rdvData) {
           </div>
           <div style="display:flex;align-items:center;gap:16px;margin-bottom:18px">
             <div>
-              <p style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:28px;color:#fff;letter-spacing:-0.04em;line-height:1">7 €</p>
+              <p style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:28px;letter-spacing:-0.04em;line-height:1;background:linear-gradient(180deg,#ffffff 0%,#cfcfcd 100%);-webkit-background-clip:text;background-clip:text;color:transparent">7 €</p>
               <p style="font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.1em">par RDV validé</p>
             </div>
             <div style="width:1px;height:36px;background:rgba(255,255,255,0.1)"></div>
@@ -648,12 +774,12 @@ async function submitRdvToSupabase(rdvData) {
           </div>
           <div style="display:flex;align-items:center;justify-content:space-between">
             <div style="display:flex;gap:8px">
-              <span style="font-size:11px;font-weight:600;padding:5px 10px;border-radius:99px;background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.5)">Pas de déplacement</span>
-              <span style="font-size:11px;font-weight:600;padding:5px 10px;border-radius:99px;background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.5)">Paiement immédiat</span>
+              <span class="glass-chip" style="font-size:11px;font-weight:700;padding:6px 13px;border-radius:99px;color:rgba(255,255,255,0.92)">Pas de déplacement</span>
+              <span class="glass-chip" style="font-size:11px;font-weight:700;padding:6px 13px;border-radius:99px;color:rgba(255,255,255,0.92)">Paiement immédiat</span>
             </div>
-            <div style="display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:12px;background:rgba(255,90,95,0.2);border:1px solid rgba(255,90,95,0.3)">
-              <span style="font-size:13px;font-weight:800;color:#fff" onclick="event.preventDefault();openRdvModal()">Soumettre un RDV</span>
-              <span class="material-symbols-outlined" style="font-size:16px;color:#ff5a5f">arrow_forward</span>
+            <div class="rdv-dash-btn" style="display:flex;align-items:center;gap:7px;padding:11px 18px;border-radius:14px;cursor:pointer;color:#fff" onclick="event.preventDefault();openRdvModal()">
+              <span style="font-size:13px;font-weight:800;color:#fff">Soumettre un RDV</span>
+              <span class="material-symbols-outlined rdv-arrow" style="font-size:16px;color:#fff;transition:transform 0.35s cubic-bezier(0.22,1,0.36,1)">arrow_forward</span>
             </div>
           </div>
         </div>
@@ -664,7 +790,9 @@ async function submitRdvToSupabase(rdvData) {
 
   <!-- MISSION DU JOUR — section principale -->
   <section class="reveal" style="animation-delay:0.07s">
-    <div class="card-premium overflow-hidden">
+    <div class="mission-dark" style="background:linear-gradient(150deg,#242526 0%,#1b1c1c 48%,#2a0e12 100%);border-radius:22px;overflow:clip;position:relative;border:1px solid rgba(255,255,255,0.07);box-shadow:0 20px 50px -14px rgba(20,20,22,0.35)">
+      <div style="position:absolute;top:0;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent);pointer-events:none"></div>
+      <div style="position:absolute;top:-70px;right:-40px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(181,35,48,0.42) 0%,transparent 68%);pointer-events:none"></div>
       <!-- Header -->
       <div class="flex items-center justify-between px-5 py-4 border-b border-outline-variant/20">
         <div class="flex items-center gap-2">
@@ -797,14 +925,14 @@ async function submitRdvToSupabase(rdvData) {
         <div class="h-5 w-px bg-white/15"></div>
         <div><p class="font-headline font-extrabold text-lg text-white metric-num" id="weekOfferLevel">–</p><p class="text-[10px] text-white/40">niveau</p></div>
       </div>
-      <div class="rounded-xl p-3 border border-white/10" style="background:rgba(255,255,255,0.06)">
+      <div class="rounded-xl p-3" style="background:rgba(255,255,255,0.09);-webkit-backdrop-filter:blur(12px) saturate(160%);backdrop-filter:blur(12px) saturate(160%);border:1px solid rgba(255,255,255,0.22);box-shadow:inset 0 1px 1px rgba(255,255,255,0.18)">
         <p class="text-[9px] font-bold uppercase tracking-[0.12em] text-white/40 mb-1">Accroche</p>
         <p class="text-xs text-white/70 leading-relaxed italic" id="weekOfferScript">–</p>
       </div>
       <div class="mt-3 flex items-center justify-between">
         <div class="flex gap-2" id="weekOfferTags"></div>
-        <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white text-on-surface text-xs font-bold">
-          Kit complet <span class="material-symbols-outlined" style="font-size:14px">arrow_forward</span>
+        <div class="glass-cta flex items-center gap-1.5 px-3 py-1.5 rounded-full text-white text-xs font-bold">
+          Kit complet <span class="material-symbols-outlined rdv-arrow" style="font-size:14px;transition:transform 0.35s cubic-bezier(0.22,1,0.36,1)">arrow_forward</span>
         </div>
       </div>
     </a>
@@ -900,9 +1028,10 @@ async function submitRdvToSupabase(rdvData) {
   <section class="reveal" style="animation-delay:0.23s">
     <div class="eyebrow mb-3"><span style="color:#1b1c1c">Micro-influence</span></div>
     <a href="influence.html" style="text-decoration:none;display:block">
-      <div class="dark-card" style="background:#1b1c1c;border-radius:22px;overflow:hidden;position:relative">
+      <div class="dark-card" style="background:linear-gradient(150deg,#242526 0%,#1b1c1c 48%,#2a0e12 100%);border-radius:22px;overflow:clip;position:relative;border:1px solid rgba(255,255,255,0.07)">
         <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#ff5a5f 40%,#b52330 70%,transparent)"></div>
-        <div style="position:absolute;top:-50px;right:-50px;width:180px;height:180px;border-radius:50%;background:rgba(181,35,48,0.1);pointer-events:none"></div>
+        <div style="position:absolute;top:0;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.5),transparent);pointer-events:none"></div>
+        <div style="position:absolute;top:-70px;right:-50px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(181,35,48,0.4) 0%,transparent 68%);pointer-events:none"></div>
         <div style="padding:22px 24px 20px;position:relative">
           <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px">
             <div>
@@ -946,11 +1075,11 @@ async function submitRdvToSupabase(rdvData) {
               <div style="width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center">
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M12.166 2c1.456 0 5.675.421 7.318 5.003.435 1.197.33 3.228.241 4.933l-.006.132c-.003.05.028.108.08.145.264.184.73.37 1.548.228.428-.072.79.075.862.328.085.302-.224.632-.635.79-.047.017-.1.033-.155.05-.658.193-1.083.538-1.202.972-.06.22.007.432.09.596.351.7 1.386 1.562 3.693 1.958v.001c.197.034.39.19.39.38 0 .332-.414.69-1.182.91-.226.065-.324.25-.39.434-.059.163-.099.34-.288.365-.193.025-.41-.08-.685-.165a5.035 5.035 0 0 0-1.56-.253c-.317 0-.617.038-.898.11-.59.156-1.1.55-1.726 1.02-1.02.767-2.295 1.721-4.355 1.721-2.054 0-3.316-.948-4.33-1.712-.63-.474-1.143-.871-1.737-1.029a4.978 4.978 0 0 0-.896-.11 5.03 5.03 0 0 0-1.562.253c-.278.086-.492.19-.685.165-.19-.025-.23-.202-.288-.365-.066-.184-.164-.369-.39-.434-.768-.22-1.182-.578-1.182-.91 0-.19.193-.346.39-.38 2.307-.396 3.342-1.258 3.693-1.958.083-.164.15-.376.09-.596-.119-.434-.544-.779-1.202-.972a4.12 4.12 0 0 1-.155-.05c-.411-.158-.72-.488-.635-.79.072-.253.434-.4.862-.328.82.143 1.284-.044 1.548-.228.052-.037.083-.095.08-.145l-.006-.132c-.089-1.705-.194-3.736.241-4.933C6.491 2.421 10.71 2 12.166 2z"/></svg>
               </div>
-              <span style="font-size:11px;font-weight:600;padding:5px 10px;border-radius:99px;background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.5)">Paiement hebdo</span>
+              <span class="glass-chip" style="font-size:11px;font-weight:700;padding:6px 13px;border-radius:99px;color:rgba(255,255,255,0.92)">Paiement hebdo</span>
             </div>
-            <div style="display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:12px;background:rgba(255,90,95,0.2);border:1px solid rgba(255,90,95,0.3);flex-shrink:0">
+            <div class="glass-cta" style="display:flex;align-items:center;gap:6px;padding:9px 15px;border-radius:12px;flex-shrink:0">
               <span style="font-size:13px;font-weight:800;color:#fff">Voir les missions</span>
-              <span class="material-symbols-outlined" style="font-size:16px;color:#ff5a5f">arrow_forward</span>
+              <span class="material-symbols-outlined rdv-arrow" style="font-size:16px;color:#fff;transition:transform 0.35s cubic-bezier(0.22,1,0.36,1)">arrow_forward</span>
             </div>
           </div>
         </div>
@@ -1290,7 +1419,7 @@ function renderWeekOffer() {
   set('weekOfferScript', offer.script);
   const tagsEl = document.getElementById('weekOfferTags');
   if (tagsEl) tagsEl.innerHTML = offer.tags.map(t =>
-    `<span class="text-[10px] font-bold px-2.5 py-1 rounded-full" style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7)">${t}</span>`
+    `<span class="glass-chip text-[10px] font-bold px-2.5 py-1 rounded-full" style="color:rgba(255,255,255,0.85)">${t}</span>`
   ).join('');
 
   function updateCountdown() {
@@ -1431,7 +1560,7 @@ window.logCallMission = function() {
     document.getElementById('missionDone').classList.remove('hidden');
     document.getElementById('streakDanger').classList.add('hidden');
     document.getElementById('doneBonus').textContent = newBonus.toFixed(0) + ' €';
-    showMissionToast('Mission validée — +2€ ajoutés à ta cagnotte 🔥', 'success');
+    showMissionToast('Mission validée — +2€ ajoutés à ta cagnotte', 'success');
   }
 
   saveMission(mission);
@@ -2573,7 +2702,7 @@ function checkDailyWheel() {
     var titleEl = document.getElementById('wheelHeaderTitle');
     if (titleEl) titleEl.textContent = 'Ton tour quotidien';
     var subEl = document.getElementById('wheelHeaderSub');
-    if (subEl) subEl.innerHTML = 'Offert chaque jour — bonne chance 🤞';
+    if (subEl) subEl.innerHTML = 'Offert chaque jour — bonne chance';
     document.getElementById('wheelOverlay').classList.add('open');
   }, 1500);
 }
