@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Ton évolution — Stacker</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;0,9..40,900&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'DM Sans',sans-serif;}
+.material-symbols-outlined{font-variation-settings:'FILL' 0;}
+.material-symbols-outlined.filled{font-variation-settings:'FILL' 1;}
+:root{--obsidian:#1b1c1c;--bordeaux:#b52330;--gold:#e0c56a;}
+body{background:#f4f4f5;color:#1b1c1c;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px;}
+
+/* header simple */
+.top{position:sticky;top:0;z-index:50;background:rgba(249,249,249,0.8);-webkit-backdrop-filter:blur(20px) saturate(160%);backdrop-filter:blur(20px) saturate(160%);border-bottom:1px solid rgba(228,228,231,0.6)}
+.top-in{max-width:760px;margin:0 auto;padding:16px 20px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:20px;font-weight:900;letter-spacing:-0.03em}
+.logo .er{color:var(--bordeaux)}
+.logo .dot{display:inline-block;width:4px;height:4px;background:#1b1c1c;margin-left:1px;vertical-align:baseline}
+.back{display:flex;align-items:center;gap:6px;color:#71717a;text-decoration:none;font-size:14px;font-weight:600}
+
+/* section wrappers */
+section{padding:0}
+.reveal{opacity:0;transform:translateY(16px);animation:rise .7s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes rise{to{opacity:1;transform:none}}
+
+/* HERO */
+.hero{margin:28px 0;border-radius:26px;overflow:hidden;position:relative;background:linear-gradient(150deg,#242526 0%,#1b1c1c 48%,#2a0e12 100%);border:1px solid rgba(255,255,255,0.07);box-shadow:0 24px 60px -18px rgba(20,20,22,0.4);padding:44px 30px}
+.hero .sheen{position:absolute;top:0;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent)}
+.hero .halo{position:absolute;top:-90px;right:-60px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(181,35,48,0.4),transparent 68%);pointer-events:none}
+.hero-kick{position:relative;font-size:12px;font-weight:700;letter-spacing:0.05em;color:#e0596a;margin-bottom:14px}
+.hero h1{position:relative;font-size:clamp(30px,7vw,44px);font-weight:900;letter-spacing:-0.04em;line-height:1.02;color:#fff;margin-bottom:16px}
+.hero h1 .gold{color:var(--gold)}
+.hero p{position:relative;font-size:16px;color:rgba(255,255,255,0.6);line-height:1.55;max-width:440px}
+
+/* section title */
+.sec-title{font-size:12px;font-weight:700;letter-spacing:0.05em;color:var(--bordeaux);margin:44px 0 6px}
+.sec-h2{font-size:26px;font-weight:900;letter-spacing:-0.03em;line-height:1.1;margin-bottom:22px}
+
+/* PARCOURS */
+.step{display:flex;align-items:flex-start;gap:16px;padding:18px;border-radius:16px;background:#fff;border:1px solid rgba(228,228,231,0.7);margin-bottom:10px;box-shadow:0 2px 12px -4px rgba(27,28,28,0.05)}
+.step-dot{width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:#f4f4f5;color:#71717a;border:1px solid rgba(228,228,231,0.8)}
+.step-body{flex:1;min-width:0}
+.step-name{font-weight:800;font-size:17px;letter-spacing:-0.01em;display:flex;align-items:center;gap:8px}
+.step-goal{font-size:12px;font-weight:700;color:var(--bordeaux);background:rgba(181,35,48,0.08);padding:3px 9px;border-radius:99px}
+.step-desc{font-size:13px;color:#71717a;line-height:1.45;margin-top:4px}
+.step-unlock{font-size:12px;color:#52525b;margin-top:8px;display:flex;align-items:center;gap:6px}
+.step-unlock .material-symbols-outlined{font-size:15px;color:#0d9668}
+
+/* FOCUS CDI */
+.cdi-card{margin-top:12px;border-radius:24px;overflow:hidden;position:relative;background:linear-gradient(150deg,#242526 0%,#1b1c1c 48%,#2a0e12 100%);border:1px solid rgba(224,197,106,0.3);box-shadow:0 24px 60px -18px rgba(20,20,22,0.4);padding:34px 28px}
+.cdi-card .halo{position:absolute;top:-80px;left:-50px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(224,197,106,0.22),transparent 68%);pointer-events:none}
+.cdi-badge{position:relative;display:inline-flex;align-items:center;gap:7px;background:linear-gradient(145deg,#f0d98a,#d4af37);color:#1b1c1c;font-weight:800;font-size:12px;padding:6px 14px;border-radius:99px;margin-bottom:16px}
+.cdi-h{position:relative;font-size:28px;font-weight:900;letter-spacing:-0.03em;color:#fff;line-height:1.08;margin-bottom:10px}
+.cdi-sub{position:relative;font-size:14px;color:rgba(255,255,255,0.6);line-height:1.5;margin-bottom:24px;max-width:420px}
+.cdi-perks{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
+.perk{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:18px 16px}
+.perk-val{font-size:24px;font-weight:900;letter-spacing:-0.03em;color:#fff;line-height:1}
+.perk-val small{font-size:12px;font-weight:700;color:rgba(255,255,255,0.5)}
+.perk-lbl{font-size:11px;color:rgba(255,255,255,0.5);margin-top:6px;line-height:1.3}
+.cdi-extra{position:relative;display:flex;flex-wrap:wrap;gap:10px}
+.cdi-extra .tag{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:10px 14px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.85)}
+.cdi-extra .tag .material-symbols-outlined{font-size:17px;color:var(--gold)}
+
+/* CRITÈRES */
+.crit{background:#fff;border:1px solid rgba(228,228,231,0.7);border-radius:16px;padding:22px;box-shadow:0 2px 12px -4px rgba(27,28,28,0.05)}
+.crit-row{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid rgba(228,228,231,0.5)}
+.crit-row:last-child{border-bottom:none}
+.crit-row .material-symbols-outlined{font-size:20px;color:var(--bordeaux);flex-shrink:0;margin-top:1px}
+.crit-txt strong{display:block;font-size:15px;font-weight:700;margin-bottom:2px}
+.crit-txt span{font-size:13px;color:#71717a;line-height:1.45}
+
+/* FAQ */
+.faq-item{background:#fff;border:1px solid rgba(228,228,231,0.7);border-radius:14px;margin-bottom:10px;overflow:hidden}
+.faq-q{width:100%;text-align:left;padding:18px 20px;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:15px;font-weight:700;color:#1b1c1c}
+.faq-q .material-symbols-outlined{font-size:22px;color:#71717a;transition:transform .3s}
+.faq-q.open .material-symbols-outlined{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.22,1,.36,1)}
+.faq-a-in{padding:0 20px 18px;font-size:14px;color:#52525b;line-height:1.55}
+
+/* CTA final */
+.cta{margin:32px 0 48px;border-radius:24px;background:linear-gradient(145deg,#c62b39,#8f1a24);padding:36px 28px;text-align:center;box-shadow:0 20px 50px -14px rgba(181,35,48,0.5)}
+.cta h3{font-size:24px;font-weight:900;letter-spacing:-0.03em;color:#fff;margin-bottom:10px}
+.cta p{font-size:14px;color:rgba(255,255,255,0.8);margin-bottom:22px;line-height:1.5}
+.cta a{display:inline-flex;align-items:center;gap:8px;background:#fff;color:#b52330;font-weight:800;font-size:15px;padding:15px 28px;border-radius:14px;text-decoration:none;box-shadow:0 8px 24px -6px rgba(0,0,0,0.3)}
+
+.legal{font-size:11px;color:#a1a1aa;line-height:1.5;text-align:center;margin-bottom:40px;padding:0 10px}
+
+@media(max-width:560px){.cdi-perks{grid-template-columns:1fr;gap:10px}}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="top-in">
+    <a href="index.html" class="back"><span class="material-symbols-outlined" style="font-size:20px">arrow_back</span> Retour</a>
+    <span class="logo">Stack<span class="er">er</span><span class="dot"></span></span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <section class="hero reveal">
+    <div class="sheen"></div><div class="halo"></div>
+    <p class="hero-kick">ton évolution chez stacker</p>
+    <h1>De stacker à<br><span class="gold">commercial salarié.</span></h1>
+    <p>Tu commences libre, en indépendant. Tu vends, tu encaisses, tu grimpes. Et au sommet, les meilleurs décrochent un vrai poste en CDI — salaire fixe, commissions, et véhicule de fonction.</p>
+  </section>
+
+  <!-- PARCOURS -->
+  <section class="reveal" style="animation-delay:.08s">
+    <p class="sec-title">le parcours</p>
+    <h2 class="sec-h2">Cinq paliers, un sommet.</h2>
+
+    <div class="step">
+      <div class="step-dot"><span class="material-symbols-outlined">sprint</span></div>
+      <div class="step-body">
+        <div class="step-name">Rookie <span class="step-goal">dès 0 €</span></div>
+        <p class="step-desc">Le départ. Tu découvres la plateforme, tu prends tes premières missions, tu fais tes premiers appels.</p>
+        <p class="step-unlock"><span class="material-symbols-outlined">check_circle</span> Accès aux missions de base</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-dot"><span class="material-symbols-outlined">handshake</span></div>
+      <div class="step-body">
+        <div class="step-name">Closer <span class="step-goal">500 €</span></div>
+        <p class="step-desc">Tu signes régulièrement. Les commissions rentrent, le rythme est là.</p>
+        <p class="step-unlock"><span class="material-symbols-outlined">check_circle</span> Missions mieux rémunérées débloquées</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-dot"><span class="material-symbols-outlined">military_tech</span></div>
+      <div class="step-body">
+        <div class="step-name">Pro <span class="step-goal">1 500 €</span></div>
+        <p class="step-desc">Tu vis de tes commissions. Stacker fait partie de ton quotidien de vendeur.</p>
+        <p class="step-unlock"><span class="material-symbols-outlined">check_circle</span> Offres à forte commission + coaching avancé</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-dot"><span class="material-symbols-outlined">workspace_premium</span></div>
+      <div class="step-body">
+        <div class="step-name">Elite <span class="step-goal">3 500 €</span></div>
+        <p class="step-desc">Le haut du panier. Tu fais partie des stackers les plus performants.</p>
+        <p class="step-unlock"><span class="material-symbols-outlined">check_circle</span> Offres premium + éligibilité au CDI ouverte</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-dot"><span class="material-symbols-outlined">star</span></div>
+      <div class="step-body">
+        <div class="step-name">Legend <span class="step-goal">7 000 €</span></div>
+        <p class="step-desc">Une référence sur la plateforme. Tu inspires les autres stackers.</p>
+        <p class="step-unlock"><span class="material-symbols-outlined">check_circle</span> Statut prioritaire pour le recrutement CDI</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOCUS CDI -->
+  <section class="reveal" style="animation-delay:.12s">
+    <p class="sec-title">le sommet</p>
+    <h2 class="sec-h2">Le poste en CDI.</h2>
+
+    <div class="cdi-card">
+      <div class="halo"></div>
+      <div class="cdi-badge"><span class="material-symbols-outlined filled" style="font-size:16px">directions_car</span> CDI · Commercial terrain</div>
+      <h3 class="cdi-h">Deviens Recrue Stacker.</h3>
+      <p class="cdi-sub">Les stackers les plus performants peuvent accéder à un poste salarié en CDI. La sécurité d'un fixe, la liberté du variable déplafonné, et une voiture pour aller sur le terrain.</p>
+
+      <div class="cdi-perks">
+        <div class="perk">
+          <div class="perk-val">3 200 €<small> net</small></div>
+          <div class="perk-lbl">Salaire fixe garanti chaque mois</div>
+        </div>
+        <div class="perk">
+          <div class="perk-val">+15 %<small> /vente</small></div>
+          <div class="perk-lbl">Commission déplafonnée sur tout ce que tu vends</div>
+        </div>
+        <div class="perk">
+          <div class="perk-val">Voiture</div>
+          <div class="perk-lbl">Véhicule de fonction fourni</div>
+        </div>
+      </div>
+
+      <div class="cdi-extra">
+        <span class="tag"><span class="material-symbols-outlined">verified</span> Sécurité du CDI</span>
+        <span class="tag"><span class="material-symbols-outlined">health_and_safety</span> Mutuelle</span>
+        <span class="tag"><span class="material-symbols-outlined">local_gas_station</span> Frais pris en charge</span>
+        <span class="tag"><span class="material-symbols-outlined">trending_up</span> Évolution interne</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CRITÈRES -->
+  <section class="reveal" style="animation-delay:.16s">
+    <p class="sec-title">comment y accéder</p>
+    <h2 class="sec-h2">Les conditions.</h2>
+    <div class="crit">
+      <div class="crit-row">
+        <span class="material-symbols-outlined">trending_up</span>
+        <div class="crit-txt"><strong>Atteindre le niveau Elite (minimum)</strong><span>Le CDI s'ouvre aux stackers qui ont prouvé leur régularité et leur performance sur la durée.</span></div>
+      </div>
+      <div class="crit-row">
+        <span class="material-symbols-outlined">calendar_month</span>
+        <div class="crit-txt"><strong>Une performance régulière</strong><span>Pas un coup de chance : des résultats constants sur plusieurs mois, actif chaque semaine.</span></div>
+      </div>
+      <div class="crit-row">
+        <span class="material-symbols-outlined">badge</span>
+        <div class="crit-txt"><strong>Un profil terrain</strong><span>Permis B, mobilité, et l'envie d'aller au contact. Le poste est un vrai métier de commercial terrain.</span></div>
+      </div>
+      <div class="crit-row">
+        <span class="material-symbols-outlined">handshake</span>
+        <div class="crit-txt"><strong>Un entretien avec l'équipe Stacker</strong><span>La dernière étape : on se rencontre, on valide que le poste te correspond, et c'est parti.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="reveal" style="animation-delay:.2s">
+    <p class="sec-title">questions fréquentes</p>
+    <h2 class="sec-h2">Tout comprendre.</h2>
+
+    <div class="faq-item">
+      <button class="faq-q"><span>C'est vraiment possible, ou c'est juste marketing ?</span><span class="material-symbols-outlined">add</span></button>
+      <div class="faq-a"><div class="faq-a-in">C'est réel. Stacker recrute ses meilleurs éléments en interne plutôt que de chercher ailleurs — un stacker qui a fait ses preuves connaît déjà le produit, le terrain et la méthode. C'est logique pour nous de te recruter toi. En revanche, ce n'est pas automatique : c'est une sélection, selon tes performances et nos besoins du moment.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q"><span>Combien de temps ça prend ?</span><span class="material-symbols-outlined">add</span></button>
+      <div class="faq-a"><div class="faq-a-in">Ça dépend entièrement de toi. Certains grimpent vite, d'autres prennent leur temps. Il n'y a pas de délai imposé — ce qui compte, c'est ta régularité et tes résultats. Plus tu vends, plus tu montes, plus tu te rapproches du poste.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q"><span>Je dois arrêter d'être indépendant ?</span><span class="material-symbols-outlined">add</span></button>
+      <div class="faq-a"><div class="faq-a-in">Oui, le CDI est un statut salarié — tu passes de stacker indépendant à salarié Stacker. C'est justement l'avantage : tu troques l'incertitude de l'indépendance contre la sécurité d'un fixe garanti, tout en gardant du variable. C'est une évolution, pas un retour en arrière.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q"><span>Je dois déménager ?</span><span class="material-symbols-outlined">add</span></button>
+      <div class="faq-a"><div class="faq-a-in">Pas nécessairement. Le poste est un poste de commercial terrain, sur un secteur géographique. On en discute lors de l'entretien pour trouver la zone qui te correspond. La voiture de fonction est justement là pour couvrir ton secteur.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q"><span>Et si je ne veux pas de CDI, je peux rester indépendant ?</span><span class="material-symbols-outlined">add</span></button>
+      <div class="faq-a"><div class="faq-a-in">Bien sûr. Le CDI est une opportunité, pas une obligation. Tu peux tout à fait rester stacker indépendant aussi longtemps que tu veux et continuer à encaisser tes commissions librement. Le poste salarié est là pour ceux qui veulent cette évolution-là.</div></div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta reveal" style="animation-delay:.24s">
+    <h3>Ton évolution commence par une vente.</h3>
+    <p>Chaque mission te rapproche du sommet. Vois où tu en es et continue à grimper.</p>
+    <a href="index.html">Retour à mon tableau de bord <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span></a>
+  </div>
+
+  <p class="legal">L'accès au poste en CDI se fait sur sélection, en fonction des performances individuelles et des besoins de recrutement de Stacker. Il ne constitue pas un engagement automatique ni un droit acquis par l'atteinte d'un palier. Les conditions du poste (rémunération, secteur, avantages) sont précisées lors de l'entretien de recrutement.</p>
+
+</div>
+
+<script>
+document.querySelectorAll('.faq-q').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var a = btn.parentElement.querySelector('.faq-a');
+    var open = btn.classList.contains('open');
+    document.querySelectorAll('.faq-q').forEach(function(b){b.classList.remove('open');b.parentElement.querySelector('.faq-a').style.maxHeight='0';});
+    if(!open){btn.classList.add('open');a.style.maxHeight=a.querySelector('.faq-a-in').offsetHeight+'px';}
+  });
+});
+</script>
+</body>
+</html>
