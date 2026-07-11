@@ -227,8 +227,10 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;heigh
 /* Mandate checkbox */
 .sepa-mandate{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:11px;background:rgba(27,28,28,0.04);border:1.5px solid rgba(228,228,231,0.5);margin-bottom:14px;cursor:pointer;transition:border-color 0.2s}
 .sepa-mandate:hover{border-color:rgba(27,28,28,0.2)}
-.sepa-mandate-check{width:18px;height:18px;border-radius:5px;border:2px solid rgba(27,28,28,0.3);background:#fff;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.sepa-mandate-check{width:22px;height:22px;border-radius:6px;border:2px solid rgba(27,28,28,0.3);background:#fff;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.sepa-mandate-check .material-symbols-outlined{opacity:0;transform:scale(0.5);transition:all 0.15s cubic-bezier(0.22,1,0.36,1)}
 .sepa-mandate-check.checked{background:#1b1c1c;border-color:#1b1c1c}
+.sepa-mandate-check.checked .material-symbols-outlined{opacity:1;transform:scale(1)}
 .sepa-mandate-text{font-size:11px;color:#52525b;line-height:1.55;font-weight:500}
 .sepa-mandate-text strong{color:#1b1c1c;font-weight:700}
 
@@ -428,6 +430,24 @@ button.bg-on-surface:hover{
 .career-cdi{background:linear-gradient(135deg,rgba(224,197,106,0.14),rgba(181,35,48,0.1));border:1px solid rgba(224,197,106,0.35);box-shadow:0 8px 24px -8px rgba(224,197,106,0.2)}
 .career-dot-gold{background:linear-gradient(145deg,#f0d98a,#d4af37)!important;color:#1b1c1c!important;border-color:transparent!important;box-shadow:0 4px 14px -2px rgba(224,197,106,0.5)}
 
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── ASSISTANT PAS À PAS (closing coach) ── */
+.closing-coach{margin-bottom:18px;padding:14px;border-radius:14px;background:#fafafa;border:1px solid rgba(228,228,231,0.8)}
+.coach-steps{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;position:relative}
+.coach-steps::before{content:'';position:absolute;top:13px;left:14px;right:14px;height:2px;background:rgba(228,228,231,0.9);z-index:0}
+.coach-step{display:flex;flex-direction:column;align-items:center;gap:4px;position:relative;z-index:1;flex:1}
+.coach-dot{width:26px;height:26px;border-radius:50%;background:#fff;border:2px solid rgba(228,228,231,1);color:#a1a1aa;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;transition:all .3s cubic-bezier(.22,1,.36,1)}
+.coach-lbl{font-size:9px;font-weight:700;color:#a1a1aa;letter-spacing:0.01em;transition:color .3s}
+.coach-step.active .coach-dot{background:#b52330;border-color:#b52330;color:#fff;box-shadow:0 0 0 4px rgba(181,35,48,0.12);transform:scale(1.1)}
+.coach-step.active .coach-lbl{color:#b52330}
+.coach-step.done .coach-dot{background:#1b1c1c;border-color:#1b1c1c;color:#fff}
+.coach-step.done .coach-lbl{color:#1b1c1c}
+.coach-msg{display:flex;align-items:flex-start;gap:9px;padding:11px 13px;border-radius:11px;background:rgba(181,35,48,0.05);border:1px solid rgba(181,35,48,0.14)}
+.coach-msg p{font-size:12.5px;color:#3f3f46;line-height:1.4}
+.coach-msg p strong{color:#1b1c1c}
+.coach-msg.done-msg{background:rgba(13,150,104,0.06);border-color:rgba(13,150,104,0.2)}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -533,6 +553,13 @@ async function submitRdvToSupabase(rdvData) {
         <span class="material-symbols-outlined" style="font-size:18px;color:#b52330;font-variation-settings:'FILL' 1">space_dashboard</span>
       </div>
       <span class="nav-item-label text-sm font-semibold">Tableau de bord</span>
+    </a>
+
+    <a href="demarrer.html" class="nav-item" style="margin-bottom:2px">
+      <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(145deg,#e0596a,#b52330);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 12px -3px rgba(181,35,48,0.5)">
+        <span class="material-symbols-outlined" style="font-size:18px;color:#fff;font-variation-settings:'FILL' 1">rocket_launch</span>
+      </div>
+      <span class="nav-item-label text-sm font-semibold">Démarrer — Trouve ton offre</span>
     </a>
 
     <p style="font-size:9px;font-weight:700;letter-spacing:0.02em;color:#71717a;padding:14px 4px 6px">Gagner de l'argent</p>
@@ -810,26 +837,47 @@ async function submitRdvToSupabase(rdvData) {
 
   <!-- WIDGETS KPI — mini dashboard façon Apple -->
   <section class="reveal kpi-widgets" style="animation-delay:0.06s">
-    <div class="kpi-w kpi-w-accent">
+    <a href="cagnotte.html" class="kpi-w kpi-w-accent" style="text-decoration:none">
       <div class="kpi-top"><span class="material-symbols-outlined" style="font-size:18px">account_balance_wallet</span><span class="kpi-tag">Ce mois</span></div>
       <div class="kpi-val" id="kpiCagnotte">0 €</div>
       <div class="kpi-lbl">Cagnotte</div>
-    </div>
-    <div class="kpi-w">
+    </a>
+    <a href="rdv.html" class="kpi-w" style="text-decoration:none">
       <div class="kpi-top"><span class="material-symbols-outlined" style="font-size:18px;color:#b52330">event_available</span></div>
       <div class="kpi-val" id="kpiRdv">0</div>
       <div class="kpi-lbl">RDV validés</div>
-    </div>
-    <div class="kpi-w">
+    </a>
+    <a href="streak.html" class="kpi-w" style="text-decoration:none">
       <div class="kpi-top"><span class="material-symbols-outlined" style="font-size:18px;color:#f97316">local_fire_department</span></div>
       <div class="kpi-val" id="kpiStreak">0</div>
       <div class="kpi-lbl">Jours de suite</div>
-    </div>
-    <div class="kpi-w">
+    </a>
+    <a href="evolution.html" class="kpi-w" style="text-decoration:none">
       <div class="kpi-top"><span class="material-symbols-outlined" style="font-size:18px;color:#b52330">military_tech</span></div>
       <div class="kpi-val" id="kpiLevel" style="font-size:20px">Rookie</div>
       <div class="kpi-lbl">Ton niveau</div>
-    </div>
+    </a>
+  </section>
+  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(228,228,231,0.5) 50%,transparent);margin:0 4px"></div>
+
+  <!-- BANNIÈRE DÉMARRER -->
+  <section class="reveal" style="animation-delay:0.07s">
+    <a href="demarrer.html" style="text-decoration:none;display:block">
+      <div style="position:relative;overflow:clip;border-radius:20px;background:linear-gradient(150deg,#242526 0%,#1b1c1c 48%,#2a0e12 100%);border:1px solid rgba(255,255,255,0.08);box-shadow:0 16px 40px -14px rgba(20,20,22,0.4);padding:22px 22px">
+        <div style="position:absolute;top:0;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent)"></div>
+        <div style="position:absolute;top:-60px;right:-40px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(181,35,48,0.4),transparent 68%);pointer-events:none"></div>
+        <div style="position:relative;display:flex;align-items:center;gap:16px">
+          <div style="width:52px;height:52px;flex-shrink:0;display:flex;align-items:center;justify-content:center">
+            <span class="material-symbols-outlined" style="font-size:34px;color:#fff;font-variation-settings:'FILL' 1">rocket_launch</span>
+          </div>
+          <div style="flex:1;min-width:0">
+            <p style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:18px;letter-spacing:-0.02em;color:#fff;line-height:1.15">Trouve ton offre idéale<br>et fais ta première vente</p>
+            <p style="font-size:12px;font-weight:500;color:rgba(255,255,255,0.5);margin-top:4px">Le quiz qui te lance en 2 minutes</p>
+          </div>
+          <span class="material-symbols-outlined" style="font-size:24px;color:rgba(255,255,255,0.5);flex-shrink:0">arrow_forward</span>
+        </div>
+      </div>
+    </a>
   </section>
   <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(228,228,231,0.5) 50%,transparent);margin:0 4px"></div>
 
@@ -837,16 +885,10 @@ async function submitRdvToSupabase(rdvData) {
   <section class="reveal">
     <a href="rdv.html" style="text-decoration:none;display:block">
       <div class="dark-card" style="background:linear-gradient(150deg,#242526 0%,#1b1c1c 48%,#2a0e12 100%);border-radius:22px;overflow:clip;position:relative;border:1px solid rgba(255,255,255,0.07)">
-        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#ff5a5f 40%,#b52330 70%,transparent)"></div>
-        <div style="position:absolute;top:0;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.5),transparent);pointer-events:none"></div>
         <div style="position:absolute;top:-70px;right:-50px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(181,35,48,0.4) 0%,transparent 68%);pointer-events:none"></div>
         <div style="padding:24px 24px 20px;position:relative">
           <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px">
             <div>
-              <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-                <span style="width:6px;height:6px;border-radius:50%;background:#ff5a5f;display:block;animation:pulse-dot 2s ease-in-out infinite"></span>
-                <span style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:0.02em;color:rgba(255,90,95,0.8)">Section phare</span>
-              </div>
               <h2 style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:24px;letter-spacing:-0.04em;line-height:1.05;color:#fff;margin-bottom:6px">Prise de RDV<br>Cold Call</h2>
               <p style="font-size:13px;color:rgba(255,255,255,0.45);line-height:1.5;max-width:260px">Tu appelles, tu prends le RDV. Un commercial se déplace. Toi tu encaisses.</p>
             </div>
@@ -1206,7 +1248,6 @@ async function submitRdvToSupabase(rdvData) {
     <div class="eyebrow mb-3"><span style="color:#1b1c1c">Micro-influence</span></div>
     <a href="influence.html" style="text-decoration:none;display:block">
       <div class="dark-card" style="background:linear-gradient(150deg,#242526 0%,#1b1c1c 48%,#2a0e12 100%);border-radius:22px;overflow:clip;position:relative;border:1px solid rgba(255,255,255,0.07)">
-        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#ff5a5f 40%,#b52330 70%,transparent)"></div>
         <div style="position:absolute;top:0;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.5),transparent);pointer-events:none"></div>
         <div style="position:absolute;top:-70px;right:-50px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(181,35,48,0.4) 0%,transparent 68%);pointer-events:none"></div>
         <div style="padding:22px 24px 20px;position:relative">
@@ -1569,13 +1610,13 @@ function init() {
 
 // ─── OFFRE DE LA SEMAINE ─────────────────────────────
 const WEEK_OFFERS = [
-  { name:'Carte Fidélité', cat:'Commerce local · Débutant', tagline:'Wallet Apple & Google pour fidéliser les clients', icon:'loyalty', com:'25%', price:'Dès 29 €/mois', level:'Débutant', script:"Bonjour, je passe vous voir au sujet d'un système de carte de fidélité directement dans le téléphone de vos clients — aucune app à télécharger, ça prend 30 secondes à expliquer. Vous avez 2 minutes ?", tags:['PAP','Closing direct'] },
-  { name:'Réduction Facture Énergie', cat:'Particuliers · Débutant', tagline:"Réduire la facture d'électricité jusqu'à 30% gratuitement", icon:'bolt', com:'25%', price:'80–150 €/dossier', level:'Débutant', script:"Bonjour, je vous contacte car on aide les particuliers à réduire leur facture d'électricité. Vous êtes actuellement chez quel fournisseur ?", tags:['Call','Closing direct'] },
-  { name:'E-Réputation Google', cat:'Commerce local · Débutant', tagline:'Générer des avis 5 étoiles automatiquement', icon:'reviews', com:'25%', price:'Dès 29 €/mois', level:'Débutant', script:"Bonjour, si je tape votre nom sur Google en ce moment, combien d'étoiles avez-vous ? On a un système qui génère des avis 5 étoiles automatiquement après chaque passage client.", tags:['PAP','Call'] },
-  { name:'Alma Company', cat:'Commerce · Débutant', tagline:'Site web professionnel livré en 7 jours', icon:'web', com:'25%', price:'Dès 49 €/mois', level:'Débutant', script:"Bonjour, est-ce que vous avez un site internet actuellement ? On livre des sites professionnels en 7 jours à partir de 49€/mois tout inclus.", tags:['PAP','RDV'] },
-  { name:'Rachat de Crédit', cat:'Particuliers · Expérimenté', tagline:'Regrouper tous les crédits, réduire les mensualités', icon:'account_balance', com:'25%', price:'400–1 500 €/dossier', level:'Expérimenté', script:"Bonjour, je vous contacte car on aide les particuliers à réduire leurs mensualités de crédit. Vous avez actuellement plusieurs crédits en cours ?", tags:['Call','RDV'] },
-  { name:'Seoia Partners', cat:'SEO · Expérimenté', tagline:'Visibilité Google garantie pour commerçants locaux', icon:'travel_explore', com:'25%', price:'Dès 199 €/mois', level:'Expérimenté', script:"Bonjour, j'ai analysé votre présence Google et vous n'apparaissez pas dans les premiers résultats — ça représente des clients qui vont chez vos concurrents chaque semaine.", tags:['Call','RDV'] },
-  { name:'QR Code Avis Google', cat:'E-Réputation · Débutant', tagline:'Un QR code sur le comptoir — vos clients laissent un avis en 10 secondes', icon:'qr_code_2', com:'40%', price:'29 €/mois', level:'Débutant', script:"Bonjour, on propose aux commerces un QR code plastifié qui permet à vos clients de laisser un avis Google en 10 secondes. Combien d'avis avez-vous actuellement ?", tags:['Call','PAP','RDV'] },
+  { name:'Carte Fidélité', type:'recurrent', cat:'Commerce local · Débutant', tagline:'Wallet Apple & Google pour fidéliser les clients', icon:'loyalty', com:'25%', price:'Dès 29 €/mois', level:'Débutant', script:"Bonjour, je passe vous voir au sujet d'un système de carte de fidélité directement dans le téléphone de vos clients — aucune app à télécharger, ça prend 30 secondes à expliquer. Vous avez 2 minutes ?", tags:['PAP','Closing direct'] },
+  { name:'Réduction Facture Énergie', type:'oneshot', cat:'Particuliers · Débutant', tagline:"Réduire la facture d'électricité jusqu'à 30% gratuitement", icon:'bolt', com:'25%', price:'80–150 €/dossier', level:'Débutant', script:"Bonjour, je vous contacte car on aide les particuliers à réduire leur facture d'électricité. Vous êtes actuellement chez quel fournisseur ?", tags:['Call','Closing direct'] },
+  { name:'E-Réputation Google', type:'recurrent', cat:'Commerce local · Débutant', tagline:'Générer des avis 5 étoiles automatiquement', icon:'reviews', com:'25%', price:'Dès 29 €/mois', level:'Débutant', script:"Bonjour, si je tape votre nom sur Google en ce moment, combien d'étoiles avez-vous ? On a un système qui génère des avis 5 étoiles automatiquement après chaque passage client.", tags:['PAP','Call'] },
+  { name:'Alma Company', type:'recurrent', cat:'Commerce · Débutant', tagline:'Site web professionnel livré en 7 jours', icon:'web', com:'25%', price:'Dès 49 €/mois', level:'Débutant', script:"Bonjour, est-ce que vous avez un site internet actuellement ? On livre des sites professionnels en 7 jours à partir de 49€/mois tout inclus.", tags:['PAP','RDV'] },
+  { name:'Rachat de Crédit', type:'oneshot', cat:'Particuliers · Expérimenté', tagline:'Regrouper tous les crédits, réduire les mensualités', icon:'account_balance', com:'25%', price:'400–1 500 €/dossier', level:'Expérimenté', script:"Bonjour, je vous contacte car on aide les particuliers à réduire leurs mensualités de crédit. Vous avez actuellement plusieurs crédits en cours ?", tags:['Call','RDV'] },
+  { name:'Seoia Partners', type:'recurrent', cat:'SEO · Expérimenté', tagline:'Visibilité Google garantie pour commerçants locaux', icon:'travel_explore', com:'25%', price:'Dès 199 €/mois', level:'Expérimenté', script:"Bonjour, j'ai analysé votre présence Google et vous n'apparaissez pas dans les premiers résultats — ça représente des clients qui vont chez vos concurrents chaque semaine.", tags:['Call','RDV'] },
+  { name:'QR Code Avis Google', type:'recurrent', cat:'E-Réputation · Débutant', tagline:'Un QR code sur le comptoir — vos clients laissent un avis en 10 secondes', icon:'qr_code_2', com:'40%', price:'29 €/mois', level:'Débutant', script:"Bonjour, on propose aux commerces un QR code plastifié qui permet à vos clients de laisser un avis Google en 10 secondes. Combien d'avis avez-vous actuellement ?", tags:['Call','PAP','RDV'] },
 ];
 
 function getWeekNumber() {
@@ -2282,6 +2323,77 @@ document.addEventListener('DOMContentLoaded', function() {
   </div>
 </div>
 
+<!-- MODAL CONTRAT PRÉ-REMPLI + SIGNATURE -->
+<div id="contractPreviewOverlay" style="display:none;position:fixed;inset:0;z-index:700;background:rgba(15,10,11,0.7);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);align-items:flex-end;justify-content:center;padding:0" onclick="if(event.target===this)closeContractPreview()">
+  <div style="max-width:560px;width:100%;max-height:94vh;display:flex;flex-direction:column;background:#fff;border-radius:24px 24px 0 0;box-shadow:0 -10px 50px rgba(0,0,0,0.4)">
+    <!-- header -->
+    <div style="padding:16px 20px;border-bottom:1px solid rgba(228,228,231,0.5);display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
+      <div>
+        <p style="font-size:11px;font-weight:700;letter-spacing:0.05em;color:#b52330">contrat à signer</p>
+        <p id="contractPreviewTitle" style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:16px;letter-spacing:-0.03em;color:#1b1c1c">—</p>
+      </div>
+      <button onclick="closeContractPreview()" style="width:30px;height:30px;border-radius:8px;background:rgba(27,28,28,0.07);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined" style="font-size:18px">close</span></button>
+    </div>
+    <!-- corps scrollable : contrat pré-rempli -->
+    <div style="flex:1;overflow-y:auto;padding:22px 22px 10px">
+      <div id="contractPreviewBody" style="font-size:13px;color:#333;line-height:1.6"></div>
+
+      <!-- consentement contrat -->
+      <div id="contractTermsBox" onclick="toggleContractTerms()" style="margin-top:20px;display:flex;align-items:flex-start;gap:11px;padding:14px;border-radius:12px;background:#fafafa;border:1px solid rgba(228,228,231,0.8);cursor:pointer">
+        <div id="contractTermsCheck" style="width:22px;height:22px;border-radius:6px;border:2px solid rgba(27,28,28,0.3);background:#fff;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all 0.15s">
+          <span class="material-symbols-outlined" style="font-size:16px;color:#fff;font-variation-settings:'FILL' 1;opacity:0;transform:scale(0.5);transition:all 0.15s" id="contractTermsCheckIcon">check</span>
+        </div>
+        <p style="font-size:13px;color:#333;line-height:1.45">Le client reconnaît avoir lu et <strong>accepte les termes du présent contrat</strong> ainsi que les conditions de la prestation.</p>
+      </div>
+
+      <!-- zone signature contrat -->
+      <div style="margin-top:16px;padding-top:20px;border-top:1px solid rgba(228,228,231,0.6)">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <label style="font-size:12px;font-weight:700;color:#6b7280;text-transform:none">Signature du client</label>
+          <button type="button" onclick="clearContractSignature()" style="background:none;border:none;color:#b52330;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px">
+            <span class="material-symbols-outlined" style="font-size:15px">restart_alt</span> Effacer
+          </button>
+        </div>
+        <div style="position:relative;border:1.5px dashed rgba(27,28,28,0.2);border-radius:14px;background:#fafafa;overflow:hidden;touch-action:none">
+          <canvas id="contractSigCanvas" style="display:block;width:100%;height:160px;touch-action:none"></canvas>
+          <div id="contractSigPlaceholder" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;color:rgba(27,28,28,0.28)">
+            <span class="material-symbols-outlined" style="font-size:26px">gesture</span>
+            <span style="font-size:12px;font-weight:600;margin-top:4px">Le client signe ici</span>
+          </div>
+        </div>
+        <p style="font-size:11px;color:#a1a1aa;margin-top:8px;line-height:1.4">En signant, le client reconnaît avoir lu et accepté les termes du présent contrat.</p>
+      </div>
+    </div>
+    <!-- footer bouton -->
+    <div style="padding:14px 22px 22px;border-top:1px solid rgba(228,228,231,0.5);flex-shrink:0">
+      <button id="contractSignBtn" onclick="validateContractSignature()" disabled style="width:100%;padding:15px;border-radius:14px;background:#e4e4e7;color:#a1a1aa;font-weight:800;font-size:15px;border:none;cursor:not-allowed;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s">
+        <span class="material-symbols-outlined" style="font-size:18px">draw</span> Valider la signature du contrat
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CONDITIONS MANDAT SEPA -->
+<div id="mandateTermsOverlay" style="display:none;position:fixed;inset:0;z-index:700;background:rgba(15,10,11,0.7);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:20px" onclick="if(event.target===this)closeMandateTerms()">
+  <div style="max-width:480px;width:100%;max-height:80vh;overflow-y:auto;background:#fff;border-radius:22px;padding:28px 26px;box-shadow:0 30px 70px -15px rgba(0,0,0,0.5)">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <h3 style="font-family:'DM Sans',sans-serif;font-weight:900;font-size:18px;letter-spacing:-0.03em;color:#1b1c1c">Conditions du mandat SEPA</h3>
+      <button onclick="closeMandateTerms()" style="width:30px;height:30px;border-radius:8px;background:rgba(27,28,28,0.07);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined" style="font-size:18px">close</span></button>
+    </div>
+    <div style="font-size:13px;color:#52525b;line-height:1.6">
+      <p style="margin-bottom:12px">En signant ce mandat de prélèvement SEPA, vous (le débiteur) autorisez :</p>
+      <p style="margin-bottom:10px"><strong>Stacker</strong> à envoyer des instructions à votre banque pour débiter votre compte, et</p>
+      <p style="margin-bottom:16px">votre banque à débiter votre compte conformément aux instructions de Stacker.</p>
+      <p style="margin-bottom:10px"><strong>Vos droits :</strong> vous bénéficiez du droit d'être remboursé par votre banque selon les conditions décrites dans la convention que vous avez passée avec elle. Toute demande de remboursement doit être présentée dans les <strong>8 semaines</strong> suivant la date de débit de votre compte pour un prélèvement autorisé.</p>
+      <p style="margin-bottom:10px"><strong>Type de paiement :</strong> ce mandat concerne des paiements récurrents ou ponctuels selon les conditions convenues lors de la vente.</p>
+      <p style="margin-bottom:10px"><strong>Pré-notification :</strong> vous serez informé du montant et de la date de chaque prélèvement avant qu'il ne soit effectué.</p>
+      <p style="margin-bottom:16px"><strong>Révocation :</strong> vous pouvez révoquer ce mandat à tout moment en contactant Stacker ou votre banque.</p>
+      <p style="font-size:11px;color:#a1a1aa;padding-top:12px;border-top:1px solid rgba(228,228,231,0.6)">Vos coordonnées bancaires (IBAN) sont traitées de manière sécurisée et utilisées uniquement pour l'exécution de ce mandat. Un exemplaire du mandat signé vous sera transmis par email.</p>
+    </div>
+    <button onclick="closeMandateTerms()" style="width:100%;margin-top:20px;padding:14px;border-radius:12px;background:#1b1c1c;color:#fff;font-weight:800;font-size:14px;border:none;cursor:pointer">J'ai compris</button>
+  </div>
+</div>
+
 <!-- MODAL SEPA CLOSING -->
 <div class="sepa-overlay" id="sepaOverlay" onclick="closeSepaModal(event)">
   <div class="sepa-sheet">
@@ -2302,9 +2414,60 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
     <div class="sepa-body">
 
-      <!-- Montant du deal -->
+      <!-- ASSISTANT PAS À PAS -->
+      <div class="closing-coach" id="closingCoach">
+        <div class="coach-steps" id="coachSteps">
+          <div class="coach-step" data-step="1"><span class="coach-dot">1</span><span class="coach-lbl">Offre</span></div>
+          <div class="coach-step" data-step="2"><span class="coach-dot">2</span><span class="coach-lbl">Montant</span></div>
+          <div class="coach-step" data-step="3"><span class="coach-dot">3</span><span class="coach-lbl">Client</span></div>
+          <div class="coach-step" data-step="4"><span class="coach-dot">4</span><span class="coach-lbl">Contrat</span></div>
+          <div class="coach-step" data-step="5"><span class="coach-dot">5</span><span class="coach-lbl">Mandat</span></div>
+          <div class="coach-step" data-step="6"><span class="coach-dot">6</span><span class="coach-lbl">Validé</span></div>
+        </div>
+        <div class="coach-msg" id="coachMsg">
+          <span class="material-symbols-outlined" id="coachMsgIcon" style="font-size:18px;color:#b52330">arrow_circle_right</span>
+          <p id="coachMsgTxt"><strong>Étape 1 — Choisis l'offre</strong> que tu viens de vendre. Le bon contrat se joindra automatiquement.</p>
+        </div>
+      </div>
+
+      <!-- Sélection de l'offre vendue -->
+      <div class="sepa-field" style="margin-bottom:14px">
+        <label class="sepa-label">Offre vendue</label>
+        <div style="position:relative">
+          <select id="sepaOfferSelect" onchange="onSepaOfferChange()" style="width:100%;padding:14px 40px 14px 16px;border-radius:12px;border:1.5px solid rgba(228,228,231,0.8);background:#fff;font-family:'DM Sans',sans-serif;font-weight:700;font-size:15px;color:#1b1c1c;cursor:pointer;-webkit-appearance:none;appearance:none">
+            <option value="">— Choisis l'offre concernée —</option>
+          </select>
+          <span class="material-symbols-outlined" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);pointer-events:none;color:#71717a;font-size:22px">expand_more</span>
+        </div>
+      </div>
+
+      <!-- Encart contrat joint (apparaît après sélection) -->
+      <div id="sepaContractBox" style="display:none;margin-bottom:14px;padding:14px 16px;border-radius:12px;background:rgba(181,35,48,0.05);border:1px solid rgba(181,35,48,0.15)">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="width:38px;height:38px;border-radius:10px;background:#1b1c1c;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <span class="material-symbols-outlined" style="font-size:19px;color:#fff;font-variation-settings:'FILL' 1">description</span>
+          </div>
+          <div style="flex:1;min-width:0">
+            <p style="font-size:13px;font-weight:800;color:#1b1c1c;line-height:1.2">Contrat joint automatiquement</p>
+            <p id="sepaContractName" style="font-size:12px;color:#71717a;margin-top:1px">—</p>
+            <span id="sepaTypeBadge" style="display:none;margin-top:5px;font-size:10px;font-weight:700;padding:3px 9px;border-radius:99px"></span>
+          </div>
+          <button type="button" onclick="openContractPreview()" style="flex-shrink:0;padding:8px 12px;border-radius:9px;background:#fff;border:1px solid rgba(228,228,231,0.9);color:#b52330;font-size:12px;font-weight:700;cursor:pointer">Lire</button>
+        </div>
+      </div>
+
+      <!-- Montant de la vente (saisie) -->
+      <div class="sepa-field" style="margin-bottom:14px">
+        <label class="sepa-label" id="sepaAmountLabel">Montant de la vente</label>
+        <div style="position:relative">
+          <input class="sepa-input" type="number" inputmode="decimal" id="sepaSaleAmount" placeholder="0" oninput="updateSepaCommission()" style="padding-right:70px;font-weight:800;font-size:18px"/>
+          <span id="sepaAmountSuffix" style="position:absolute;right:16px;top:50%;transform:translateY(-50%);font-weight:800;font-size:14px;color:#71717a">€</span>
+        </div>
+      </div>
+
+      <!-- Commission calculée -->
       <div class="sepa-amount-badge" id="sepaAmountBadge">
-        <span class="sepa-amount-label">Commission si signé</span>
+        <span class="sepa-amount-label" id="sepaCommLabel">Ta commission si signé</span>
         <span class="sepa-amount-val" id="sepaCommAmount">— €</span>
       </div>
 
@@ -2357,8 +2520,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
       <!-- ── MODE PAP ── -->
       <div class="sepa-panel" id="panelPap">
+        <!-- SIRET du professionnel (auto-remplissage) -->
         <div class="sepa-field">
-          <label class="sepa-label">Prénom & Nom du prospect</label>
+          <label class="sepa-label">SIRET du professionnel</label>
+          <div style="position:relative">
+            <input class="sepa-input" type="text" id="papSiret" placeholder="123 456 789 00012" oninput="onSiretInput(this)" maxlength="17" style="padding-right:44px"/>
+            <div id="siretStatus" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);display:flex;align-items:center"></div>
+          </div>
+          <div id="siretResult" style="display:none;margin-top:8px;padding:12px 14px;border-radius:11px;background:rgba(13,150,104,0.06);border:1px solid rgba(13,150,104,0.2)">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+              <span class="material-symbols-outlined" style="font-size:16px;color:#0d9668;font-variation-settings:'FILL' 1">verified</span>
+              <p id="siretName" style="font-size:13px;font-weight:800;color:#1b1c1c;line-height:1.2"></p>
+            </div>
+            <p id="siretAddress" style="font-size:12px;color:#52525b;line-height:1.35;padding-left:24px"></p>
+          </div>
+          <p id="siretError" style="display:none;margin-top:6px;font-size:12px;color:#b52330;font-weight:600"></p>
+        </div>
+        <div class="sepa-field">
+          <label class="sepa-label">Prénom & Nom du contact</label>
           <div class="sepa-row">
             <input class="sepa-input" type="text" id="papPrenom" placeholder="Jean"/>
             <input class="sepa-input" type="text" id="papNom" placeholder="Martin"/>
@@ -2372,16 +2551,34 @@ document.addEventListener('DOMContentLoaded', function() {
           <label class="sepa-label">IBAN du prospect</label>
           <input class="sepa-input iban-input" type="text" id="papIban" placeholder="FR76 3000 6000 0112 3456 7890 189" oninput="formatIban(this)" maxlength="34"/>
         </div>
-        <!-- Mandat -->
+        <!-- Consentement mandat SEPA -->
         <div class="sepa-mandate" id="papMandateBox" onclick="toggleMandate()">
-          <div class="sepa-mandate-check" id="papMandateCheck"></div>
-          <p class="sepa-mandate-text">En fournissant son IBAN et en confirmant, le prospect autorise <strong>Stacker</strong> à envoyer des instructions à sa banque pour débiter son compte conformément aux conditions convenues. <strong>Il a lu et accepte le mandat SEPA.</strong></p>
+          <div class="sepa-mandate-check" id="papMandateCheck"><span class="material-symbols-outlined" style="font-size:16px;color:#fff;font-variation-settings:'FILL' 1">check</span></div>
+          <p class="sepa-mandate-text">J'ai lu et j'accepte les <a href="#" onclick="event.stopPropagation();openMandateTerms();return false" style="color:#b52330;font-weight:700;text-decoration:underline">conditions du mandat SEPA</a>. J'autorise <strong>Stacker</strong> à transmettre des instructions à ma banque pour débiter mon compte, et ma banque à débiter mon compte conformément à ces instructions.</p>
         </div>
+
+        <!-- Signature au doigt -->
+        <div class="sepa-field">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+            <label class="sepa-label" style="margin:0">Signature du prospect</label>
+            <button type="button" onclick="clearSignature()" style="background:none;border:none;color:#b52330;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px">
+              <span class="material-symbols-outlined" style="font-size:15px">restart_alt</span> Effacer
+            </button>
+          </div>
+          <div id="sigWrap" style="position:relative;border:1.5px dashed rgba(27,28,28,0.2);border-radius:14px;background:#fafafa;overflow:hidden;touch-action:none">
+            <canvas id="sigCanvas" style="display:block;width:100%;height:180px;touch-action:none"></canvas>
+            <div id="sigPlaceholder" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;color:rgba(27,28,28,0.28)">
+              <span class="material-symbols-outlined" style="font-size:28px">gesture</span>
+              <span style="font-size:13px;font-weight:600;margin-top:4px">Signe ici avec ton doigt</span>
+            </div>
+          </div>
+        </div>
+
         <button class="sepa-confirm" id="papConfirmBtn" onclick="confirmPapSepa()" disabled>
           <span class="material-symbols-outlined" style="font-size:18px;font-variation-settings:'FILL' 1">verified</span>
           Confirmer & créer le mandat
         </button>
-        <p class="sepa-note">Le prospect signe visuellement sur votre écran · Mandat PDF envoyé par email · Prélèvement sous 2-3 jours</p>
+        <p class="sepa-note">Le prospect signe sur votre écran · Mandat PDF envoyé par email · Prélèvement sous 2-3 jours</p>
       </div>
 
     </div>
@@ -2537,11 +2734,146 @@ function openSepaModal(commAmount) {
   sepaLinkSent = false;
   sepaSignedByProspect = false;
   resetSepaForms();
+  populateSepaOffers();
+  var sel = document.getElementById('sepaOfferSelect');
+  if (sel) sel.value = '';
+  sepaSelectedOffer = null;
+  document.getElementById('sepaContractBox').style.display = 'none';
   switchSepaMode('distance');
-  // Commission simulée si pas passée
-  var amount = commAmount || null;
-  document.getElementById('sepaCommAmount').textContent = amount ? amount + ' €' : '— €';
+  var amtField = document.getElementById('sepaSaleAmount');
+  if (amtField) amtField.value = '';
+  document.getElementById('sepaCommAmount').textContent = '— €';
   document.getElementById('sepaOverlay').classList.add('open');
+  if(typeof updateClosingCoach==='function') updateClosingCoach();
+}
+
+// Taux de commission stacker sur la vente (%) — ajusté selon l'offre choisie
+var SEPA_COMMISSION_RATE = 25;
+var sepaSelectedOffer = null;
+
+// ─── ASSISTANT PAS À PAS (coach) ─────────────────────
+var COACH_MESSAGES = {
+  1: {icon:'arrow_circle_right', html:"<strong>Étape 1 — Choisis l'offre</strong> que tu viens de vendre. Le bon contrat se joindra automatiquement."},
+  2: {icon:'arrow_circle_right', html:"<strong>Étape 2 — Entre le montant</strong> de la vente. Ta commission se calcule toute seule."},
+  3: {icon:'arrow_circle_right', html:"<strong>Étape 3 — Les infos du client.</strong> En direct, entre le SIRET du pro (le reste se remplit seul). À distance, envoie le lien."},
+  4: {icon:'draw', html:"<strong>Étape 4 — Fais signer le contrat.</strong> Ouvre-le : il est déjà pré-rempli. Le client lit, coche, et signe au doigt."},
+  5: {icon:'account_balance', html:"<strong>Étape 5 — Le mandat SEPA.</strong> Saisis l'IBAN, fais cocher le consentement et signer pour autoriser le prélèvement."},
+  6: {icon:'check_circle', html:"<strong>C'est bon, tout est signé !</strong> Valide la vente pour l'enregistrer et toucher ta commission."}
+};
+function computeClosingStep() {
+  // 1 offre -> 2 montant -> 3 client -> 4 contrat -> 5 mandat -> 6 validé
+  if (!sepaSelectedOffer) return 1;
+  var amt = parseFloat((document.getElementById('sepaSaleAmount')||{}).value);
+  if (isNaN(amt) || amt <= 0) return 2;
+  // étape client : en PAP, SIRET/nom ; à distance, lien. On considère l'étape 3 faite dès qu'on a de quoi identifier
+  var clientOk = false;
+  if (sepaCurrentMode === 'pap') {
+    var nom = (document.getElementById('papNom')||{}).value;
+    clientOk = !!(siretData || (nom && nom.trim()));
+  } else {
+    clientOk = !!sepaLinkSent;
+  }
+  if (!clientOk) return 3;
+  if (!contractSigned) return 4;
+  if (!sepaMandateSigned && !sepaSignedByProspect) return 5;
+  return 6;
+}
+function updateClosingCoach() {
+  var step = computeClosingStep();
+  document.querySelectorAll('#coachSteps .coach-step').forEach(function(el){
+    var n = parseInt(el.getAttribute('data-step'));
+    el.classList.toggle('active', n === step);
+    el.classList.toggle('done', n < step);
+  });
+  var m = COACH_MESSAGES[step];
+  var icon = document.getElementById('coachMsgIcon');
+  var txt = document.getElementById('coachMsgTxt');
+  var box = document.getElementById('coachMsg');
+  if (m && icon && txt) {
+    icon.textContent = m.icon;
+    txt.innerHTML = m.html;
+    if (box) box.classList.toggle('done-msg', step === 6);
+    if (icon) icon.style.color = step === 6 ? '#0d9668' : '#b52330';
+  }
+}
+window.updateClosingCoach = updateClosingCoach;
+
+// Remplir le sélecteur d'offres au chargement
+function populateSepaOffers() {
+  var sel = document.getElementById('sepaOfferSelect');
+  if (!sel || typeof WEEK_OFFERS === 'undefined') return;
+  // vider sauf le placeholder
+  sel.length = 1;
+  WEEK_OFFERS.forEach(function(o, i) {
+    var opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = o.name + ' — ' + o.com + ' commission';
+    sel.appendChild(opt);
+  });
+}
+
+function onSepaOfferChange() {
+  var sel = document.getElementById('sepaOfferSelect');
+  var box = document.getElementById('sepaContractBox');
+  var nameEl = document.getElementById('sepaContractName');
+  var amtLabel = document.getElementById('sepaAmountLabel');
+  var amtSuffix = document.getElementById('sepaAmountSuffix');
+  var commLabel = document.getElementById('sepaCommLabel');
+  if (sel.value === '') {
+    sepaSelectedOffer = null;
+    SEPA_COMMISSION_RATE = 25;
+    if (box) box.style.display = 'none';
+    var badge0 = document.getElementById('sepaTypeBadge');
+    if (badge0) badge0.style.display = 'none';
+    if (amtLabel) amtLabel.textContent = 'Montant de la vente';
+    if (amtSuffix) amtSuffix.textContent = '€';
+    if (commLabel) commLabel.textContent = 'Ta commission si signé';
+  } else {
+    sepaSelectedOffer = WEEK_OFFERS[parseInt(sel.value)];
+    SEPA_COMMISSION_RATE = parseFloat(sepaSelectedOffer.com) || 25;
+    var isRec = sepaSelectedOffer.type === 'recurrent';
+    if (box) box.style.display = 'block';
+    if (nameEl) nameEl.textContent = 'Contrat · ' + sepaSelectedOffer.name;
+    // badge type de paiement
+    var badge = document.getElementById('sepaTypeBadge');
+    if (badge) {
+      badge.style.display = 'inline-block';
+      if (isRec) {
+        badge.textContent = 'Abonnement mensuel';
+        badge.style.background = 'rgba(181,35,48,0.1)';
+        badge.style.color = '#b52330';
+      } else {
+        badge.textContent = 'Paiement unique';
+        badge.style.background = 'rgba(27,28,28,0.08)';
+        badge.style.color = '#1b1c1c';
+      }
+    }
+    // adapter les libellés selon récurrent / one-shot
+    if (amtLabel) amtLabel.textContent = isRec ? 'Montant mensuel' : 'Montant (paiement unique)';
+    if (amtSuffix) amtSuffix.textContent = isRec ? '€/mois' : '€';
+    if (commLabel) commLabel.textContent = isRec ? 'Ta commission (chaque mois)' : 'Ta commission si signé';
+  }
+  updateSepaCommission();
+  if(typeof updateClosingCoach==='function') updateClosingCoach();
+}
+
+function updateSepaCommission() {
+  var amtField = document.getElementById('sepaSaleAmount');
+  var out = document.getElementById('sepaCommAmount');
+  if (!amtField || !out) return;
+  var sale = parseFloat(amtField.value);
+  if (isNaN(sale) || sale <= 0) {
+    out.textContent = '— €';
+    return;
+  }
+  var comm = Math.round(sale * SEPA_COMMISSION_RATE / 100 * 100) / 100;
+  var commTxt = comm.toLocaleString('fr-FR', {minimumFractionDigits: comm % 1 === 0 ? 0 : 2, maximumFractionDigits: 2}) + ' €';
+  // pour un abonnement, la commission est récurrente chaque mois
+  if (sepaSelectedOffer && sepaSelectedOffer.type === 'recurrent') {
+    commTxt += '/mois';
+  }
+  out.textContent = commTxt;
+  if(typeof updateClosingCoach==='function') updateClosingCoach();
 }
 
 function closeSepaModal(e) {
@@ -2559,13 +2891,22 @@ function switchSepaMode(mode) {
   document.getElementById('modeBtnPap').classList.toggle('active', mode === 'pap');
   document.getElementById('panelDistance').classList.toggle('active', mode === 'distance');
   document.getElementById('panelPap').classList.toggle('active', mode === 'pap');
+  // init du pad de signature quand le panel PAP devient visible
+  if (mode === 'pap') {
+    setTimeout(function(){ initSignaturePad(); clearSignature(); }, 50);
+  }
 }
 
 function resetSepaForms() {
-  ['distPrenom','distTel','papPrenom','papNom','papEmail','papIban'].forEach(function(id) {
+  ['distPrenom','distTel','papPrenom','papNom','papEmail','papIban','papSiret'].forEach(function(id) {
     var el = document.getElementById(id);
     if (el) { el.value = ''; el.classList.remove('error'); }
   });
+  // reset bloc SIRET
+  siretData = null;
+  var sr = document.getElementById('siretResult'); if (sr) sr.style.display = 'none';
+  var se = document.getElementById('siretError'); if (se) se.style.display = 'none';
+  var ss = document.getElementById('siretStatus'); if (ss) ss.innerHTML = '';
   document.getElementById('distSendBtn').disabled = true;
   document.getElementById('distConfirmBtn').disabled = true;
   document.getElementById('distConfirmBtn').innerHTML = '<span class="material-symbols-outlined" style="font-size:18px">pending</span> En attente de signature';
@@ -2597,12 +2938,14 @@ function sendSepaLink() {
   // Simule l'envoi du SMS
   sepaSimTimer = setTimeout(function() {
     sepaLinkSent = true;
+    if(typeof updateClosingCoach==='function') updateClosingCoach();
     btn.innerHTML = '<span class="material-symbols-outlined" style="font-size:16px;font-variation-settings:\'FILL\' 1">check_circle</span> Envoyé';
     setDistStatus('waiting', '<strong>' + prenom + '</strong> n\'a pas encore signé — lien envoyé par SMS');
 
     // Simule la signature du prospect après 8 secondes (démo)
     sepaSimTimer = setTimeout(function() {
       sepaSignedByProspect = true;
+      if(typeof updateClosingCoach==='function') updateClosingCoach();
       setDistStatus('signed', '<strong>' + prenom + '</strong> a signé le mandat — prêt à confirmer');
       var confirmBtn = document.getElementById('distConfirmBtn');
       confirmBtn.disabled = false;
@@ -2634,19 +2977,149 @@ function toggleMandate() {
   checkPapReady();
 }
 
+// ─── AUTO-REMPLISSAGE SIRET (API Recherche d'entreprises gouv) ───
+var siretData = null; // {name, address, siret} du pro trouvé
+function onSiretInput(input) {
+  var digits = input.value.replace(/\D/g,'').slice(0,14);
+  var f = digits;
+  if (digits.length > 3) f = digits.slice(0,3)+' '+digits.slice(3);
+  if (digits.length > 6) f = digits.slice(0,3)+' '+digits.slice(3,6)+' '+digits.slice(6);
+  if (digits.length > 9) f = digits.slice(0,3)+' '+digits.slice(3,6)+' '+digits.slice(6,9)+' '+digits.slice(9);
+  input.value = f;
+
+  var status = document.getElementById('siretStatus');
+  var result = document.getElementById('siretResult');
+  var errEl = document.getElementById('siretError');
+  result.style.display = 'none';
+  errEl.style.display = 'none';
+  siretData = null;
+  checkPapReady();
+
+  if (digits.length === 14) {
+    status.innerHTML = '<span class="material-symbols-outlined" style="font-size:18px;color:#71717a;animation:spin 0.8s linear infinite">progress_activity</span>';
+    lookupSiret(digits);
+  } else {
+    status.innerHTML = '';
+  }
+}
+function lookupSiret(siret) {
+  var status = document.getElementById('siretStatus');
+  var result = document.getElementById('siretResult');
+  var errEl = document.getElementById('siretError');
+  fetch('https://recherche-entreprises.api.gouv.fr/search?q=' + siret)
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      status.innerHTML = '';
+      var etab = null, ent = null;
+      if (data.results && data.results.length) {
+        ent = data.results[0];
+        var sm = ent.matching_etablissements || [];
+        for (var i=0;i<sm.length;i++){ if (sm[i].siret === siret){ etab = sm[i]; break; } }
+        if (!etab && ent.siege && ent.siege.siret === siret) etab = ent.siege;
+        if (!etab && sm.length) etab = sm[0];
+      }
+      if (ent) {
+        var name = ent.nom_complet || ent.nom_raison_sociale || (etab && etab.nom_commercial) || 'Entreprise';
+        var addr = etab ? (etab.adresse || '') : (ent.siege ? ent.siege.adresse : '');
+        siretData = { name: name, address: addr, siret: siret };
+        document.getElementById('siretName').textContent = name;
+        document.getElementById('siretAddress').textContent = addr || 'Adresse non disponible';
+        result.style.display = 'block';
+        status.innerHTML = '<span class="material-symbols-outlined" style="font-size:18px;color:#0d9668;font-variation-settings:\'FILL\' 1">check_circle</span>';
+      } else {
+        errEl.textContent = 'Aucune entreprise trouvée pour ce SIRET.';
+        errEl.style.display = 'block';
+        status.innerHTML = '<span class="material-symbols-outlined" style="font-size:18px;color:#b52330">error</span>';
+      }
+      checkPapReady();
+    })
+    .catch(function(){
+      status.innerHTML = '<span class="material-symbols-outlined" style="font-size:18px;color:#b52330">wifi_off</span>';
+      errEl.textContent = 'Impossible de vérifier le SIRET (connexion). Réessaie.';
+      errEl.style.display = 'block';
+    });
+}
+window.onSiretInput = onSiretInput;
+
 function checkPapReady() {
   var prenom = document.getElementById('papPrenom').value.trim();
   var nom = document.getElementById('papNom').value.trim();
   var email = document.getElementById('papEmail').value.trim();
   var iban = document.getElementById('papIban').value.replace(/\s/g,'');
-  var valid = prenom && nom && email && iban.length >= 14 && sepaMandateSigned;
+  var valid = sepaSelectedOffer && prenom && nom && email && iban.length >= 14 && sepaMandateSigned && sigHasDrawing;
   document.getElementById('papConfirmBtn').disabled = !valid;
+  if(typeof updateClosingCoach==='function') updateClosingCoach();
 }
 
-['papPrenom','papNom','papEmail'].forEach(function(id) {
+['papPrenom','papNom','papEmail','papIban'].forEach(function(id) {
   var el = document.getElementById(id);
   if (el) el.addEventListener('input', checkPapReady);
 });
+
+// ─── SIGNATURE AU DOIGT (canvas) ─────────────────────
+var sigCanvas, sigCtx, sigDrawing = false, sigHasDrawing = false;
+function initSignaturePad() {
+  sigCanvas = document.getElementById('sigCanvas');
+  if (!sigCanvas) return;
+  // dimensionner le canvas à sa taille réelle (net sur écran retina)
+  var rect = sigCanvas.getBoundingClientRect();
+  var ratio = window.devicePixelRatio || 1;
+  sigCanvas.width = rect.width * ratio;
+  sigCanvas.height = rect.height * ratio;
+  sigCtx = sigCanvas.getContext('2d');
+  sigCtx.scale(ratio, ratio);
+  sigCtx.lineWidth = 2.5;
+  sigCtx.lineCap = 'round';
+  sigCtx.lineJoin = 'round';
+  sigCtx.strokeStyle = '#1b1c1c';
+
+  function pos(e) {
+    var r = sigCanvas.getBoundingClientRect();
+    var x = (e.touches ? e.touches[0].clientX : e.clientX) - r.left;
+    var y = (e.touches ? e.touches[0].clientY : e.clientY) - r.top;
+    return {x: x, y: y};
+  }
+  function start(e) {
+    e.preventDefault();
+    sigDrawing = true;
+    var p = pos(e);
+    sigCtx.beginPath();
+    sigCtx.moveTo(p.x, p.y);
+    if (!sigHasDrawing) {
+      sigHasDrawing = true;
+      var ph = document.getElementById('sigPlaceholder');
+      if (ph) ph.style.display = 'none';
+      checkPapReady();
+    }
+  }
+  function move(e) {
+    if (!sigDrawing) return;
+    e.preventDefault();
+    var p = pos(e);
+    sigCtx.lineTo(p.x, p.y);
+    sigCtx.stroke();
+  }
+  function end() { sigDrawing = false; }
+
+  sigCanvas.addEventListener('mousedown', start);
+  sigCanvas.addEventListener('mousemove', move);
+  window.addEventListener('mouseup', end);
+  sigCanvas.addEventListener('touchstart', start, {passive:false});
+  sigCanvas.addEventListener('touchmove', move, {passive:false});
+  sigCanvas.addEventListener('touchend', end);
+}
+function clearSignature() {
+  if (!sigCtx || !sigCanvas) return;
+  sigCtx.clearRect(0, 0, sigCanvas.width, sigCanvas.height);
+  sigHasDrawing = false;
+  var ph = document.getElementById('sigPlaceholder');
+  if (ph) ph.style.display = 'flex';
+  checkPapReady();
+}
+function getSignatureData() {
+  // renvoie la signature en PNG base64 (à envoyer au back-end/prestataire plus tard)
+  return (sigCanvas && sigHasDrawing) ? sigCanvas.toDataURL('image/png') : null;
+}
 
 function confirmPapSepa() {
   var btn = document.getElementById('papConfirmBtn');
@@ -2656,6 +3129,8 @@ function confirmPapSepa() {
   sepaSimTimer = setTimeout(function() {
     btn.innerHTML = '<span class="material-symbols-outlined" style="font-size:18px;font-variation-settings:\'FILL\' 1">check_circle</span> Mandat créé — prélèvement planifié';
     btn.className = 'sepa-confirm success';
+    sepaMandateSigned = true;
+    if(typeof updateClosingCoach==='function') updateClosingCoach();
     var prenom = document.getElementById('papPrenom').value.trim();
     showToast('Deal closé avec ' + prenom + ' — mandat SEPA confirmé !', 'success');
     // Ferme après 2.5s
@@ -2664,6 +3139,143 @@ function confirmPapSepa() {
 }
 
 window.openSepaModal = openSepaModal;
+
+// ─── CONDITIONS MANDAT SEPA ──────────────────────────
+function openMandateTerms() {
+  document.getElementById('mandateTermsOverlay').style.display = 'flex';
+}
+function closeMandateTerms() {
+  document.getElementById('mandateTermsOverlay').style.display = 'none';
+}
+window.openMandateTerms = openMandateTerms;
+window.closeMandateTerms = closeMandateTerms;
+
+// ─── CONTRAT PRÉ-REMPLI + SIGNATURE ──────────────────
+var contractSigned = false;
+function getProspectName() {
+  // récupère le nom selon le mode actif
+  if (sepaCurrentMode === 'pap') {
+    var p = document.getElementById('papPrenom').value.trim();
+    var n = document.getElementById('papNom').value.trim();
+    return (p || n) ? (p + ' ' + n).trim() : '……………………';
+  } else {
+    var pd = document.getElementById('distPrenom').value.trim();
+    return pd || '……………………';
+  }
+}
+function openContractPreview() {
+  if (!sepaSelectedOffer) return;
+  var o = sepaSelectedOffer;
+  var clientName = getProspectName();
+  var amount = document.getElementById('sepaSaleAmount').value;
+  var isRec = o.type === 'recurrent';
+  var amountTxt = amount ? (parseFloat(amount).toLocaleString('fr-FR') + ' €' + (isRec ? ' par mois' : '')) : '……………';
+  var today = new Date().toLocaleDateString('fr-FR', {day:'2-digit', month:'long', year:'numeric'});
+
+  document.getElementById('contractPreviewTitle').textContent = o.name;
+
+  // Contrat pré-rempli avec les données saisies (surlignées en bordeaux)
+  function f(val){ return '<strong style="color:#b52330">' + val + '</strong>'; }
+  var body = ''
+    + '<p style="text-align:center;font-weight:900;font-size:15px;color:#1b1c1c;margin-bottom:4px">CONTRAT DE PRESTATION DE SERVICES</p>'
+    + '<p style="text-align:center;font-size:12px;color:#b52330;margin-bottom:16px">' + o.name + '</p>'
+    + '<p style="margin-bottom:12px"><strong>Entre :</strong> Stacker (Alma Company), le Prestataire,</p>'
+    + '<p style="margin-bottom:14px"><strong>Et :</strong> ' + f(siretData ? siretData.name : clientName)
+      + (siretData && siretData.siret ? ', SIRET ' + f(siretData.siret) : '')
+      + (siretData && siretData.address ? ', ' + f(siretData.address) : '')
+      + (getProspectName() && getProspectName() !== '……………………' ? ', représenté(e) par ' + f(clientName) : '')
+      + ', le Client.</p>'
+    + '<p style="margin-bottom:10px"><strong>Art. 1 — Objet.</strong> Le Prestataire fournit au Client la prestation suivante : ' + f(o.tagline || o.name) + '.</p>'
+    + '<p style="margin-bottom:10px"><strong>Art. 2 — Prix.</strong> Le montant de la prestation est de ' + f(amountTxt) + ', réglé par prélèvement SEPA' + (isRec ? ' mensuel, à chaque échéance' : ' en paiement unique') + ' selon le mandat signé séparément.</p>'
+    + '<p style="margin-bottom:10px"><strong>Art. 3 — Durée.</strong> ' + (isRec ? 'Le contrat prend effet à la date de signature et se renouvelle par tacite reconduction mensuelle, résiliable selon les conditions de l\'offre.' : 'La prestation est réalisée en une fois, à compter de la date de signature, selon les conditions de l\'offre souscrite.') + '</p>'
+    + '<p style="margin-bottom:10px"><strong>Art. 4 — Rétractation.</strong> Le Client dispose d\'un délai légal de 14 jours pour se rétracter, conformément au Code de la consommation.</p>'
+    + '<p style="margin-bottom:10px"><strong>Art. 5 — Données personnelles.</strong> Les données sont traitées conformément au RGPD, pour la seule exécution du contrat.</p>'
+    + '<p style="margin-bottom:14px"><strong>Art. 6 — Droit applicable.</strong> Le présent contrat est soumis au droit français.</p>'
+    + '<p style="margin-bottom:4px">Fait le ' + f(today) + '.</p>'
+    + '<div style="margin-top:14px;padding:10px 12px;border-radius:9px;background:rgba(181,35,48,0.05);border:1px solid rgba(181,35,48,0.12);font-size:11px;color:#8a1a24;line-height:1.4">Version résumée à l\'écran. Le contrat complet détaillé (à faire valider par un juriste) est joint et envoyé au Client par email après signature.</div>';
+
+  document.getElementById('contractPreviewBody').innerHTML = body;
+  document.getElementById('contractPreviewOverlay').style.display = 'flex';
+  contractSigned = false;
+  // reset case consentement
+  contractTermsOk = false;
+  var chk = document.getElementById('contractTermsCheck');
+  var icon = document.getElementById('contractTermsCheckIcon');
+  if (chk) { chk.style.background='#fff'; chk.style.borderColor='rgba(27,28,28,0.3)'; }
+  if (icon) { icon.style.opacity='0'; icon.style.transform='scale(0.5)'; }
+  setTimeout(function(){ initContractSignPad(); clearContractSignature(); }, 60);
+}
+function closeContractPreview() {
+  document.getElementById('contractPreviewOverlay').style.display = 'none';
+}
+
+// canvas signature du contrat
+var cSigCanvas, cSigCtx, cSigDrawing = false, cSigHasDrawing = false, contractTermsOk = false;
+function toggleContractTerms() {
+  contractTermsOk = !contractTermsOk;
+  var chk = document.getElementById('contractTermsCheck');
+  var icon = document.getElementById('contractTermsCheckIcon');
+  if (contractTermsOk) {
+    chk.style.background = '#1b1c1c'; chk.style.borderColor = '#1b1c1c';
+    icon.style.opacity = '1'; icon.style.transform = 'scale(1)';
+  } else {
+    chk.style.background = '#fff'; chk.style.borderColor = 'rgba(27,28,28,0.3)';
+    icon.style.opacity = '0'; icon.style.transform = 'scale(0.5)';
+  }
+  refreshContractSignBtn();
+}
+function initContractSignPad() {
+  cSigCanvas = document.getElementById('contractSigCanvas');
+  if (!cSigCanvas) return;
+  var rect = cSigCanvas.getBoundingClientRect();
+  var ratio = window.devicePixelRatio || 1;
+  cSigCanvas.width = rect.width * ratio;
+  cSigCanvas.height = rect.height * ratio;
+  cSigCtx = cSigCanvas.getContext('2d');
+  cSigCtx.scale(ratio, ratio);
+  cSigCtx.lineWidth = 2.5; cSigCtx.lineCap = 'round'; cSigCtx.lineJoin = 'round'; cSigCtx.strokeStyle = '#1b1c1c';
+  function pos(e){var r=cSigCanvas.getBoundingClientRect();return{x:(e.touches?e.touches[0].clientX:e.clientX)-r.left,y:(e.touches?e.touches[0].clientY:e.clientY)-r.top};}
+  function start(e){e.preventDefault();cSigDrawing=true;var p=pos(e);cSigCtx.beginPath();cSigCtx.moveTo(p.x,p.y);if(!cSigHasDrawing){cSigHasDrawing=true;var ph=document.getElementById('contractSigPlaceholder');if(ph)ph.style.display='none';refreshContractSignBtn();}}
+  function move(e){if(!cSigDrawing)return;e.preventDefault();var p=pos(e);cSigCtx.lineTo(p.x,p.y);cSigCtx.stroke();}
+  function end(){cSigDrawing=false;}
+  cSigCanvas.addEventListener('mousedown',start);cSigCanvas.addEventListener('mousemove',move);window.addEventListener('mouseup',end);
+  cSigCanvas.addEventListener('touchstart',start,{passive:false});cSigCanvas.addEventListener('touchmove',move,{passive:false});cSigCanvas.addEventListener('touchend',end);
+}
+function clearContractSignature() {
+  if (!cSigCtx || !cSigCanvas) return;
+  cSigCtx.clearRect(0,0,cSigCanvas.width,cSigCanvas.height);
+  cSigHasDrawing = false;
+  var ph = document.getElementById('contractSigPlaceholder'); if (ph) ph.style.display='flex';
+  refreshContractSignBtn();
+}
+function refreshContractSignBtn() {
+  var btn = document.getElementById('contractSignBtn');
+  if (!btn) return;
+  if (cSigHasDrawing && contractTermsOk) {
+    btn.disabled = false; btn.style.background='linear-gradient(145deg,#c62b39,#8f1a24)'; btn.style.color='#fff'; btn.style.cursor='pointer';
+  } else {
+    btn.disabled = true; btn.style.background='#e4e4e7'; btn.style.color='#a1a1aa'; btn.style.cursor='not-allowed';
+  }
+}
+function enableContractSignBtn() { refreshContractSignBtn(); }
+function validateContractSignature() {
+  if (!cSigHasDrawing || !contractTermsOk) return;
+  contractSigned = true;
+  showToast('Contrat signé par le client', 'success');
+  if(typeof updateClosingCoach==='function') updateClosingCoach();
+  closeContractPreview();
+  // marque visuellement que le contrat est signé dans l'encart
+  var box = document.getElementById('sepaContractBox');
+  if (box) {
+    var nameEl = document.getElementById('sepaContractName');
+    if (nameEl) nameEl.innerHTML = 'Contrat · ' + sepaSelectedOffer.name + ' &nbsp;<span style="color:#0d9668;font-weight:700">✓ signé</span>';
+  }
+}
+window.openContractPreview = openContractPreview;
+window.closeContractPreview = closeContractPreview;
+window.clearContractSignature = clearContractSignature;
+window.validateContractSignature = validateContractSignature;
+window.toggleContractTerms = toggleContractTerms;
 </script>
 </body>
 </html>
