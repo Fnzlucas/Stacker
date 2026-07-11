@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Ma série — Stacker</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;0,9..40,900&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'DM Sans',sans-serif}
+.material-symbols-outlined{font-variation-settings:'FILL' 0}
+.material-symbols-outlined.filled{font-variation-settings:'FILL' 1}
+:root{--obsidian:#1b1c1c;--bordeaux:#b52330;--flame:#f97316}
+body{background:#f4f4f5;color:#1b1c1c;-webkit-font-smoothing:antialiased}
+.wrap{max-width:640px;margin:0 auto;padding:0 20px}
+.top{position:sticky;top:0;z-index:50;background:rgba(249,249,249,0.82);-webkit-backdrop-filter:blur(20px) saturate(160%);backdrop-filter:blur(20px) saturate(160%);border-bottom:1px solid rgba(228,228,231,0.6)}
+.top-in{max-width:640px;margin:0 auto;padding:15px 20px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:20px;font-weight:900;letter-spacing:-0.03em}
+.logo .er{color:var(--bordeaux)}
+.back{display:flex;align-items:center;gap:6px;color:#71717a;text-decoration:none;font-size:14px;font-weight:600}
+.reveal{opacity:0;transform:translateY(14px);animation:rise .6s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes rise{to{opacity:1;transform:none}}
+@keyframes flamePulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+
+.streak-card{margin:26px 0 20px;border-radius:24px;overflow:hidden;position:relative;background:linear-gradient(150deg,#242526 0%,#1b1c1c 48%,#2a0e12 100%);border:1px solid rgba(255,255,255,0.07);box-shadow:0 22px 55px -18px rgba(20,20,22,0.4);padding:36px 28px;text-align:center}
+.streak-card .sheen{position:absolute;top:0;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent)}
+.streak-card .halo{position:absolute;top:-70px;left:50%;transform:translateX(-50%);width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(249,115,22,0.28),transparent 66%)}
+.flame-big{position:relative;width:86px;height:86px;margin:0 auto 16px;border-radius:26px;background:linear-gradient(145deg,#fb923c,#f97316);display:flex;align-items:center;justify-content:center;box-shadow:0 12px 34px -8px rgba(249,115,22,0.6),inset 0 1px 1px rgba(255,255,255,0.4);animation:flamePulse 2.4s ease-in-out infinite}
+.streak-num{position:relative;font-size:56px;font-weight:900;letter-spacing:-0.04em;color:#fff;line-height:1}
+.streak-lbl{position:relative;font-size:14px;color:rgba(255,255,255,0.6);margin-top:6px}
+
+.week-card{background:#fff;border:1px solid rgba(228,228,231,0.7);border-radius:18px;padding:22px 20px;margin-bottom:20px;box-shadow:0 2px 12px -4px rgba(27,28,28,0.05)}
+.week-title{font-size:13px;font-weight:800;color:#1b1c1c;margin-bottom:16px}
+.week-days{display:flex;justify-content:space-between;gap:8px}
+.day{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px}
+.day-dot{width:100%;aspect-ratio:1;max-width:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:#f4f4f5;border:1.5px solid rgba(228,228,231,0.8)}
+.day-dot.active{background:linear-gradient(145deg,#fb923c,#f97316);border-color:transparent;box-shadow:0 4px 12px -3px rgba(249,115,22,0.5)}
+.day-dot.active .material-symbols-outlined{color:#fff;font-size:20px}
+.day-dot .material-symbols-outlined{color:#d4d4d8;font-size:18px}
+.day-name{font-size:11px;font-weight:600;color:#a1a1aa}
+.day-name.active{color:#f97316}
+
+.info-card{background:#fff;border:1px solid rgba(228,228,231,0.7);border-radius:16px;padding:18px 20px;margin-bottom:12px;display:flex;align-items:flex-start;gap:14px;box-shadow:0 2px 12px -4px rgba(27,28,28,0.04)}
+.info-card .material-symbols-outlined{font-size:22px;color:var(--flame);flex-shrink:0;margin-top:1px}
+.info-card-txt strong{display:block;font-size:14px;font-weight:700;color:#1b1c1c;margin-bottom:3px}
+.info-card-txt span{font-size:13px;color:#71717a;line-height:1.45}
+
+.sec-title{font-size:12px;font-weight:700;letter-spacing:0.05em;color:var(--bordeaux);margin:20px 0 14px}
+.big-note{margin:8px 0 40px;padding:18px 20px;border-radius:16px;background:linear-gradient(135deg,rgba(249,115,22,0.08),rgba(181,35,48,0.06));border:1px solid rgba(249,115,22,0.2);font-size:13px;color:#3f3f46;line-height:1.55}
+.big-note strong{color:#1b1c1c}
+/* RÉCOMPENSES */
+.reward{display:flex;align-items:center;gap:15px;padding:16px 18px;background:#fff;border:1px solid rgba(228,228,231,0.7);border-radius:16px;margin-bottom:11px;box-shadow:0 2px 12px -4px rgba(27,28,28,0.05);transition:all .3s cubic-bezier(.22,1,.36,1)}
+.reward.claimable{border-color:rgba(249,115,22,0.4);background:linear-gradient(135deg,rgba(249,115,22,0.06),#fff);box-shadow:0 8px 24px -8px rgba(249,115,22,0.25)}
+.reward.locked{opacity:0.6}
+.reward-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:#f4f4f5}
+.reward-icon .material-symbols-outlined{font-size:24px;color:#a1a1aa}
+.reward.claimable .reward-icon,.reward.claimed .reward-icon{background:linear-gradient(145deg,#fb923c,#f97316);box-shadow:0 6px 16px -4px rgba(249,115,22,0.5)}
+.reward.claimable .reward-icon .material-symbols-outlined,.reward.claimed .reward-icon .material-symbols-outlined{color:#fff}
+.reward-body{flex:1;min-width:0}
+.reward-days{font-size:11px;font-weight:700;color:#f97316;letter-spacing:0.02em}
+.reward-title{font-size:15px;font-weight:800;color:#1b1c1c;line-height:1.2;margin-top:2px}
+.reward-sub{font-size:12px;color:#a1a1aa;margin-top:2px}
+.reward-action{flex-shrink:0}
+.reward-btn{padding:10px 16px;border-radius:11px;background:linear-gradient(145deg,#fb923c,#f97316);color:#fff;font-size:13px;font-weight:800;border:none;cursor:pointer;box-shadow:0 6px 16px -5px rgba(249,115,22,0.5);transition:transform .15s}
+.reward-btn:active{transform:scale(0.95)}
+.reward-locked-tag{font-size:12px;font-weight:700;color:#a1a1aa;background:#f4f4f5;padding:7px 12px;border-radius:10px;white-space:nowrap}
+.reward-claimed-tag{display:flex;align-items:center;gap:4px;font-size:13px;font-weight:700;color:#0d9668}
+.reward-claimed-tag .material-symbols-outlined{font-size:18px}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="top-in">
+    <a href="index.html" class="back"><span class="material-symbols-outlined" style="font-size:20px">arrow_back</span> Retour</a>
+    <span class="logo">Stack<span class="er">er</span></span>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="streak-card reveal">
+    <div class="sheen"></div><div class="halo"></div>
+    <div class="flame-big"><span class="material-symbols-outlined filled" style="font-size:44px;color:#fff">local_fire_department</span></div>
+    <p class="streak-num" id="streakNum">0</p>
+    <p class="streak-lbl">jours d'affilée</p>
+  </div>
+
+  <div class="week-card reveal" style="animation-delay:.06s">
+    <p class="week-title">Cette semaine</p>
+    <div class="week-days" id="weekDays"></div>
+  </div>
+
+  <p class="sec-title">TES RÉCOMPENSES</p>
+  <div id="rewardsList" class="reveal" style="animation-delay:.08s"></div>
+
+  <p class="sec-title">POURQUOI TA SÉRIE COMPTE</p>
+  <div class="info-card reveal" style="animation-delay:.1s">
+    <span class="material-symbols-outlined">bolt</span>
+    <div class="info-card-txt"><strong>La régularité paie</strong><span>Reviens chaque jour, ne serait-ce que pour prendre une mission. C'est la constance qui construit tes résultats — et ta série.</span></div>
+  </div>
+  <div class="info-card reveal" style="animation-delay:.14s">
+    <span class="material-symbols-outlined">trending_up</span>
+    <div class="info-card-txt"><strong>Plus tu tiens, plus tu montes</strong><span>Les stackers réguliers grimpent les paliers plus vite et se rapprochent du CDI. La série est le meilleur indicateur de ta progression.</span></div>
+  </div>
+  <div class="info-card reveal" style="animation-delay:.18s">
+    <span class="material-symbols-outlined">warning</span>
+    <div class="info-card-txt"><strong>Ne casse pas la chaîne</strong><span>Un jour manqué remet ta série à zéro. Une petite action par jour suffit à la garder vivante.</span></div>
+  </div>
+
+  <div class="big-note reveal" style="animation-delay:.22s">
+    <strong>Ton record actuel : <span id="recordDays">0</span> jours.</strong> Chaque jour où tu te connectes et prends une mission fait grandir ta série. Continue !
+  </div>
+</div>
+
+<script>
+// ─── RÉCOMPENSES DE SÉRIE ───
+var REWARDS = [
+  { days:3,  type:'boost', title:'+5% de commission', sub:'Sur ta prochaine vente', icon:'trending_up' },
+  { days:7,  type:'cash',  amount:10, title:'10 € offerts', sub:'Direct dans ta cagnotte', icon:'redeem' },
+  { days:14, type:'boost', title:'+10% de commission', sub:'Pendant 48h', icon:'bolt' },
+  { days:30, type:'cash',  amount:50, title:'50 € offerts', sub:'Le gros jackpot de série', icon:'workspace_premium' }
+];
+function getClaimed() {
+  try { return JSON.parse(localStorage.getItem('stacker_streak_claimed') || '[]'); } catch(e){ return []; }
+}
+function renderRewards(streak) {
+  var claimed = getClaimed();
+  var list = document.getElementById('rewardsList');
+  var html = '';
+  REWARDS.forEach(function(r){
+    var isClaimed = claimed.indexOf(r.days) !== -1;
+    var isUnlocked = streak >= r.days;
+    var cls = isClaimed ? 'claimed' : (isUnlocked ? 'claimable' : 'locked');
+    var action;
+    if (isClaimed) {
+      action = '<span class="reward-claimed-tag"><span class="material-symbols-outlined">check_circle</span> Récupéré</span>';
+    } else if (isUnlocked) {
+      action = '<button class="reward-btn" onclick="claimReward(' + r.days + ')">Récupérer</button>';
+    } else {
+      action = '<span class="reward-locked-tag">J-' + (r.days - streak) + '</span>';
+    }
+    html += '<div class="reward ' + cls + '">'
+      + '<div class="reward-icon"><span class="material-symbols-outlined' + (isClaimed||isUnlocked?' filled':'') + '">' + (isClaimed ? 'check' : r.icon) + '</span></div>'
+      + '<div class="reward-body"><p class="reward-days">' + r.days + ' JOURS</p>'
+      + '<p class="reward-title">' + r.title + '</p><p class="reward-sub">' + r.sub + '</p></div>'
+      + '<div class="reward-action">' + action + '</div></div>';
+  });
+  list.innerHTML = html;
+}
+function claimReward(days) {
+  var r = REWARDS.find(function(x){ return x.days === days; });
+  if (!r) return;
+  var claimed = getClaimed();
+  if (claimed.indexOf(days) !== -1) return;
+  claimed.push(days);
+  localStorage.setItem('stacker_streak_claimed', JSON.stringify(claimed));
+  if (r.type === 'cash') {
+    // créditer la cagnotte (même clé que l'app)
+    var ca = parseFloat(localStorage.getItem('stacker_ca_autres') || '0');
+    localStorage.setItem('stacker_ca_autres', (ca + r.amount).toString());
+    showRewardToast(r.amount + ' € ajoutés à ta cagnotte !');
+  } else {
+    // enregistrer le boost actif
+    localStorage.setItem('stacker_boost_active', r.title);
+    showRewardToast('Boost activé : ' + r.title + ' !');
+  }
+  var streak = parseInt(localStorage.getItem('stacker_streak') || '5');
+  renderRewards(streak);
+}
+function showRewardToast(msg) {
+  var t = document.createElement('div');
+  t.textContent = msg;
+  t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:linear-gradient(145deg,#fb923c,#f97316);color:#fff;font-weight:800;font-size:14px;padding:14px 24px;border-radius:14px;box-shadow:0 12px 30px -6px rgba(249,115,22,0.6);z-index:999;opacity:0;transition:all .35s cubic-bezier(.22,1,.36,1)';
+  document.body.appendChild(t);
+  requestAnimationFrame(function(){ t.style.opacity='1'; t.style.transform='translateX(-50%) translateY(0)'; });
+  setTimeout(function(){ t.style.opacity='0'; t.style.transform='translateX(-50%) translateY(20px)'; setTimeout(function(){ t.remove(); }, 400); }, 2600);
+}
+window.claimReward = claimReward;
+
+function loadStreak() {
+  var streak = parseInt(localStorage.getItem('stacker_streak') || '5');
+  document.getElementById('streakNum').textContent = streak;
+  document.getElementById('recordDays').textContent = streak;
+
+  // semaine : marquer les jours actifs selon la série en cours
+  var jours = ['L','M','M','J','V','S','D'];
+  var today = new Date().getDay(); // 0=dim
+  var todayIdx = today === 0 ? 6 : today - 1; // L=0 ... D=6
+  var weekHtml = '';
+  for (var i=0;i<7;i++){
+    // actif si dans les 'streak' derniers jours jusqu'à aujourd'hui
+    var active = (i <= todayIdx) && (todayIdx - i < streak);
+    weekHtml += '<div class="day">'
+      + '<div class="day-dot' + (active?' active':'') + '">'
+      + '<span class="material-symbols-outlined' + (active?' filled':'') + '">' + (active?'local_fire_department':'circle') + '</span>'
+      + '</div>'
+      + '<span class="day-name' + (i===todayIdx?' active':'') + '">' + jours[i] + '</span></div>';
+  }
+  document.getElementById('weekDays').innerHTML = weekHtml;
+  renderRewards(streak);
+}
+loadStreak();
+</script>
+</body>
+</html>
