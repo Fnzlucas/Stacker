@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Démarrer — Stacker</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;0,9..40,900&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'DM Sans',sans-serif}
+.material-symbols-outlined{font-variation-settings:'FILL' 0}
+.material-symbols-outlined.filled{font-variation-settings:'FILL' 1}
+:root{--obsidian:#1b1c1c;--bordeaux:#b52330;--gold:#e0c56a}
+body{background:#f4f4f5;color:#1b1c1c;-webkit-font-smoothing:antialiased}
+.wrap{max-width:640px;margin:0 auto;padding:0 20px}
+
+.top{position:sticky;top:0;z-index:50;background:rgba(249,249,249,0.82);-webkit-backdrop-filter:blur(20px) saturate(160%);backdrop-filter:blur(20px) saturate(160%);border-bottom:1px solid rgba(228,228,231,0.6)}
+.top-in{max-width:640px;margin:0 auto;padding:15px 20px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:20px;font-weight:900;letter-spacing:-0.03em}
+.logo .er{color:var(--bordeaux)}
+.back{display:flex;align-items:center;gap:6px;color:#71717a;text-decoration:none;font-size:14px;font-weight:600}
+
+.reveal{opacity:0;transform:translateY(14px);animation:rise .6s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes rise{to{opacity:1;transform:none}}
+@keyframes pop{0%{opacity:0;transform:scale(.96) translateY(10px)}100%{opacity:1;transform:none}}
+
+/* HERO */
+.hero{margin:26px 0 20px;border-radius:24px;overflow:hidden;position:relative;background:linear-gradient(150deg,#242526 0%,#1b1c1c 48%,#2a0e12 100%);border:1px solid rgba(255,255,255,0.07);box-shadow:0 22px 55px -18px rgba(20,20,22,0.4);padding:36px 28px}
+.hero .sheen{position:absolute;top:0;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent)}
+.hero .halo{position:absolute;top:-80px;right:-50px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(181,35,48,0.4),transparent 68%)}
+.hero-kick{position:relative;font-size:12px;font-weight:700;letter-spacing:0.05em;color:#e0596a;margin-bottom:12px}
+.hero h1{position:relative;font-size:clamp(26px,6vw,34px);font-weight:900;letter-spacing:-0.03em;line-height:1.05;color:#fff;margin-bottom:12px}
+.hero p{position:relative;font-size:15px;color:rgba(255,255,255,0.6);line-height:1.5;max-width:400px}
+
+/* PROGRESS */
+.progress{display:flex;gap:6px;margin-bottom:22px}
+.progress-seg{flex:1;height:5px;border-radius:99px;background:rgba(27,28,28,0.1);overflow:hidden}
+.progress-seg .fill{height:100%;width:0;background:var(--bordeaux);border-radius:99px;transition:width .4s cubic-bezier(.22,1,.36,1)}
+.progress-seg.done .fill{width:100%}
+
+/* QUIZ */
+.quiz-card{background:#fff;border-radius:22px;border:1px solid rgba(228,228,231,0.7);box-shadow:0 4px 20px -6px rgba(27,28,28,0.06);padding:30px 26px}
+.q-step{font-size:12px;font-weight:700;color:var(--bordeaux);letter-spacing:0.04em;margin-bottom:8px}
+.q-title{font-size:23px;font-weight:900;letter-spacing:-0.03em;line-height:1.12;margin-bottom:22px;color:#1b1c1c}
+.q-options{display:flex;flex-direction:column;gap:11px}
+.q-opt{display:flex;align-items:center;gap:14px;padding:17px 18px;border-radius:15px;background:#fafafa;border:1.5px solid rgba(228,228,231,0.8);cursor:pointer;transition:all .18s;text-align:left;width:100%;font-family:inherit}
+.q-opt:hover{border-color:rgba(181,35,48,0.4);background:#fff;transform:translateX(2px)}
+.q-opt-icon{width:44px;height:44px;border-radius:12px;background:#1b1c1c;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.q-opt-txt{flex:1}
+.q-opt-title{font-size:15px;font-weight:800;color:#1b1c1c;line-height:1.2}
+.q-opt-sub{font-size:12px;color:#71717a;margin-top:2px;line-height:1.3}
+.q-opt .material-symbols-outlined.arrow{color:#d4d4d8;font-size:20px;transition:all .18s}
+.q-opt:hover .material-symbols-outlined.arrow{color:var(--bordeaux);transform:translateX(3px)}
+
+/* RÉSULTAT */
+.result-card{border-radius:24px;overflow:hidden;position:relative;background:linear-gradient(150deg,#242526 0%,#1b1c1c 48%,#2a0e12 100%);border:1px solid rgba(224,197,106,0.28);box-shadow:0 22px 55px -18px rgba(20,20,22,0.4);padding:32px 26px;margin-bottom:24px;animation:pop .5s cubic-bezier(.22,1,.36,1)}
+.result-card .halo{position:absolute;top:-70px;left:-40px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(224,197,106,0.2),transparent 68%)}
+.result-kick{position:relative;font-size:11px;font-weight:700;letter-spacing:0.06em;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:7px}
+.result-offer{position:relative;display:flex;align-items:center;gap:16px;margin-bottom:18px}
+.result-offer-icon{width:60px;height:60px;border-radius:17px;background:linear-gradient(145deg,#e0596a,#b52330);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 10px 26px -6px rgba(181,35,48,0.5)}
+.result-offer-name{font-size:24px;font-weight:900;letter-spacing:-0.03em;color:#fff;line-height:1.05}
+.result-offer-tag{font-size:13px;color:rgba(255,255,255,0.6);margin-top:3px;line-height:1.3}
+.result-why{position:relative;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:16px;margin-bottom:16px}
+.result-why-label{font-size:11px;font-weight:700;letter-spacing:0.04em;color:var(--gold);margin-bottom:6px}
+.result-why-txt{font-size:13px;color:rgba(255,255,255,0.8);line-height:1.5}
+.result-stats{position:relative;display:flex;gap:10px}
+.result-stat{flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px 14px;text-align:center}
+.result-stat-val{font-size:18px;font-weight:900;color:#fff;letter-spacing:-0.02em}
+.result-stat-lbl{font-size:10px;color:rgba(255,255,255,0.5);margin-top:2px}
+
+/* PARCOURS PREMIÈRE VENTE */
+.sec-title{font-size:12px;font-weight:700;letter-spacing:0.05em;color:var(--bordeaux);margin:8px 0 6px}
+.sec-h2{font-size:24px;font-weight:900;letter-spacing:-0.03em;line-height:1.1;margin-bottom:20px}
+.pstep{display:flex;gap:16px;margin-bottom:14px;animation:pop .5s cubic-bezier(.22,1,.36,1) backwards}
+.pstep-num{width:34px;height:34px;border-radius:11px;background:#1b1c1c;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;flex-shrink:0}
+.pstep-line{position:relative}
+.pstep-body{flex:1;background:#fff;border:1px solid rgba(228,228,231,0.7);border-radius:16px;padding:18px 20px;box-shadow:0 2px 12px -4px rgba(27,28,28,0.05)}
+.pstep-title{font-size:16px;font-weight:800;letter-spacing:-0.01em;color:#1b1c1c;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.pstep-title .material-symbols-outlined{font-size:19px;color:var(--bordeaux)}
+.pstep-desc{font-size:13.5px;color:#52525b;line-height:1.55}
+.pstep-desc strong{color:#1b1c1c}
+.script-box{margin-top:12px;padding:14px 16px;border-radius:12px;background:rgba(181,35,48,0.05);border:1px solid rgba(181,35,48,0.15);position:relative}
+.script-label{font-size:10px;font-weight:700;letter-spacing:0.05em;color:var(--bordeaux);margin-bottom:6px;display:flex;align-items:center;gap:5px}
+.script-txt{font-size:13.5px;color:#1b1c1c;line-height:1.5;font-style:italic}
+.tip-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+.tip-chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:#52525b;background:#f4f4f5;border:1px solid rgba(228,228,231,0.8);border-radius:9px;padding:7px 11px}
+.tip-chip .material-symbols-outlined{font-size:15px;color:var(--bordeaux)}
+
+/* CTA */
+.cta{margin:28px 0 24px;border-radius:22px;background:linear-gradient(145deg,#c62b39,#8f1a24);padding:30px 26px;text-align:center;box-shadow:0 18px 45px -14px rgba(181,35,48,0.5)}
+.cta h3{font-size:22px;font-weight:900;letter-spacing:-0.03em;color:#fff;margin-bottom:8px}
+.cta p{font-size:14px;color:rgba(255,255,255,0.85);margin-bottom:20px;line-height:1.45}
+.cta a{display:inline-flex;align-items:center;gap:8px;background:#fff;color:#b52330;font-weight:800;font-size:15px;padding:15px 26px;border-radius:13px;text-decoration:none;box-shadow:0 8px 22px -6px rgba(0,0,0,0.3)}
+.restart{display:block;margin:0 auto 40px;background:none;border:none;color:#71717a;font-size:13px;font-weight:600;cursor:pointer;text-decoration:underline}
+
+.hidden{display:none}
+/* MINI-GUIDE CLOSING */
+.closing-guide{background:#fff;border:1px solid rgba(228,228,231,0.7);border-radius:18px;padding:22px 20px;margin:14px 0 4px;box-shadow:0 4px 20px -6px rgba(27,28,28,0.06);animation:pop .5s cubic-bezier(.22,1,.36,1) backwards}
+.cg-title{font-size:15px;font-weight:900;letter-spacing:-0.02em;color:#1b1c1c;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.cg-step{display:flex;gap:13px;padding:11px 0;border-bottom:1px solid rgba(228,228,231,0.5)}
+.cg-step:last-child{border-bottom:none;padding-bottom:0}
+.cg-num{width:26px;height:26px;border-radius:8px;background:linear-gradient(145deg,#e0596a,#b52330);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;flex-shrink:0}
+.cg-step-title{font-size:14px;font-weight:800;color:#1b1c1c;line-height:1.25}
+.cg-step-desc{font-size:12.5px;color:#71717a;line-height:1.45;margin-top:2px}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="top-in">
+    <a href="index.html" class="back"><span class="material-symbols-outlined" style="font-size:20px">arrow_back</span> Retour</a>
+    <span class="logo">Stack<span class="er">er</span></span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <section class="hero reveal" id="heroBlock">
+    <div class="sheen"></div><div class="halo"></div>
+    <p class="hero-kick">démarrer en 2 minutes</p>
+    <h1>Trouve ton offre.<br>Fais ta première vente.</h1>
+    <p>Réponds à 3 questions rapides. On te dit exactement quelle offre vendre en premier, et comment décrocher ton premier client, étape par étape.</p>
+  </section>
+
+  <!-- PROGRESS -->
+  <div class="progress reveal" id="progressBar" style="animation-delay:.06s">
+    <div class="progress-seg" id="seg0"><div class="fill"></div></div>
+    <div class="progress-seg" id="seg1"><div class="fill"></div></div>
+    <div class="progress-seg" id="seg2"><div class="fill"></div></div>
+  </div>
+
+  <!-- QUIZ -->
+  <section class="quiz-card reveal" id="quizCard" style="animation-delay:.1s"></section>
+
+  <!-- RÉSULTAT (caché au départ) -->
+  <div id="resultBlock" class="hidden"></div>
+
+</div>
+
+<script>
+// ─── OFFRES (avec guidage première vente) ───
+const OFFERS = [
+  {
+    key:'qrcode', name:'QR Code Avis Google', icon:'qr_code_2',
+    tag:'Un QR code sur le comptoir, vos clients laissent un avis en 10 secondes',
+    com:'40%', price:'29 €/mois', type:'Récurrent', level:'Débutant', cible:'commercants',
+    script:"Bonjour, on propose aux commerces un QR code plastifié qui permet à vos clients de laisser un avis Google en 10 secondes. Combien d'avis avez-vous actuellement ?",
+    why:"C'est LA meilleure offre pour débuter : 40% de commission (la plus élevée), un argument béton (tout commerçant veut plus d'avis Google), et une démo qui tient dans ta poche. Facile à comprendre, rapide à vendre.",
+    who:"Tous les commerces de proximité qui reçoivent du passage : coiffeurs, restaurants, garages, boulangeries, instituts de beauté, opticiens.",
+    where:"Ta propre rue commerçante, les zones piétonnes, les centres-villes. Astuce : ouvre Google Maps, tape « coiffeur » ou « restaurant » + ta ville, tu vois direct leur nombre d'avis — cible ceux qui en ont peu.",
+    tips:['Va en direct (PAP)','Montre le QR code physique','Demande le gérant']
+  },
+  {
+    key:'fidelite', name:'Carte Fidélité', icon:'loyalty',
+    tag:'Wallet Apple & Google pour fidéliser les clients, sans app à télécharger',
+    com:'25%', price:'29 €/mois', type:'Récurrent', level:'Débutant', cible:'commercants',
+    script:"Bonjour, je passe vous voir au sujet d'un système de carte de fidélité directement dans le téléphone de vos clients — aucune app à télécharger, ça prend 30 secondes à expliquer. Vous avez 2 minutes ?",
+    why:"Parfaite pour débuter : les commerces avec des clients réguliers (cafés, boulangeries, salons) adorent fidéliser. La démo sur ton téléphone fait mouche, et c'est du récurrent — tu gagnes chaque mois.",
+    who:"Commerces avec clientèle qui revient : cafés, boulangeries, salons de coiffure, restaurants, fleuristes.",
+    where:"Les rues commerçantes de ta ville. Repère les commerces où les gens reviennent souvent — c'est là que la fidélité a le plus de sens.",
+    tips:['Va en direct (PAP)','Démo sur ton téléphone','Closing direct possible']
+  },
+  {
+    key:'ereput', name:'E-Réputation Google', icon:'reviews',
+    tag:'Générer des avis 5 étoiles automatiquement après chaque passage client',
+    com:'25%', price:'29 €/mois', type:'Récurrent', level:'Débutant', cible:'commercants',
+    script:"Bonjour, si je tape votre nom sur Google en ce moment, combien d'étoiles avez-vous ? On a un système qui génère des avis 5 étoiles automatiquement après chaque passage client.",
+    why:"Un classique qui marche : l'accroche « combien d'étoiles avez-vous sur Google ? » ouvre presque toujours la conversation. Récurrent, et un besoin universel chez les commerçants.",
+    who:"Tout commerce visible sur Google : restaurants, artisans, boutiques, prestataires de services locaux.",
+    where:"Zones commerçantes, mais aussi par téléphone. Prépare-toi en tapant leur nom sur Google avant — tu arrives avec un constat concret.",
+    tips:['PAP ou téléphone','Vérifie leurs avis avant','Arrive avec un constat']
+  },
+  {
+    key:'alma', name:'Alma Company', icon:'web',
+    tag:'Site web professionnel livré en 7 jours',
+    com:'25%', price:'49 €/mois', type:'Récurrent', level:'Débutant', cible:'commercants',
+    script:"Bonjour, est-ce que vous avez un site internet actuellement ? On livre des sites professionnels en 7 jours à partir de 49€/mois tout inclus.",
+    why:"Idéale si tu vises les commerces et artisans SANS site web (ou avec un site dépassé). Une question simple (« vous avez un site ? ») suffit à qualifier. Récurrent et forte valeur perçue.",
+    who:"Commerces et artisans sans site web ou avec un site vieillissant : plombiers, électriciens, petits commerces, indépendants.",
+    where:"Google Maps : cherche les artisans/commerces de ta zone, repère ceux qui n'ont pas de site listé. Les artisans (BTP) sont une cible en or.",
+    tips:['Cible ceux sans site','PAP ou prise de RDV','Montre des exemples']
+  },
+  {
+    key:'energie', name:'Réduction Facture Énergie', icon:'bolt',
+    tag:"Réduire la facture d'électricité jusqu'à 30%, gratuitement",
+    com:'25%', price:'80–150 €/dossier', type:'Paiement unique', level:'Débutant', cible:'particuliers',
+    script:"Bonjour, je vous contacte car on aide les particuliers à réduire leur facture d'électricité. Vous êtes actuellement chez quel fournisseur ?",
+    why:"La meilleure porte d'entrée côté particuliers : tout le monde veut payer moins cher son électricité. Pas besoin d'expertise, l'argument se vend seul. Gain immédiat par dossier.",
+    who:"Les particuliers, surtout propriétaires et familles qui paient des factures d'électricité conséquentes.",
+    where:"Commence par ton réseau (famille, amis, voisins), puis élargis. Le téléphone fonctionne très bien pour cette offre.",
+    tips:['Par téléphone','Commence par ton réseau','Closing direct']
+  },
+  {
+    key:'rachat', name:'Rachat de Crédit', icon:'account_balance',
+    tag:'Regrouper tous les crédits, réduire les mensualités',
+    com:'25%', price:'400–1 500 €/dossier', type:'Paiement unique', level:'Expérimenté', cible:'particuliers',
+    script:"Bonjour, je vous contacte car on aide les particuliers à réduire leurs mensualités de crédit. Vous avez actuellement plusieurs crédits en cours ?",
+    why:"La plus rémunératrice (jusqu'à 1 500 € par dossier !) mais réservée à ceux qui sont à l'aise : le sujet est sensible et réglementé. Si tu sais instaurer la confiance, c'est très payant.",
+    who:"Particuliers avec plusieurs crédits en cours (auto, conso, immo) qui cherchent à alléger leurs mensualités.",
+    where:"Principalement par recommandation et ton réseau — c'est un sujet de confiance. Prise de RDV recommandée plutôt que closing à froid.",
+    tips:['Secteur réglementé','Instaure la confiance','Prise de RDV'],
+    warn:"Cette offre touche à un secteur réglementé (courtage en crédit). Assure-toi du cadre légal avant de te lancer dessus."
+  },
+  {
+    key:'seoia', name:'Seoia Partners', icon:'travel_explore',
+    tag:'Visibilité Google garantie pour commerçants locaux',
+    com:'25%', price:'199 €/mois', type:'Récurrent', level:'Expérimenté', cible:'commercants',
+    script:"Bonjour, j'ai analysé votre présence Google et vous n'apparaissez pas dans les premiers résultats — ça représente des clients qui vont chez vos concurrents chaque semaine.",
+    why:"Ticket élevé et récurrent, mais demande de la crédibilité : il faut savoir parler référencement et arriver avec une analyse. Pour stackers à l'aise qui veulent des commissions récurrentes solides.",
+    who:"Commerces qui ont déjà un site mais sont mal référencés sur Google, et qui ont un budget marketing.",
+    where:"Repère sur Google les commerces qui n'apparaissent pas en première page pour leur activité + ville. Arrive avec une mini-analyse de leur position.",
+    tips:['Arrive avec une analyse','Prise de RDV','Cible ceux qui ont un budget']
+  }
+];
+
+// ─── QUIZ ───
+const QUESTIONS = [
+  {
+    step:'Question 1 sur 3',
+    title:'Tu préfères parler à qui ?',
+    key:'cible',
+    options:[
+      {val:'commercants', icon:'storefront', title:'Des commerçants', sub:'Boutiques, restaurants, artisans locaux'},
+      {val:'particuliers', icon:'group', title:'Des particuliers', sub:'Familles, propriétaires, ton réseau'},
+      {val:'peu_importe', icon:'diversity_3', title:'Peu importe', sub:"Je m'adapte, montre-moi le plus simple"}
+    ]
+  },
+  {
+    step:'Question 2 sur 3',
+    title:'Tu te situes où en vente ?',
+    key:'niveau',
+    options:[
+      {val:'debutant', icon:'sprint', title:'Je débute', sub:'Première expérience, je veux du simple'},
+      {val:'alaise', icon:'workspace_premium', title:'Je suis à l\'aise', sub:'J\'ai déjà vendu, je veux du costaud'}
+    ]
+  },
+  {
+    step:'Question 3 sur 3',
+    title:'Tu veux gagner comment ?',
+    key:'objectif',
+    options:[
+      {val:'recurrent', icon:'autorenew', title:'Des revenus qui tombent chaque mois', sub:'Commissions récurrentes, je construis dans la durée'},
+      {val:'rapide', icon:'bolt', title:'Un gros gain rapide', sub:'Paiement unique, plus élevé par vente'}
+    ]
+  }
+];
+
+let answers = {};
+let currentQ = 0;
+
+function renderQuestion() {
+  const q = QUESTIONS[currentQ];
+  const card = document.getElementById('quizCard');
+  card.style.animation = 'none';
+  card.offsetHeight; // reflow
+  card.style.animation = 'pop .4s cubic-bezier(.22,1,.36,1)';
+  let html = '<p class="q-step">' + q.step + '</p><h2 class="q-title">' + q.title + '</h2><div class="q-options">';
+  q.options.forEach(function(o){
+    html += '<button class="q-opt" onclick="answer(\'' + q.key + '\',\'' + o.val + '\')">'
+      + '<div class="q-opt-icon"><span class="material-symbols-outlined" style="font-size:22px">' + o.icon + '</span></div>'
+      + '<div class="q-opt-txt"><p class="q-opt-title">' + o.title + '</p><p class="q-opt-sub">' + o.sub + '</p></div>'
+      + '<span class="material-symbols-outlined arrow">arrow_forward</span></button>';
+  });
+  html += '</div>';
+  card.innerHTML = html;
+  // progress
+  for (let i=0;i<3;i++){ document.getElementById('seg'+i).classList.toggle('done', i<currentQ); }
+}
+
+function answer(key, val) {
+  answers[key] = val;
+  document.getElementById('seg'+currentQ).classList.add('done');
+  currentQ++;
+  if (currentQ < QUESTIONS.length) {
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+// ─── RECOMMANDATION ───
+function recommend() {
+  let pool = OFFERS.slice();
+  // filtre cible
+  if (answers.cible === 'commercants') pool = pool.filter(o=>o.cible==='commercants');
+  else if (answers.cible === 'particuliers') pool = pool.filter(o=>o.cible==='particuliers');
+  // filtre niveau : débutant => que du Débutant
+  if (answers.niveau === 'debutant') {
+    const easy = pool.filter(o=>o.level==='Débutant');
+    if (easy.length) pool = easy;
+  }
+  // objectif : récurrent vs paiement unique
+  if (answers.objectif === 'recurrent') {
+    const rec = pool.filter(o=>o.type==='Récurrent');
+    if (rec.length) pool = rec;
+  } else if (answers.objectif === 'rapide') {
+    const os = pool.filter(o=>o.type==='Paiement unique');
+    if (os.length) pool = os;
+  }
+  // tri intelligent selon le profil
+  pool.sort(function(a,b){
+    // si le stacker est à l'aise, on remonte les offres "costaud" (Expérimenté = plus gros ticket)
+    if (answers.niveau === 'alaise') {
+      const ea = a.level==='Expérimenté' ? 1 : 0;
+      const eb = b.level==='Expérimenté' ? 1 : 0;
+      if (eb !== ea) return eb - ea;
+    }
+    // sinon (débutant), on privilégie la commission la plus élevée
+    const ca = parseInt(a.com), cb = parseInt(b.com);
+    return cb - ca;
+  });
+  return pool[0] || OFFERS[0];
+}
+
+function showResult() {
+  // remplir la barre
+  for (let i=0;i<3;i++){ document.getElementById('seg'+i).classList.add('done'); }
+  document.getElementById('quizCard').classList.add('hidden');
+  document.getElementById('heroBlock').classList.add('hidden');
+  document.getElementById('progressBar').classList.add('hidden');
+
+  const o = recommend();
+  const rb = document.getElementById('resultBlock');
+  rb.classList.remove('hidden');
+
+  let warnHtml = o.warn ? '<div style="position:relative;margin-top:14px;padding:12px 14px;border-radius:11px;background:rgba(224,197,106,0.12);border:1px solid rgba(224,197,106,0.35);font-size:12px;color:#8a6d1a;line-height:1.4"><strong>À savoir :</strong> ' + o.warn + '</div>' : '';
+
+  rb.innerHTML =
+    '<div class="result-card">'
+      + '<div class="halo"></div>'
+      + '<p class="result-kick"><span class="material-symbols-outlined filled" style="font-size:15px">auto_awesome</span> TON OFFRE POUR DÉMARRER</p>'
+      + '<div class="result-offer">'
+        + '<div class="result-offer-icon"><span class="material-symbols-outlined" style="font-size:30px;color:#fff">' + o.icon + '</span></div>'
+        + '<div><p class="result-offer-name">' + o.name + '</p><p class="result-offer-tag">' + o.tag + '</p></div>'
+      + '</div>'
+      + '<div class="result-why"><p class="result-why-label">POURQUOI ELLE ?</p><p class="result-why-txt">' + o.why + '</p></div>'
+      + '<div class="result-stats">'
+        + '<div class="result-stat"><p class="result-stat-val">' + o.com + '</p><p class="result-stat-lbl">Commission</p></div>'
+        + '<div class="result-stat"><p class="result-stat-val">' + o.price + '</p><p class="result-stat-lbl">Prix</p></div>'
+        + '<div class="result-stat"><p class="result-stat-val">' + o.type + '</p><p class="result-stat-lbl">Paiement</p></div>'
+      + '</div>'
+      + warnHtml
+    + '</div>'
+
+    // PARCOURS PREMIÈRE VENTE
+    + '<p class="sec-title">ta première vente, pas à pas</p>'
+    + '<h2 class="sec-h2">Comment décrocher<br>ton premier client.</h2>'
+
+    + pstep(1, 'target', 'Qui cibler', o.who, 0)
+    + pstep(2, 'travel_explore', 'Où les trouver', o.where, 0.06)
+    + pstepScript(3, 'record_voice_over', 'Quoi dire pour aborder', 'Apprends cette phrase par cœur — c\'est ton ouverture. Elle est courte, directe, et amène naturellement la conversation.', o.script, o.tips, 0.12)
+    + pstep(4, 'draw', 'Le faire signer', 'Une fois le client convaincu, tout se passe dans l\'app, guidé étape par étape. Voici l\'ordre exact — l\'assistant t\'accompagne à chaque écran :', 0.18)
+
+    // MINI-GUIDE DU CLOSING
+    + '<div class="closing-guide" style="animation-delay:0.24s">'
+      + '<p class="cg-title"><span class="material-symbols-outlined" style="font-size:18px;color:#b52330">checklist</span> Les 6 étapes pour conclure</p>'
+      + cgStep('1', 'Choisis l\'offre vendue', 'Dans « Closer un deal », sélectionne l\'offre. Le bon contrat se joint tout seul.')
+      + cgStep('2', 'Entre le montant', 'Le prix convenu avec le client. Ta commission s\'affiche automatiquement.')
+      + cgStep('3', 'Les infos du client', 'En face à face : tape le SIRET du pro, ses infos se remplissent seules. À distance : envoie le lien par SMS.')
+      + cgStep('4', 'Fais signer le contrat', 'Le contrat s\'affiche déjà pré-rempli. Le client le lit, coche « j\'accepte », et signe avec son doigt.')
+      + cgStep('5', 'Fais signer le mandat SEPA', 'Le client saisit son IBAN, accepte le prélèvement et signe. C\'est ce qui autorise le paiement.')
+      + cgStep('6', 'Valide la vente', 'Tu valides, la vente est enregistrée, et ta commission tombe dans ta cagnotte. Terminé !')
+    + '</div>'
+
+    // CTA
+    + '<div class="cta">'
+      + '<h3>Prêt à te lancer ?</h3>'
+      + '<p>Tu sais quelle offre vendre et comment. Il ne te reste plus qu\'à y aller.</p>'
+      + '<a href="index.html"><span class="material-symbols-outlined" style="font-size:18px">rocket_launch</span> Aller vendre</a>'
+    + '</div>'
+    + '<button class="restart" onclick="restart()">Refaire le quiz</button>';
+
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function cgStep(num, title, desc) {
+  return '<div class="cg-step">'
+    + '<div class="cg-num">' + num + '</div>'
+    + '<div class="cg-body"><p class="cg-step-title">' + title + '</p><p class="cg-step-desc">' + desc + '</p></div>'
+    + '</div>';
+}
+function pstep(num, icon, title, desc, delay) {
+  return '<div class="pstep" style="animation-delay:' + delay + 's">'
+    + '<div class="pstep-line"><div class="pstep-num">' + num + '</div></div>'
+    + '<div class="pstep-body"><p class="pstep-title"><span class="material-symbols-outlined">' + icon + '</span> ' + title + '</p>'
+    + '<p class="pstep-desc">' + desc + '</p></div></div>';
+}
+function pstepScript(num, icon, title, desc, script, tips, delay) {
+  let chips = '';
+  if (tips && tips.length) {
+    chips = '<div class="tip-chips">' + tips.map(function(t){ return '<span class="tip-chip"><span class="material-symbols-outlined">check_circle</span>' + t + '</span>'; }).join('') + '</div>';
+  }
+  return '<div class="pstep" style="animation-delay:' + delay + 's">'
+    + '<div class="pstep-line"><div class="pstep-num">' + num + '</div></div>'
+    + '<div class="pstep-body"><p class="pstep-title"><span class="material-symbols-outlined">' + icon + '</span> ' + title + '</p>'
+    + '<p class="pstep-desc">' + desc + '</p>'
+    + '<div class="script-box"><p class="script-label"><span class="material-symbols-outlined" style="font-size:13px">format_quote</span> TON ACCROCHE</p><p class="script-txt">« ' + script + ' »</p></div>'
+    + chips
+    + '</div></div>';
+}
+
+function restart() {
+  answers = {}; currentQ = 0;
+  document.getElementById('resultBlock').classList.add('hidden');
+  document.getElementById('resultBlock').innerHTML = '';
+  document.getElementById('quizCard').classList.remove('hidden');
+  document.getElementById('heroBlock').classList.remove('hidden');
+  document.getElementById('progressBar').classList.remove('hidden');
+  for (let i=0;i<3;i++){ document.getElementById('seg'+i).classList.remove('done'); }
+  renderQuestion();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// init
+renderQuestion();
+</script>
+</body>
+</html>
