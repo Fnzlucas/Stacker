@@ -5,7 +5,9 @@
  */
 import { z } from 'zod';
 
-export type FetchLike = (input: string, init?: RequestInit) => Promise<Response>;
+import type { FetchLike } from '../_shared/rest.ts';
+
+export { RpcError, callRpc, supabaseAuthHeaders, type FetchLike } from '../_shared/rest.ts';
 
 const TURNSTILE_VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 const BREVO_URL = 'https://api.brevo.com/v3/smtp/email';
@@ -44,57 +46,6 @@ export async function verifyTurnstile(
   } catch {
     return { success: false, errorCodes: ['network_error'] };
   }
-}
-
-/** En-têtes d'authentification PostgREST : `apikey`, plus `Authorization` si la clé est un JWT (clés historiques). */
-export function supabaseAuthHeaders(key: string): Record<string, string> {
-  const headers: Record<string, string> = { apikey: key };
-  if (key.startsWith('eyJ')) headers['Authorization'] = `Bearer ${key}`;
-  return headers;
-}
-
-export class RpcError extends Error {
-  constructor(
-    readonly status: number,
-    readonly code: string | null,
-    message: string,
-  ) {
-    super(message);
-    this.name = 'RpcError';
-  }
-}
-
-const postgrestErrorSchema = z.object({ code: z.string().nullish(), message: z.string().nullish() }).loose();
-
-/** Appelle une fonction SQL exposée par PostgREST avec la clé service_role. */
-export async function callRpc(
-  fetchFn: FetchLike,
-  supabaseUrl: string,
-  serviceKey: string,
-  fn: string,
-  args: Record<string, unknown>,
-): Promise<unknown> {
-  const res = await fetchFn(`${supabaseUrl}/rest/v1/rpc/${fn}`, {
-    method: 'POST',
-    headers: { ...supabaseAuthHeaders(serviceKey), 'content-type': 'application/json', accept: 'application/json' },
-    body: JSON.stringify(args),
-    signal: AbortSignal.timeout(8000),
-  });
-  if (!res.ok) {
-    let code: string | null = null;
-    let message = `rpc ${fn} http ${String(res.status)}`;
-    try {
-      const err = postgrestErrorSchema.safeParse(await res.json());
-      if (err.success) {
-        code = err.data.code ?? null;
-        message = err.data.message ?? message;
-      }
-    } catch {
-      /* corps illisible : on garde le message générique */
-    }
-    throw new RpcError(res.status, code, message);
-  }
-  return res.json();
 }
 
 export interface EmailMessage {

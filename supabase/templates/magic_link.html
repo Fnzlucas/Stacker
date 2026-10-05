@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="fr">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Ton code de connexion</title></head>
+<body style="margin:0;padding:0;background:#ececf0;font-family:Inter,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#1c1c1e;">
+<!-- Gabarit Supabase Auth (code de connexion). Variables : {{ .SiteURL }}, {{ .TokenHash }}, {{ .Token }}, {{ .Email }}. -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#ececf0;padding:32px 16px;">
+<tr><td align="center">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;background:#ffffff;border-radius:28px;padding:36px 28px;">
+<tr><td>
+<p style="margin:0 0 24px;font-size:22px;font-weight:800;letter-spacing:-0.04em;">Stacker</p>
+<h1 style="margin:0 0 12px;font-size:24px;line-height:1.2;font-weight:800;letter-spacing:-0.03em;">Ton code de connexion</h1>
+<p style="margin:0 0 24px;font-size:15px;line-height:1.55;color:#636368;">Voici ton code pour te connecter à Stacker sans mot de passe.</p>
+<p style="margin:0 0 28px;"><a href="{{ .SiteURL }}/app/auth/confirmer?token_hash={{ .TokenHash }}&amp;type=email" style="display:inline-block;padding:16px 26px;border-radius:999px;background:#1c1c1e;color:#ffffff;font-size:16px;font-weight:600;text-decoration:none;">Me connecter</a></p>
+<p style="margin:0 0 8px;font-size:14px;color:#636368;">Saisis ce code dans l’application :</p>
+<p style="margin:0 0 28px;font-size:30px;font-weight:800;letter-spacing:0.18em;font-family:'SF Mono',Menlo,Consolas,monospace;">{{ .Token }}</p>
+<p style="margin:0;font-size:13px;line-height:1.5;color:#636368;">Le code est valable 1 heure et ne sert qu’une fois. Si tu n’as rien demandé, ignore cet email.</p>
+</td></tr>
+</table>
+<p style="margin:20px 0 0;font-size:12px;color:#636368;">Stacker — email automatique, merci de ne pas y répondre.</p>
+</td></tr>
+</table>
+</body>
+</html>

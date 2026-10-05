@@ -73,7 +73,7 @@ export default tseslint.config(
   },
   {
     // Point d'entrée Deno : typé par `deno check` (script typecheck), hors projet TypeScript Node.
-    files: ['supabase/functions/waitlist-join/index.ts'],
+    files: ['supabase/functions/*/index.ts'],
     extends: [tseslint.configs.disableTypeChecked],
   },
   {

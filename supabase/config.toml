@@ -40,22 +40,74 @@ enabled = false
 
 [auth]
 enabled = true
+# URL de base des liens envoyés par email (production : https://<domaine>).
 site_url = "http://localhost:5173"
-additional_redirect_urls = ["http://localhost:4173"]
+# Seules ces URLs peuvent recevoir un lien de confirmation / récupération.
+additional_redirect_urls = ["http://localhost:5173/app/auth/confirmer", "http://localhost:4173/app/auth/confirmer"]
+# Jeton d'accès court (1 h), rafraîchissement à usage unique (rotation).
 jwt_expiry = 3600
 enable_refresh_token_rotation = true
 refresh_token_reuse_interval = 10
-# L'inscription des comptes stackers arrive au lot suivant (OTP email).
-enable_signup = false
+# Lot 2 : inscription des stackers par email + mot de passe.
+enable_signup = true
 enable_anonymous_sign_ins = false
+enable_manual_linking = false
+# Mots de passe : 12 caractères minimum, minuscule + majuscule + chiffre.
+# (La détection des mots de passe ayant fuité, HaveIBeenPwned, s'active
+# dans le tableau de bord : Authentication > Providers > Email.)
 minimum_password_length = 12
+password_requirements = "lower_upper_letters_digits"
+
+[auth.rate_limit]
+# Emails envoyés par heure (avec un SMTP personnalisé : Brevo).
+email_sent = 30
+sign_in_sign_ups = 30
+token_refresh = 150
+token_verifications = 30
+
+# Anti-robot sur inscription, connexion, code, mot de passe oublié et renvoi.
+# Désactivé en local ; en production : activé avec la clé SECRÈTE Turnstile.
+[auth.captcha]
+enabled = false
+provider = "turnstile"
+secret = "env(TURNSTILE_SECRET_KEY)"
 
 [auth.email]
-enable_signup = false
+enable_signup = true
 double_confirm_changes = true
 enable_confirmations = true
+# Changer de mot de passe depuis une session ordinaire exige une réauthentification récente.
+secure_password_change = true
+max_frequency = "60s"
 otp_length = 6
-otp_expiry = 600
+otp_expiry = 3600
+
+# Emails en français : lien (token_hash, vérifié par /app/auth/confirmer) + code à 6 chiffres.
+[auth.email.template.confirmation]
+subject = "Confirme ton adresse email — Stacker"
+content_path = "./supabase/templates/confirmation.html"
+
+[auth.email.template.recovery]
+subject = "Choisis un nouveau mot de passe — Stacker"
+content_path = "./supabase/templates/recovery.html"
+
+[auth.email.template.magic_link]
+subject = "Ton code de connexion — Stacker"
+content_path = "./supabase/templates/magic_link.html"
+
+[auth.email.template.email_change]
+subject = "Confirme ta nouvelle adresse email — Stacker"
+content_path = "./supabase/templates/email_change.html"
+
+# SMTP Brevo (production). En local, les emails arrivent dans Inbucket (port 54324).
+# [auth.email.smtp]
+# enabled = true
+# host = "smtp-relay.brevo.com"
+# port = 587
+# user = "env(BREVO_SMTP_LOGIN)"
+# pass = "env(BREVO_SMTP_KEY)"
+# admin_email = "no-reply@<domaine>"
+# sender_name = "Stacker"
 
 [auth.sms]
 enable_signup = false
@@ -75,3 +127,12 @@ entrypoint = "./functions/waitlist-join/index.ts"
 
 [analytics]
 enabled = false
+
+# Suppression du compte : JWT vérifié par la passerelle ET par la fonction
+# (GET /auth/v1/user), connexion de moins de 10 minutes exigée.
+[functions.account-delete]
+enabled = true
+verify_jwt = true
+import_map = "./functions/account-delete/deno.json"
+entrypoint = "./functions/account-delete/index.ts"
+
