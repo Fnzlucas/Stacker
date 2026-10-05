@@ -1,0 +1,3 @@
+-- Données de départ : volontairement vides.
+-- Aucune donnée factice n'est insérée, ni en local ni en production
+-- (verdict §6 critère 10 : 0 donnée factice ou en dur).
