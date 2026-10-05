@@ -14,6 +14,10 @@ export default tseslint.config(
   },
   js.configs.recommended,
   {
+    // Espaces insécables volontaires dans les textes (typographie française : « 15 % », « 6,99 € »).
+    rules: { 'no-irregular-whitespace': ['error', { skipStrings: true, skipTemplates: true, skipJSXText: true }] },
+  },
+  {
     files: ['**/*.{ts,tsx}'],
     extends: [...tseslint.configs.strictTypeChecked, ...tseslint.configs.stylisticTypeChecked],
     languageOptions: {
@@ -44,6 +48,8 @@ export default tseslint.config(
       'react/no-danger-with-children': 'error',
       'react/jsx-no-target-blank': 'error',
       'react/prop-types': 'off',
+      // Une zone qui défile (tableau large) doit être atteignable au clavier (axe : scrollable-region-focusable).
+      'jsx-a11y/no-noninteractive-tabindex': ['error', { roles: ['tabpanel', 'region'] }],
       'no-restricted-syntax': [
         'error',
         { selector: "MemberExpression[property.name='innerHTML']", message: 'innerHTML interdit : utiliser React.' },

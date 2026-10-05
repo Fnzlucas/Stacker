@@ -17,9 +17,11 @@
     "test:coverage": "vitest run --coverage",
     "test:db": "bash scripts/test-db.sh",
     "test:e2e": "playwright test",
+    "qa:shots": "SHOTS=1 playwright test e2e/screenshots.spec.ts --project=mobile-390",
     "check:size": "node scripts/check-bundle-size.mjs",
     "check:secrets": "node scripts/scan-secrets.mjs",
-    "ci": "pnpm lint && pnpm typecheck && pnpm test:coverage && pnpm test:db && pnpm build && pnpm check:size && pnpm test:e2e"
+    "check:audit": "pnpm audit --prod --audit-level=high",
+    "ci": "pnpm lint && pnpm typecheck && pnpm test:coverage && pnpm test:db && pnpm build && pnpm check:size && pnpm check:secrets && pnpm test:e2e"
   },
   "dependencies": {
     "react": "^19.3.0",
