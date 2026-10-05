@@ -1,0 +1,39 @@
+# CI bloquante (DoD §6) : lint, types, tests unitaires, tests base (pgTAP),
+# build, budget de poids, secrets, e2e. À placer à la racine du dépôt si
+# l'application n'est pas à la racine (ajuster working-directory).
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      CI: 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - name: Postgres pour les tests pgTAP (binaires seulement, aucun service)
+        run: sudo apt-get update && sudo apt-get install -y postgresql
+      - run: pnpm run ci
+      - run: pnpm run check:audit
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright
+          path: test-results/
+          retention-days: 7
