@@ -1,0 +1,59 @@
+{
+  "name": "stacker-app",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "node scripts/gen-html.mjs && vite",
+    "build": "node scripts/build.mjs",
+    "preview": "node scripts/serve-dist.mjs",
+    "lint": "eslint --max-warnings=0 .",
+    "typecheck": "tsc -b --pretty && deno check --config supabase/functions/waitlist-join/deno.json supabase/functions/waitlist-join/index.ts",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:db": "bash scripts/test-db.sh",
+    "test:e2e": "playwright test",
+    "check:size": "node scripts/check-bundle-size.mjs",
+    "check:secrets": "node scripts/scan-secrets.mjs",
+    "ci": "pnpm lint && pnpm typecheck && pnpm test:coverage && pnpm test:db && pnpm build && pnpm check:size && pnpm test:e2e"
+  },
+  "dependencies": {
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@eslint/js": "^9.39.5",
+    "@playwright/test": "1.56.1",
+    "@types/node": "^22.20.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^5.2.0",
+    "@vitest/coverage-v8": "4.1.11",
+    "autoprefixer": "^10.6.1",
+    "deno": "2.5.7",
+    "eslint": "^9.39.5",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.13.0",
+    "postcss": "^8.5.29",
+    "postcss-import": "^17.0.0",
+    "tailwindcss": "3.4.19",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.71.0",
+    "vite": "^7.3.6",
+    "vitest": "4.1.11"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "deno"
+    ]
+  }
+}

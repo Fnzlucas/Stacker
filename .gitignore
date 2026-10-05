@@ -1,0 +1,38 @@
+# Dépendances et builds
+node_modules/
+dist/
+.ssr/
+coverage/
+*.tsbuildinfo
+.vite/
+
+# Pages HTML générées depuis src/site/pages.json (scripts/gen-html.mjs)
+/index.html
+/tarifs.html
+/liste-attente.html
+/cgu.html
+/cgv.html
+/mentions-legales.html
+/confidentialite.html
+/contact.html
+/remboursement.html
+/404.html
+.e2e/
+
+# Variables d'environnement : seul .env.example est versionné
+.env
+.env.*
+!.env.example
+supabase/functions/.env
+supabase/.temp/
+supabase/.branches/
+
+# Playwright
+test-results/
+playwright-report/
+blob-report/
+
+# Divers
+.DS_Store
+*.log
+.vercel
