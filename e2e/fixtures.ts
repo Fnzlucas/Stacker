@@ -35,7 +35,7 @@ export const test = base.extend<Fixtures>({
         count: 41,
         join: {
           status: 200,
-          body: { ok: true, position: 42, referralCode: 'K7M2P9QR', referralUrl: 'http://localhost:4174/liste-attente?ref=K7M2P9QR' },
+          body: { ok: true, status: 'joined', position: 42, referralCode: 'K7M2P9QR', referralUrl: 'http://localhost:4174/liste-attente?ref=K7M2P9QR' },
         },
         joinCalls: [],
         countCalls: 0,

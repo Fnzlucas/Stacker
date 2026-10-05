@@ -84,7 +84,7 @@ describe('fetchWaitlistCount', () => {
 
 describe('joinWaitlist', () => {
   const body = { firstName: 'Inès', email: 'ines@exemple.fr' };
-  const success = { ok: true, position: 3, referralCode: 'ABCDEFGH', referralUrl: 'https://stacker.example/liste-attente?ref=ABCDEFGH' };
+  const success = { ok: true, status: 'joined', position: 3, referralCode: 'ABCDEFGH', referralUrl: 'https://stacker.example/liste-attente?ref=ABCDEFGH' };
 
   it('non configuré : erreur explicite, aucun appel réseau', async () => {
     const fetchFn = vi.fn();

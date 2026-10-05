@@ -7,10 +7,9 @@
  *   validation Zod → rate limit par IP (compteur Postgres) → Turnstile
  *   (siteverify, si TURNSTILE_SECRET_KEY est défini) → insertion idempotente (RPC security definer) → email.
  *
- * Confidentialité : la réponse a la même forme qu'il s'agisse d'une
- * nouvelle inscription ou d'une réinscription, et ne contient que des
- * informations sur l'adresse soumise. Les journaux ne contiennent ni
- * email, ni prénom, ni IP.
+ * Confidentialité : une réinscription (adresse déjà présente) ne renvoie
+ * aucune donnée de l'inscription existante (ni position, ni code de
+ * parrainage). Les journaux ne contiennent ni email, ni prénom, ni IP.
  */
 import { z } from 'zod';
 import {
@@ -164,35 +163,39 @@ export function createHandler(deps: HandlerDeps): (req: Request) => Promise<Resp
       }
 
       const row = await join(deps, config, input);
-      const referralUrl = buildReferralUrl(config.siteUrl, row.code);
 
-      if (row.created) {
-        deps.log('joined');
-        if (config.brevo) {
-          const message = buildConfirmationEmail({
-            email: input.email,
-            firstName: input.firstName,
-            position: row.queue_position,
-            referralUrl,
-            siteUrl: config.siteUrl,
-            contactEmail: config.contactEmail,
-          });
-          deps.waitUntil(
-            sendBrevoEmail(deps.fetch, config.brevo, message).then(
-              () => deps.log('email_sent'),
-              (error: unknown) => deps.log('email_failed', { reason: error instanceof Error ? error.message : 'unknown' }),
-            ),
-          );
-        } else {
-          // Mode « log » : sans clé Brevo, l'email n'est pas envoyé ; on journalise
-          // son existence (jamais le destinataire ni le contenu).
-          deps.log('email_logged', { mode: 'log', template: 'waitlist-confirmation' });
-        }
-      } else {
+      if (!row.created) {
+        // Adresse déjà inscrite : on ne renvoie ni la position ni le code de
+        // parrainage existants (ce sont les données d'une autre personne tant
+        // que l'appelant n'a pas prouvé qu'il possède l'adresse). Aucun email.
         deps.log('rejoined');
+        return json(200, { ok: true, status: 'already_registered' }, cors);
       }
 
-      return json(200, { ok: true, position: row.queue_position, referralCode: row.code, referralUrl }, cors);
+      const referralUrl = buildReferralUrl(config.siteUrl, row.code);
+      deps.log('joined');
+      if (config.brevo) {
+        const message = buildConfirmationEmail({
+          email: input.email,
+          firstName: input.firstName,
+          position: row.queue_position,
+          referralUrl,
+          siteUrl: config.siteUrl,
+          contactEmail: config.contactEmail,
+        });
+        deps.waitUntil(
+          sendBrevoEmail(deps.fetch, config.brevo, message).then(
+            () => deps.log('email_sent'),
+            (error: unknown) => deps.log('email_failed', { reason: error instanceof Error ? error.message : 'unknown' }),
+          ),
+        );
+      } else {
+        // Mode « log » : sans clé Brevo, l'email n'est pas envoyé ; on journalise
+        // son existence (jamais le destinataire ni le contenu).
+        deps.log('email_logged', { mode: 'log', template: 'waitlist-confirmation' });
+      }
+
+      return json(200, { ok: true, status: 'joined', position: row.queue_position, referralCode: row.code, referralUrl }, cors);
     } catch (error) {
       if (error instanceof RpcError && (error.code === '23514' || error.code === '22023')) {
         deps.log('rejected_by_database', { code: error.code });

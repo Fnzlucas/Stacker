@@ -56,10 +56,25 @@ test.describe('liste d’attente (Supabase simulé)', () => {
     await expectAccessible(page, 'succès inscription');
   });
 
+  test('adresse déjà inscrite : message neutre, aucune position ni lien affichés', async ({ page, supabase }) => {
+    supabase.join = { status: 200, body: { ok: true, status: 'already_registered' } };
+    await page.goto('/liste-attente');
+    const form = await fill(page);
+    await form.getByRole('button', { name: 'Rejoindre la liste d’attente' }).click();
+
+    const already = page.getByTestId('waitlist-already');
+    await expect(already).toBeVisible();
+    await expect(already.getByRole('heading', { level: 2 })).toBeFocused();
+    await expect(already).toContainText('Cette adresse est déjà sur la liste d’attente.');
+    await expect(already.locator('code')).toHaveCount(0);
+    await expect(page.getByTestId('waitlist-success')).toHaveCount(0);
+    await expectAccessible(page, 'déjà inscrit');
+  });
+
   test('position au-delà de 100 : message de priorité sans promesse', async ({ page, supabase }) => {
     supabase.join = {
       status: 200,
-      body: { ok: true, position: 250, referralCode: 'ABCDEFGH', referralUrl: 'http://localhost:4174/liste-attente?ref=ABCDEFGH' },
+      body: { ok: true, status: 'joined', position: 250, referralCode: 'ABCDEFGH', referralUrl: 'http://localhost:4174/liste-attente?ref=ABCDEFGH' },
     };
     await page.goto('/liste-attente');
     const form = await fill(page);

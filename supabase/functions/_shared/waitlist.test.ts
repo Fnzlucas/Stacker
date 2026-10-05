@@ -180,10 +180,17 @@ describe('waitlistJoinRequestSchema', () => {
 
 describe('waitlistJoinResponseSchema', () => {
   it('valide la réponse de succès et rien de plus', () => {
-    const ok = { ok: true, position: 3, referralCode: 'K7M2P9QR', referralUrl: 'https://s.example/liste-attente?ref=K7M2P9QR' };
+    const ok = { ok: true, status: 'joined', position: 3, referralCode: 'K7M2P9QR', referralUrl: 'https://s.example/liste-attente?ref=K7M2P9QR' };
     expect(waitlistJoinResponseSchema.safeParse(ok).success).toBe(true);
     expect(waitlistJoinResponseSchema.safeParse({ ...ok, email: 'x@y.fr' }).success).toBe(false);
     expect(waitlistJoinResponseSchema.safeParse({ ...ok, position: 0 }).success).toBe(false);
+  });
+
+  it('réinscription : la réponse ne peut contenir aucune donnée de l’inscription existante', () => {
+    expect(waitlistJoinResponseSchema.safeParse({ ok: true, status: 'already_registered' }).success).toBe(true);
+    expect(
+      waitlistJoinResponseSchema.safeParse({ ok: true, status: 'already_registered', position: 3, referralCode: 'K7M2P9QR' }).success,
+    ).toBe(false);
   });
 });
 

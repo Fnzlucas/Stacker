@@ -101,6 +101,7 @@ describe('waitlist-join : succès', () => {
     expect(res.headers.get('cache-control')).toBe('no-store');
     expect(await res.json()).toEqual({
       ok: true,
+      status: 'joined',
       position: 42,
       referralCode: 'ABCDEFGH',
       referralUrl: 'https://stacker.example/liste-attente?ref=ABCDEFGH',
@@ -149,11 +150,13 @@ describe('waitlist-join : succès', () => {
     expect(t.logs.map((l) => l.event)).toEqual(['joined', 'email_sent']);
   });
 
-  it('réinscription : même forme de réponse, aucun email', async () => {
+  it('réinscription : aucune donnée de l’inscription existante (ni position, ni code), aucun email', async () => {
     const t = setup({ join: jsonResponse(200, [{ queue_position: 7, code: 'K7M2P9QR', created: false }]) });
     const res = await t.handler(request());
     expect(res.status).toBe(200);
-    expect(Object.keys((await res.json()) as object).sort()).toEqual(['ok', 'position', 'referralCode', 'referralUrl']);
+    const text = await res.text();
+    expect(JSON.parse(text)).toEqual({ ok: true, status: 'already_registered' });
+    expect(text).not.toContain('K7M2P9QR');
     await t.settle();
     expect(t.urls()).not.toContain('https://api.brevo.com/v3/smtp/email');
     expect(t.logs.map((l) => l.event)).toEqual(['rejoined']);
@@ -168,13 +171,21 @@ describe('waitlist-join : succès', () => {
     expect(t.logs.at(-1)).toEqual({ event: 'email_logged', data: { mode: 'log', template: 'waitlist-confirmation' } });
   });
 
-  it('Turnstile désactivé (pas de TURNSTILE_SECRET_KEY) : aucun appel à Cloudflare, jeton facultatif', async () => {
+  it('Turnstile absent sans désactivation explicite : 503 (fail closed), aucun appel', async () => {
     const t = setup({}, { ...ENV, TURNSTILE_SECRET_KEY: '' });
+    const res = await t.handler(request());
+    expect(res.status).toBe(503);
+    expect(t.urls()).toEqual([]);
+    expect(t.logs[0]).toEqual({ event: 'config_invalid', data: { variables: ['TURNSTILE_SECRET_KEY'] } });
+  });
+
+  it('Turnstile désactivé explicitement (TURNSTILE_DISABLED=1) : aucun appel à Cloudflare, jeton facultatif', async () => {
+    const t = setup({}, { ...ENV, TURNSTILE_SECRET_KEY: '', TURNSTILE_DISABLED: '1' });
     const { turnstileToken: _omit, ...body } = BODY;
     const res = await t.handler(request({ body }));
     expect(res.status).toBe(200);
     expect(t.urls()).not.toContain('https://challenges.cloudflare.com/turnstile/v0/siteverify');
-    expect(t.logs[0]).toEqual({ event: 'config_warning', data: { warning: 'TURNSTILE_SECRET_KEY absent : vérification anti-robot désactivée' } });
+    expect(t.logs[0]).toEqual({ event: 'config_warning', data: { warning: 'TURNSTILE_DISABLED=1 : vérification anti-robot désactivée (interdit en production)' } });
   });
 
   it('échec Brevo : la réponse reste 200 et l’échec est journalisé', async () => {

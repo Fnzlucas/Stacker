@@ -112,7 +112,8 @@ export function WaitlistForm({ context }: { context: 'landing' | 'page' }): Reac
     setFormError(joinErrorMessage(res.error));
   }
 
-  if (result) return <WaitlistSuccess result={result} headingRef={successRef} />;
+  if (result?.status === 'joined') return <WaitlistSuccess result={result} headingRef={successRef} />;
+  if (result) return <WaitlistAlreadyRegistered headingRef={successRef} />;
 
   const err = (f: Field) => errors[f];
   const describedBy = (f: Field, hint?: string) => (err(f) ? id(`${f}-error`) : hint);
@@ -299,11 +300,33 @@ export function WaitlistForm({ context }: { context: 'landing' | 'page' }): Reac
   );
 }
 
+/**
+ * Adresse déjà inscrite : le serveur ne renvoie volontairement aucune donnée
+ * de l'inscription existante (position, lien), qui ne sont communiquées que
+ * par l'email envoyé au propriétaire de l'adresse.
+ */
+function WaitlistAlreadyRegistered({ headingRef }: { headingRef: RefObject<HTMLHeadingElement | null> }): ReactElement {
+  return (
+    <section className="card card-hero scroll-anchor text-center" aria-labelledby="waitlist-already-title" data-testid="waitlist-already">
+      <span className="eyebrow">Déjà inscrit</span>
+      <h2 id="waitlist-already-title" ref={headingRef} tabIndex={-1} className="scroll-anchor mt-4 outline-none">
+        Cette adresse est déjà sur la liste d’attente.
+      </h2>
+      <p className="lead mx-auto mt-5 max-w-md">
+        Ta place est conservée. Ta position et ton lien de parrainage figurent dans l’email de confirmation reçu lors de ton inscription.
+      </p>
+      <p className="text-small mx-auto mt-3 max-w-md">
+        Tu ne le retrouves pas ? Pense à vérifier tes indésirables, ou <a href="/contact">écris-nous</a> depuis cette adresse.
+      </p>
+    </section>
+  );
+}
+
 function WaitlistSuccess({
   result,
   headingRef,
 }: {
-  result: WaitlistJoinResponse;
+  result: Extract<WaitlistJoinResponse, { status: 'joined' }>;
   headingRef: RefObject<HTMLHeadingElement | null>;
 }): ReactElement {
   const [copied, setCopied] = useState<'idle' | 'ok' | 'error'>('idle');

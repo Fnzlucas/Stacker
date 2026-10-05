@@ -134,13 +134,26 @@ export const waitlistJoinRequestSchema = waitlistFieldsSchema.extend({
 export type WaitlistFieldsInput = z.input<typeof waitlistFieldsSchema>;
 export type WaitlistJoinRequest = z.output<typeof waitlistJoinRequestSchema>;
 
-/** Réponse de succès de l'Edge Function. */
-export const waitlistJoinResponseSchema = z.strictObject({
-  ok: z.literal(true),
-  position: z.number().int().positive(),
-  referralCode: z.string().regex(REFERRAL_CODE_RE),
-  referralUrl: z.url(),
-});
+/**
+ * Réponse de succès de l'Edge Function.
+ *   - `joined` : nouvelle inscription, position et lien de la personne qui vient de s'inscrire ;
+ *   - `already_registered` : adresse déjà inscrite. AUCUNE donnée de l'inscription
+ *     existante n'est renvoyée (sinon n'importe qui obtiendrait la position et le
+ *     code de parrainage d'un tiers à partir de son email).
+ */
+export const waitlistJoinResponseSchema = z.discriminatedUnion('status', [
+  z.strictObject({
+    ok: z.literal(true),
+    status: z.literal('joined'),
+    position: z.number().int().positive(),
+    referralCode: z.string().regex(REFERRAL_CODE_RE),
+    referralUrl: z.url(),
+  }),
+  z.strictObject({
+    ok: z.literal(true),
+    status: z.literal('already_registered'),
+  }),
+]);
 
 export type WaitlistJoinResponse = z.output<typeof waitlistJoinResponseSchema>;
 

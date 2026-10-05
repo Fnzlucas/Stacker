@@ -36,8 +36,10 @@ export const envSchema = z.object({
     .string()
     .transform(csv)
     .pipe(z.array(originSchema).min(1)),
-  // Facultatif : vide = Turnstile désactivé (le rate limit reste actif).
+  // Obligatoire (DoD : Turnstile sur la liste d'attente). Ne peut être omis
+  // qu'avec TURNSTILE_DISABLED=1, explicitement (développement local).
   TURNSTILE_SECRET_KEY: optional.pipe(z.string().min(10).nullable()),
+  TURNSTILE_DISABLED: optional,
   RATE_LIMIT_PEPPER: z.string().min(16),
   BREVO_API_KEY: optional,
   BREVO_SENDER_EMAIL: optional.pipe(z.email().nullable()),
@@ -67,13 +69,19 @@ export function loadConfig(env: Record<string, string | undefined>): ConfigResul
     return { ok: false, missing };
   }
   const e = parsed.data;
+  // Fail closed : sans clé secrète Turnstile, la fonction refuse de servir,
+  // sauf désactivation explicite. Le rate limit par IP seul ne suffit pas
+  // (l'IP vue par la fonction dépend d'en-têtes de proxy).
+  if (!e.TURNSTILE_SECRET_KEY && e.TURNSTILE_DISABLED !== '1') {
+    return { ok: false, missing: ['TURNSTILE_SECRET_KEY'] };
+  }
   const warnings: string[] = [];
   const brevo =
     e.BREVO_API_KEY && e.BREVO_SENDER_EMAIL
       ? { apiKey: e.BREVO_API_KEY, senderEmail: e.BREVO_SENDER_EMAIL, senderName: e.BREVO_SENDER_NAME ?? 'Stacker' }
       : null;
   if (!brevo) warnings.push('BREVO_API_KEY ou BREVO_SENDER_EMAIL absent : emails en mode « log » (non envoyés)');
-  if (!e.TURNSTILE_SECRET_KEY) warnings.push('TURNSTILE_SECRET_KEY absent : vérification anti-robot désactivée');
+  if (!e.TURNSTILE_SECRET_KEY) warnings.push('TURNSTILE_DISABLED=1 : vérification anti-robot désactivée (interdit en production)');
   return {
     ok: true,
     warnings,
