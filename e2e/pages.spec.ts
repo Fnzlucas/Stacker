@@ -90,7 +90,7 @@ test('SEO : HTML pré-rendu lisible sans JavaScript, canonical, sitemap et robot
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
   await page.goto('/');
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('Touche ta commission');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Touche une commission récurrente');
   await expect(page.getByRole('heading', { name: 'Tu appelles et tu convaincs' })).toBeVisible();
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'http://localhost:4174/');
   await context.close();
