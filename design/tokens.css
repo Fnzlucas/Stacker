@@ -1,0 +1,171 @@
+/* ==========================================================================
+   Stacker — Design tokens (« style vox »)
+   Source unique de vérité : tailwind.preset.js et components.css lisent ces
+   variables. Ne pas coder de valeur en dur ailleurs.
+   Contrastes (WCAG AA, texte normal ≥ 4.5:1) :
+     --st-ink      sur blanc 17.0  · sur --st-bg 14.6
+     --st-text-2   sur --st-bg 5.07 · sur blanc 5.9
+     --st-muted    3.26 sur blanc → placeholders, icônes, texte ≥ 18px seulement
+     --st-*-ink    variantes "texte" des accents (≥ 4.8 sur leur fond teinté)
+   ========================================================================== */
+
+:root {
+  /* ---- Surfaces ------------------------------------------------------- */
+  --st-bg:            #ececf0;   /* fond d'app */
+  --st-bg-2:          #f4f4f6;   /* fond secondaire, zones en retrait */
+  --st-surface:       #ffffff;   /* cartes */
+  --st-surface-2:     #f7f7f9;   /* cartes imbriquées, inputs */
+  --st-surface-3:     #efeff3;   /* hover / pressed sur surface */
+  --st-line:          #e5e5ea;   /* séparateurs */
+  --st-line-strong:   #d4d4db;   /* bordures d'inputs */
+
+  /* ---- Texte ---------------------------------------------------------- */
+  --st-ink:           #1c1c1e;   /* texte principal, bouton primaire */
+  --st-text-2:        #636368;   /* texte secondaire (AA) */
+  --st-muted:         #8e8e93;   /* placeholder, icônes inactives, grand texte */
+  --st-on-dark:       #ffffff;
+  --st-on-dark-2:     #a1a1aa;   /* texte secondaire sur fond sombre (7:1) */
+
+  /* ---- Sombre (tuile logo, carte solde) -------------------------------- */
+  --st-dark-1:        #2a2a33;
+  --st-dark-2:        #0a0a0e;
+  --st-dark-grad:     linear-gradient(160deg, var(--st-dark-1), var(--st-dark-2));
+
+  /* ---- Accents de marque ---------------------------------------------- */
+  --st-green:         #3ccf63;   /* barre logo, fonds, sur sombre */
+  --st-green-600:     #12a150;   /* gains, succès (icônes, barres) */
+  --st-green-ink:     #0b7a3b;   /* texte vert sur clair (5.4:1) */
+  --st-green-50:      #e3f6ea;
+
+  --st-violet:        #7b7bf0;
+  --st-violet-ink:    #4b4bc4;
+  --st-violet-50:     #ececfd;
+
+  --st-orange:        #f7a21b;
+  --st-orange-ink:    #8a5300;
+  --st-orange-50:     #fff2dc;
+
+  --st-pink:          #db2777;   /* niveau Legend uniquement */
+  --st-pink-ink:      #be185d;
+  --st-pink-50:       #fde7f1;
+
+  --st-red:           #e63946;   /* erreurs / alertes uniquement */
+  --st-red-ink:       #c1121f;
+  --st-red-50:        #fdeaec;
+
+  --st-paper:         #f3ecdc;   /* papier collage (ransom, stickers) */
+
+  /* ---- Niveaux (commission) ------------------------------------------- */
+  --st-lvl-rookie:    var(--st-green-600);
+  --st-lvl-pro:       var(--st-violet);
+  --st-lvl-legend:    var(--st-pink);
+  --st-lvl-elite:     var(--st-orange);
+
+  /* ---- Focus ---------------------------------------------------------- */
+  --st-focus:         0 0 0 3px var(--st-surface), 0 0 0 5px var(--st-violet);
+
+  /* ---- Rayons --------------------------------------------------------- */
+  --st-r-xs:   10px;
+  --st-r-sm:   14px;
+  --st-r-md:   20px;
+  --st-r-lg:   28px;   /* cartes standard */
+  --st-r-xl:   36px;
+  --st-r-2xl:  44px;
+  --st-r-3xl:  52px;   /* grandes cartes hero, bottom sheet */
+  --st-r-pill: 999px;
+
+  /* ---- Ombres --------------------------------------------------------- */
+  --st-shadow-xs:    0 1px 2px rgba(20, 24, 40, .06);
+  --st-shadow-sm:    0 1px 2px rgba(20, 24, 40, .05), 0 6px 18px rgba(20, 24, 40, .06);
+  --st-shadow-md:    0 2px 6px rgba(20, 24, 40, .04), 0 16px 40px rgba(20, 24, 40, .09);
+  --st-shadow-card:  0 30px 80px rgba(20, 24, 40, .12);
+  --st-shadow-float: 0 4px 12px rgba(20, 24, 40, .06), 0 24px 60px rgba(20, 24, 40, .18);
+  --st-shadow-inset: inset 0 1px 0 rgba(255, 255, 255, .14), inset 0 0 0 1px rgba(255, 255, 255, .06);
+  --st-shadow-sticker: 0 0 0 3px #fff, 0 6px 16px rgba(20, 24, 40, .16);
+
+  /* ---- Espacements (base 4) ------------------------------------------- */
+  --st-space-0:  0;
+  --st-space-1:  4px;
+  --st-space-2:  8px;
+  --st-space-3:  12px;
+  --st-space-4:  16px;   /* gouttière mobile */
+  --st-space-5:  20px;
+  --st-space-6:  24px;
+  --st-space-7:  28px;
+  --st-space-8:  32px;
+  --st-space-10: 40px;
+  --st-space-12: 48px;
+  --st-space-16: 64px;
+  --st-space-20: 80px;
+  --st-gutter:   20px;
+  --st-tap:      44px;   /* cible tactile minimale */
+  --st-tabbar-h: 72px;
+
+  /* ---- Typographie ---------------------------------------------------- */
+  --st-font-display: "Inter Display", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --st-font-text:    "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --st-font-serif:   "Instrument Serif", "Iowan Old Style", Georgia, serif;
+
+  --st-text-2xs: 11px;
+  --st-text-xs:  12px;
+  --st-text-sm:  13px;
+  --st-text-base: 15px;
+  --st-text-md:  17px;
+  --st-text-lg:  20px;
+  --st-text-xl:  24px;
+  --st-text-2xl: 30px;
+  --st-text-3xl: 38px;
+  --st-text-4xl: 48px;
+  --st-text-5xl: 60px;
+
+  --st-weight-regular:  400;
+  --st-weight-medium:   500;
+  --st-weight-semibold: 600;
+  --st-weight-bold:     700;
+  --st-weight-heavy:    800;
+
+  --st-leading-tight: 1.05;
+  --st-leading-snug:  1.25;
+  --st-leading-body:  1.5;
+
+  --st-tracking-wordmark: -0.055em;
+  --st-tracking-display:  -0.04em;
+  --st-tracking-title:    -0.025em;
+  --st-tracking-body:     -0.006em;
+  --st-tracking-caps:     0.06em;
+
+  /* ---- Z-index -------------------------------------------------------- */
+  --st-z-base:    0;
+  --st-z-raised:  10;
+  --st-z-sticky:  100;
+  --st-z-tabbar:  200;
+  --st-z-overlay: 300;
+  --st-z-sheet:   310;
+  --st-z-toast:   400;
+  --st-z-max:     999;
+
+  /* ---- Mouvement ------------------------------------------------------ */
+  --st-dur-instant: 80ms;
+  --st-dur-fast:    140ms;
+  --st-dur-base:    220ms;
+  --st-dur-slow:    360ms;
+  --st-dur-slower:  560ms;
+  --st-ease-out:    cubic-bezier(.22, 1, .36, 1);
+  --st-ease-in-out: cubic-bezier(.65, 0, .35, 1);
+  --st-ease-in:     cubic-bezier(.55, 0, 1, .45);
+  --st-ease-spring: cubic-bezier(.34, 1.56, .64, 1);
+
+  /* ---- Texture « print » (grain papier très léger) -------------------- */
+  --st-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.1 0 0 0 0 0.14 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --st-grain-opacity: .05;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --st-dur-instant: 0.01ms;
+    --st-dur-fast:    0.01ms;
+    --st-dur-base:    0.01ms;
+    --st-dur-slow:    0.01ms;
+    --st-dur-slower:  0.01ms;
+  }
+}

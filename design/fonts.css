@@ -1,0 +1,20 @@
+/* ==========================================================================
+   Stacker — Polices auto-hébergées (sous-ensemble latin + €, woff2)
+   Inter Display n'existe pas sur npm (@fontsource/inter-display = 404) :
+   fichiers générés depuis les OTF officiels et copiés dans ./fonts.
+   Pour Inter / Instrument Serif, l'app Vite peut aussi utiliser
+   @fontsource/inter et @fontsource/instrument-serif (voir fonts.npm.css).
+   ========================================================================== */
+
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 400; font-display: swap; src: url("./fonts/Inter-Regular.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 500; font-display: swap; src: url("./fonts/Inter-Medium.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 600; font-display: swap; src: url("./fonts/Inter-SemiBold.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 700; font-display: swap; src: url("./fonts/Inter-Bold.woff2") format("woff2"); }
+
+@font-face { font-family: "Inter Display"; font-style: normal; font-weight: 600; font-display: swap; src: url("./fonts/InterDisplay-SemiBold.woff2") format("woff2"); }
+@font-face { font-family: "Inter Display"; font-style: normal; font-weight: 700; font-display: swap; src: url("./fonts/InterDisplay-Bold.woff2") format("woff2"); }
+@font-face { font-family: "Inter Display"; font-style: normal; font-weight: 800; font-display: swap; src: url("./fonts/InterDisplay-ExtraBold.woff2") format("woff2"); }
+@font-face { font-family: "Inter Display"; font-style: normal; font-weight: 900; font-display: swap; src: url("./fonts/InterDisplay-Black.woff2") format("woff2"); }
+
+@font-face { font-family: "Instrument Serif"; font-style: normal; font-weight: 400; font-display: swap; src: url("./fonts/instrument-serif-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Instrument Serif"; font-style: italic; font-weight: 400; font-display: swap; src: url("./fonts/instrument-serif-latin-400-italic.woff2") format("woff2"); }

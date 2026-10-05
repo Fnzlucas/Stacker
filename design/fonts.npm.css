@@ -1,0 +1,14 @@
+/* Variante Vite : Inter + Instrument Serif via npm, Inter Display en local.
+   npm i @fontsource/inter @fontsource/instrument-serif
+   (@fontsource/inter-display n'est pas publié sur npm.) */
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
+@import "@fontsource/instrument-serif/400.css";
+@import "@fontsource/instrument-serif/400-italic.css";
+
+@font-face { font-family: "Inter Display"; font-style: normal; font-weight: 600; font-display: swap; src: url("./fonts/InterDisplay-SemiBold.woff2") format("woff2"); }
+@font-face { font-family: "Inter Display"; font-style: normal; font-weight: 700; font-display: swap; src: url("./fonts/InterDisplay-Bold.woff2") format("woff2"); }
+@font-face { font-family: "Inter Display"; font-style: normal; font-weight: 800; font-display: swap; src: url("./fonts/InterDisplay-ExtraBold.woff2") format("woff2"); }
+@font-face { font-family: "Inter Display"; font-style: normal; font-weight: 900; font-display: swap; src: url("./fonts/InterDisplay-Black.woff2") format("woff2"); }

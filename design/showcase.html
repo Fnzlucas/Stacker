@@ -1,0 +1,1413 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ececf0">
+<title>Stacker — Design system</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20width%3D%2264%22%20height%3D%2264%22%20role%3D%22img%22%20aria-labelledby%3D%22stl1t%22%3E%3Ctitle%20id%3D%22stl1t%22%3EStacker%3C%2Ftitle%3E%3Cdefs%3E%0A%3ClinearGradient%20id%3D%22stl1g%22%20x1%3D%22.33%22%20y1%3D%22.03%22%20x2%3D%22.67%22%20y2%3D%22.97%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%232a2a33%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%230a0a0e%22%2F%3E%3C%2FlinearGradient%3E%0A%3ClinearGradient%20id%3D%22stl1h%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%23fff%22%20stop-opacity%3D%22.16%22%2F%3E%3Cstop%20offset%3D%22.45%22%20stop-color%3D%22%23fff%22%20stop-opacity%3D%220%22%2F%3E%3C%2FlinearGradient%3E%0A%3C%2Fdefs%3E%0A%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2223%22%20fill%3D%22url(%23stl1g)%22%2F%3E%0A%3Crect%20x%3D%22.75%22%20y%3D%22.75%22%20width%3D%2298.5%22%20height%3D%2298.5%22%20rx%3D%2222.25%22%20fill%3D%22url(%23stl1h)%22%20stroke%3D%22%23fff%22%20stroke-opacity%3D%22.09%22%20stroke-width%3D%221.5%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%2225.25%22%20width%3D%2258%22%20height%3D%2212.5%22%20rx%3D%226.25%22%20fill%3D%22%233ccf63%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%2243.75%22%20width%3D%2258%22%20height%3D%2212.5%22%20rx%3D%226.25%22%20fill%3D%22%237b7bf0%22%2F%3E%3Crect%20x%3D%2221%22%20y%3D%2262.25%22%20width%3D%2258%22%20height%3D%2212.5%22%20rx%3D%226.25%22%20fill%3D%22%23f7a21b%22%2F%3E%3C%2Fsvg%3E">
+<style>
+/* ==========================================================================
+   Stacker — Polices auto-hébergées (sous-ensemble latin + €, woff2)
+   Inter Display n'existe pas sur npm (@fontsource/inter-display = 404) :
+   fichiers générés depuis les OTF officiels et copiés dans ./fonts.
+   Pour Inter / Instrument Serif, l'app Vite peut aussi utiliser
+   @fontsource/inter et @fontsource/instrument-serif (voir fonts.npm.css).
+   ========================================================================== */
+
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 400; font-display: swap; src: url("./fonts/Inter-Regular.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 500; font-display: swap; src: url("./fonts/Inter-Medium.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 600; font-display: swap; src: url("./fonts/Inter-SemiBold.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 700; font-display: swap; src: url("./fonts/Inter-Bold.woff2") format("woff2"); }
+
+@font-face { font-family: "Inter Display"; font-style: normal; font-weight: 600; font-display: swap; src: url("./fonts/InterDisplay-SemiBold.woff2") format("woff2"); }
+@font-face { font-family: "Inter Display"; font-style: normal; font-weight: 700; font-display: swap; src: url("./fonts/InterDisplay-Bold.woff2") format("woff2"); }
+@font-face { font-family: "Inter Display"; font-style: normal; font-weight: 800; font-display: swap; src: url("./fonts/InterDisplay-ExtraBold.woff2") format("woff2"); }
+@font-face { font-family: "Inter Display"; font-style: normal; font-weight: 900; font-display: swap; src: url("./fonts/InterDisplay-Black.woff2") format("woff2"); }
+
+@font-face { font-family: "Instrument Serif"; font-style: normal; font-weight: 400; font-display: swap; src: url("./fonts/instrument-serif-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Instrument Serif"; font-style: italic; font-weight: 400; font-display: swap; src: url("./fonts/instrument-serif-latin-400-italic.woff2") format("woff2"); }
+
+/* ==========================================================================
+   Stacker — Design tokens (« style vox »)
+   Source unique de vérité : tailwind.preset.js et components.css lisent ces
+   variables. Ne pas coder de valeur en dur ailleurs.
+   Contrastes (WCAG AA, texte normal ≥ 4.5:1) :
+     --st-ink      sur blanc 17.0  · sur --st-bg 14.6
+     --st-text-2   sur --st-bg 5.07 · sur blanc 5.9
+     --st-muted    3.26 sur blanc → placeholders, icônes, texte ≥ 18px seulement
+     --st-*-ink    variantes "texte" des accents (≥ 4.8 sur leur fond teinté)
+   ========================================================================== */
+
+:root {
+  /* ---- Surfaces ------------------------------------------------------- */
+  --st-bg:            #ececf0;   /* fond d'app */
+  --st-bg-2:          #f4f4f6;   /* fond secondaire, zones en retrait */
+  --st-surface:       #ffffff;   /* cartes */
+  --st-surface-2:     #f7f7f9;   /* cartes imbriquées, inputs */
+  --st-surface-3:     #efeff3;   /* hover / pressed sur surface */
+  --st-line:          #e5e5ea;   /* séparateurs */
+  --st-line-strong:   #d4d4db;   /* bordures d'inputs */
+
+  /* ---- Texte ---------------------------------------------------------- */
+  --st-ink:           #1c1c1e;   /* texte principal, bouton primaire */
+  --st-text-2:        #636368;   /* texte secondaire (AA) */
+  --st-muted:         #8e8e93;   /* placeholder, icônes inactives, grand texte */
+  --st-on-dark:       #ffffff;
+  --st-on-dark-2:     #a1a1aa;   /* texte secondaire sur fond sombre (7:1) */
+
+  /* ---- Sombre (tuile logo, carte solde) -------------------------------- */
+  --st-dark-1:        #2a2a33;
+  --st-dark-2:        #0a0a0e;
+  --st-dark-grad:     linear-gradient(160deg, var(--st-dark-1), var(--st-dark-2));
+
+  /* ---- Accents de marque ---------------------------------------------- */
+  --st-green:         #3ccf63;   /* barre logo, fonds, sur sombre */
+  --st-green-600:     #12a150;   /* gains, succès (icônes, barres) */
+  --st-green-ink:     #0b7a3b;   /* texte vert sur clair (5.4:1) */
+  --st-green-50:      #e3f6ea;
+
+  --st-violet:        #7b7bf0;
+  --st-violet-ink:    #4b4bc4;
+  --st-violet-50:     #ececfd;
+
+  --st-orange:        #f7a21b;
+  --st-orange-ink:    #8a5300;
+  --st-orange-50:     #fff2dc;
+
+  --st-pink:          #db2777;   /* niveau Legend uniquement */
+  --st-pink-ink:      #be185d;
+  --st-pink-50:       #fde7f1;
+
+  --st-red:           #e63946;   /* erreurs / alertes uniquement */
+  --st-red-ink:       #c1121f;
+  --st-red-50:        #fdeaec;
+
+  --st-paper:         #f3ecdc;   /* papier collage (ransom, stickers) */
+
+  /* ---- Niveaux (commission) ------------------------------------------- */
+  --st-lvl-rookie:    var(--st-green-600);
+  --st-lvl-pro:       var(--st-violet);
+  --st-lvl-legend:    var(--st-pink);
+  --st-lvl-elite:     var(--st-orange);
+
+  /* ---- Focus ---------------------------------------------------------- */
+  --st-focus:         0 0 0 3px var(--st-surface), 0 0 0 5px var(--st-violet);
+
+  /* ---- Rayons --------------------------------------------------------- */
+  --st-r-xs:   10px;
+  --st-r-sm:   14px;
+  --st-r-md:   20px;
+  --st-r-lg:   28px;   /* cartes standard */
+  --st-r-xl:   36px;
+  --st-r-2xl:  44px;
+  --st-r-3xl:  52px;   /* grandes cartes hero, bottom sheet */
+  --st-r-pill: 999px;
+
+  /* ---- Ombres --------------------------------------------------------- */
+  --st-shadow-xs:    0 1px 2px rgba(20, 24, 40, .06);
+  --st-shadow-sm:    0 1px 2px rgba(20, 24, 40, .05), 0 6px 18px rgba(20, 24, 40, .06);
+  --st-shadow-md:    0 2px 6px rgba(20, 24, 40, .04), 0 16px 40px rgba(20, 24, 40, .09);
+  --st-shadow-card:  0 30px 80px rgba(20, 24, 40, .12);
+  --st-shadow-float: 0 4px 12px rgba(20, 24, 40, .06), 0 24px 60px rgba(20, 24, 40, .18);
+  --st-shadow-inset: inset 0 1px 0 rgba(255, 255, 255, .14), inset 0 0 0 1px rgba(255, 255, 255, .06);
+  --st-shadow-sticker: 0 0 0 3px #fff, 0 6px 16px rgba(20, 24, 40, .16);
+
+  /* ---- Espacements (base 4) ------------------------------------------- */
+  --st-space-0:  0;
+  --st-space-1:  4px;
+  --st-space-2:  8px;
+  --st-space-3:  12px;
+  --st-space-4:  16px;   /* gouttière mobile */
+  --st-space-5:  20px;
+  --st-space-6:  24px;
+  --st-space-7:  28px;
+  --st-space-8:  32px;
+  --st-space-10: 40px;
+  --st-space-12: 48px;
+  --st-space-16: 64px;
+  --st-space-20: 80px;
+  --st-gutter:   20px;
+  --st-tap:      44px;   /* cible tactile minimale */
+  --st-tabbar-h: 72px;
+
+  /* ---- Typographie ---------------------------------------------------- */
+  --st-font-display: "Inter Display", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --st-font-text:    "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --st-font-serif:   "Instrument Serif", "Iowan Old Style", Georgia, serif;
+
+  --st-text-2xs: 11px;
+  --st-text-xs:  12px;
+  --st-text-sm:  13px;
+  --st-text-base: 15px;
+  --st-text-md:  17px;
+  --st-text-lg:  20px;
+  --st-text-xl:  24px;
+  --st-text-2xl: 30px;
+  --st-text-3xl: 38px;
+  --st-text-4xl: 48px;
+  --st-text-5xl: 60px;
+
+  --st-weight-regular:  400;
+  --st-weight-medium:   500;
+  --st-weight-semibold: 600;
+  --st-weight-bold:     700;
+  --st-weight-heavy:    800;
+
+  --st-leading-tight: 1.05;
+  --st-leading-snug:  1.25;
+  --st-leading-body:  1.5;
+
+  --st-tracking-wordmark: -0.055em;
+  --st-tracking-display:  -0.04em;
+  --st-tracking-title:    -0.025em;
+  --st-tracking-body:     -0.006em;
+  --st-tracking-caps:     0.06em;
+
+  /* ---- Z-index -------------------------------------------------------- */
+  --st-z-base:    0;
+  --st-z-raised:  10;
+  --st-z-sticky:  100;
+  --st-z-tabbar:  200;
+  --st-z-overlay: 300;
+  --st-z-sheet:   310;
+  --st-z-toast:   400;
+  --st-z-max:     999;
+
+  /* ---- Mouvement ------------------------------------------------------ */
+  --st-dur-instant: 80ms;
+  --st-dur-fast:    140ms;
+  --st-dur-base:    220ms;
+  --st-dur-slow:    360ms;
+  --st-dur-slower:  560ms;
+  --st-ease-out:    cubic-bezier(.22, 1, .36, 1);
+  --st-ease-in-out: cubic-bezier(.65, 0, .35, 1);
+  --st-ease-in:     cubic-bezier(.55, 0, 1, .45);
+  --st-ease-spring: cubic-bezier(.34, 1.56, .64, 1);
+
+  /* ---- Texture « print » (grain papier très léger) -------------------- */
+  --st-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.1 0 0 0 0 0.14 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --st-grain-opacity: .05;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --st-dur-instant: 0.01ms;
+    --st-dur-fast:    0.01ms;
+    --st-dur-base:    0.01ms;
+    --st-dur-slow:    0.01ms;
+    --st-dur-slower:  0.01ms;
+  }
+}
+
+/* ==========================================================================
+   Stacker — Composants (« style vox »)
+   CSS pur basé sur tokens.css. Fonctionne :
+     - tel quel dans un navigateur (couches CSS natives) ;
+     - dans Vite + Tailwind : @import "./design/components.css" après
+       @tailwind base, les utilitaires Tailwind restent prioritaires.
+   Conventions : classes courtes, états via .is-* / aria-* / :disabled.
+   ========================================================================== */
+
+@layer base, components;
+
+/* --------------------------------------------------------------------------
+   Base
+   -------------------------------------------------------------------------- */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background-color: var(--st-bg);
+    color: var(--st-ink);
+    font-family: var(--st-font-text);
+    font-size: var(--st-text-base);
+    line-height: var(--st-leading-body);
+    letter-spacing: var(--st-tracking-body);
+    font-feature-settings: "cv11", "ss01";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
+  }
+  h1, h2, h3, h4, p { margin: 0; }
+  button, input, select, textarea { font: inherit; color: inherit; letter-spacing: inherit; }
+  button { cursor: pointer; }
+  img, svg { display: block; max-width: 100%; }
+  .icon { flex-shrink: 0; }
+  :focus-visible { outline: none; box-shadow: var(--st-focus); }
+  ::selection { background: color-mix(in srgb, var(--st-violet) 28%, transparent); }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+}
+
+@layer components {
+
+/* --------------------------------------------------------------------------
+   Grain papier (à poser sur <body> ou une grande surface)
+   -------------------------------------------------------------------------- */
+.grain { position: relative; isolation: isolate; }
+.grain::before {
+  content: ""; position: fixed; inset: 0; z-index: var(--st-z-max);
+  background-image: var(--st-grain); opacity: var(--st-grain-opacity);
+  mix-blend-mode: multiply; pointer-events: none;
+}
+.grain-local::before { position: absolute; border-radius: inherit; z-index: 0; }
+
+/* --------------------------------------------------------------------------
+   Typographie
+   -------------------------------------------------------------------------- */
+.display, .h1, .h2, .h3 {
+  font-family: var(--st-font-display);
+  font-weight: var(--st-weight-heavy);
+  color: var(--st-ink);
+}
+.display { font-size: var(--st-text-4xl); line-height: var(--st-leading-tight); letter-spacing: var(--st-tracking-display); }
+.h1 { font-size: 34px; line-height: 1.08; letter-spacing: var(--st-tracking-display); }
+.h2 { font-size: var(--st-text-xl); line-height: 1.15; letter-spacing: var(--st-tracking-title); }
+.h3 { font-size: 19px; line-height: var(--st-leading-snug); letter-spacing: -0.02em; font-weight: var(--st-weight-bold); }
+.text-body  { font-size: var(--st-text-base); line-height: var(--st-leading-body); }
+.text-small { font-size: var(--st-text-sm); line-height: 1.4; color: var(--st-text-2); }
+.text-2 { color: var(--st-text-2); }
+.eyebrow {
+  font-size: var(--st-text-xs); font-weight: var(--st-weight-semibold);
+  letter-spacing: var(--st-tracking-caps); text-transform: uppercase; color: var(--st-text-2);
+}
+.serif-accent {
+  font-family: var(--st-font-serif); font-style: italic; font-weight: 400;
+  letter-spacing: -0.01em; font-size: 1.1em; line-height: 0.9;
+}
+.num { font-variant-numeric: tabular-nums; font-feature-settings: "tnum", "cv11"; }
+.text-gain { color: var(--st-green-ink); }
+.text-loss { color: var(--st-red-ink); }
+
+/* --------------------------------------------------------------------------
+   Logo + wordmark (logo.js → logoLockup())
+   -------------------------------------------------------------------------- */
+.logo-lockup { display: inline-flex; align-items: center; gap: calc(var(--logo-size, 40px) * .3); }
+.logo-lockup svg { filter: drop-shadow(0 4px 10px rgba(10, 10, 14, .18)); }
+.wordmark {
+  font-family: var(--st-font-display); font-weight: var(--st-weight-heavy);
+  font-size: calc(var(--logo-size, 40px) * .66); line-height: 1;
+  letter-spacing: var(--st-tracking-wordmark); color: var(--st-ink);
+  padding-bottom: .04em;
+}
+.logo-lockup.is-inverse .wordmark { color: var(--st-on-dark); }
+
+/* --------------------------------------------------------------------------
+   Boutons
+   -------------------------------------------------------------------------- */
+.btn {
+  --btn-h: 52px;
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: var(--btn-h); padding: 0 22px;
+  border: 0; border-radius: var(--st-r-pill);
+  font-family: var(--st-font-text); font-size: var(--st-text-base);
+  font-weight: var(--st-weight-semibold); line-height: 1; letter-spacing: -0.01em;
+  text-decoration: none; white-space: nowrap; user-select: none;
+  transition: background-color var(--st-dur-fast) var(--st-ease-out),
+              box-shadow var(--st-dur-fast) var(--st-ease-out),
+              transform var(--st-dur-fast) var(--st-ease-out),
+              opacity var(--st-dur-fast) var(--st-ease-out);
+}
+.btn:active:not(:disabled) { transform: scale(.97); }
+.btn:disabled, .btn[aria-disabled="true"] { opacity: .38; cursor: not-allowed; }
+.btn .icon { width: 20px; height: 20px; }
+
+.btn-primary { background: var(--st-ink); color: var(--st-on-dark); box-shadow: 0 1px 0 rgba(255,255,255,.08) inset, 0 8px 20px rgba(10,10,14,.18); }
+.btn-primary:hover:not(:disabled) { background: #2c2c31; }
+
+.btn-secondary { background: var(--st-surface); color: var(--st-ink); box-shadow: 0 0 0 1px var(--st-line) inset, var(--st-shadow-xs); }
+.btn-secondary:hover:not(:disabled) { background: var(--st-surface-2); }
+
+.btn-ghost { background: transparent; color: var(--st-ink); }
+.btn-ghost:hover:not(:disabled) { background: color-mix(in srgb, var(--st-ink) 6%, transparent); }
+
+.btn-accent { background: var(--st-green); color: var(--st-ink); box-shadow: 0 8px 20px color-mix(in srgb, var(--st-green-600) 28%, transparent); }
+.btn-accent:hover:not(:disabled) { background: #34c25a; }
+
+.btn-danger { background: var(--st-red-50); color: var(--st-red-ink); }
+.btn-danger:hover:not(:disabled) { background: #fbdde0; }
+.btn-danger-solid { background: var(--st-red-ink); color: #fff; }
+
+.btn-glass { background: rgba(255,255,255,.1); color: var(--st-on-dark); box-shadow: 0 0 0 1px rgba(255,255,255,.12) inset; }
+.btn-glass:hover:not(:disabled) { background: rgba(255,255,255,.16); }
+
+.btn-lg { --btn-h: 58px; font-size: var(--st-text-md); padding: 0 26px; }
+.btn-sm { --btn-h: 44px; font-size: var(--st-text-sm); padding: 0 16px; }
+.btn-block { display: flex; width: 100%; }
+.btn-icon { --btn-h: 44px; width: var(--btn-h); padding: 0; flex-shrink: 0; }
+.btn-icon .icon { width: 20px; height: 20px; }
+
+.btn.is-loading { color: transparent !important; pointer-events: none; }
+.btn.is-loading::after {
+  content: ""; position: absolute; width: 20px; height: 20px; border-radius: 50%;
+  border: 2.25px solid currentColor; border-color: var(--spinner, #fff) var(--spinner, #fff) transparent transparent;
+  animation: st-spin 700ms linear infinite;
+}
+.btn-secondary.is-loading, .btn-ghost.is-loading, .btn-accent.is-loading { --spinner: var(--st-ink); }
+
+.link {
+  display: inline-flex; align-items: center; gap: 2px; min-height: var(--st-tap);
+  color: var(--st-ink); font-size: var(--st-text-sm); font-weight: var(--st-weight-semibold);
+  text-decoration: none; border-radius: var(--st-r-xs);
+}
+.link .icon { width: 16px; height: 16px; }
+
+/* --------------------------------------------------------------------------
+   Formulaires
+   -------------------------------------------------------------------------- */
+.field { display: flex; flex-direction: column; gap: 8px; }
+.field-label { font-size: var(--st-text-sm); font-weight: var(--st-weight-semibold); color: var(--st-ink); }
+.field-hint { display: flex; align-items: center; gap: 6px; font-size: var(--st-text-sm); color: var(--st-text-2); }
+.field-hint .icon { width: 16px; height: 16px; }
+
+.input-wrap { position: relative; display: flex; align-items: center; }
+.input-wrap > .icon {
+  position: absolute; left: 16px; width: 20px; height: 20px;
+  color: var(--st-muted); pointer-events: none;
+  transition: color var(--st-dur-fast) var(--st-ease-out);
+}
+.input-wrap > .input { padding-left: 46px; }
+.input-wrap:focus-within > .icon { color: var(--st-ink); }
+
+.input {
+  width: 100%; min-height: 54px; padding: 0 16px;
+  background: var(--st-surface); color: var(--st-ink);
+  border: 1.5px solid var(--st-line-strong); border-radius: var(--st-r-sm);
+  font-size: 16px; /* 16px : pas de zoom auto iOS */
+  font-weight: var(--st-weight-medium);
+  transition: border-color var(--st-dur-fast) var(--st-ease-out), box-shadow var(--st-dur-fast) var(--st-ease-out), background-color var(--st-dur-fast);
+  appearance: none;
+}
+textarea.input { min-height: 112px; padding: 14px 16px; resize: vertical; line-height: 1.45; }
+.input::placeholder { color: var(--st-muted); font-weight: var(--st-weight-regular); }
+.input:hover:not(:disabled):not(:focus) { border-color: #babac3; }
+.input:focus, .input:focus-visible, .input.is-focus {
+  outline: none; border-color: var(--st-ink);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--st-violet) 24%, transparent);
+}
+.input:disabled { background: var(--st-bg-2); border-color: var(--st-line); color: var(--st-muted); cursor: not-allowed; }
+.field.is-error .input, .input[aria-invalid="true"] { border-color: var(--st-red); }
+.field.is-error .input:focus, .input[aria-invalid="true"]:focus { box-shadow: 0 0 0 4px color-mix(in srgb, var(--st-red) 18%, transparent); }
+.field.is-error .field-hint { color: var(--st-red-ink); font-weight: var(--st-weight-medium); }
+.field.is-success .input { border-color: var(--st-green-600); }
+.field.is-disabled .field-label { color: var(--st-text-2); }
+
+/* Segmented control */
+.segmented {
+  display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 4px;
+  padding: 4px; border-radius: var(--st-r-pill); background: color-mix(in srgb, var(--st-ink) 6%, transparent);
+}
+.segmented button {
+  min-height: 40px; border: 0; border-radius: var(--st-r-pill); background: transparent;
+  font-size: var(--st-text-sm); font-weight: var(--st-weight-semibold); color: var(--st-text-2);
+  transition: background-color var(--st-dur-fast), color var(--st-dur-fast), box-shadow var(--st-dur-fast);
+}
+.segmented button[aria-pressed="true"], .segmented button[aria-selected="true"] {
+  background: var(--st-surface); color: var(--st-ink); box-shadow: var(--st-shadow-sm);
+}
+
+/* --------------------------------------------------------------------------
+   Cartes
+   -------------------------------------------------------------------------- */
+.card {
+  position: relative;
+  background: var(--st-surface); border-radius: var(--st-r-lg);
+  box-shadow: var(--st-shadow-md); padding: 20px;
+}
+.card-hero { border-radius: var(--st-r-3xl); box-shadow: var(--st-shadow-card); padding: 28px 24px; }
+.card-flat { box-shadow: none; background: var(--st-bg-2); }
+.card-dark {
+  background: var(--st-dark-grad); color: var(--st-on-dark);
+  box-shadow: var(--st-shadow-inset), var(--st-shadow-card);
+}
+.card-tight { padding: 0; overflow: hidden; }
+.card-interactive { transition: transform var(--st-dur-base) var(--st-ease-out), box-shadow var(--st-dur-base) var(--st-ease-out); }
+.card-interactive:hover { transform: translateY(-2px); box-shadow: var(--st-shadow-card); }
+
+.section-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+
+/* --------------------------------------------------------------------------
+   Chips & badges
+   -------------------------------------------------------------------------- */
+.chip {
+  --chip-bg: color-mix(in srgb, var(--st-ink) 6%, transparent);
+  --chip-fg: var(--st-ink);
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 28px; padding: 0 11px; border-radius: var(--st-r-pill);
+  background: var(--chip-bg); color: var(--chip-fg);
+  font-size: var(--st-text-xs); font-weight: var(--st-weight-semibold); line-height: 1;
+  white-space: nowrap; letter-spacing: 0;
+}
+.chip .icon { width: 14px; height: 14px; }
+.chip-dot::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--chip-dot, currentColor); }
+.chip-green  { --chip-bg: var(--st-green-50);  --chip-fg: var(--st-green-ink);  --chip-dot: var(--st-green-600); }
+.chip-violet { --chip-bg: var(--st-violet-50); --chip-fg: var(--st-violet-ink); --chip-dot: var(--st-violet); }
+.chip-orange { --chip-bg: var(--st-orange-50); --chip-fg: var(--st-orange-ink); --chip-dot: var(--st-orange); }
+.chip-pink   { --chip-bg: var(--st-pink-50);   --chip-fg: var(--st-pink-ink);   --chip-dot: var(--st-pink); }
+.chip-red    { --chip-bg: var(--st-red-50);    --chip-fg: var(--st-red-ink);    --chip-dot: var(--st-red); }
+.chip-dark   { --chip-bg: var(--st-ink);       --chip-fg: #fff; }
+.chip-outline { --chip-bg: var(--st-surface); box-shadow: 0 0 0 1px var(--st-line) inset; }
+.chip-on-dark { --chip-bg: rgba(60, 207, 99, .16); --chip-fg: var(--st-green); }
+
+/* Chip filtre (interactive, zone tactile 44px) */
+.chip-filter {
+  position: relative; height: 38px; padding: 0 15px; border: 0;
+  font-size: var(--st-text-sm); --chip-bg: var(--st-surface); box-shadow: 0 0 0 1px var(--st-line) inset;
+  transition: background-color var(--st-dur-fast), color var(--st-dur-fast);
+}
+.chip-filter::after { content: ""; position: absolute; inset: -3px 0; }
+.chip-filter[aria-pressed="true"] { --chip-bg: var(--st-ink); --chip-fg: #fff; box-shadow: none; }
+.chip-filter .chip-count { opacity: .6; font-weight: var(--st-weight-medium); }
+
+.badge {
+  display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 6px;
+  border-radius: var(--st-r-pill); background: var(--st-red-ink); color: #fff;
+  font-size: var(--st-text-2xs); font-weight: var(--st-weight-bold); line-height: 1;
+  box-shadow: 0 0 0 2px var(--st-surface);
+}
+.badge-dot { min-width: 10px; width: 10px; height: 10px; padding: 0; background: var(--st-red); }
+.has-badge { position: relative; }
+.has-badge > .badge { position: absolute; top: 6px; right: 6px; }
+.has-badge > .badge:not(.badge-dot) { top: 2px; right: 0; }
+
+/* --------------------------------------------------------------------------
+   Niveaux : Rookie 15 % · Pro 18 % · Legend 22 % · Elite 25 %
+   -------------------------------------------------------------------------- */
+.level {
+  --lvl: var(--st-lvl-rookie); --lvl-50: var(--st-green-50); --lvl-ink: var(--st-green-ink);
+  display: inline-flex; align-items: center; gap: 8px;
+  height: 34px; padding: 0 12px 0 4px; border-radius: var(--st-r-pill);
+  background: var(--lvl-50); color: var(--lvl-ink);
+  font-size: var(--st-text-sm); font-weight: var(--st-weight-bold); white-space: nowrap; line-height: 1;
+}
+.level-mark {
+  display: grid; place-items: center; width: 26px; height: 26px; border-radius: 9px;
+  background: var(--lvl); color: #fff; box-shadow: inset 0 1px 0 rgba(255,255,255,.25);
+}
+.level-mark .icon { width: 15px; height: 15px; }
+.level-rate { margin-left: -4px; font-weight: var(--st-weight-semibold); opacity: .85; }
+.level-rookie { --lvl: var(--st-lvl-rookie); --lvl-50: var(--st-green-50);  --lvl-ink: var(--st-green-ink); }
+.level-pro    { --lvl: var(--st-lvl-pro);    --lvl-50: var(--st-violet-50); --lvl-ink: var(--st-violet-ink); }
+.level-legend { --lvl: var(--st-lvl-legend); --lvl-50: var(--st-pink-50);   --lvl-ink: var(--st-pink-ink); }
+.level-elite  { --lvl: var(--st-lvl-elite);  --lvl-50: var(--st-orange-50); --lvl-ink: var(--st-orange-ink); }
+.level-elite .level-mark { color: var(--st-ink); }
+.level-on-dark { background: rgba(255,255,255,.08); color: #fff; box-shadow: 0 0 0 1px rgba(255,255,255,.1) inset; }
+
+/* --------------------------------------------------------------------------
+   Barre de progression (toujours unie, jamais de dégradé)
+   -------------------------------------------------------------------------- */
+.progress {
+  --value: 0%; --bar: var(--st-green-600);
+  position: relative; height: 10px; border-radius: var(--st-r-pill);
+  background: color-mix(in srgb, var(--st-ink) 8%, transparent); overflow: hidden;
+}
+.progress-bar {
+  display: block; height: 100%; width: var(--value); border-radius: inherit; background: var(--bar);
+  transition: width var(--st-dur-slower) var(--st-ease-out);
+}
+.progress-sm { height: 6px; }
+.progress-lg { height: 14px; }
+.progress-violet { --bar: var(--st-violet); }
+.progress-orange { --bar: var(--st-orange); }
+.progress-pink   { --bar: var(--st-pink); }
+.progress-ink    { --bar: var(--st-ink); }
+.progress-on-dark { background: rgba(255,255,255,.12); --bar: var(--st-green); }
+.progress-meta { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 8px; font-size: var(--st-text-sm); }
+
+/* --------------------------------------------------------------------------
+   Carte solde / gains
+   -------------------------------------------------------------------------- */
+.balance {
+  position: relative; overflow: hidden; isolation: isolate;
+  padding: 24px; border-radius: var(--st-r-2xl);
+  background: var(--st-dark-grad); color: var(--st-on-dark);
+  box-shadow: var(--st-shadow-inset), var(--st-shadow-card);
+}
+.balance-deco { /* barres du logo en filigrane : logoSVG({ tile:false }) */
+  position: absolute; z-index: -1; right: -96px; top: -6px; width: 168px; height: 168px; opacity: .22; pointer-events: none;
+}
+.balance-deco svg { width: 100%; height: 100%; }
+.balance-label { display: flex; align-items: center; gap: 8px; font-size: var(--st-text-sm); font-weight: var(--st-weight-medium); color: var(--st-on-dark-2); }
+.balance-amount {
+  margin-top: 6px; font-family: var(--st-font-display); font-weight: var(--st-weight-heavy);
+  font-size: 46px; line-height: 1; letter-spacing: var(--st-tracking-display);
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.balance-amount .cents { font-size: .52em; letter-spacing: -0.02em; color: var(--st-on-dark-2); }
+.balance-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.balance-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 22px; }
+.balance-split { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin-top: 20px; border-radius: 20px; overflow: hidden; background: rgba(255,255,255,.1); }
+.balance-split > div { padding: 14px 16px; background: #17171c; }
+.balance-split dt { font-size: var(--st-text-xs); color: var(--st-on-dark-2); font-weight: var(--st-weight-medium); }
+.balance-split dd { margin: 4px 0 0; font-family: var(--st-font-display); font-weight: var(--st-weight-bold); font-size: 20px; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+
+/* --------------------------------------------------------------------------
+   Listes (prospects, historique)
+   -------------------------------------------------------------------------- */
+.list { list-style: none; margin: 0; padding: 4px 0; background: var(--st-surface); border-radius: var(--st-r-lg); box-shadow: var(--st-shadow-md); }
+.list > li + li .list-row::before {
+  content: ""; position: absolute; top: 0; left: 72px; right: 16px; height: 1px; background: var(--st-line);
+}
+.list-row {
+  position: relative; display: flex; align-items: center; gap: 12px;
+  width: 100%; min-height: 72px; padding: 12px 16px;
+  background: transparent; border: 0; text-align: left; text-decoration: none; color: inherit;
+  transition: background-color var(--st-dur-fast) var(--st-ease-out);
+}
+a.list-row:hover, button.list-row:hover { background: var(--st-surface-2); }
+li:first-child > .list-row { border-radius: var(--st-r-lg) var(--st-r-lg) 0 0; }
+li:last-child > .list-row { border-radius: 0 0 var(--st-r-lg) var(--st-r-lg); }
+.list-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.list-title { font-size: var(--st-text-base); font-weight: var(--st-weight-semibold); color: var(--st-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: -0.012em; }
+.list-sub { display: flex; align-items: center; gap: 4px; font-size: var(--st-text-sm); color: var(--st-text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.list-sub .icon { width: 14px; height: 14px; }
+.list-sub > b { flex-shrink: 0; font-weight: var(--st-weight-semibold); }
+.list-sub > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.list-end { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; }
+.list-amount { font-family: var(--st-font-display); font-weight: var(--st-weight-bold); font-size: 16px; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.list-chevron { color: var(--st-muted); width: 18px; height: 18px; flex-shrink: 0; margin-right: -4px; }
+
+.avatar {
+  --av-bg: var(--st-surface-3); --av-fg: var(--st-ink);
+  display: grid; place-items: center; flex-shrink: 0;
+  width: 44px; height: 44px; border-radius: 14px;
+  background: var(--av-bg); color: var(--av-fg);
+  font-family: var(--st-font-display); font-weight: var(--st-weight-bold); font-size: 15px; letter-spacing: -0.02em;
+}
+.avatar .icon { width: 20px; height: 20px; }
+.avatar-round { border-radius: 50%; }
+.avatar-sm { width: 36px; height: 36px; border-radius: 12px; font-size: 13px; }
+.avatar-green  { --av-bg: var(--st-green-50);  --av-fg: var(--st-green-ink); }
+.avatar-violet { --av-bg: var(--st-violet-50); --av-fg: var(--st-violet-ink); }
+.avatar-orange { --av-bg: var(--st-orange-50); --av-fg: var(--st-orange-ink); }
+.avatar-pink   { --av-bg: var(--st-pink-50);   --av-fg: var(--st-pink-ink); }
+.avatar-dark   { --av-bg: var(--st-ink);       --av-fg: #fff; }
+
+/* Mission du jour */
+.mission { display: flex; align-items: center; gap: 12px; min-height: 72px; padding: 12px 8px 12px 16px; }
+.mission + .mission { border-top: 1px solid var(--st-line); }
+.mission-check {
+  display: grid; place-items: center; width: 44px; height: 44px; flex-shrink: 0;
+  border: 0; background: transparent; border-radius: 50%; color: transparent;
+}
+.mission-check::before {
+  content: ""; grid-area: 1 / 1; width: 26px; height: 26px; border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--st-line-strong) inset; background: var(--st-surface);
+  transition: background-color var(--st-dur-base) var(--st-ease-spring), box-shadow var(--st-dur-base);
+}
+.mission-check .icon { grid-area: 1 / 1; width: 16px; height: 16px; position: relative; }
+.mission-check[aria-checked="true"]::before { background: var(--st-green-600); box-shadow: none; }
+.mission-check[aria-checked="true"] { color: #fff; }
+.mission.is-done .list-title { color: var(--st-text-2); text-decoration: line-through; text-decoration-thickness: 1.5px; }
+
+/* --------------------------------------------------------------------------
+   Header (app bar)
+   -------------------------------------------------------------------------- */
+.appbar {
+  position: sticky; top: 0; z-index: var(--st-z-sticky);
+  display: flex; align-items: center; gap: 12px;
+  min-height: 64px; padding: calc(8px + env(safe-area-inset-top)) var(--st-gutter) 8px;
+  background: color-mix(in srgb, var(--st-bg) 82%, transparent);
+  -webkit-backdrop-filter: saturate(1.6) blur(18px); backdrop-filter: saturate(1.6) blur(18px);
+}
+.appbar-title { flex: 1; min-width: 0; font-family: var(--st-font-display); font-weight: var(--st-weight-heavy); font-size: 22px; letter-spacing: var(--st-tracking-title); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.appbar-title.is-center { text-align: center; font-size: 17px; font-weight: var(--st-weight-bold); }
+.appbar-actions { display: flex; gap: 8px; }
+.appbar .btn-icon:not(.btn-primary) { background: var(--st-surface); box-shadow: var(--st-shadow-xs), 0 0 0 1px var(--st-line) inset; color: var(--st-ink); }
+
+/* --------------------------------------------------------------------------
+   Barre de navigation basse (5 onglets)
+   -------------------------------------------------------------------------- */
+.tabbar {
+  position: fixed; z-index: var(--st-z-tabbar);
+  left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom));
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  height: var(--st-tabbar-h); padding: 6px;
+  background: color-mix(in srgb, var(--st-surface) 92%, transparent);
+  -webkit-backdrop-filter: saturate(1.8) blur(20px); backdrop-filter: saturate(1.8) blur(20px);
+  border-radius: var(--st-r-lg); box-shadow: var(--st-shadow-float), 0 0 0 1px rgba(20,24,40,.04) inset;
+}
+.tabbar.is-contained { position: absolute; }
+.tabbar-item {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+  min-width: 0; min-height: var(--st-tap); border-radius: 20px;
+  color: var(--st-text-2); text-decoration: none;
+  font-size: var(--st-text-2xs); font-weight: var(--st-weight-semibold); letter-spacing: 0;
+  transition: color var(--st-dur-fast) var(--st-ease-out);
+}
+.tabbar-icon {
+  display: grid; place-items: center; width: 44px; height: 30px; border-radius: var(--st-r-pill);
+  transition: background-color var(--st-dur-base) var(--st-ease-out), color var(--st-dur-base) var(--st-ease-out);
+}
+.tabbar-icon .icon { width: 22px; height: 22px; }
+.tabbar-item[aria-current="page"] { color: var(--st-ink); font-weight: var(--st-weight-bold); }
+.tabbar-item[aria-current="page"] .tabbar-icon { background: var(--st-ink); color: #fff; }
+.tabbar-item:active .tabbar-icon { transform: scale(.94); }
+
+/* --------------------------------------------------------------------------
+   Bottom sheet
+   -------------------------------------------------------------------------- */
+.sheet-backdrop {
+  position: fixed; inset: 0; z-index: var(--st-z-overlay);
+  background: rgba(10, 10, 14, .42);
+  opacity: 0; pointer-events: none;
+  transition: opacity var(--st-dur-slow) var(--st-ease-out);
+}
+.sheet {
+  position: fixed; z-index: var(--st-z-sheet); left: 0; right: 0; bottom: 0;
+  max-height: calc(100dvh - 48px); overflow: auto; overscroll-behavior: contain;
+  padding: 8px var(--st-gutter) calc(24px + env(safe-area-inset-bottom));
+  background: var(--st-surface); border-radius: var(--st-r-xl) var(--st-r-xl) 0 0;
+  box-shadow: 0 -20px 60px rgba(20, 24, 40, .18);
+  transform: translateY(105%);
+  transition: transform var(--st-dur-slow) var(--st-ease-out);
+}
+.sheet-backdrop.is-open { opacity: 1; pointer-events: auto; }
+.sheet.is-open { transform: none; }
+.sheet-backdrop.is-contained, .sheet.is-contained { position: absolute; }
+.sheet-handle { width: 40px; height: 5px; margin: 4px auto 18px; border-radius: 3px; background: var(--st-line-strong); }
+.sheet-title { font-family: var(--st-font-display); font-weight: var(--st-weight-heavy); font-size: 24px; letter-spacing: var(--st-tracking-title); line-height: 1.15; }
+.sheet-actions { display: grid; gap: 10px; margin-top: 24px; }
+
+/* --------------------------------------------------------------------------
+   Toast
+   -------------------------------------------------------------------------- */
+.toast {
+  position: fixed; z-index: var(--st-z-toast);
+  left: 16px; right: 16px; bottom: calc(var(--st-tabbar-h) + 28px + env(safe-area-inset-bottom));
+  display: flex; align-items: center; gap: 12px; max-width: 420px; margin: 0 auto;
+  padding: 10px 10px 10px 10px; border-radius: 22px;
+  background: var(--st-ink); color: #fff; box-shadow: var(--st-shadow-float);
+  font-size: var(--st-text-sm); font-weight: var(--st-weight-medium); line-height: 1.35;
+  animation: st-toast-in var(--st-dur-slow) var(--st-ease-spring) both;
+}
+.toast.is-contained { position: relative; left: auto; right: auto; bottom: auto; width: 100%; animation: none; }
+.toast-icon { display: grid; place-items: center; width: 36px; height: 36px; flex-shrink: 0; border-radius: 12px; background: var(--st-green); color: var(--st-ink); }
+.toast-icon .icon { width: 18px; height: 18px; }
+.toast-body { flex: 1; min-width: 0; }
+.toast-body strong { display: block; font-weight: var(--st-weight-semibold); }
+.toast-body span { color: var(--st-on-dark-2); }
+.toast-error .toast-icon { background: var(--st-red); color: #fff; }
+.toast-info  .toast-icon { background: var(--st-violet); color: var(--st-ink); }
+.toast .btn-icon { --btn-h: 44px; color: var(--st-on-dark-2); }
+.toast .btn-icon:hover { background: rgba(255,255,255,.08); color: #fff; }
+
+/* --------------------------------------------------------------------------
+   Skeleton
+   -------------------------------------------------------------------------- */
+.skeleton {
+  display: block; border-radius: 8px;
+  background: linear-gradient(90deg, #e9e9ee 0%, #f4f4f7 40%, #e9e9ee 80%) 0 0 / 300% 100%;
+  animation: st-shimmer 1.4s var(--st-ease-in-out) infinite;
+}
+.skeleton-text { height: 12px; }
+.skeleton-title { height: 18px; border-radius: 9px; }
+.skeleton-circle { border-radius: 50%; }
+.skeleton-avatar { width: 44px; height: 44px; border-radius: 14px; flex-shrink: 0; }
+
+/* --------------------------------------------------------------------------
+   État vide
+   -------------------------------------------------------------------------- */
+.empty { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 36px 20px 28px; }
+.empty-art { position: relative; width: 96px; height: 96px; margin-bottom: 20px; }
+.empty-art .tile {
+  position: absolute; inset: 8px; display: grid; place-items: center;
+  border-radius: 26px; background: var(--st-surface); box-shadow: var(--st-shadow-md); color: var(--st-ink);
+}
+.empty-art .tile .icon { width: 34px; height: 34px; }
+.empty-art .sticker { position: absolute; right: -14px; top: -6px; }
+.empty .h3 { margin-bottom: 6px; }
+.empty p { max-width: 280px; color: var(--st-text-2); font-size: var(--st-text-base); }
+.empty .btn { margin-top: 20px; }
+
+/* --------------------------------------------------------------------------
+   Touches « collage / print » — à utiliser avec parcimonie
+   -------------------------------------------------------------------------- */
+/* Sticker : contour blanc épais + ombre portée, légèrement tourné */
+.sticker {
+  --stk-bg: var(--st-green); --stk-fg: var(--st-ink); --stk-rot: -5deg;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 12px; border-radius: 12px;
+  background: var(--stk-bg); color: var(--stk-fg);
+  font-family: var(--st-font-display); font-weight: var(--st-weight-heavy); font-size: 14px;
+  letter-spacing: -0.02em; line-height: 1; white-space: nowrap;
+  box-shadow: var(--st-shadow-sticker); transform: rotate(var(--stk-rot));
+}
+.sticker .icon { width: 16px; height: 16px; }
+.sticker-violet { --stk-bg: var(--st-violet); --stk-fg: var(--st-ink); --stk-rot: 4deg; }
+.sticker-orange { --stk-bg: var(--st-orange); --stk-fg: var(--st-ink); --stk-rot: -3deg; }
+.sticker-dark   { --stk-bg: var(--st-ink);    --stk-fg: #fff; --stk-rot: 3deg; }
+.sticker-paper  { --stk-bg: var(--st-paper);  --stk-fg: var(--st-ink); --stk-rot: -2deg; }
+.sticker-serif  { font-family: var(--st-font-serif); font-style: italic; font-weight: 400; font-size: 18px; letter-spacing: 0; }
+.sticker-round  { width: 64px; height: 64px; padding: 0; justify-content: center; border-radius: 50%; font-size: 13px; text-align: center; white-space: normal; line-height: 1.05; }
+
+/* Titre ransom : réservé aux moments forts (niveau débloqué, vente signée) */
+.ransom {
+  display: inline-flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: .14em .3em;
+  font-family: var(--st-font-display); font-weight: 900; font-size: 44px; line-height: 1;
+  letter-spacing: 0; color: var(--st-ink);
+}
+.ransom .w { display: inline-flex; gap: .05em; white-space: nowrap; }
+.ransom .l {
+  --r: -3deg; --bg: var(--st-surface); --fg: var(--st-ink);
+  display: inline-grid; place-items: center; min-width: .74em; height: 1.08em; padding: 0 .1em .02em;
+  background: var(--bg); color: var(--fg); border-radius: .1em;
+  transform: rotate(var(--r)) translateY(var(--y, 0));
+  box-shadow: 0 .04em .1em rgba(20, 24, 40, .16), 0 0 0 1px rgba(20,24,40,.05);
+}
+
+.ransom .rc0 { --bg: var(--st-ink);    --fg: #fff;          --r: -4deg; --y: .02em; }
+.ransom .rc1 { --bg: var(--st-paper);  --fg: var(--st-ink); --r: 3deg;  --y: -.03em; font-family: var(--st-font-serif); font-style: italic; font-weight: 400; font-size: 1.12em; }
+.ransom .rc2 { --bg: var(--st-green);  --fg: var(--st-ink); --r: -2deg; }
+.ransom .rc3 { --bg: var(--st-surface); --fg: var(--st-ink); --r: 5deg;  --y: .03em; }
+.ransom .rc4 { --bg: var(--st-violet); --fg: var(--st-ink); --r: -5deg; --y: -.02em; }
+.ransom .rc5 { --bg: var(--st-orange); --fg: var(--st-ink); --r: 2deg; font-family: var(--st-font-serif); font-style: italic; font-weight: 400; font-size: 1.12em; }
+.card-dark .ransom .rc0, .balance .ransom .rc0 { --bg: var(--st-surface); --fg: var(--st-ink); }
+.ransom-sm { font-size: 28px; }
+.ransom-lg { font-size: 56px; }
+.ransom.is-animated .l { animation: st-ransom-in var(--st-dur-slower) var(--st-ease-spring) both; animation-delay: calc(var(--i, 0) * 45ms); }
+
+/* --------------------------------------------------------------------------
+   Keyframes
+   -------------------------------------------------------------------------- */
+@keyframes st-spin { to { transform: rotate(360deg); } }
+@keyframes st-shimmer { from { background-position: 100% 0; } to { background-position: -50% 0; } }
+@keyframes st-toast-in { from { opacity: 0; transform: translateY(16px) scale(.98); } to { opacity: 1; transform: none; } }
+@keyframes st-ransom-in {
+  from { opacity: 0; transform: rotate(calc(var(--r) * 4)) translateY(.3em) scale(.6); }
+  to   { opacity: 1; transform: rotate(var(--r)) translateY(var(--y, 0)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton { animation: none; background: #ececf1; }
+  .toast, .ransom.is-animated .l { animation: none; }
+  .btn:active:not(:disabled), .card-interactive:hover { transform: none; }
+  .btn.is-loading::after { animation-duration: 1.6s; }
+}
+
+} /* @layer components */
+
+
+/* ---------- Mise en page de la vitrine (hors design system) ---------- */
+.sc { max-width: 1240px; margin: 0 auto; padding: 0 16px 96px; }
+.sc-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 0 8px; }
+.sc-hero { padding: 36px 4px 12px; }
+.sc-hero .display { font-size: 44px; margin-top: 10px; }
+.sc-hero p { margin-top: 14px; max-width: 520px; color: var(--st-text-2); font-size: var(--st-text-md); }
+.sc-hero .stickers { display: flex; gap: 12px; margin-top: 22px; flex-wrap: wrap; align-items: center; }
+.sc-section { margin-top: 56px; }
+.sc-section > header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 18px; padding: 0 4px; }
+.sc-section > header .eyebrow { min-width: 24px; }
+.sc-grid { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); }
+.sc-card-title { font-size: var(--st-text-xs); font-weight: 600; letter-spacing: var(--st-tracking-caps); text-transform: uppercase; color: var(--st-text-2); margin-bottom: 16px; }
+.sc-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.sc-col { display: flex; flex-direction: column; gap: 16px; }
+.sc-note { margin-top: 12px; font-size: var(--st-text-sm); color: var(--st-text-2); }
+@media (min-width: 760px) {
+  .sc { padding: 0 32px 120px; }
+  .sc-hero .display { font-size: 64px; }
+  .sc-grid.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sc-grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* Couleurs */
+.swatches { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.swatch { border-radius: 20px; overflow: hidden; background: var(--st-surface); box-shadow: 0 0 0 1px var(--st-line) inset; }
+.swatch i { display: block; height: 64px; }
+.swatch div { padding: 10px 12px 12px; }
+.swatch b { display: block; font-size: 13px; }
+.swatch code { font: 500 12px/1.4 var(--st-font-text); color: var(--st-text-2); }
+@media (min-width: 760px) { .swatches { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+/* Typo */
+.type-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 12px 0; border-top: 1px solid var(--st-line); }
+.type-row:first-of-type { border-top: 0; padding-top: 0; }
+.type-row code { font: 500 11px/1.3 var(--st-font-text); color: var(--st-text-2); white-space: nowrap; }
+
+/* Rayons / ombres */
+.radii { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.radii div { height: 76px; background: var(--st-surface); display: grid; place-items: center; font-size: 12px; font-weight: 600; color: var(--st-text-2); }
+
+/* Logos */
+.logo-sizes { display: flex; align-items: flex-end; gap: 18px; flex-wrap: wrap; }
+.logo-sizes figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 11px; color: var(--st-text-2); font-weight: 600; }
+.lockup-dark { margin-top: 18px; padding: 22px; border-radius: 28px; background: var(--st-dark-grad); display: flex; justify-content: center; }
+
+/* Icônes */
+.icon-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+.icon-grid figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 2px 8px; border-radius: 16px; }
+.icon-grid figure:hover { background: var(--st-surface-2); }
+.icon-grid figcaption { font-size: 10px; color: var(--st-text-2); font-weight: 500; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (min-width: 760px) { .icon-grid { grid-template-columns: repeat(8, minmax(0, 1fr)); } }
+
+/* Cadres de démo (composants positionnés) */
+.demo-frame { position: relative; overflow: hidden; border-radius: 28px; background: var(--st-bg); box-shadow: 0 0 0 1px var(--st-line) inset; }
+.demo-frame.h-nav { height: 196px; }
+.demo-frame.h-sheet { height: 470px; }
+.demo-frame .appbar { position: relative; background: transparent; }
+.demo-ghost-content { padding: 16px 20px; display: grid; gap: 12px; }
+
+/* Appareils (maquettes 390 × 844) */
+.devices { display: flex; flex-wrap: wrap; justify-content: center; gap: 32px; }
+.device {
+  position: relative; width: 390px; max-width: 100%; height: 844px; overflow: hidden;
+  background: var(--st-bg); isolation: isolate;
+}
+.device::before { content: ""; position: absolute; inset: 0; z-index: 400; pointer-events: none; background-image: var(--st-grain); opacity: var(--st-grain-opacity); mix-blend-mode: multiply; }
+.device-scroll { height: 100%; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; padding-bottom: calc(var(--st-tabbar-h) + 32px); }
+.device-scroll::-webkit-scrollbar { display: none; }
+.device .appbar { background: color-mix(in srgb, var(--st-bg) 86%, transparent); }
+.device-body { padding: 4px 20px 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+.device-label { text-align: center; margin-top: 12px; font-size: 13px; font-weight: 600; color: var(--st-text-2); }
+@media (min-width: 431px) {
+  .device { border-radius: 52px; box-shadow: 0 0 0 10px #121216, 0 0 0 11px #2a2a33, var(--st-shadow-card); }
+}
+@media (max-width: 430px) {
+  .sc-screens { margin-left: -16px; margin-right: -16px; }
+  .devices { gap: 40px; }
+  .sc-screens > header { padding: 0 20px; }
+  .device-label { display: none; }
+}
+
+/* Écran Accueil */
+.greet { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+.greet .eyebrow { font-size: 11px; }
+.greet-name { font-family: var(--st-font-display); font-weight: 800; font-size: 20px; letter-spacing: -0.03em; line-height: 1.15; }
+.stat-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.stat { padding: 16px; border-radius: 24px; }
+.stat-icon { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 12px; margin-bottom: 12px; }
+.stat-icon .icon { width: 19px; height: 19px; }
+.stat-value { font-family: var(--st-font-display); font-weight: 800; font-size: 24px; letter-spacing: -0.035em; line-height: 1.05; }
+.stat-label { font-size: 13px; color: var(--st-text-2); margin-top: 2px; }
+.level-card-title { font-family: var(--st-font-display); font-weight: 800; font-size: 22px; letter-spacing: -0.03em; line-height: 1.15; margin: 14px 0 16px; }
+.level-card-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.mission-icon { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 13px; flex-shrink: 0; }
+.mission-icon .icon { width: 19px; height: 19px; }
+
+/* Écran Prospects */
+.chip-scroll { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin: 0 -20px; padding: 3px 20px; }
+.chip-scroll::-webkit-scrollbar { display: none; }
+.list-header { display: flex; justify-content: space-between; align-items: baseline; padding: 0 4px; }
+.date-head { padding: 6px 4px 0; }
+</style>
+</head>
+<body class="grain">
+<main class="sc">
+
+  <div class="sc-top">
+    <span class="logo-lockup" style="--logo-size:34px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="34" height="34" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="stl9g" x1=".33" y1=".03" x2=".67" y2=".97"><stop offset="0" stop-color="#2a2a33"/><stop offset="1" stop-color="#0a0a0e"/></linearGradient>
+<linearGradient id="stl9h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/></linearGradient>
+</defs>
+<rect width="100" height="100" rx="23" fill="url(#stl9g)"/>
+<rect x=".75" y=".75" width="98.5" height="98.5" rx="22.25" fill="url(#stl9h)" stroke="#fff" stroke-opacity=".09" stroke-width="1.5"/><rect x="21" y="25.25" width="58" height="12.5" rx="6.25" fill="#3ccf63"/><rect x="21" y="43.75" width="58" height="12.5" rx="6.25" fill="#7b7bf0"/><rect x="21" y="62.25" width="58" height="12.5" rx="6.25" fill="#f7a21b"/></svg><span class="wordmark">Stacker</span></span>
+    <span class="chip chip-outline">Design system · v1.0</span>
+  </div>
+
+  <section class="sc-hero" aria-labelledby="hero-title">
+    <span class="eyebrow">Style vox — fondations &amp; composants</span>
+    <h1 id="hero-title" class="display">L’app des apporteurs d’affaires <span class="serif-accent">sérieux</span>.</h1>
+    <p>Une base SaaS claire et premium, des accents vert, violet et orange, et quelques touches collage réservées aux grands moments.</p>
+    <div class="stickers">
+      <span class="sticker"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m22 7-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/></svg>Commission 18 %</span>
+      <span class="sticker sticker-paper sticker-serif">fait main</span>
+      <span class="sticker sticker-dark"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"/></svg>Vente signée</span>
+    </div>
+  </section>
+
+  <!-- ================================================================ ÉCRANS -->
+  <section class="sc-section sc-screens" aria-labelledby="t-screens">
+    <header><span class="eyebrow">01</span><h2 id="t-screens" class="h2">Écrans</h2></header>
+    <div class="devices">
+
+      <!-- ===== ACCUEIL ===== -->
+      <div>
+      <div class="device" id="screen-home" aria-label="Maquette écran Accueil">
+        <div class="device-scroll">
+          <header class="appbar">
+            <div class="greet">
+              <span class="avatar avatar-round avatar-dark">IM</span>
+              <div style="min-width:0">
+                <div class="eyebrow">Mardi 5 octobre</div>
+                <div class="greet-name">Bonjour Inès</div>
+              </div>
+            </div>
+            <div class="appbar-actions">
+              <button class="btn btn-icon has-badge" aria-label="Notifications, 3 nouvelles"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="badge badge-dot" aria-hidden="true"></span></button>
+            </div>
+          </header>
+
+          <div class="device-body">
+            <article class="balance" aria-label="Solde">
+              <span class="balance-deco" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="168" height="168" aria-hidden="true" focusable="false"><rect x="21" y="25.25" width="58" height="12.5" rx="6.25" fill="#3ccf63"/><rect x="21" y="43.75" width="58" height="12.5" rx="6.25" fill="#7b7bf0"/><rect x="21" y="62.25" width="58" height="12.5" rx="6.25" fill="#f7a21b"/></svg></span>
+              <div class="balance-label"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M19 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0 0 4h14a2 2 0 0 1 2 2v3"/><path d="M3 5v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3"/><path d="M21 12h-4a2 2 0 0 0 0 4h4z"/></svg>Solde total</div>
+              <div class="balance-amount num">1 248<span class="cents">,50 €</span></div>
+              <div class="balance-row">
+                <span class="chip chip-on-dark"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m22 7-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/></svg>+128,40 € cette semaine</span>
+              </div>
+              <div class="balance-actions">
+                <button class="btn btn-accent"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 22h18"/><path d="M6 18v-7"/><path d="M10 18v-7"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="m12 2 9 5H3z"/></svg>Virer</button>
+                <button class="btn btn-glass">Détails</button>
+              </div>
+            </article>
+
+            <article class="card" aria-labelledby="lvl-title">
+              <div class="level-card-top">
+                <span class="level level-pro"><span class="level-mark"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M11.52 2.3a.53.53 0 0 1 .95 0l2.31 4.68a2.12 2.12 0 0 0 1.6 1.16l5.16.75a.53.53 0 0 1 .3.91l-3.74 3.64a2.12 2.12 0 0 0-.61 1.88l.88 5.14a.53.53 0 0 1-.77.56l-4.62-2.43a2.12 2.12 0 0 0-1.97 0L6.4 21.02a.53.53 0 0 1-.77-.56l.88-5.14a2.12 2.12 0 0 0-.61-1.88L2.16 9.8a.53.53 0 0 1 .29-.9l5.17-.76a2.12 2.12 0 0 0 1.6-1.16z"/></svg></span>Pro <span class="level-rate">· 18 %</span></span>
+                <span class="text-small">Prochain : <b style="color:var(--st-pink-ink)">Legend 22 %</b></span>
+              </div>
+              <h2 id="lvl-title" class="level-card-title">Plus que 3 ventes avant <span class="serif-accent">Legend</span></h2>
+              <div class="progress-meta"><span class="text-2">1 850 / 2 900 XP</span><b class="num">64 %</b></div>
+              <div class="progress progress-violet" role="progressbar" aria-label="Progression vers Legend" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100" style="--value:64%"><span class="progress-bar"></span></div>
+            </article>
+
+            <div class="stat-pair">
+              <div class="card stat">
+                <span class="stat-icon" style="background:var(--st-orange-50);color:var(--st-orange-ink)"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></span>
+                <div class="stat-value num">7 jours</div>
+                <div class="stat-label">Série en cours</div>
+              </div>
+              <div class="card stat">
+                <span class="stat-icon" style="background:var(--st-green-50);color:var(--st-green-ink)"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg></span>
+                <div class="stat-value num">12 RDV</div>
+                <div class="stat-label">Ce mois-ci</div>
+              </div>
+            </div>
+
+            <section aria-labelledby="missions-title">
+              <div class="section-head">
+                <h2 id="missions-title" class="h3">Missions du jour</h2>
+                <a class="link" href="#">Tout voir<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 18 6-6-6-6"/></svg></a>
+              </div>
+              <div class="card card-tight">
+                <div class="mission is-done">
+                  <span class="mission-icon" style="background:var(--st-green-50);color:var(--st-green-ink)"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+                  <div class="list-main"><span class="list-title">Appeler 10 artisans RGE</span><span class="list-sub"><b class="text-gain">+40 XP</b><span>· 10/10 terminé</span></span></div>
+                                    <button class="mission-check" role="checkbox" aria-checked="true" aria-label="Mission terminée"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"/></svg></button>
+                </div>
+                <div class="mission">
+                  <span class="mission-icon" style="background:var(--st-violet-50);color:var(--st-violet-ink)"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14.54 21.69a.5.5 0 0 0 .94-.03l6.5-19a.5.5 0 0 0-.64-.64l-19 6.5a.5.5 0 0 0-.03.94l7.93 3.18a2 2 0 0 1 1.11 1.11z"/><path d="m21.85 2.15-10.94 10.93"/></svg></span>
+                  <div class="list-main"><span class="list-title">Relancer Boulangerie Martin</span><span class="list-sub"><b class="text-gain">+25 XP</b><span>· devis envoyé il y a 3 j</span></span></div>
+                                    <button class="mission-check" role="checkbox" aria-checked="false" aria-label="Marquer comme faite"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"/></svg></button>
+                </div>
+                <div class="mission">
+                  <span class="mission-icon" style="background:var(--st-orange-50);color:var(--st-orange-ink)"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m21 17-2.16-1.87a.5.5 0 0 0-.84.37v.5a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1c0-2.55-4-3.97-8.5-4a1 1 0 0 0 0 5c4.15 0 4.75-11.3 5.7-13.5a2.5 2.5 0 1 1 3.31 3.28"/><path d="M3 21h18"/></svg></span>
+                  <div class="list-main"><span class="list-title">Signer Garage des Remparts</span><span class="list-sub"><b class="text-gain">+60 XP</b><span>· commission estimée 96 €</span></span></div>
+                                    <button class="mission-check" role="checkbox" aria-checked="false" aria-label="Marquer comme faite"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"/></svg></button>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+        <nav class="tabbar is-contained" aria-label="Navigation principale"><a class="tabbar-item" href="#" aria-current="page"><span class="tabbar-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 10a2 2 0 0 1 .7-1.53l7-6a2 2 0 0 1 2.6 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M15 21v-7a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v7"/></svg></span>Accueil</a><a class="tabbar-item" href="#"><span class="tabbar-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Prospects</a><a class="tabbar-item" href="#"><span class="tabbar-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="7" width="20" height="14" rx="3"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><path d="M2 13h20"/></svg></span>Deals</a><a class="tabbar-item" href="#"><span class="tabbar-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M19 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0 0 4h14a2 2 0 0 1 2 2v3"/><path d="M3 5v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3"/><path d="M21 12h-4a2 2 0 0 0 0 4h4z"/></svg></span>Gains</a><a class="tabbar-item" href="#"><span class="tabbar-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 0 0-16 0"/></svg></span>Profil</a></nav>
+      </div>
+      <p class="device-label">Accueil</p>
+      </div>
+
+      <!-- ===== PROSPECTS ===== -->
+      <div>
+      <div class="device" id="screen-prospects" aria-label="Maquette écran Prospects">
+        <div class="device-scroll">
+          <header class="appbar">
+            <h1 class="appbar-title">Prospects</h1>
+            <div class="appbar-actions">
+              <button class="btn btn-icon" aria-label="Filtres avancés"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h10"/><path d="M18 7h2"/><circle cx="16" cy="7" r="2"/><path d="M4 17h2"/><path d="M10 17h10"/><circle cx="8" cy="17" r="2"/></svg></button>
+              <button class="btn btn-primary btn-icon" aria-label="Ajouter un prospect"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v14"/><path d="M5 12h14"/></svg></button>
+            </div>
+          </header>
+          <div class="device-body">
+            <label class="input-wrap">
+              <span class="sr-only">Rechercher une entreprise</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+              <input class="input" type="search" placeholder="Entreprise, ville, secteur…">
+            </label>
+            <div class="chip-scroll" role="group" aria-label="Filtrer par statut">
+              <button class="chip chip-filter" aria-pressed="true">Tous <span class="chip-count">48</span></button>
+              <button class="chip chip-filter" aria-pressed="false">À contacter <span class="chip-count">21</span></button>
+              <button class="chip chip-filter" aria-pressed="false">Contactés <span class="chip-count">15</span></button>
+              <button class="chip chip-filter" aria-pressed="false">Répondus <span class="chip-count">9</span></button>
+              <button class="chip chip-filter" aria-pressed="false">RDV <span class="chip-count">3</span></button>
+            </div>
+            <div class="list-header"><span class="text-small">48 entreprises · Avignon et alentours</span></div>
+            <ul class="list" aria-label="Prospects">
+              <li><a class="list-row" href="#"><span class="avatar avatar-violet">PD</span><span class="list-main"><span class="list-title">Plomberie Durand</span><span class="list-sub"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg><span>Avignon · Plomberie</span></span></span><span class="chip chip-violet chip-dot">Contacté</span></a></li>
+              <li><a class="list-row" href="#"><span class="avatar avatar-green">GR</span><span class="list-main"><span class="list-title">Garage des Remparts</span><span class="list-sub"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg><span>Avignon · Automobile</span></span></span><span class="chip chip-green chip-dot">Répondu</span></a></li>
+              <li><a class="list-row" href="#"><span class="avatar avatar-orange">BM</span><span class="list-main"><span class="list-title">Boulangerie Martin</span><span class="list-sub"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg><span>Villeneuve · Commerce</span></span></span><span class="chip chip-violet chip-dot">Contacté</span></a></li>
+              <li><a class="list-row" href="#"><span class="avatar">AL</span><span class="list-main"><span class="list-title">Atelier Lumen Électricité</span><span class="list-sub"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg><span>Le Pontet · Électricité</span></span></span><span class="chip chip-dot">À contacter</span></a></li>
+              <li><a class="list-row" href="#"><span class="avatar avatar-green">TR</span><span class="list-main"><span class="list-title">Toitures du Rhône</span><span class="list-sub"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg><span>Sorgues · Couverture</span></span></span><span class="chip chip-green chip-dot">Répondu</span></a></li>
+              <li><a class="list-row" href="#"><span class="avatar avatar-pink">CV</span><span class="list-main"><span class="list-title">Cabinet Valette</span><span class="list-sub"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg><span>Avignon · Immobilier</span></span></span><span class="chip chip-dot">À contacter</span></a></li>
+              <li><a class="list-row" href="#"><span class="avatar avatar-violet">MA</span><span class="list-main"><span class="list-title">Menuiserie Arnaud</span><span class="list-sub"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg><span>Châteaurenard · Menuiserie</span></span></span><span class="chip chip-violet chip-dot">Contacté</span></a></li>
+            </ul>
+          </div>
+        </div>
+        <nav class="tabbar is-contained" aria-label="Navigation principale"><a class="tabbar-item" href="#"><span class="tabbar-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 10a2 2 0 0 1 .7-1.53l7-6a2 2 0 0 1 2.6 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M15 21v-7a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v7"/></svg></span>Accueil</a><a class="tabbar-item" href="#" aria-current="page"><span class="tabbar-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Prospects</a><a class="tabbar-item" href="#"><span class="tabbar-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="7" width="20" height="14" rx="3"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><path d="M2 13h20"/></svg></span>Deals</a><a class="tabbar-item" href="#"><span class="tabbar-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M19 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0 0 4h14a2 2 0 0 1 2 2v3"/><path d="M3 5v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3"/><path d="M21 12h-4a2 2 0 0 0 0 4h4z"/></svg></span>Gains</a><a class="tabbar-item" href="#"><span class="tabbar-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 0 0-16 0"/></svg></span>Profil</a></nav>
+      </div>
+      <p class="device-label">Prospects</p>
+      </div>
+
+      <!-- ===== GAINS ===== -->
+      <div>
+      <div class="device" id="screen-gains" aria-label="Maquette écran Gains">
+        <div class="device-scroll">
+          <header class="appbar">
+            <h1 class="appbar-title">Gains</h1>
+            <div class="appbar-actions">
+              <button class="btn btn-secondary btn-sm" style="gap:6px"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>Octobre</button>
+            </div>
+          </header>
+          <div class="device-body">
+            <article class="balance" aria-label="Solde disponible">
+              <span class="balance-deco" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="168" height="168" aria-hidden="true" focusable="false"><rect x="21" y="25.25" width="58" height="12.5" rx="6.25" fill="#3ccf63"/><rect x="21" y="43.75" width="58" height="12.5" rx="6.25" fill="#7b7bf0"/><rect x="21" y="62.25" width="58" height="12.5" rx="6.25" fill="#f7a21b"/></svg></span>
+              <div class="balance-label"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="m8 12.5 2.5 2.5L16 9.5"/></svg>Disponible au virement</div>
+              <div class="balance-amount num">842<span class="cents">,00 €</span></div>
+              <dl class="balance-split" style="margin-bottom:0">
+                <div><dt>En attente</dt><dd class="num">406,50 €</dd></div>
+                <div><dt>Gagné en 2026</dt><dd class="num">6 214,90 €</dd></div>
+              </dl>
+              <button class="btn btn-accent btn-block" style="margin-top:16px"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 22h18"/><path d="M6 18v-7"/><path d="M10 18v-7"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="m12 2 9 5H3z"/></svg>Virer 842,00 €</button>
+              <p class="text-small" style="color:var(--st-on-dark-2);text-align:center;margin-top:10px">Virement SEPA sous 24 h · IBAN •• 4821</p>
+            </article>
+
+            <div class="segmented" role="tablist" aria-label="Type de mouvement">
+              <button role="tab" aria-selected="true">Tout</button>
+              <button role="tab" aria-selected="false">Commissions</button>
+              <button role="tab" aria-selected="false">Virements</button>
+            </div>
+
+            <section aria-labelledby="hist-title">
+              <div class="section-head date-head"><h2 id="hist-title" class="h3">Historique</h2><span class="text-small">Cette semaine</span></div>
+              <ul class="list">
+                <li><a class="list-row" href="#"><span class="avatar avatar-green"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M17 7 7 17"/><path d="M17 17H7V7"/></svg></span><span class="list-main"><span class="list-title">Plomberie Durand</span><span class="list-sub">Vente signée · 18 %</span></span><span class="list-end"><span class="list-amount text-gain">+214,20 €</span><span class="chip chip-orange">En attente</span></span></a></li>
+                <li><a class="list-row" href="#"><span class="avatar avatar-dark"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 22h18"/><path d="M6 18v-7"/><path d="M10 18v-7"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="m12 2 9 5H3z"/></svg></span><span class="list-main"><span class="list-title">Virement vers BNP</span><span class="list-sub">IBAN •• 4821 · 2 oct.</span></span><span class="list-end"><span class="list-amount">−500,00 €</span><span class="chip">Envoyé</span></span></a></li>
+                <li><a class="list-row" href="#"><span class="avatar avatar-orange"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></span><span class="list-main"><span class="list-title">Bonus série 7 jours</span><span class="list-sub">Prime d’assiduité</span></span><span class="list-end"><span class="list-amount text-gain">+25,00 €</span><span class="chip chip-green">Disponible</span></span></a></li>
+                <li><a class="list-row" href="#"><span class="avatar avatar-green"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M17 7 7 17"/><path d="M17 17H7V7"/></svg></span><span class="list-main"><span class="list-title">Garage des Remparts</span><span class="list-sub">Vente signée · 18 %</span></span><span class="list-end"><span class="list-amount text-gain">+96,30 €</span><span class="chip chip-green">Disponible</span></span></a></li>
+              </ul>
+            </section>
+          </div>
+        </div>
+        <nav class="tabbar is-contained" aria-label="Navigation principale"><a class="tabbar-item" href="#"><span class="tabbar-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 10a2 2 0 0 1 .7-1.53l7-6a2 2 0 0 1 2.6 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M15 21v-7a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v7"/></svg></span>Accueil</a><a class="tabbar-item" href="#"><span class="tabbar-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Prospects</a><a class="tabbar-item" href="#"><span class="tabbar-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="7" width="20" height="14" rx="3"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><path d="M2 13h20"/></svg></span>Deals</a><a class="tabbar-item" href="#" aria-current="page"><span class="tabbar-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M19 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0 0 4h14a2 2 0 0 1 2 2v3"/><path d="M3 5v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3"/><path d="M21 12h-4a2 2 0 0 0 0 4h4z"/></svg></span>Gains</a><a class="tabbar-item" href="#"><span class="tabbar-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 0 0-16 0"/></svg></span>Profil</a></nav>
+      </div>
+      <p class="device-label">Gains</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================================================================ FONDATIONS -->
+  <section class="sc-section" aria-labelledby="t-found">
+    <header><span class="eyebrow">02</span><h2 id="t-found" class="h2">Fondations</h2></header>
+    <div class="sc-grid cols-2">
+      <div class="card">
+        <p class="sc-card-title">Couleurs</p>
+        <div class="swatches">
+          <div class="swatch"><i style="background:#1c1c1e"></i><div><b>Ink</b><code>#1c1c1e · texte</code></div></div>
+          <div class="swatch"><i style="background:#636368"></i><div><b>Texte 2</b><code>#636368 · AA</code></div></div>
+          <div class="swatch"><i style="background:#ececf0"></i><div><b>Fond</b><code>#ececf0 / #f4f4f6</code></div></div>
+          <div class="swatch"><i style="background:#8e8e93"></i><div><b>Muted</b><code>#8e8e93 · icônes</code></div></div>
+          <div class="swatch"><i style="background:#3ccf63"></i><div><b>Vert</b><code>#3ccf63 / #12a150</code></div></div>
+          <div class="swatch"><i style="background:#7b7bf0"></i><div><b>Violet</b><code>#7b7bf0</code></div></div>
+          <div class="swatch"><i style="background:#f7a21b"></i><div><b>Orange</b><code>#f7a21b</code></div></div>
+          <div class="swatch"><i style="background:#e63946"></i><div><b>Rouge</b><code>#e63946 · erreurs</code></div></div>
+        </div>
+      </div>
+      <div class="sc-col">
+        <div class="card">
+          <p class="sc-card-title">Typographie</p>
+          <div class="type-row"><span class="display" style="font-size:38px">Stacker</span><code>Display 800 · 38</code></div>
+          <div class="type-row"><span class="h2">Missions du jour</span><code>Display 800 · 24</code></div>
+          <div class="type-row"><span class="h3">Plomberie Durand</span><code>Display 700 · 19</code></div>
+          <div class="type-row"><span class="text-body">Texte courant lisible.</span><code>Inter 400 · 15</code></div>
+          <div class="type-row"><span style="font-size:30px;font-family:var(--st-font-display);font-weight:800;letter-spacing:-0.035em">Un ton <span class="serif-accent">sérieux</span></span><code>Instrument Serif</code></div>
+        </div>
+        <div class="card">
+          <p class="sc-card-title">Rayons &amp; ombres</p>
+          <div class="radii">
+            <div style="border-radius:14px;box-shadow:var(--st-shadow-sm)">14 · sm</div>
+            <div style="border-radius:28px;box-shadow:var(--st-shadow-md)">28 · lg</div>
+            <div style="border-radius:44px;box-shadow:var(--st-shadow-card)">44 · 2xl</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ LOGO -->
+  <section class="sc-section" aria-labelledby="t-logo">
+    <header><span class="eyebrow">03</span><h2 id="t-logo" class="h2">Logo</h2></header>
+    <div class="sc-grid cols-2">
+      <div class="card">
+        <p class="sc-card-title">Tuile — toutes tailles</p>
+        <div class="logo-sizes">
+          <figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="96" height="96" role="img" aria-labelledby="stl2t"><title id="stl2t">Stacker</title><defs>
+<linearGradient id="stl2g" x1=".33" y1=".03" x2=".67" y2=".97"><stop offset="0" stop-color="#2a2a33"/><stop offset="1" stop-color="#0a0a0e"/></linearGradient>
+<linearGradient id="stl2h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/></linearGradient>
+</defs>
+<rect width="100" height="100" rx="23" fill="url(#stl2g)"/>
+<rect x=".75" y=".75" width="98.5" height="98.5" rx="22.25" fill="url(#stl2h)" stroke="#fff" stroke-opacity=".09" stroke-width="1.5"/><rect x="21" y="25.25" width="58" height="12.5" rx="6.25" fill="#3ccf63"/><rect x="21" y="43.75" width="58" height="12.5" rx="6.25" fill="#7b7bf0"/><rect x="21" y="62.25" width="58" height="12.5" rx="6.25" fill="#f7a21b"/></svg><figcaption>96</figcaption></figure>
+          <figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="64" height="64" role="img" aria-labelledby="stl3t"><title id="stl3t">Stacker</title><defs>
+<linearGradient id="stl3g" x1=".33" y1=".03" x2=".67" y2=".97"><stop offset="0" stop-color="#2a2a33"/><stop offset="1" stop-color="#0a0a0e"/></linearGradient>
+<linearGradient id="stl3h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/></linearGradient>
+</defs>
+<rect width="100" height="100" rx="23" fill="url(#stl3g)"/>
+<rect x=".75" y=".75" width="98.5" height="98.5" rx="22.25" fill="url(#stl3h)" stroke="#fff" stroke-opacity=".09" stroke-width="1.5"/><rect x="21" y="25.25" width="58" height="12.5" rx="6.25" fill="#3ccf63"/><rect x="21" y="43.75" width="58" height="12.5" rx="6.25" fill="#7b7bf0"/><rect x="21" y="62.25" width="58" height="12.5" rx="6.25" fill="#f7a21b"/></svg><figcaption>64</figcaption></figure>
+          <figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="40" height="40" role="img" aria-labelledby="stl4t"><title id="stl4t">Stacker</title><defs>
+<linearGradient id="stl4g" x1=".33" y1=".03" x2=".67" y2=".97"><stop offset="0" stop-color="#2a2a33"/><stop offset="1" stop-color="#0a0a0e"/></linearGradient>
+<linearGradient id="stl4h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/></linearGradient>
+</defs>
+<rect width="100" height="100" rx="23" fill="url(#stl4g)"/>
+<rect x=".75" y=".75" width="98.5" height="98.5" rx="22.25" fill="url(#stl4h)" stroke="#fff" stroke-opacity=".09" stroke-width="1.5"/><rect x="21" y="25.25" width="58" height="12.5" rx="6.25" fill="#3ccf63"/><rect x="21" y="43.75" width="58" height="12.5" rx="6.25" fill="#7b7bf0"/><rect x="21" y="62.25" width="58" height="12.5" rx="6.25" fill="#f7a21b"/></svg><figcaption>40</figcaption></figure>
+          <figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="24" height="24" role="img" aria-labelledby="stl5t"><title id="stl5t">Stacker</title><defs>
+<linearGradient id="stl5g" x1=".33" y1=".03" x2=".67" y2=".97"><stop offset="0" stop-color="#2a2a33"/><stop offset="1" stop-color="#0a0a0e"/></linearGradient>
+<linearGradient id="stl5h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/></linearGradient>
+</defs>
+<rect width="100" height="100" rx="23" fill="url(#stl5g)"/>
+<rect x=".75" y=".75" width="98.5" height="98.5" rx="22.25" fill="url(#stl5h)" stroke="#fff" stroke-opacity=".09" stroke-width="1.5"/><rect x="21" y="25.25" width="58" height="12.5" rx="6.25" fill="#3ccf63"/><rect x="21" y="43.75" width="58" height="12.5" rx="6.25" fill="#7b7bf0"/><rect x="21" y="62.25" width="58" height="12.5" rx="6.25" fill="#f7a21b"/></svg><figcaption>24</figcaption></figure>
+          <figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="16" height="16" role="img" aria-labelledby="stl6t"><title id="stl6t">Stacker</title><defs>
+<linearGradient id="stl6g" x1=".33" y1=".03" x2=".67" y2=".97"><stop offset="0" stop-color="#2a2a33"/><stop offset="1" stop-color="#0a0a0e"/></linearGradient>
+<linearGradient id="stl6h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/></linearGradient>
+</defs>
+<rect width="100" height="100" rx="23" fill="url(#stl6g)"/>
+<rect x=".75" y=".75" width="98.5" height="98.5" rx="22.25" fill="url(#stl6h)" stroke="#fff" stroke-opacity=".09" stroke-width="1.5"/><rect x="21" y="25.25" width="58" height="12.5" rx="6.25" fill="#3ccf63"/><rect x="21" y="43.75" width="58" height="12.5" rx="6.25" fill="#7b7bf0"/><rect x="21" y="62.25" width="58" height="12.5" rx="6.25" fill="#f7a21b"/></svg><figcaption>16</figcaption></figure>
+        </div>
+        <p class="sc-note">Barres 58 % × 12,5 %, espacement 6 %, rayon de tuile 23 %. Favicon : <code>faviconSVG()</code>.</p>
+      </div>
+      <div class="card">
+        <p class="sc-card-title">Logotype</p>
+        <div style="display:flex;justify-content:center;padding:10px 0"><span class="logo-lockup" style="--logo-size:52px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="52" height="52" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="stl10g" x1=".33" y1=".03" x2=".67" y2=".97"><stop offset="0" stop-color="#2a2a33"/><stop offset="1" stop-color="#0a0a0e"/></linearGradient>
+<linearGradient id="stl10h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/></linearGradient>
+</defs>
+<rect width="100" height="100" rx="23" fill="url(#stl10g)"/>
+<rect x=".75" y=".75" width="98.5" height="98.5" rx="22.25" fill="url(#stl10h)" stroke="#fff" stroke-opacity=".09" stroke-width="1.5"/><rect x="21" y="25.25" width="58" height="12.5" rx="6.25" fill="#3ccf63"/><rect x="21" y="43.75" width="58" height="12.5" rx="6.25" fill="#7b7bf0"/><rect x="21" y="62.25" width="58" height="12.5" rx="6.25" fill="#f7a21b"/></svg><span class="wordmark">Stacker</span></span></div>
+        <div class="lockup-dark"><span class="logo-lockup is-inverse" style="--logo-size:40px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="40" height="40" aria-hidden="true" focusable="false"><defs>
+<linearGradient id="stl11g" x1=".33" y1=".03" x2=".67" y2=".97"><stop offset="0" stop-color="#2a2a33"/><stop offset="1" stop-color="#0a0a0e"/></linearGradient>
+<linearGradient id="stl11h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/></linearGradient>
+</defs>
+<rect width="100" height="100" rx="23" fill="url(#stl11g)"/>
+<rect x=".75" y=".75" width="98.5" height="98.5" rx="22.25" fill="url(#stl11h)" stroke="#fff" stroke-opacity=".09" stroke-width="1.5"/><rect x="21" y="25.25" width="58" height="12.5" rx="6.25" fill="#3ccf63"/><rect x="21" y="43.75" width="58" height="12.5" rx="6.25" fill="#7b7bf0"/><rect x="21" y="62.25" width="58" height="12.5" rx="6.25" fill="#f7a21b"/></svg><span class="wordmark">Stacker</span></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ BOUTONS -->
+  <section class="sc-section" aria-labelledby="t-btn">
+    <header><span class="eyebrow">04</span><h2 id="t-btn" class="h2">Boutons</h2></header>
+    <div class="sc-grid cols-2">
+      <div class="card sc-col">
+        <p class="sc-card-title" style="margin:0">Variantes</p>
+        <button class="btn btn-primary btn-block">Continuer<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+        <button class="btn btn-secondary btn-block">Voir les missions</button>
+        <button class="btn btn-accent btn-block"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 22h18"/><path d="M6 18v-7"/><path d="M10 18v-7"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="m12 2 9 5H3z"/></svg>Virer mes gains</button>
+        <div class="sc-row">
+          <button class="btn btn-ghost">Plus tard</button>
+          <button class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>Se déconnecter</button>
+        </div>
+      </div>
+      <div class="card sc-col">
+        <p class="sc-card-title" style="margin:0">Tailles &amp; états</p>
+        <div class="sc-row">
+          <button class="btn btn-primary btn-lg">Grand</button>
+          <button class="btn btn-primary">Normal</button>
+          <button class="btn btn-primary btn-sm">Petit</button>
+        </div>
+        <div class="sc-row">
+          <button class="btn btn-primary" disabled>Désactivé</button>
+          <button class="btn btn-primary is-loading" aria-busy="true">Envoi</button>
+          <button class="btn btn-danger-solid">Supprimer</button>
+        </div>
+        <div class="sc-row">
+          <button class="btn btn-primary btn-icon" aria-label="Ajouter"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v14"/><path d="M5 12h14"/></svg></button>
+          <button class="btn btn-secondary btn-icon" aria-label="Rechercher"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+          <button class="btn btn-secondary btn-icon has-badge" aria-label="Notifications, 3"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="badge">3</span></button>
+          <button class="btn btn-ghost btn-icon" aria-label="Plus d’options"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ FORMULAIRES -->
+  <section class="sc-section" aria-labelledby="t-form">
+    <header><span class="eyebrow">05</span><h2 id="t-form" class="h2">Formulaires</h2></header>
+    <div class="sc-grid cols-2">
+      <div class="card sc-col">
+        <div class="field">
+          <label class="field-label" for="f1">Nom de l’entreprise</label>
+          <input class="input" id="f1" placeholder="Ex. Plomberie Durand">
+          <span class="field-hint">Tel qu’il apparaît sur le Kbis.</span>
+        </div>
+        <div class="field">
+          <label class="field-label" for="f2">E-mail</label>
+          <div class="input-wrap"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg><input class="input is-focus" id="f2" type="email" value="ines@stacker.fr"></div>
+          <span class="field-hint">État focus</span>
+        </div>
+      </div>
+      <div class="card sc-col">
+        <div class="field is-error">
+          <label class="field-label" for="f3">Téléphone</label>
+          <div class="input-wrap"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><input class="input" id="f3" type="tel" value="06 12 34" aria-invalid="true" aria-describedby="f3h"></div>
+          <span class="field-hint" id="f3h"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>Numéro incomplet : 10 chiffres attendus.</span>
+        </div>
+        <div class="field is-disabled">
+          <label class="field-label" for="f4">SIRET</label>
+          <div class="input-wrap"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="11" width="18" height="11" rx="3"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><input class="input" id="f4" value="842 913 557 00019" disabled></div>
+          <span class="field-hint">Vérifié — non modifiable.</span>
+        </div>
+        <div class="segmented" role="tablist" aria-label="Exemple">
+          <button role="tab" aria-selected="true">Particulier</button>
+          <button role="tab" aria-selected="false">Société</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ CARTES / BADGES -->
+  <section class="sc-section" aria-labelledby="t-cards">
+    <header><span class="eyebrow">06</span><h2 id="t-cards" class="h2">Cartes, chips &amp; niveaux</h2></header>
+    <div class="sc-grid cols-3">
+      <div class="card sc-col">
+        <p class="sc-card-title" style="margin:0">Chips &amp; badges</p>
+        <div class="sc-row">
+          <span class="chip">Neutre</span>
+          <span class="chip chip-green chip-dot">Répondu</span>
+          <span class="chip chip-violet chip-dot">Contacté</span>
+          <span class="chip chip-orange chip-dot">RDV fixé</span>
+          <span class="chip chip-pink">Legend</span>
+          <span class="chip chip-red"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>Refusé</span>
+          <span class="chip chip-dark"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="11" width="18" height="11" rx="3"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Verrouillé</span>
+          <span class="chip chip-outline"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>2 j</span>
+        </div>
+        <div class="sc-row">
+          <span class="badge">3</span><span class="badge">12</span><span class="badge badge-dot"></span>
+        </div>
+      </div>
+      <div class="card sc-col">
+        <p class="sc-card-title" style="margin:0">Niveaux de commission</p>
+        <div class="sc-row">
+          <span class="level level-rookie"><span class="level-mark"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21.42 10.92a1 1 0 0 0-.02-1.84L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.83l8.57 3.91a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></span>Rookie <span class="level-rate">· 15 %</span></span>
+          <span class="level level-pro"><span class="level-mark"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M11.52 2.3a.53.53 0 0 1 .95 0l2.31 4.68a2.12 2.12 0 0 0 1.6 1.16l5.16.75a.53.53 0 0 1 .3.91l-3.74 3.64a2.12 2.12 0 0 0-.61 1.88l.88 5.14a.53.53 0 0 1-.77.56l-4.62-2.43a2.12 2.12 0 0 0-1.97 0L6.4 21.02a.53.53 0 0 1-.77-.56l.88-5.14a2.12 2.12 0 0 0-.61-1.88L2.16 9.8a.53.53 0 0 1 .29-.9l5.17-.76a2.12 2.12 0 0 0 1.6-1.16z"/></svg></span>Pro <span class="level-rate">· 18 %</span></span>
+          <span class="level level-legend"><span class="level-mark"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></span>Legend <span class="level-rate">· 22 %</span></span>
+          <span class="level level-elite"><span class="level-mark"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0z"/></svg></span>Elite <span class="level-rate">· 25 %</span></span>
+        </div>
+      </div>
+      <div class="card sc-col">
+        <p class="sc-card-title" style="margin:0">Progression (unie)</p>
+        <div><div class="progress-meta"><span class="text-2">Rookie → Pro</span><b class="num">100 %</b></div><div class="progress" role="progressbar" aria-label="Rookie vers Pro" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="--value:100%"><span class="progress-bar"></span></div></div>
+        <div><div class="progress-meta"><span class="text-2">Pro → Legend</span><b class="num">64 %</b></div><div class="progress progress-violet" role="progressbar" aria-label="Pro vers Legend" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100" style="--value:64%"><span class="progress-bar"></span></div></div>
+        <div><div class="progress-meta"><span class="text-2">Objectif du mois</span><b class="num">32 %</b></div><div class="progress progress-orange progress-sm" role="progressbar" aria-label="Objectif du mois" aria-valuenow="32" aria-valuemin="0" aria-valuemax="100" style="--value:32%"><span class="progress-bar"></span></div></div>
+      </div>
+    </div>
+    <div class="sc-grid cols-2" style="margin-top:16px">
+      <div class="card card-hero">
+        <span class="eyebrow">Carte hero · radius 52</span>
+        <h3 class="h2" style="margin-top:8px">Devenez apporteur <span class="serif-accent">certifié</span></h3>
+        <p class="text-2" style="margin-top:8px">5 modules, 40 minutes. Débloquez les missions premium et la commission Pro.</p>
+        <div class="progress progress-ink progress-sm" style="--value:40%;margin-top:18px" role="progressbar" aria-label="Formation" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"><span class="progress-bar"></span></div>
+        <button class="btn btn-primary" style="margin-top:20px"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 4.5v15a1 1 0 0 0 1.52.85l12.2-7.5a1 1 0 0 0 0-1.7L7.52 3.65A1 1 0 0 0 6 4.5z"/></svg>Reprendre le module 3</button>
+      </div>
+      <ul class="list" aria-label="Exemple de liste">
+        <li><a class="list-row" href="#"><span class="avatar avatar-violet"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg></span><span class="list-main"><span class="list-title">Fiche entreprise</span><span class="list-sub">Ligne de liste cliquable</span></span><svg xmlns="http://www.w3.org/2000/svg" class="icon list-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 18 6-6-6-6"/></svg></a></li>
+        <li><a class="list-row" href="#"><span class="avatar avatar-green"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span><span class="list-main"><span class="list-title">Paiements sécurisés</span><span class="list-sub">Stripe Connect · KYC validé</span></span><svg xmlns="http://www.w3.org/2000/svg" class="icon list-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 18 6-6-6-6"/></svg></a></li>
+        <li><a class="list-row" href="#"><span class="avatar avatar-orange"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></span><span class="list-main"><span class="list-title">Réglages</span><span class="list-sub">Notifications, IBAN, profil</span></span><svg xmlns="http://www.w3.org/2000/svg" class="icon list-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 18 6-6-6-6"/></svg></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================================================================ NAVIGATION / FEEDBACK -->
+  <section class="sc-section" aria-labelledby="t-nav">
+    <header><span class="eyebrow">07</span><h2 id="t-nav" class="h2">Navigation &amp; feedback</h2></header>
+    <div class="sc-grid cols-2">
+      <div class="sc-col">
+        <div class="demo-frame h-nav">
+          <header class="appbar">
+            <button class="btn btn-icon" aria-label="Retour"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m15 18-6-6 6-6"/></svg></button>
+            <span class="appbar-title is-center">Détail du deal</span>
+            <button class="btn btn-icon" aria-label="Plus d’options"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button>
+          </header>
+          <nav class="tabbar is-contained" aria-label="Navigation principale"><a class="tabbar-item" href="#"><span class="tabbar-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 10a2 2 0 0 1 .7-1.53l7-6a2 2 0 0 1 2.6 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M15 21v-7a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v7"/></svg></span>Accueil</a><a class="tabbar-item" href="#"><span class="tabbar-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Prospects</a><a class="tabbar-item" href="#" aria-current="page"><span class="tabbar-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="7" width="20" height="14" rx="3"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><path d="M2 13h20"/></svg></span>Deals</a><a class="tabbar-item" href="#"><span class="tabbar-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M19 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0 0 4h14a2 2 0 0 1 2 2v3"/><path d="M3 5v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3"/><path d="M21 12h-4a2 2 0 0 0 0 4h4z"/></svg></span>Gains</a><a class="tabbar-item" href="#"><span class="tabbar-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 0 0-16 0"/></svg></span>Profil</a></nav>
+        </div>
+        <div class="toast toast-success is-contained" role="status">
+          <span class="toast-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"/></svg></span>
+          <div class="toast-body"><strong>Prospect ajouté</strong><span>Plomberie Durand est dans ta liste.</span></div>
+          <button class="btn btn-ghost btn-icon" aria-label="Fermer"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+        </div>
+        <div class="toast toast-error is-contained" role="alert">
+          <span class="toast-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg></span>
+          <div class="toast-body"><strong>Virement impossible</strong><span>Ajoute un IBAN valide.</span></div>
+          <button class="btn btn-ghost btn-icon" aria-label="Fermer"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+        </div>
+        <div class="card" aria-busy="true" aria-label="Chargement">
+          <p class="sc-card-title">Skeleton</p>
+          <div style="display:flex;gap:12px;align-items:center"><span class="skeleton skeleton-avatar"></span><div style="flex:1;display:grid;gap:8px"><span class="skeleton skeleton-text" style="width:70%"></span><span class="skeleton skeleton-text" style="width:45%"></span></div></div>
+          <div style="display:flex;gap:12px;align-items:center;margin-top:16px"><span class="skeleton skeleton-avatar"></span><div style="flex:1;display:grid;gap:8px"><span class="skeleton skeleton-text" style="width:55%"></span><span class="skeleton skeleton-text" style="width:35%"></span></div></div>
+        </div>
+      </div>
+      <div class="sc-col">
+        <div class="demo-frame h-sheet">
+          <div class="demo-ghost-content" aria-hidden="true">
+            <span class="skeleton skeleton-title" style="width:50%;animation:none"></span>
+            <span class="skeleton" style="height:120px;border-radius:28px;animation:none"></span>
+          </div>
+          <div class="sheet-backdrop is-open is-contained"></div>
+          <div class="sheet is-open is-contained" role="dialog" aria-modal="true" aria-labelledby="sheet-t">
+            <div class="sheet-handle"></div>
+            <h3 id="sheet-t" class="sheet-title">Virer 842,00 €</h3>
+            <p class="text-2" style="margin-top:6px">Vers BNP Paribas · IBAN •• 4821. Arrivée sous 24 h ouvrées.</p>
+            <div class="sheet-actions">
+              <button class="btn btn-primary btn-block"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 22h18"/><path d="M6 18v-7"/><path d="M10 18v-7"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="m12 2 9 5H3z"/></svg>Confirmer le virement</button>
+              <button class="btn btn-ghost btn-block">Annuler</button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="empty">
+            <div class="empty-art"><span class="tile"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></span><span class="sticker sticker-violet">0</span></div>
+            <h3 class="h3">Aucun deal pour l’instant</h3>
+            <p>Ajoute un prospect et transforme ton premier appel en commission.</p>
+            <button class="btn btn-primary"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v14"/><path d="M5 12h14"/></svg>Ajouter un prospect</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ MOMENTS FORTS -->
+  <section class="sc-section" aria-labelledby="t-moments">
+    <header><span class="eyebrow">08</span><h2 id="t-moments" class="h2">Moments forts</h2></header>
+    <div class="sc-grid cols-2">
+      <div class="card card-hero grain-local grain" style="text-align:center">
+        <span class="eyebrow">Niveau débloqué</span>
+        <div style="margin:18px 0 14px"><span class="ransom"><span class="sr-only">NIVEAU PRO</span><span class="w" aria-hidden="true"><span class="l rc0" style="--i:0">N</span><span class="l rc1" style="--i:1">I</span><span class="l rc2" style="--i:2">V</span><span class="l rc3" style="--i:3">E</span><span class="l rc4" style="--i:4">A</span><span class="l rc5" style="--i:5">U</span></span><span class="w" aria-hidden="true"><span class="l rc0" style="--i:6">P</span><span class="l rc1" style="--i:7">R</span><span class="l rc2" style="--i:8">O</span></span></span></div>
+        <p class="text-2">Ta commission passe à <b style="color:var(--st-ink)">18 %</b> sur toutes tes ventes.</p>
+        <div class="sc-row" style="justify-content:center;margin-top:18px">
+          <span class="level level-pro"><span class="level-mark"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M11.52 2.3a.53.53 0 0 1 .95 0l2.31 4.68a2.12 2.12 0 0 0 1.6 1.16l5.16.75a.53.53 0 0 1 .3.91l-3.74 3.64a2.12 2.12 0 0 0-.61 1.88l.88 5.14a.53.53 0 0 1-.77.56l-4.62-2.43a2.12 2.12 0 0 0-1.97 0L6.4 21.02a.53.53 0 0 1-.77-.56l.88-5.14a2.12 2.12 0 0 0-.61-1.88L2.16 9.8a.53.53 0 0 1 .29-.9l5.17-.76a2.12 2.12 0 0 0 1.6-1.16z"/></svg></span>Pro <span class="level-rate">· 18 %</span></span>
+        </div>
+      </div>
+      <div class="card card-hero card-dark" style="text-align:center">
+        <span class="eyebrow" style="color:var(--st-on-dark-2)">Vente signée</span>
+        <div style="margin:18px 0 14px"><span class="ransom"><span class="sr-only">+214 €</span><span class="w" aria-hidden="true"><span class="l rc0" style="--i:0">+</span><span class="l rc1" style="--i:1">2</span><span class="l rc2" style="--i:2">1</span><span class="l rc3" style="--i:3">4</span></span><span class="w" aria-hidden="true"><span class="l rc4" style="--i:4">€</span></span></span></div>
+        <p style="color:var(--st-on-dark-2)">Plomberie Durand · commission ajoutée à ton solde en attente.</p>
+        <div class="sc-row" style="justify-content:center;margin-top:20px;gap:16px">
+          <span class="sticker"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"/></svg>Signé</span>
+          <span class="sticker sticker-orange"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>Série 8</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ ICÔNES -->
+  <section class="sc-section" aria-labelledby="t-icons">
+    <header><span class="eyebrow">09</span><h2 id="t-icons" class="h2">Icônes</h2></header>
+    <div class="card">
+      <div class="icon-grid"><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 10a2 2 0 0 1 .7-1.53l7-6a2 2 0 0 1 2.6 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M15 21v-7a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v7"/></svg><figcaption>home</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><figcaption>users</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="7" width="20" height="14" rx="3"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><path d="M2 13h20"/></svg><figcaption>briefcase</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M19 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0 0 4h14a2 2 0 0 1 2 2v3"/><path d="M3 5v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3"/><path d="M21 12h-4a2 2 0 0 0 0 4h4z"/></svg><figcaption>wallet</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 0 0-16 0"/></svg><figcaption>user</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><figcaption>phone</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg><figcaption>mail</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><figcaption>search</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 6h18"/><path d="M7 12h10"/><path d="M10 18h4"/></svg><figcaption>filter</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h10"/><path d="M18 7h2"/><circle cx="16" cy="7" r="2"/><path d="M4 17h2"/><path d="M10 17h10"/><circle cx="8" cy="17" r="2"/></svg><figcaption>sliders</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"/></svg><figcaption>check</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="m8 12.5 2.5 2.5L16 9.5"/></svg><figcaption>check-circle</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><figcaption>x</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 18 6-6-6-6"/></svg><figcaption>chevron-right</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m15 18-6-6 6-6"/></svg><figcaption>chevron-left</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg><figcaption>chevron-down</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m18 15-6-6-6 6"/></svg><figcaption>chevron-up</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg><figcaption>arrow-right</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg><figcaption>arrow-left</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg><figcaption>arrow-up-right</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M17 7 7 17"/><path d="M17 17H7V7"/></svg><figcaption>arrow-down-left</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v14"/><path d="M5 12h14"/></svg><figcaption>plus</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="11" width="18" height="11" rx="3"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><figcaption>lock</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg><figcaption>shield</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><figcaption>bell</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg><figcaption>settings</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg><figcaption>logout</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0z"/></svg><figcaption>trophy</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg><figcaption>flame</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M11.52 2.3a.53.53 0 0 1 .95 0l2.31 4.68a2.12 2.12 0 0 0 1.6 1.16l5.16.75a.53.53 0 0 1 .3.91l-3.74 3.64a2.12 2.12 0 0 0-.61 1.88l.88 5.14a.53.53 0 0 1-.77.56l-4.62-2.43a2.12 2.12 0 0 0-1.97 0L6.4 21.02a.53.53 0 0 1-.77-.56l.88-5.14a2.12 2.12 0 0 0-.61-1.88L2.16 9.8a.53.53 0 0 1 .29-.9l5.17-.76a2.12 2.12 0 0 0 1.6-1.16z"/></svg><figcaption>star</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg><figcaption>map-pin</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg><figcaption>calendar</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 10h11"/><path d="M4 14h9"/><path d="M19 6a7.7 7.7 0 0 0-5.2-2A7.9 7.9 0 0 0 6 12c0 4.4 3.5 8 7.8 8 2 0 3.8-.8 5.2-2"/></svg><figcaption>euro</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14.54 21.69a.5.5 0 0 0 .94-.03l6.5-19a.5.5 0 0 0-.64-.64l-19 6.5a.5.5 0 0 0-.03.94l7.93 3.18a2 2 0 0 1 1.11 1.11z"/><path d="m21.85 2.15-10.94 10.93"/></svg><figcaption>send</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 20h9"/><path d="M16.38 3.62a1 1 0 0 1 3 3L7.37 18.64a2 2 0 0 1-.86.5l-2.87.84a.5.5 0 0 1-.62-.62l.84-2.87a2 2 0 0 1 .5-.86z"/></svg><figcaption>pen</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m21 17-2.16-1.87a.5.5 0 0 0-.84.37v.5a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1c0-2.55-4-3.97-8.5-4a1 1 0 0 0 0 5c4.15 0 4.75-11.3 5.7-13.5a2.5 2.5 0 1 1 3.31 3.28"/><path d="M3 21h18"/></svg><figcaption>signature</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg><figcaption>building</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21.42 10.92a1 1 0 0 0-.02-1.84L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.83l8.57 3.91a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg><figcaption>graduation</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 4.5v15a1 1 0 0 0 1.52.85l12.2-7.5a1 1 0 0 0 0-1.7L7.52 3.65A1 1 0 0 0 6 4.5z"/></svg><figcaption>play</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><figcaption>clock</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m22 7-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/></svg><figcaption>trending-up</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg><figcaption>alert</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg><figcaption>info</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><figcaption>target</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/></svg><figcaption>message</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg><figcaption>inbox</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 22h18"/><path d="M6 18v-7"/><path d="M10 18v-7"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="m12 2 9 5H3z"/></svg><figcaption>bank</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg><figcaption>more</figcaption></figure><figure><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2.06 12.35a1 1 0 0 1 0-.7 10.75 10.75 0 0 1 19.88 0 1 1 0 0 1 0 .7 10.75 10.75 0 0 1-19.88 0"/><circle cx="12" cy="12" r="3"/></svg><figcaption>eye</figcaption></figure></div>
+      <p class="sc-note">Trait 2,25 · bouts arrondis · <code>currentColor</code> · viewBox 24.</p>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>

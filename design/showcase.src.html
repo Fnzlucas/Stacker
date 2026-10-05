@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ececf0">
+<title>Stacker — Design system</title>
+<link rel="icon" type="image/svg+xml" href="{{favicon}}">
+<style>
+{{css}}
+
+/* ---------- Mise en page de la vitrine (hors design system) ---------- */
+.sc { max-width: 1240px; margin: 0 auto; padding: 0 16px 96px; }
+.sc-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 0 8px; }
+.sc-hero { padding: 36px 4px 12px; }
+.sc-hero .display { font-size: 44px; margin-top: 10px; }
+.sc-hero p { margin-top: 14px; max-width: 520px; color: var(--st-text-2); font-size: var(--st-text-md); }
+.sc-hero .stickers { display: flex; gap: 12px; margin-top: 22px; flex-wrap: wrap; align-items: center; }
+.sc-section { margin-top: 56px; }
+.sc-section > header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 18px; padding: 0 4px; }
+.sc-section > header .eyebrow { min-width: 24px; }
+.sc-grid { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); }
+.sc-card-title { font-size: var(--st-text-xs); font-weight: 600; letter-spacing: var(--st-tracking-caps); text-transform: uppercase; color: var(--st-text-2); margin-bottom: 16px; }
+.sc-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.sc-col { display: flex; flex-direction: column; gap: 16px; }
+.sc-note { margin-top: 12px; font-size: var(--st-text-sm); color: var(--st-text-2); }
+@media (min-width: 760px) {
+  .sc { padding: 0 32px 120px; }
+  .sc-hero .display { font-size: 64px; }
+  .sc-grid.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sc-grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* Couleurs */
+.swatches { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.swatch { border-radius: 20px; overflow: hidden; background: var(--st-surface); box-shadow: 0 0 0 1px var(--st-line) inset; }
+.swatch i { display: block; height: 64px; }
+.swatch div { padding: 10px 12px 12px; }
+.swatch b { display: block; font-size: 13px; }
+.swatch code { font: 500 12px/1.4 var(--st-font-text); color: var(--st-text-2); }
+@media (min-width: 760px) { .swatches { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+/* Typo */
+.type-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 12px 0; border-top: 1px solid var(--st-line); }
+.type-row:first-of-type { border-top: 0; padding-top: 0; }
+.type-row code { font: 500 11px/1.3 var(--st-font-text); color: var(--st-text-2); white-space: nowrap; }
+
+/* Rayons / ombres */
+.radii { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.radii div { height: 76px; background: var(--st-surface); display: grid; place-items: center; font-size: 12px; font-weight: 600; color: var(--st-text-2); }
+
+/* Logos */
+.logo-sizes { display: flex; align-items: flex-end; gap: 18px; flex-wrap: wrap; }
+.logo-sizes figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 11px; color: var(--st-text-2); font-weight: 600; }
+.lockup-dark { margin-top: 18px; padding: 22px; border-radius: 28px; background: var(--st-dark-grad); display: flex; justify-content: center; }
+
+/* Icônes */
+.icon-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+.icon-grid figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 2px 8px; border-radius: 16px; }
+.icon-grid figure:hover { background: var(--st-surface-2); }
+.icon-grid figcaption { font-size: 10px; color: var(--st-text-2); font-weight: 500; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (min-width: 760px) { .icon-grid { grid-template-columns: repeat(8, minmax(0, 1fr)); } }
+
+/* Cadres de démo (composants positionnés) */
+.demo-frame { position: relative; overflow: hidden; border-radius: 28px; background: var(--st-bg); box-shadow: 0 0 0 1px var(--st-line) inset; }
+.demo-frame.h-nav { height: 196px; }
+.demo-frame.h-sheet { height: 470px; }
+.demo-frame .appbar { position: relative; background: transparent; }
+.demo-ghost-content { padding: 16px 20px; display: grid; gap: 12px; }
+
+/* Appareils (maquettes 390 × 844) */
+.devices { display: flex; flex-wrap: wrap; justify-content: center; gap: 32px; }
+.device {
+  position: relative; width: 390px; max-width: 100%; height: 844px; overflow: hidden;
+  background: var(--st-bg); isolation: isolate;
+}
+.device::before { content: ""; position: absolute; inset: 0; z-index: 400; pointer-events: none; background-image: var(--st-grain); opacity: var(--st-grain-opacity); mix-blend-mode: multiply; }
+.device-scroll { height: 100%; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; padding-bottom: calc(var(--st-tabbar-h) + 32px); }
+.device-scroll::-webkit-scrollbar { display: none; }
+.device .appbar { background: color-mix(in srgb, var(--st-bg) 86%, transparent); }
+.device-body { padding: 4px 20px 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+.device-label { text-align: center; margin-top: 12px; font-size: 13px; font-weight: 600; color: var(--st-text-2); }
+@media (min-width: 431px) {
+  .device { border-radius: 52px; box-shadow: 0 0 0 10px #121216, 0 0 0 11px #2a2a33, var(--st-shadow-card); }
+}
+@media (max-width: 430px) {
+  .sc-screens { margin-left: -16px; margin-right: -16px; }
+  .devices { gap: 40px; }
+  .sc-screens > header { padding: 0 20px; }
+  .device-label { display: none; }
+}
+
+/* Écran Accueil */
+.greet { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+.greet .eyebrow { font-size: 11px; }
+.greet-name { font-family: var(--st-font-display); font-weight: 800; font-size: 20px; letter-spacing: -0.03em; line-height: 1.15; }
+.stat-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.stat { padding: 16px; border-radius: 24px; }
+.stat-icon { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 12px; margin-bottom: 12px; }
+.stat-icon .icon { width: 19px; height: 19px; }
+.stat-value { font-family: var(--st-font-display); font-weight: 800; font-size: 24px; letter-spacing: -0.035em; line-height: 1.05; }
+.stat-label { font-size: 13px; color: var(--st-text-2); margin-top: 2px; }
+.level-card-title { font-family: var(--st-font-display); font-weight: 800; font-size: 22px; letter-spacing: -0.03em; line-height: 1.15; margin: 14px 0 16px; }
+.level-card-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.mission-icon { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 13px; flex-shrink: 0; }
+.mission-icon .icon { width: 19px; height: 19px; }
+
+/* Écran Prospects */
+.chip-scroll { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin: 0 -20px; padding: 3px 20px; }
+.chip-scroll::-webkit-scrollbar { display: none; }
+.list-header { display: flex; justify-content: space-between; align-items: baseline; padding: 0 4px; }
+.date-head { padding: 6px 4px 0; }
+</style>
+</head>
+<body class="grain">
+<main class="sc">
+
+  <div class="sc-top">
+    {{lockup:34}}
+    <span class="chip chip-outline">Design system · v1.0</span>
+  </div>
+
+  <section class="sc-hero" aria-labelledby="hero-title">
+    <span class="eyebrow">Style vox — fondations &amp; composants</span>
+    <h1 id="hero-title" class="display">L’app des apporteurs d’affaires <span class="serif-accent">sérieux</span>.</h1>
+    <p>Une base SaaS claire et premium, des accents vert, violet et orange, et quelques touches collage réservées aux grands moments.</p>
+    <div class="stickers">
+      <span class="sticker">{{icon:trending-up}}Commission 18 %</span>
+      <span class="sticker sticker-paper sticker-serif">fait main</span>
+      <span class="sticker sticker-dark">{{icon:check}}Vente signée</span>
+    </div>
+  </section>
+
+  <!-- ================================================================ ÉCRANS -->
+  <section class="sc-section sc-screens" aria-labelledby="t-screens">
+    <header><span class="eyebrow">01</span><h2 id="t-screens" class="h2">Écrans</h2></header>
+    <div class="devices">
+
+      <!-- ===== ACCUEIL ===== -->
+      <div>
+      <div class="device" id="screen-home" aria-label="Maquette écran Accueil">
+        <div class="device-scroll">
+          <header class="appbar">
+            <div class="greet">
+              <span class="avatar avatar-round avatar-dark">IM</span>
+              <div style="min-width:0">
+                <div class="eyebrow">Mardi 5 octobre</div>
+                <div class="greet-name">Bonjour Inès</div>
+              </div>
+            </div>
+            <div class="appbar-actions">
+              <button class="btn btn-icon has-badge" aria-label="Notifications, 3 nouvelles">{{icon:bell}}<span class="badge badge-dot" aria-hidden="true"></span></button>
+            </div>
+          </header>
+
+          <div class="device-body">
+            <article class="balance" aria-label="Solde">
+              <span class="balance-deco" aria-hidden="true">{{bars:168}}</span>
+              <div class="balance-label">{{icon:wallet:16}}Solde total</div>
+              <div class="balance-amount num">1 248<span class="cents">,50 €</span></div>
+              <div class="balance-row">
+                <span class="chip chip-on-dark">{{icon:trending-up}}+128,40 € cette semaine</span>
+              </div>
+              <div class="balance-actions">
+                <button class="btn btn-accent">{{icon:bank}}Virer</button>
+                <button class="btn btn-glass">Détails</button>
+              </div>
+            </article>
+
+            <article class="card" aria-labelledby="lvl-title">
+              <div class="level-card-top">
+                <span class="level level-pro"><span class="level-mark">{{icon:star}}</span>Pro <span class="level-rate">· 18 %</span></span>
+                <span class="text-small">Prochain : <b style="color:var(--st-pink-ink)">Legend 22 %</b></span>
+              </div>
+              <h2 id="lvl-title" class="level-card-title">Plus que 3 ventes avant <span class="serif-accent">Legend</span></h2>
+              <div class="progress-meta"><span class="text-2">1 850 / 2 900 XP</span><b class="num">64 %</b></div>
+              <div class="progress progress-violet" role="progressbar" aria-label="Progression vers Legend" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100" style="--value:64%"><span class="progress-bar"></span></div>
+            </article>
+
+            <div class="stat-pair">
+              <div class="card stat">
+                <span class="stat-icon" style="background:var(--st-orange-50);color:var(--st-orange-ink)">{{icon:flame}}</span>
+                <div class="stat-value num">7 jours</div>
+                <div class="stat-label">Série en cours</div>
+              </div>
+              <div class="card stat">
+                <span class="stat-icon" style="background:var(--st-green-50);color:var(--st-green-ink)">{{icon:calendar}}</span>
+                <div class="stat-value num">12 RDV</div>
+                <div class="stat-label">Ce mois-ci</div>
+              </div>
+            </div>
+
+            <section aria-labelledby="missions-title">
+              <div class="section-head">
+                <h2 id="missions-title" class="h3">Missions du jour</h2>
+                <a class="link" href="#">Tout voir{{icon:chevron-right}}</a>
+              </div>
+              <div class="card card-tight">
+                <div class="mission is-done">
+                  <span class="mission-icon" style="background:var(--st-green-50);color:var(--st-green-ink)">{{icon:phone}}</span>
+                  <div class="list-main"><span class="list-title">Appeler 10 artisans RGE</span><span class="list-sub"><b class="text-gain">+40 XP</b><span>· 10/10 terminé</span></span></div>
+                                    <button class="mission-check" role="checkbox" aria-checked="true" aria-label="Mission terminée">{{icon:check}}</button>
+                </div>
+                <div class="mission">
+                  <span class="mission-icon" style="background:var(--st-violet-50);color:var(--st-violet-ink)">{{icon:send}}</span>
+                  <div class="list-main"><span class="list-title">Relancer Boulangerie Martin</span><span class="list-sub"><b class="text-gain">+25 XP</b><span>· devis envoyé il y a 3 j</span></span></div>
+                                    <button class="mission-check" role="checkbox" aria-checked="false" aria-label="Marquer comme faite">{{icon:check}}</button>
+                </div>
+                <div class="mission">
+                  <span class="mission-icon" style="background:var(--st-orange-50);color:var(--st-orange-ink)">{{icon:signature}}</span>
+                  <div class="list-main"><span class="list-title">Signer Garage des Remparts</span><span class="list-sub"><b class="text-gain">+60 XP</b><span>· commission estimée 96 €</span></span></div>
+                                    <button class="mission-check" role="checkbox" aria-checked="false" aria-label="Marquer comme faite">{{icon:check}}</button>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+        {{tabbar:home}}
+      </div>
+      <p class="device-label">Accueil</p>
+      </div>
+
+      <!-- ===== PROSPECTS ===== -->
+      <div>
+      <div class="device" id="screen-prospects" aria-label="Maquette écran Prospects">
+        <div class="device-scroll">
+          <header class="appbar">
+            <h1 class="appbar-title">Prospects</h1>
+            <div class="appbar-actions">
+              <button class="btn btn-icon" aria-label="Filtres avancés">{{icon:sliders}}</button>
+              <button class="btn btn-primary btn-icon" aria-label="Ajouter un prospect">{{icon:plus}}</button>
+            </div>
+          </header>
+          <div class="device-body">
+            <label class="input-wrap">
+              <span class="sr-only">Rechercher une entreprise</span>
+              {{icon:search}}
+              <input class="input" type="search" placeholder="Entreprise, ville, secteur…">
+            </label>
+            <div class="chip-scroll" role="group" aria-label="Filtrer par statut">
+              <button class="chip chip-filter" aria-pressed="true">Tous <span class="chip-count">48</span></button>
+              <button class="chip chip-filter" aria-pressed="false">À contacter <span class="chip-count">21</span></button>
+              <button class="chip chip-filter" aria-pressed="false">Contactés <span class="chip-count">15</span></button>
+              <button class="chip chip-filter" aria-pressed="false">Répondus <span class="chip-count">9</span></button>
+              <button class="chip chip-filter" aria-pressed="false">RDV <span class="chip-count">3</span></button>
+            </div>
+            <div class="list-header"><span class="text-small">48 entreprises · Avignon et alentours</span></div>
+            <ul class="list" aria-label="Prospects">
+              <li><a class="list-row" href="#"><span class="avatar avatar-violet">PD</span><span class="list-main"><span class="list-title">Plomberie Durand</span><span class="list-sub">{{icon:map-pin}}<span>Avignon · Plomberie</span></span></span><span class="chip chip-violet chip-dot">Contacté</span></a></li>
+              <li><a class="list-row" href="#"><span class="avatar avatar-green">GR</span><span class="list-main"><span class="list-title">Garage des Remparts</span><span class="list-sub">{{icon:map-pin}}<span>Avignon · Automobile</span></span></span><span class="chip chip-green chip-dot">Répondu</span></a></li>
+              <li><a class="list-row" href="#"><span class="avatar avatar-orange">BM</span><span class="list-main"><span class="list-title">Boulangerie Martin</span><span class="list-sub">{{icon:map-pin}}<span>Villeneuve · Commerce</span></span></span><span class="chip chip-violet chip-dot">Contacté</span></a></li>
+              <li><a class="list-row" href="#"><span class="avatar">AL</span><span class="list-main"><span class="list-title">Atelier Lumen Électricité</span><span class="list-sub">{{icon:map-pin}}<span>Le Pontet · Électricité</span></span></span><span class="chip chip-dot">À contacter</span></a></li>
+              <li><a class="list-row" href="#"><span class="avatar avatar-green">TR</span><span class="list-main"><span class="list-title">Toitures du Rhône</span><span class="list-sub">{{icon:map-pin}}<span>Sorgues · Couverture</span></span></span><span class="chip chip-green chip-dot">Répondu</span></a></li>
+              <li><a class="list-row" href="#"><span class="avatar avatar-pink">CV</span><span class="list-main"><span class="list-title">Cabinet Valette</span><span class="list-sub">{{icon:map-pin}}<span>Avignon · Immobilier</span></span></span><span class="chip chip-dot">À contacter</span></a></li>
+              <li><a class="list-row" href="#"><span class="avatar avatar-violet">MA</span><span class="list-main"><span class="list-title">Menuiserie Arnaud</span><span class="list-sub">{{icon:map-pin}}<span>Châteaurenard · Menuiserie</span></span></span><span class="chip chip-violet chip-dot">Contacté</span></a></li>
+            </ul>
+          </div>
+        </div>
+        {{tabbar:prospects}}
+      </div>
+      <p class="device-label">Prospects</p>
+      </div>
+
+      <!-- ===== GAINS ===== -->
+      <div>
+      <div class="device" id="screen-gains" aria-label="Maquette écran Gains">
+        <div class="device-scroll">
+          <header class="appbar">
+            <h1 class="appbar-title">Gains</h1>
+            <div class="appbar-actions">
+              <button class="btn btn-secondary btn-sm" style="gap:6px">{{icon:calendar}}Octobre</button>
+            </div>
+          </header>
+          <div class="device-body">
+            <article class="balance" aria-label="Solde disponible">
+              <span class="balance-deco" aria-hidden="true">{{bars:168}}</span>
+              <div class="balance-label">{{icon:check-circle:16}}Disponible au virement</div>
+              <div class="balance-amount num">842<span class="cents">,00 €</span></div>
+              <dl class="balance-split" style="margin-bottom:0">
+                <div><dt>En attente</dt><dd class="num">406,50 €</dd></div>
+                <div><dt>Gagné en 2026</dt><dd class="num">6 214,90 €</dd></div>
+              </dl>
+              <button class="btn btn-accent btn-block" style="margin-top:16px">{{icon:bank}}Virer 842,00 €</button>
+              <p class="text-small" style="color:var(--st-on-dark-2);text-align:center;margin-top:10px">Virement SEPA sous 24 h · IBAN •• 4821</p>
+            </article>
+
+            <div class="segmented" role="tablist" aria-label="Type de mouvement">
+              <button role="tab" aria-selected="true">Tout</button>
+              <button role="tab" aria-selected="false">Commissions</button>
+              <button role="tab" aria-selected="false">Virements</button>
+            </div>
+
+            <section aria-labelledby="hist-title">
+              <div class="section-head date-head"><h2 id="hist-title" class="h3">Historique</h2><span class="text-small">Cette semaine</span></div>
+              <ul class="list">
+                <li><a class="list-row" href="#"><span class="avatar avatar-green">{{icon:arrow-down-left}}</span><span class="list-main"><span class="list-title">Plomberie Durand</span><span class="list-sub">Vente signée · 18 %</span></span><span class="list-end"><span class="list-amount text-gain">+214,20 €</span><span class="chip chip-orange">En attente</span></span></a></li>
+                <li><a class="list-row" href="#"><span class="avatar avatar-dark">{{icon:bank}}</span><span class="list-main"><span class="list-title">Virement vers BNP</span><span class="list-sub">IBAN •• 4821 · 2 oct.</span></span><span class="list-end"><span class="list-amount">−500,00 €</span><span class="chip">Envoyé</span></span></a></li>
+                <li><a class="list-row" href="#"><span class="avatar avatar-orange">{{icon:flame}}</span><span class="list-main"><span class="list-title">Bonus série 7 jours</span><span class="list-sub">Prime d’assiduité</span></span><span class="list-end"><span class="list-amount text-gain">+25,00 €</span><span class="chip chip-green">Disponible</span></span></a></li>
+                <li><a class="list-row" href="#"><span class="avatar avatar-green">{{icon:arrow-down-left}}</span><span class="list-main"><span class="list-title">Garage des Remparts</span><span class="list-sub">Vente signée · 18 %</span></span><span class="list-end"><span class="list-amount text-gain">+96,30 €</span><span class="chip chip-green">Disponible</span></span></a></li>
+              </ul>
+            </section>
+          </div>
+        </div>
+        {{tabbar:gains}}
+      </div>
+      <p class="device-label">Gains</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================================================================ FONDATIONS -->
+  <section class="sc-section" aria-labelledby="t-found">
+    <header><span class="eyebrow">02</span><h2 id="t-found" class="h2">Fondations</h2></header>
+    <div class="sc-grid cols-2">
+      <div class="card">
+        <p class="sc-card-title">Couleurs</p>
+        <div class="swatches">
+          <div class="swatch"><i style="background:#1c1c1e"></i><div><b>Ink</b><code>#1c1c1e · texte</code></div></div>
+          <div class="swatch"><i style="background:#636368"></i><div><b>Texte 2</b><code>#636368 · AA</code></div></div>
+          <div class="swatch"><i style="background:#ececf0"></i><div><b>Fond</b><code>#ececf0 / #f4f4f6</code></div></div>
+          <div class="swatch"><i style="background:#8e8e93"></i><div><b>Muted</b><code>#8e8e93 · icônes</code></div></div>
+          <div class="swatch"><i style="background:#3ccf63"></i><div><b>Vert</b><code>#3ccf63 / #12a150</code></div></div>
+          <div class="swatch"><i style="background:#7b7bf0"></i><div><b>Violet</b><code>#7b7bf0</code></div></div>
+          <div class="swatch"><i style="background:#f7a21b"></i><div><b>Orange</b><code>#f7a21b</code></div></div>
+          <div class="swatch"><i style="background:#e63946"></i><div><b>Rouge</b><code>#e63946 · erreurs</code></div></div>
+        </div>
+      </div>
+      <div class="sc-col">
+        <div class="card">
+          <p class="sc-card-title">Typographie</p>
+          <div class="type-row"><span class="display" style="font-size:38px">Stacker</span><code>Display 800 · 38</code></div>
+          <div class="type-row"><span class="h2">Missions du jour</span><code>Display 800 · 24</code></div>
+          <div class="type-row"><span class="h3">Plomberie Durand</span><code>Display 700 · 19</code></div>
+          <div class="type-row"><span class="text-body">Texte courant lisible.</span><code>Inter 400 · 15</code></div>
+          <div class="type-row"><span style="font-size:30px;font-family:var(--st-font-display);font-weight:800;letter-spacing:-0.035em">Un ton <span class="serif-accent">sérieux</span></span><code>Instrument Serif</code></div>
+        </div>
+        <div class="card">
+          <p class="sc-card-title">Rayons &amp; ombres</p>
+          <div class="radii">
+            <div style="border-radius:14px;box-shadow:var(--st-shadow-sm)">14 · sm</div>
+            <div style="border-radius:28px;box-shadow:var(--st-shadow-md)">28 · lg</div>
+            <div style="border-radius:44px;box-shadow:var(--st-shadow-card)">44 · 2xl</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ LOGO -->
+  <section class="sc-section" aria-labelledby="t-logo">
+    <header><span class="eyebrow">03</span><h2 id="t-logo" class="h2">Logo</h2></header>
+    <div class="sc-grid cols-2">
+      <div class="card">
+        <p class="sc-card-title">Tuile — toutes tailles</p>
+        <div class="logo-sizes">
+          <figure>{{logo:96}}<figcaption>96</figcaption></figure>
+          <figure>{{logo:64}}<figcaption>64</figcaption></figure>
+          <figure>{{logo:40}}<figcaption>40</figcaption></figure>
+          <figure>{{logo:24}}<figcaption>24</figcaption></figure>
+          <figure>{{logo:16}}<figcaption>16</figcaption></figure>
+        </div>
+        <p class="sc-note">Barres 58 % × 12,5 %, espacement 6 %, rayon de tuile 23 %. Favicon : <code>faviconSVG()</code>.</p>
+      </div>
+      <div class="card">
+        <p class="sc-card-title">Logotype</p>
+        <div style="display:flex;justify-content:center;padding:10px 0">{{lockup:52}}</div>
+        <div class="lockup-dark">{{lockup-inv:40}}</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ BOUTONS -->
+  <section class="sc-section" aria-labelledby="t-btn">
+    <header><span class="eyebrow">04</span><h2 id="t-btn" class="h2">Boutons</h2></header>
+    <div class="sc-grid cols-2">
+      <div class="card sc-col">
+        <p class="sc-card-title" style="margin:0">Variantes</p>
+        <button class="btn btn-primary btn-block">Continuer{{icon:arrow-right}}</button>
+        <button class="btn btn-secondary btn-block">Voir les missions</button>
+        <button class="btn btn-accent btn-block">{{icon:bank}}Virer mes gains</button>
+        <div class="sc-row">
+          <button class="btn btn-ghost">Plus tard</button>
+          <button class="btn btn-danger">{{icon:logout}}Se déconnecter</button>
+        </div>
+      </div>
+      <div class="card sc-col">
+        <p class="sc-card-title" style="margin:0">Tailles &amp; états</p>
+        <div class="sc-row">
+          <button class="btn btn-primary btn-lg">Grand</button>
+          <button class="btn btn-primary">Normal</button>
+          <button class="btn btn-primary btn-sm">Petit</button>
+        </div>
+        <div class="sc-row">
+          <button class="btn btn-primary" disabled>Désactivé</button>
+          <button class="btn btn-primary is-loading" aria-busy="true">Envoi</button>
+          <button class="btn btn-danger-solid">Supprimer</button>
+        </div>
+        <div class="sc-row">
+          <button class="btn btn-primary btn-icon" aria-label="Ajouter">{{icon:plus}}</button>
+          <button class="btn btn-secondary btn-icon" aria-label="Rechercher">{{icon:search}}</button>
+          <button class="btn btn-secondary btn-icon has-badge" aria-label="Notifications, 3">{{icon:bell}}<span class="badge">3</span></button>
+          <button class="btn btn-ghost btn-icon" aria-label="Plus d’options">{{icon:more}}</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ FORMULAIRES -->
+  <section class="sc-section" aria-labelledby="t-form">
+    <header><span class="eyebrow">05</span><h2 id="t-form" class="h2">Formulaires</h2></header>
+    <div class="sc-grid cols-2">
+      <div class="card sc-col">
+        <div class="field">
+          <label class="field-label" for="f1">Nom de l’entreprise</label>
+          <input class="input" id="f1" placeholder="Ex. Plomberie Durand">
+          <span class="field-hint">Tel qu’il apparaît sur le Kbis.</span>
+        </div>
+        <div class="field">
+          <label class="field-label" for="f2">E-mail</label>
+          <div class="input-wrap">{{icon:mail}}<input class="input is-focus" id="f2" type="email" value="ines@stacker.fr"></div>
+          <span class="field-hint">État focus</span>
+        </div>
+      </div>
+      <div class="card sc-col">
+        <div class="field is-error">
+          <label class="field-label" for="f3">Téléphone</label>
+          <div class="input-wrap">{{icon:phone}}<input class="input" id="f3" type="tel" value="06 12 34" aria-invalid="true" aria-describedby="f3h"></div>
+          <span class="field-hint" id="f3h">{{icon:alert}}Numéro incomplet : 10 chiffres attendus.</span>
+        </div>
+        <div class="field is-disabled">
+          <label class="field-label" for="f4">SIRET</label>
+          <div class="input-wrap">{{icon:lock}}<input class="input" id="f4" value="842 913 557 00019" disabled></div>
+          <span class="field-hint">Vérifié — non modifiable.</span>
+        </div>
+        <div class="segmented" role="tablist" aria-label="Exemple">
+          <button role="tab" aria-selected="true">Particulier</button>
+          <button role="tab" aria-selected="false">Société</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ CARTES / BADGES -->
+  <section class="sc-section" aria-labelledby="t-cards">
+    <header><span class="eyebrow">06</span><h2 id="t-cards" class="h2">Cartes, chips &amp; niveaux</h2></header>
+    <div class="sc-grid cols-3">
+      <div class="card sc-col">
+        <p class="sc-card-title" style="margin:0">Chips &amp; badges</p>
+        <div class="sc-row">
+          <span class="chip">Neutre</span>
+          <span class="chip chip-green chip-dot">Répondu</span>
+          <span class="chip chip-violet chip-dot">Contacté</span>
+          <span class="chip chip-orange chip-dot">RDV fixé</span>
+          <span class="chip chip-pink">Legend</span>
+          <span class="chip chip-red">{{icon:alert}}Refusé</span>
+          <span class="chip chip-dark">{{icon:lock}}Verrouillé</span>
+          <span class="chip chip-outline">{{icon:clock}}2 j</span>
+        </div>
+        <div class="sc-row">
+          <span class="badge">3</span><span class="badge">12</span><span class="badge badge-dot"></span>
+        </div>
+      </div>
+      <div class="card sc-col">
+        <p class="sc-card-title" style="margin:0">Niveaux de commission</p>
+        <div class="sc-row">
+          <span class="level level-rookie"><span class="level-mark">{{icon:graduation}}</span>Rookie <span class="level-rate">· 15 %</span></span>
+          <span class="level level-pro"><span class="level-mark">{{icon:star}}</span>Pro <span class="level-rate">· 18 %</span></span>
+          <span class="level level-legend"><span class="level-mark">{{icon:flame}}</span>Legend <span class="level-rate">· 22 %</span></span>
+          <span class="level level-elite"><span class="level-mark">{{icon:trophy}}</span>Elite <span class="level-rate">· 25 %</span></span>
+        </div>
+      </div>
+      <div class="card sc-col">
+        <p class="sc-card-title" style="margin:0">Progression (unie)</p>
+        <div><div class="progress-meta"><span class="text-2">Rookie → Pro</span><b class="num">100 %</b></div><div class="progress" role="progressbar" aria-label="Rookie vers Pro" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="--value:100%"><span class="progress-bar"></span></div></div>
+        <div><div class="progress-meta"><span class="text-2">Pro → Legend</span><b class="num">64 %</b></div><div class="progress progress-violet" role="progressbar" aria-label="Pro vers Legend" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100" style="--value:64%"><span class="progress-bar"></span></div></div>
+        <div><div class="progress-meta"><span class="text-2">Objectif du mois</span><b class="num">32 %</b></div><div class="progress progress-orange progress-sm" role="progressbar" aria-label="Objectif du mois" aria-valuenow="32" aria-valuemin="0" aria-valuemax="100" style="--value:32%"><span class="progress-bar"></span></div></div>
+      </div>
+    </div>
+    <div class="sc-grid cols-2" style="margin-top:16px">
+      <div class="card card-hero">
+        <span class="eyebrow">Carte hero · radius 52</span>
+        <h3 class="h2" style="margin-top:8px">Devenez apporteur <span class="serif-accent">certifié</span></h3>
+        <p class="text-2" style="margin-top:8px">5 modules, 40 minutes. Débloquez les missions premium et la commission Pro.</p>
+        <div class="progress progress-ink progress-sm" style="--value:40%;margin-top:18px" role="progressbar" aria-label="Formation" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"><span class="progress-bar"></span></div>
+        <button class="btn btn-primary" style="margin-top:20px">{{icon:play}}Reprendre le module 3</button>
+      </div>
+      <ul class="list" aria-label="Exemple de liste">
+        <li><a class="list-row" href="#"><span class="avatar avatar-violet">{{icon:building}}</span><span class="list-main"><span class="list-title">Fiche entreprise</span><span class="list-sub">Ligne de liste cliquable</span></span>{{icon:chevron-right:18:list-chevron}}</a></li>
+        <li><a class="list-row" href="#"><span class="avatar avatar-green">{{icon:shield}}</span><span class="list-main"><span class="list-title">Paiements sécurisés</span><span class="list-sub">Stripe Connect · KYC validé</span></span>{{icon:chevron-right:18:list-chevron}}</a></li>
+        <li><a class="list-row" href="#"><span class="avatar avatar-orange">{{icon:settings}}</span><span class="list-main"><span class="list-title">Réglages</span><span class="list-sub">Notifications, IBAN, profil</span></span>{{icon:chevron-right:18:list-chevron}}</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================================================================ NAVIGATION / FEEDBACK -->
+  <section class="sc-section" aria-labelledby="t-nav">
+    <header><span class="eyebrow">07</span><h2 id="t-nav" class="h2">Navigation &amp; feedback</h2></header>
+    <div class="sc-grid cols-2">
+      <div class="sc-col">
+        <div class="demo-frame h-nav">
+          <header class="appbar">
+            <button class="btn btn-icon" aria-label="Retour">{{icon:chevron-left}}</button>
+            <span class="appbar-title is-center">Détail du deal</span>
+            <button class="btn btn-icon" aria-label="Plus d’options">{{icon:more}}</button>
+          </header>
+          {{tabbar:deals}}
+        </div>
+        <div class="toast toast-success is-contained" role="status">
+          <span class="toast-icon">{{icon:check}}</span>
+          <div class="toast-body"><strong>Prospect ajouté</strong><span>Plomberie Durand est dans ta liste.</span></div>
+          <button class="btn btn-ghost btn-icon" aria-label="Fermer">{{icon:x}}</button>
+        </div>
+        <div class="toast toast-error is-contained" role="alert">
+          <span class="toast-icon">{{icon:alert}}</span>
+          <div class="toast-body"><strong>Virement impossible</strong><span>Ajoute un IBAN valide.</span></div>
+          <button class="btn btn-ghost btn-icon" aria-label="Fermer">{{icon:x}}</button>
+        </div>
+        <div class="card" aria-busy="true" aria-label="Chargement">
+          <p class="sc-card-title">Skeleton</p>
+          <div style="display:flex;gap:12px;align-items:center"><span class="skeleton skeleton-avatar"></span><div style="flex:1;display:grid;gap:8px"><span class="skeleton skeleton-text" style="width:70%"></span><span class="skeleton skeleton-text" style="width:45%"></span></div></div>
+          <div style="display:flex;gap:12px;align-items:center;margin-top:16px"><span class="skeleton skeleton-avatar"></span><div style="flex:1;display:grid;gap:8px"><span class="skeleton skeleton-text" style="width:55%"></span><span class="skeleton skeleton-text" style="width:35%"></span></div></div>
+        </div>
+      </div>
+      <div class="sc-col">
+        <div class="demo-frame h-sheet">
+          <div class="demo-ghost-content" aria-hidden="true">
+            <span class="skeleton skeleton-title" style="width:50%;animation:none"></span>
+            <span class="skeleton" style="height:120px;border-radius:28px;animation:none"></span>
+          </div>
+          <div class="sheet-backdrop is-open is-contained"></div>
+          <div class="sheet is-open is-contained" role="dialog" aria-modal="true" aria-labelledby="sheet-t">
+            <div class="sheet-handle"></div>
+            <h3 id="sheet-t" class="sheet-title">Virer 842,00 €</h3>
+            <p class="text-2" style="margin-top:6px">Vers BNP Paribas · IBAN •• 4821. Arrivée sous 24 h ouvrées.</p>
+            <div class="sheet-actions">
+              <button class="btn btn-primary btn-block">{{icon:bank}}Confirmer le virement</button>
+              <button class="btn btn-ghost btn-block">Annuler</button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="empty">
+            <div class="empty-art"><span class="tile">{{icon:inbox}}</span><span class="sticker sticker-violet">0</span></div>
+            <h3 class="h3">Aucun deal pour l’instant</h3>
+            <p>Ajoute un prospect et transforme ton premier appel en commission.</p>
+            <button class="btn btn-primary">{{icon:plus}}Ajouter un prospect</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ MOMENTS FORTS -->
+  <section class="sc-section" aria-labelledby="t-moments">
+    <header><span class="eyebrow">08</span><h2 id="t-moments" class="h2">Moments forts</h2></header>
+    <div class="sc-grid cols-2">
+      <div class="card card-hero grain-local grain" style="text-align:center">
+        <span class="eyebrow">Niveau débloqué</span>
+        <div style="margin:18px 0 14px">{{ransom:NIVEAU PRO}}</div>
+        <p class="text-2">Ta commission passe à <b style="color:var(--st-ink)">18 %</b> sur toutes tes ventes.</p>
+        <div class="sc-row" style="justify-content:center;margin-top:18px">
+          <span class="level level-pro"><span class="level-mark">{{icon:star}}</span>Pro <span class="level-rate">· 18 %</span></span>
+        </div>
+      </div>
+      <div class="card card-hero card-dark" style="text-align:center">
+        <span class="eyebrow" style="color:var(--st-on-dark-2)">Vente signée</span>
+        <div style="margin:18px 0 14px">{{ransom:+214 €}}</div>
+        <p style="color:var(--st-on-dark-2)">Plomberie Durand · commission ajoutée à ton solde en attente.</p>
+        <div class="sc-row" style="justify-content:center;margin-top:20px;gap:16px">
+          <span class="sticker">{{icon:check}}Signé</span>
+          <span class="sticker sticker-orange">{{icon:flame}}Série 8</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ ICÔNES -->
+  <section class="sc-section" aria-labelledby="t-icons">
+    <header><span class="eyebrow">09</span><h2 id="t-icons" class="h2">Icônes</h2></header>
+    <div class="card">
+      <div class="icon-grid">{{iconGrid}}</div>
+      <p class="sc-note">Trait 2,25 · bouts arrondis · <code>currentColor</code> · viewBox 24.</p>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>
