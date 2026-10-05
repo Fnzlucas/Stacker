@@ -1,0 +1,86 @@
+[
+  {
+    "id": "landing",
+    "file": "index.html",
+    "path": "/",
+    "title": "Stacker — Apporte des clients, touche ta commission chaque mois",
+    "description": "L’app trouve les entreprises, tu appelles et tu conclus, Stacker réalise le service. De 15 à 25 % de commission récurrente. Ouverture le 20 octobre 2026.",
+    "islands": true,
+    "sitemap": true
+  },
+  {
+    "id": "tarifs",
+    "file": "tarifs.html",
+    "path": "/tarifs",
+    "title": "Tarifs — Stacker",
+    "description": "Abonnement stacker à 6,99 € TTC par mois, sans engagement : logiciel de prospection, scripts et aide pour les appels, formation complète. Offre de lancement pour les 100 premiers.",
+    "islands": true,
+    "sitemap": true
+  },
+  {
+    "id": "liste-attente",
+    "file": "liste-attente.html",
+    "path": "/liste-attente",
+    "title": "Liste d'attente — Stacker",
+    "description": "Inscris-toi sur la liste d’attente de Stacker : les inscrits ont priorité sur les 100 places de l’offre de lancement. Ouverture le 20 octobre 2026.",
+    "islands": true,
+    "sitemap": true
+  },
+  {
+    "id": "contact",
+    "file": "contact.html",
+    "path": "/contact",
+    "title": "Contact — Stacker",
+    "description": "Une question sur Stacker, la liste d'attente ou tes données personnelles ? Écris-nous.",
+    "islands": true,
+    "sitemap": true
+  },
+  {
+    "id": "mentions-legales",
+    "file": "mentions-legales.html",
+    "path": "/mentions-legales",
+    "title": "Mentions légales — Stacker",
+    "description": "Éditeur, directeur de la publication et hébergeur du site Stacker.",
+    "sitemap": true
+  },
+  {
+    "id": "cgu",
+    "file": "cgu.html",
+    "path": "/cgu",
+    "title": "Conditions générales d'utilisation — Stacker",
+    "description": "Conditions d'utilisation du site, de la liste d'attente et de l'application Stacker.",
+    "sitemap": true
+  },
+  {
+    "id": "cgv",
+    "file": "cgv.html",
+    "path": "/cgv",
+    "title": "Conditions générales de vente — Stacker",
+    "description": "Prix, offre de lancement, résiliation, droit de rétractation de 14 jours et médiation pour l’abonnement Stacker à 6,99 € TTC par mois.",
+    "sitemap": true
+  },
+  {
+    "id": "confidentialite",
+    "file": "confidentialite.html",
+    "path": "/confidentialite",
+    "title": "Politique de confidentialité — Stacker",
+    "description": "Quelles données Stacker traite, pourquoi, combien de temps, avec quels prestataires, et comment exercer tes droits.",
+    "sitemap": true
+  },
+  {
+    "id": "remboursement",
+    "file": "remboursement.html",
+    "path": "/remboursement",
+    "title": "Politique de remboursement — Stacker",
+    "description": "Droit de rétractation de 14 jours, résiliation et remboursement de l’abonnement Stacker.",
+    "sitemap": true
+  },
+  {
+    "id": "not-found",
+    "file": "404.html",
+    "path": "/404",
+    "title": "Page introuvable — Stacker",
+    "description": "Cette page n'existe pas ou a été déplacée.",
+    "noindex": true
+  }
+]

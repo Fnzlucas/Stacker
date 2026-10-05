@@ -1,0 +1,10 @@
+/* Feuille de style unique du site. Ordre imposé par le design system
+   (design/tailwind.preset.js) : polices, jetons, base Tailwind, composants
+   du design system, composants Tailwind, utilitaires, puis styles du site. */
+@import "./fonts.css";
+@import "../../design/tokens.css";
+@import "tailwindcss/base";
+@import "../../design/components.css";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+@import "./site.css";
