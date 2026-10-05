@@ -24,7 +24,7 @@ export const PASSWORD_MAX_BYTES = 72;
 export type PasswordRule = 'length' | 'lower' | 'upper' | 'digit' | 'max' | 'email';
 
 export const PASSWORD_RULE_LABELS: Record<Exclude<PasswordRule, 'max' | 'email'>, string> = {
-  length: `${String(PASSWORD_MIN)} caractères minimum`,
+  length: `${String(PASSWORD_MIN)} caractères`,
   lower: 'une minuscule',
   upper: 'une majuscule',
   digit: 'un chiffre',
