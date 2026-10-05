@@ -49,11 +49,19 @@ create function auth.role() returns text
 language sql stable
 as $$ select coalesce(auth.jwt() ->> 'role', 'anon') $$;
 
+-- Colonnes utiles de auth.users (mêmes noms et types que GoTrue).
 create table auth.users (
   id uuid primary key default gen_random_uuid(),
   email text unique,
-  created_at timestamptz not null default now()
+  email_confirmed_at timestamptz,
+  raw_user_meta_data jsonb,
+  raw_app_meta_data jsonb,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz
 );
+-- Sur Supabase, « postgres » lit auth.users, y pose des triggers et des clés
+-- étrangères (profil créé à l'inscription, cascade à la suppression).
+grant select, references, trigger on auth.users to postgres;
 
 -- Privilèges par défaut de Supabase pour les objets créés par postgres.
 alter default privileges for role postgres in schema public grant all on tables to anon, authenticated, service_role;
