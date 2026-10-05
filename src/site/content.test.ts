@@ -68,12 +68,19 @@ describe('faits produit', () => {
     expect(landing).toContain('chaque mois tant que ton client reste abonné');
   });
 
+  it('apporteur sans représentation : le stacker ne « conclut » ni ne « close » jamais la vente', () => {
+    for (const id of PAGE_IDS) {
+      const t = text(html[id] ?? '');
+      expect(t, id).not.toMatch(/\btu (conclus|closes?)\b|tu as conclu|ventes que tu conclus/i);
+    }
+  });
+
   it('« Comment ça marche » en exactement 3 étapes, dans l’ordre', () => {
     const section = /<section[^>]*id="comment"[\s\S]*?<\/section>/.exec(html['landing'] ?? '')?.[0] ?? '';
     const steps = [...section.matchAll(/<h3[^>]*>([\s\S]*?)<\/h3>/g)].map((m) => text(m[1] ?? '').replace(/Étape \d : /, '').trim());
     expect(steps).toHaveLength(3);
     expect(steps[0]).toContain('L’app trouve les entreprises');
-    expect(steps[1]).toContain('Tu appelles et tu closes');
+    expect(steps[1]).toContain('Tu appelles et tu convaincs');
     expect(steps[2]).toContain('Stacker réalise, tu touches ta commission');
   });
 

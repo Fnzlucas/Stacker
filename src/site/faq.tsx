@@ -14,7 +14,7 @@ export const FAQ_GENERAL: FaqItem[] = [
     a: (
       <p>
         Des services pour les entreprises : site web, avis Google, posts Instagram, visibilité Google. C’est Stacker qui les réalise. Toi, tu
-        trouves l’entreprise intéressée, tu l’appelles et tu conclus la vente.
+        trouves l’entreprise intéressée et tu la convaincs ; elle signe ensuite son contrat directement avec Stacker.
       </p>
     ),
   },
@@ -24,7 +24,7 @@ export const FAQ_GENERAL: FaqItem[] = [
     a: (
       <p>
         Non. L’app trouve les entreprises et t’aide à les contacter, avec des scripts et une aide pour les appels. C’est toi qui appelles et qui
-        conclus.
+        convaincs.
       </p>
     ),
   },
@@ -34,7 +34,7 @@ export const FAQ_GENERAL: FaqItem[] = [
     a: (
       <>
         <p>
-          Nous ne promettons aucun montant. Tes commissions dépendent uniquement des ventes que tu conclus et du nombre de clients qui restent
+          Nous ne promettons aucun montant. Tes commissions dépendent uniquement des clients que tu apportes et du nombre de clients qui restent
           abonnés.
         </p>
         <p>

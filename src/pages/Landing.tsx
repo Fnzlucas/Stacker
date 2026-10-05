@@ -53,12 +53,12 @@ function Hero(): ReactElement {
             Ouverture le {PRODUCT.launchDateLabel}
           </span>
           <h1 id="hero-title" className="display hero-title mt-5">
-            Apporte des clients. Touche ta commission <span className="serif-accent">chaque mois</span>.
+            Apporte des clients. Touche une commission <span className="serif-accent">récurrente</span>.
           </h1>
           <p className="lead mt-5 max-w-xl">
             Stacker propose aux entreprises des services qu’il réalise lui-même : site web, avis Google, posts Instagram, visibilité Google. L’app
-            trouve les entreprises, tu les appelles et tu conclus. Tu touches une commission sur chaque vente, chaque mois tant que ton client
-            reste abonné.
+            trouve les entreprises, tu les appelles et tu obtiens leur accord. Elles signent ensuite directement avec Stacker, et tu touches une
+            commission chaque mois tant que ton client reste abonné.
           </p>
           <div className="mt-8 flex flex-col gap-3 md:flex-row">
             <a className="btn btn-primary btn-lg" href="#rejoindre">
@@ -143,8 +143,8 @@ const STEPS: { icon: IconName; title: string; text: string; tone: string; sticke
   },
   {
     icon: 'phone',
-    title: 'Tu appelles et tu closes',
-    text: 'Tu appelles avec les scripts et l’aide intégrés à l’app. Quand l’entreprise dit oui, tu as conclu la vente.',
+    title: 'Tu appelles et tu convaincs',
+    text: 'Tu appelles avec les scripts et l’aide intégrés à l’app. Quand l’entreprise est d’accord, elle reçoit un lien sécurisé et signe elle-même avec Stacker.',
     tone: 'bg-violet-50 text-violet-ink',
     sticker: 'sticker sticker-violet',
   },
@@ -169,7 +169,7 @@ function HowItWorks(): ReactElement {
               Trois étapes. <span className="serif-accent">Pas une de plus.</span>
             </>
           }
-          lead="Tu n’as rien à produire ni à livrer : ton travail, c’est de trouver les entreprises intéressées et de conclure."
+          lead="Tu n’as rien à produire ni à livrer : ton travail, c’est de trouver les entreprises intéressées et de les convaincre."
         />
         <ol className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
           {STEPS.map((step, i) => (
@@ -243,7 +243,7 @@ function Commissions(): ReactElement {
               que ton client reste abonné.
             </p>
             <p className="text-small mt-4 max-w-xl">
-              Aucun montant de gain n’est promis : tes commissions dépendent uniquement des ventes que tu conclus.
+              Aucun montant de gain n’est promis : tes commissions dépendent uniquement des clients que tu apportes.
             </p>
           </div>
           <TierList />

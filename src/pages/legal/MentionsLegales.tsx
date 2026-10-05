@@ -72,6 +72,10 @@ export function MentionsLegalesPage(): ReactElement {
                 <dd>
                   <Fill value={HOST.address} />
                 </dd>
+                <dt>Téléphone</dt>
+                <dd>
+                  <Fill value={HOST.phone} />
+                </dd>
                 <dt>Site internet</dt>
                 <dd>
                   <a href={HOST.website}>{HOST.website.replace('https://', '')}</a>

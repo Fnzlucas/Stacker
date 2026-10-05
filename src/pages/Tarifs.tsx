@@ -38,7 +38,7 @@ export function TarifsPage(): ReactElement {
             id="commissions-title"
             eyebrow="Commissions"
             title="De 15 % à 25 % selon ton niveau."
-            lead="Une commission sur chaque vente, chaque mois tant que ton client reste abonné. Aucun montant de gain n’est promis : tout dépend des ventes que tu conclus."
+            lead="Une commission sur chaque vente, chaque mois tant que ton client reste abonné. Aucun montant de gain n’est promis : tout dépend des clients que tu apportes."
           />
           <TierList />
         </div>

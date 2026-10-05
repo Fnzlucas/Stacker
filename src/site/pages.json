@@ -3,8 +3,8 @@
     "id": "landing",
     "file": "index.html",
     "path": "/",
-    "title": "Stacker — Apporte des clients, touche ta commission chaque mois",
-    "description": "L’app trouve les entreprises, tu appelles et tu conclus, Stacker réalise le service. De 15 à 25 % de commission récurrente. Ouverture le 20 octobre 2026.",
+    "title": "Stacker — Apporte des clients, touche une commission récurrente",
+    "description": "L’app trouve les entreprises, tu appelles et tu convaincs, Stacker vend et réalise le service. De 15 à 25 % de commission récurrente. Ouverture le 20 octobre 2026.",
     "islands": true,
     "sitemap": true
   },
@@ -21,7 +21,7 @@
     "id": "liste-attente",
     "file": "liste-attente.html",
     "path": "/liste-attente",
-    "title": "Liste d'attente — Stacker",
+    "title": "Liste d’attente — Stacker",
     "description": "Inscris-toi sur la liste d’attente de Stacker : les inscrits ont priorité sur les 100 places de l’offre de lancement. Ouverture le 20 octobre 2026.",
     "islands": true,
     "sitemap": true
@@ -47,7 +47,7 @@
     "id": "cgu",
     "file": "cgu.html",
     "path": "/cgu",
-    "title": "Conditions générales d'utilisation — Stacker",
+    "title": "Conditions générales d’utilisation — Stacker",
     "description": "Conditions d'utilisation du site, de la liste d'attente et de l'application Stacker.",
     "sitemap": true
   },

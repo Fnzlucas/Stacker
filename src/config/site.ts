@@ -32,6 +32,8 @@ export const ENTITY = {
 export const HOST = {
   name: 'Vercel Inc.',
   address: toVerify('440 N Barranca Ave #4133, Covina, CA 91723, États-Unis'),
+  // LCEN art. 6 III 1° : le numéro de téléphone de l'hébergeur est obligatoire.
+  phone: toVerify('téléphone de l’hébergeur, à relever sur vercel.com/legal'),
   website: 'https://vercel.com',
 } as const;
 
