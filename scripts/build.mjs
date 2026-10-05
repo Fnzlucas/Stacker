@@ -75,6 +75,19 @@ async function main() {
   console.log(`  Supabase : ${configured ? 'configuré' : 'NON configuré (formulaire désactivé avec un message)'}`);
   console.log(`  Turnstile : ${env('VITE_TURNSTILE_SITE_KEY') ? 'activé' : 'désactivé'}`);
 
+  // Production : le formulaire ne peut pas partir sans anti-robot, et les URLs
+  // publiques (canonical, sitemap, liens de parrainage) doivent être en HTTPS.
+  if (process.env.VERCEL_ENV === 'production') {
+    const blockers = [];
+    if (configured && !env('VITE_TURNSTILE_SITE_KEY')) blockers.push('VITE_TURNSTILE_SITE_KEY absent alors que Supabase est configuré');
+    if (!site.startsWith('https://') || /localhost|127\.0\.0\.1/.test(site)) blockers.push(`SITE_URL invalide pour la production : ${site}`);
+    if (blockers.length > 0) {
+      for (const b of blockers) console.error(`✗ ${b}`);
+      console.error('✗ Déploiement de production refusé.');
+      process.exit(1);
+    }
+  }
+
   if (todos.size > 0) {
     console.log(`⚠ ${String(todos.size)} information(s) à compléter ou vérifier avant la production :`);
     for (const [key, where] of todos) console.log(`  - ${key}  (${[...where].join(', ')})`);
