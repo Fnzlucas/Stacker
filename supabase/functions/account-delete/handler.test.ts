@@ -10,7 +10,7 @@ const NOW = 1_800_000_000;
 
 const ENV = {
   SUPABASE_URL: `${URL_BASE}/`,
-  SUPABASE_SERVICE_ROLE_KEY: 'sb_secret_test_service_role_key_123',
+  SUPABASE_SERVICE_ROLE_KEY: 'cle-service-factice-pour-les-tests',
   SUPABASE_ANON_KEY: 'sb_publishable_test_anon_key_1234',
   ALLOWED_ORIGINS: `${ORIGIN}, http://localhost:4174`,
   RATE_LIMIT_PEPPER: 'pepper-0123456789abcdef',

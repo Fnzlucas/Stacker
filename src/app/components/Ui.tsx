@@ -21,11 +21,13 @@ export function LevelPill({ tier, className = '' }: { tier: Pick<Tier, 'code' | 
  * CSS posée via le CSSOM (React `style`), autorisé par la CSP (style-src
  * 'self' ne bloque que les attributs style du HTML).
  */
+const PROGRESS_CLASS = { green: 'progress', violet: 'progress progress-violet', pink: 'progress progress-pink', orange: 'progress progress-orange' } as const;
+
 export function ProgressBar({ percent, label, tone = 'violet' }: { percent: number; label: string; tone?: 'violet' | 'green' | 'pink' | 'orange' }): ReactElement {
   const value = Math.max(0, Math.min(100, Math.round(percent)));
   const style = { '--value': `${String(value)}%` } as CSSProperties;
   return (
-    <div className={tone === 'green' ? 'progress' : `progress progress-${tone}`} role="progressbar" aria-label={label} aria-valuemin={0} aria-valuemax={100} aria-valuenow={value}>
+    <div className={PROGRESS_CLASS[tone]} role="progressbar" aria-label={label} aria-valuemin={0} aria-valuemax={100} aria-valuenow={value}>
       <span className="progress-bar" style={style} />
     </div>
   );

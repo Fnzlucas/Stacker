@@ -5,6 +5,7 @@
  */
 import { z } from 'zod';
 import { DELETE_CONFIRMATION, type Goal, type ProfileUpdate } from '@shared/account';
+import { ApiError } from './apiError';
 import type { Backend } from './supabase';
 import { TIER_CODES, tiersSchema, type Tier } from './tiers';
 
@@ -34,14 +35,7 @@ export const PROFILE_COLUMNS =
   'id,first_name,last_name,phone,department,city,legal_status,siret,goal,tier,active_clients,xp,adult_declared_at,launch_priority,waitlist_joined_at,onboarding_completed_at,created_at';
 const TIER_COLUMNS = 'code,label,rate_bps,min_active_clients,max_active_clients,sort_order,criteria_provisional';
 
-export type ApiErrorKind = 'network' | 'invalid' | 'forbidden' | 'unauthorized' | 'reauth_required' | 'rate_limited' | 'server';
-
-export class ApiError extends Error {
-  constructor(readonly kind: ApiErrorKind, message?: string) {
-    super(message ?? kind);
-    this.name = 'ApiError';
-  }
-}
+export { ApiError, type ApiErrorKind } from './apiError';
 
 interface PgError {
   code?: string;

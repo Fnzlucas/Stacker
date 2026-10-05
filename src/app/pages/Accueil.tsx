@@ -11,6 +11,7 @@ import { tierProgress } from '../lib/tiers';
 import { PATHS } from '../paths';
 import { formatInteger, plural } from '../../lib/format';
 
+const NEXT_CLASS = { rookie: 'level-next', pro: 'level-next level-next-pro', legend: 'level-next level-next-legend', elite: 'level-next level-next-elite' } as const;
 const TONE = { rookie: 'green', pro: 'violet', legend: 'pink', elite: 'orange' } as const;
 
 export function AccueilPage(): ReactElement {
@@ -72,7 +73,7 @@ export function AccueilPage(): ReactElement {
               <LevelPill tier={progress.current} />
               {progress.next ? (
                 <span className="text-small">
-                  Prochain : <b className={`level-next level-next-${progress.next.code}`}>{progress.next.label}</b>
+                  Prochain : <b className={NEXT_CLASS[progress.next.code]}>{progress.next.label}</b>
                 </span>
               ) : null}
             </div>

@@ -32,7 +32,7 @@ export function TextField({ label, error, hint, icon, optional, trailing, extraD
         {label}
         {optional ? <span className="field-optional"> (facultatif)</span> : null}
       </label>
-      <div className="input-wrap">
+      <div className={icon ? 'input-wrap' : 'input-wrap no-icon'}>
         {icon ? <Icon name={icon} /> : null}
         <input id={id} className={`input${trailing ? ' has-trailing' : ''}`} aria-invalid={error ? true : undefined} aria-describedby={describedBy} {...input} />
         {trailing}
@@ -80,7 +80,7 @@ export function PasswordField({ checklist = false, email = '', value, ...rest }:
             const ok = password !== '' && !issues.includes(rule);
             return (
               <li key={rule} className={ok ? 'is-ok' : undefined}>
-                <Icon name={ok ? 'check-circle' : 'check'} size={16} />
+                {ok ? <Icon name="check-circle" size={16} /> : <span className="pw-dot" aria-hidden="true" />}
                 <span>
                   {PASSWORD_RULE_LABELS[rule]}
                   <span className="sr-only">{ok ? ' : respecté' : ' : à respecter'}</span>
@@ -142,18 +142,23 @@ export function CheckField({
   );
 }
 
+const ALERT_CLASS = { error: 'form-alert', info: 'form-alert form-alert-info', success: 'form-alert form-alert-success' } as const;
+
 export function FormAlert({ tone = 'error', children }: { tone?: 'error' | 'info' | 'success'; children: ReactNode }): ReactElement {
   return (
-    <div className={`form-alert${tone === 'error' ? '' : ` form-alert-${tone}`}`} role={tone === 'error' ? 'alert' : 'status'}>
+    <div className={ALERT_CLASS[tone]} role={tone === 'error' ? 'alert' : 'status'}>
       <Icon name={tone === 'success' ? 'check-circle' : tone === 'info' ? 'info' : 'alert'} />
       <div>{children}</div>
     </div>
   );
 }
 
+// Noms de classes écrits en entier : Tailwind ne conserve que les classes qu'il trouve dans le code.
+const VARIANT_CLASS = { primary: 'btn-primary', accent: 'btn-accent', 'danger-solid': 'btn-danger-solid' } as const;
+
 export function SubmitButton({ loading, children, variant = 'primary' }: { loading: boolean; children: ReactNode; variant?: 'primary' | 'accent' | 'danger-solid' }): ReactElement {
   return (
-    <button type="submit" className={`btn btn-${variant} btn-block btn-lg${loading ? ' is-loading' : ''}`} aria-busy={loading || undefined} disabled={loading}>
+    <button type="submit" className={`btn ${VARIANT_CLASS[variant]} btn-block btn-lg${loading ? ' is-loading' : ''}`} aria-busy={loading || undefined} disabled={loading}>
       {children}
     </button>
   );

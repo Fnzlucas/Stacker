@@ -3,7 +3,7 @@ import { lazy, Suspense, type ReactElement } from 'react';
 import { Navigate, RouterProvider, createBrowserRouter } from 'react-router';
 import { AuthProvider } from './auth/AuthProvider';
 import { RequireAuth, RequireGuest, Splash } from './components/Layouts';
-import { ApiError } from './lib/api';
+import { ApiError } from './lib/apiError';
 import { getBackend } from './lib/supabase';
 import { PATHS } from './paths';
 
