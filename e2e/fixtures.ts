@@ -1,5 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test as base, type Page, type Route } from '@playwright/test';
+import { FakeSupabase } from './fake-supabase';
 
 export const SUPABASE = 'https://e2e-stacker.supabase.co';
 export const UNCONFIGURED = 'http://localhost:4175';
@@ -16,6 +17,8 @@ export interface SupabaseMock {
   join: { status: number; body: unknown };
   joinCalls: JoinCall[];
   countCalls: number;
+  /** Faux Auth + PostgREST + account-delete (app connectée, lot 2). */
+  fake: FakeSupabase;
 }
 
 interface Fixtures {
@@ -39,6 +42,7 @@ export const test = base.extend<Fixtures>({
         },
         joinCalls: [],
         countCalls: 0,
+        fake: new FakeSupabase(),
       };
       await page.route(`${SUPABASE}/**`, async (route: Route) => {
         const req = route.request();
@@ -55,6 +59,7 @@ export const test = base.extend<Fixtures>({
           mock.joinCalls.push({ body: req.postDataJSON() as Record<string, unknown>, headers: req.headers() });
           return route.fulfill({ status: mock.join.status, headers: cors, json: mock.join.body });
         }
+        if (await mock.fake.handle(route)) return undefined;
         return route.fulfill({ status: 404, headers: cors, json: {} });
       });
       await use(mock);
