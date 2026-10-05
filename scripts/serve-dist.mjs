@@ -35,6 +35,8 @@ export function sourceToRegExp(source) {
 
 const headerRules = (vercel.headers ?? []).map((r) => ({ re: sourceToRegExp(r.source), headers: r.headers }));
 const redirects = (vercel.redirects ?? []).map((r) => ({ re: sourceToRegExp(r.source), ...r }));
+// Comme Vercel : le système de fichiers d'abord, puis les rewrites (SPA /app/*).
+const rewrites = (vercel.rewrites ?? []).map((r) => ({ re: sourceToRegExp(r.source), ...r }));
 
 function headersFor(pathname) {
   const out = {};
@@ -77,7 +79,8 @@ const server = createServer((req, res) => {
     return;
   }
 
-  const file = fileFor(pathname);
+  const rewrite = rewrites.find((r) => r.re.test(pathname));
+  const file = fileFor(pathname) ?? (rewrite ? fileFor(rewrite.destination) : null);
   const status = file ? 200 : 404;
   const served = file ?? join(dir, '404.html');
   res.writeHead(status, {

@@ -12,7 +12,7 @@
     "build": "node scripts/build.mjs",
     "preview": "node scripts/serve-dist.mjs",
     "lint": "eslint --max-warnings=0 .",
-    "typecheck": "tsc -b --pretty && deno check --config supabase/functions/waitlist-join/deno.json supabase/functions/waitlist-join/index.ts",
+    "typecheck": "tsc -b --pretty && deno check --config supabase/functions/waitlist-join/deno.json supabase/functions/waitlist-join/index.ts && deno check --config supabase/functions/account-delete/deno.json supabase/functions/account-delete/index.ts",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:db": "bash scripts/test-db.sh",
@@ -24,8 +24,12 @@
     "ci": "pnpm lint && pnpm typecheck && pnpm test:coverage && pnpm test:db && pnpm build && pnpm check:size && pnpm check:secrets && pnpm test:e2e"
   },
   "dependencies": {
+    "@supabase/auth-js": "^2.117.2",
+    "@supabase/postgrest-js": "^2.117.2",
+    "@tanstack/react-query": "^5.104.1",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
+    "react-router": "^7.18.4",
     "zod": "^4.6.5"
   },
   "devDependencies": {

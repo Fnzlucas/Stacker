@@ -23,6 +23,11 @@ function devPrerender(): Plugin {
     apply: 'serve',
     configureServer(s) {
       server = s;
+      // SPA de l'app connectée : toute URL /app/* sert app.html (comme les rewrites Vercel).
+      s.middlewares.use((req, _res, next) => {
+        if (req.url && /^\/app(\/|$|\?)/.test(req.url) && !req.url.startsWith('/app.html')) req.url = '/app.html';
+        next();
+      });
     },
     async transformIndexHtml(html) {
       const match = /data-page="([\w-]+)"/.exec(html);
@@ -51,7 +56,7 @@ export default defineConfig(({ isSsrBuild }) => ({
     sourcemap: false,
     // Le pré-rendu (build SSR) a sa propre entrée : src/ssr/render.tsx.
     rollupOptions: {
-      ...(isSsrBuild ? {} : { input: Object.fromEntries(pages.map((p) => [p.id, `${root}${p.file}`])) }),
+      ...(isSsrBuild ? {} : { input: { ...Object.fromEntries(pages.map((p) => [p.id, `${root}${p.file}`])), app: `${root}app.html` } }),
       // Bruit connu de zod 4 (commentaires @__PURE__ mal placés), sans effet sur le bundle.
       onwarn(warning, warn) {
         if (warning.code === 'INVALID_ANNOTATION' && warning.id?.includes('/zod/')) return;

@@ -53,8 +53,45 @@ ${head.join('\n')}
 `;
 }
 
+/**
+ * Application connectée (/app/*) : SPA React, non indexée. Le HTML ne
+ * contient qu'un écran de démarrage ; tout le reste est rendu par
+ * src/entries/app.tsx après vérification de la session.
+ */
+export const APP_FILE = 'app.html';
+
+export function renderAppTemplate() {
+  const head = [
+    '<meta charset="utf-8">',
+    '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">',
+    '<title>Stacker</title>',
+    '<meta name="description" content="Espace stacker : prospects, deals, commissions et profil.">',
+    '<meta name="robots" content="noindex, nofollow">',
+    '<meta name="theme-color" content="#ececf0">',
+    '<meta name="color-scheme" content="light">',
+    '<meta name="format-detection" content="telephone=no">',
+    '<meta name="referrer" content="strict-origin-when-cross-origin">',
+    '<link rel="icon" type="image/svg+xml" href="/favicon.svg">',
+    ...PRELOAD_FONTS.map((f) => `<link rel="preload" href="/fonts/${f}" as="font" type="font/woff2" crossorigin>`),
+    '<link rel="stylesheet" href="/src/styles/app.css">',
+    '<script type="module" src="/src/entries/app.tsx"></script>',
+  ];
+  return `<!doctype html>
+<html lang="fr">
+<head>
+${head.join('\n')}
+</head>
+<body class="grain">
+<div id="root"><div class="app-boot" role="status"><img src="/favicon.svg" width="56" height="56" alt=""><span class="sr-only">Chargement de Stacker…</span></div></div>
+<noscript><p class="noscript">L’espace stacker a besoin de JavaScript. <a href="/">Retour au site</a></p></noscript>
+</body>
+</html>
+`;
+}
+
 export function writeTemplates() {
   for (const page of pages) writeFileSync(join(root, page.file), renderTemplate(page));
+  writeFileSync(join(root, APP_FILE), renderAppTemplate());
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) writeTemplates();

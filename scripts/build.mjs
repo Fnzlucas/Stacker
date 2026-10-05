@@ -15,7 +15,7 @@ import { existsSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { build, loadEnv } from 'vite';
-import { pages, writeTemplates } from './gen-html.mjs';
+import { APP_FILE, pages, writeTemplates } from './gen-html.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const arg = (name) => process.argv.find((a) => a.startsWith(`--${name}=`))?.split('=').slice(1).join('=');
@@ -59,15 +59,19 @@ async function main() {
     writeFileSync(file, html);
   }
 
+  // Application connectée : aucun pré-rendu, mêmes contrôles CSP.
+  const appHtml = readFileSync(join(outDir, APP_FILE), 'utf8');
+  if (/\sstyle="/.test(appHtml) || /<script(?![^>]*\bsrc=)[^>]*>/.test(appHtml)) throw new Error(`${APP_FILE} : style ou script inline interdit par la CSP`);
+
   const urls = pages.filter((p) => p.sitemap).map((p) => `  <url><loc>${site}${p.path === '/' ? '/' : p.path}</loc></url>`);
   writeFileSync(
     join(outDir, 'sitemap.xml'),
     `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`,
   );
-  writeFileSync(join(outDir, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${site}/sitemap.xml\n`);
+  writeFileSync(join(outDir, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /app\n\nSitemap: ${site}/sitemap.xml\n`);
 
   rmSync(ssrDir, { recursive: true, force: true });
-  for (const page of pages) if (existsSync(join(root, page.file))) rmSync(join(root, page.file));
+  for (const file of [...pages.map((p) => p.file), APP_FILE]) if (existsSync(join(root, file))) rmSync(join(root, file));
 
   const configured = Boolean(env('VITE_SUPABASE_URL') && env('VITE_SUPABASE_ANON_KEY'));
   console.log(`✓ build : ${String(pages.length)} pages pré-rendues dans ${outDir} (${String(Date.now() - started)} ms)`);

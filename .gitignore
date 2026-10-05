@@ -17,6 +17,7 @@ coverage/
 /contact.html
 /remboursement.html
 /404.html
+/app.html
 .e2e/
 
 # Variables d'environnement : seul .env.example est versionné
