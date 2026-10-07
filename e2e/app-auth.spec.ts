@@ -292,6 +292,8 @@ test.describe('connexion', () => {
     await page.goto('/app/connexion/code');
     await page.getByLabel('Adresse email').fill('code@exemple.fr');
     await page.getByRole('button', { name: 'Recevoir un code' }).click();
+    // Attendre la réponse du serveur avant de lire la boîte d'envoi (test instable sinon).
+    await expect(page.getByText('Si un compte existe pour code@exemple.fr, un code vient de partir.', { exact: false })).toBeVisible();
     await page.getByLabel('Code reçu par email').fill(fake.lastEmail('code@exemple.fr', 'magiclink')!.code);
     await page.getByRole('button', { name: 'Se connecter' }).click();
     await expect(page.getByRole('heading', { level: 1, name: 'Bonjour Chloé' })).toBeVisible();

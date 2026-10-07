@@ -56,7 +56,7 @@ export function AccueilPage(): ReactElement {
         </h2>
         <p className="home-balance-empty">Aucune pour l’instant</p>
         <p className="home-balance-text">
-          Elles apparaîtront ici dès qu’un client que tu as apporté signera. Disponibles après l’encaissement et le délai prévu, puis virées chaque semaine.
+          Quand un client que tu as apporté signe, ta commission apparaît d’abord comme estimée. Elle est acquise après l’encaissement et le délai prévu, puis virée avec le lot de la semaine.
         </p>
         <div className="balance-actions home-balance-actions">
           <Link className="btn btn-glass" to={PATHS.gains}>
