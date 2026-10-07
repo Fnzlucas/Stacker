@@ -21,17 +21,17 @@ export const ENTITY = {
   legalName: 'Lucas Fernandez',
   legalForm: 'Entrepreneur individuel (EI), régime de la micro-entreprise',
   brand: 'Stacker',
-  address: todo('adresse'),
+  address: '4 impasse Jean Roussière, 30400 Villeneuve-lès-Avignon, France',
   siret: '891 139 248 00027',
   registry: 'Immatriculé au Registre national des entreprises (RNE), SIREN 891 139 248',
-  vat: todo('mention TVA, par ex. « TVA non applicable, art. 293 B du CGI »'),
-  email: todo('email de contact'),
+  vat: 'TVA non applicable, art. 293 B du CGI',
+  email: 'stacker-contact@outlook.com',
   phone: todo('téléphone'),
 } as const;
 
 export const HOST = {
   name: 'Vercel Inc.',
-  address: toVerify('440 N Barranca Ave #4133, Covina, CA 91723, États-Unis'),
+  address: '440 N Barranca Avenue #4133, Covina, CA 91723, États-Unis',
   // LCEN art. 6 III 1° : le numéro de téléphone de l'hébergeur est obligatoire.
   phone: toVerify('téléphone de l’hébergeur, à relever sur vercel.com/legal'),
   website: 'https://vercel.com',
@@ -47,7 +47,7 @@ export const PRODUCT = {
   name: 'Stacker',
   launchDateLabel: '20\u00a0octobre\u00a02026',
   launchDateISO: '2026-10-20',
-  /** Abonnement stacker, prix TTC. */
+  /** Abonnement stacker, prix final (franchise en base de TVA). */
   priceMonthlyLabel: '6,99\u00a0€',
   /** Version des CGU / CGV / politique de confidentialité (horodatée dans `consents`). */
   legalVersion: '2026-10-05',
@@ -71,5 +71,5 @@ export const PAYOUT = {
 /** Offre de lancement. Sa durée n'est pas encore fixée : jeton dans les CGV. */
 export const LAUNCH_OFFER = {
   seats: 100,
-  duration: todo('durée de l’offre de lancement'),
+  duration: 'L’offre de lancement s’applique pendant 12 mois à compter de la souscription',
 } as const;

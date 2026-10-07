@@ -56,7 +56,7 @@ export function CgvPage(): ReactElement {
           body: (
             <>
               <p>
-                Le prix de l’abonnement est de <strong>{PRODUCT.priceMonthlyLabel} TTC par mois</strong>. <Fill value={ENTITY.vat} />. Aucun frais
+                Le prix de l’abonnement est de <strong>{PRODUCT.priceMonthlyLabel} par mois</strong>. <Fill value={ENTITY.vat} />. Aucun frais
                 d’inscription ni de résiliation n’est facturé.
               </p>
               <p>
@@ -76,7 +76,7 @@ export function CgvPage(): ReactElement {
                 la liste d’attente avant l’ouverture ont priorité sur ces {LAUNCH_OFFER.seats} places.
               </p>
               <p>
-                <strong>Conditions.</strong> Les bénéficiaires paient l’abonnement {PRODUCT.priceMonthlyLabel} TTC par mois, et Stacker ne
+                <strong>Conditions.</strong> Les bénéficiaires paient l’abonnement {PRODUCT.priceMonthlyLabel} par mois, et Stacker ne
                 prélève aucun pourcentage sur leur chiffre d’affaires (0 %).
               </p>
               <p>

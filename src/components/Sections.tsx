@@ -106,7 +106,7 @@ export function PricingCard({ headingLevel = 'h3' }: { headingLevel?: 'h2' | 'h3
       </div>
       <Heading id="pricing-title" className="mt-4 flex flex-wrap items-baseline gap-x-2">
         <span className="price-amount num">{PRODUCT.priceMonthlyLabel}</span>
-        <span className="text-md text-ink-2">TTC par mois</span>
+        <span className="text-md text-ink-2">par mois</span>
       </Heading>
       <ul className="tick-list mt-6">
         {INCLUDED.map((item) => (

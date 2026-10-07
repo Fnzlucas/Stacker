@@ -44,7 +44,7 @@ export function RemboursementPage(): ReactElement {
                 </li>
               </ul>
               <p className="callout">
-                <strong>Exemple illustratif</strong> : abonnement de {PRODUCT.priceMonthlyLabel} TTC pour une période de 30 jours, rétractation
+                <strong>Exemple illustratif</strong> : abonnement de {PRODUCT.priceMonthlyLabel} pour une période de 30 jours, rétractation
                 le 6e jour après 5 jours d’accès. Montant conservé : 6,99 € × 5 / 30 = 1,17 €. Montant remboursé : 5,82 €.
               </p>
             </>

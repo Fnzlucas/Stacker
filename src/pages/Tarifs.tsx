@@ -20,7 +20,7 @@ export function TarifsPage(): ReactElement {
                 Un abonnement. <span className="serif-accent">{PRODUCT.priceMonthlyLabel}</span> par mois.
               </>
             }
-            lead="Prix TTC, sans engagement. Logiciel de prospection, scripts et aide pour les appels, formation complète : tout est inclus."
+            lead="Prix final, TVA non applicable (art. 293 B du CGI), sans engagement. Logiciel de prospection, scripts et aide pour les appels, formation complète : tout est inclus."
           />
           <div className="mt-6 min-h-9">
             <Island name="waitlist-count" props={{ variant: 'pill' }} as="span" />

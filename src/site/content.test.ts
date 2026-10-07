@@ -133,8 +133,10 @@ describe('pages légales', () => {
     expect(t).toContain('entrepreneur individuel');
     expect(t).toContain('Vercel Inc.');
     expect(t).toContain('SIRET 891 139 248 00027');
-    expect(t).toContain('{{À COMPLÉTER : adresse}}');
-    expect(t).toContain('{{À COMPLÉTER : email de contact}}');
+    expect(t).toContain('4 impasse Jean Roussière, 30400 Villeneuve-lès-Avignon');
+    expect(t).toContain('stacker-contact@outlook.com');
+    expect(t).toContain('TVA non applicable, art. 293 B du CGI');
+    expect(t).toContain('{{À COMPLÉTER : téléphone}}');
   });
 
   it('CGV : rétractation 14 jours, résiliation simple, offre des 100 premiers', () => {
