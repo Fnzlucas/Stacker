@@ -28,13 +28,19 @@ class FakeBoot {
 }
 
 let boot: FakeBoot | null;
+/** Classes de <html> (html.is-booted : les écrans jouent leur entrée). */
+let htmlClasses = new Set<string>();
 let reduced = false;
 let paintAt: number | undefined;
 
 function install(opts: { withAnimations?: boolean } = {}) {
   boot = new FakeBoot();
   if (opts.withAnimations === false) (boot as unknown as { getAnimations?: unknown }).getAnimations = undefined;
-  vi.stubGlobal('document', { getElementById: (id: string) => (id === 'boot' ? boot : null) });
+  htmlClasses = new Set<string>();
+  vi.stubGlobal('document', {
+    getElementById: (id: string) => (id === 'boot' ? boot : null),
+    documentElement: { classList: { add: (c: string) => htmlClasses.add(c), remove: (c: string) => htmlClasses.delete(c) } },
+  });
   vi.stubGlobal('window', { matchMedia: () => ({ matches: reduced }) });
   vi.stubGlobal('requestAnimationFrame', (cb: () => void) => setTimeout(cb, 16));
   vi.stubGlobal('performance', {
@@ -61,6 +67,7 @@ describe('écran de démarrage', () => {
     scheduleBootCheck();
     await vi.advanceTimersByTimeAsync(100);
     expect(boot!.classes.has('is-leaving')).toBe(false);
+    expect(htmlClasses.has('is-booted')).toBe(false);
 
     release();
     release(); // libérer deux fois n'a aucun effet
@@ -68,6 +75,8 @@ describe('écran de démarrage', () => {
     expect(boot!.classes.has('is-leaving')).toBe(true);
     expect(boot!.attrs.get('aria-hidden')).toBe('true');
     expect(boot!.attrs.has('role')).toBe(false);
+    // Les écrans jouent leur entrée pendant que les bandes sortent.
+    expect(htmlClasses.has('is-booted')).toBe(true);
     // animationend d'un autre élément : ignoré ; de la dernière bande : retiré.
     boot!.listeners.forEach((fn) => fn({ target: boot }));
     expect(boot!.removed).toBe(false);
@@ -146,6 +155,7 @@ describe('écran de démarrage', () => {
     scheduleBootCheck();
     await vi.advanceTimersByTimeAsync(20);
     expect(boot).toBeNull();
+    expect(htmlClasses.has('is-booted')).toBe(true);
   });
 
   it('une rejection d’animation (annulée) ne bloque pas la sortie', async () => {

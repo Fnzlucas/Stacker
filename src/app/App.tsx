@@ -11,6 +11,7 @@ import { PATHS } from './paths';
 // Chaque écran est chargé à la demande : le JS initial se limite à React, au
 // routeur et au client Auth (budget DoD : 170 Ko gzip).
 const named = <K extends string>(load: () => Promise<Record<K, () => ReactElement>>, name: K) => lazy(() => load().then((m) => ({ default: m[name] })));
+const DemarrerPage = named(() => import('./pages/Demarrer'), 'DemarrerPage');
 const ConnexionPage = named(() => import('./pages/Connexion'), 'ConnexionPage');
 const ConnexionCodePage = named(() => import('./pages/ConnexionCode'), 'ConnexionCodePage');
 const InscriptionPage = named(() => import('./pages/Inscription'), 'InscriptionPage');
@@ -34,6 +35,7 @@ export const router = createBrowserRouter([
   {
     element: <RequireGuest />,
     children: [
+      { path: PATHS.welcome, element: page(<DemarrerPage />) },
       { path: PATHS.login, element: page(<ConnexionPage />) },
       { path: PATHS.loginCode, element: page(<ConnexionCodePage />) },
       { path: PATHS.signup, element: page(<InscriptionPage />) },

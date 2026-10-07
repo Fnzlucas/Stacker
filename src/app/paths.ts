@@ -6,6 +6,7 @@ export const PATHS = {
   gains: '/app/gains',
   profile: '/app/profil',
   onboarding: '/app/bienvenue',
+  welcome: '/app/demarrer',
   login: '/app/connexion',
   loginCode: '/app/connexion/code',
   signup: '/app/inscription',

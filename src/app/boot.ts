@@ -22,6 +22,9 @@ export const EXIT_MS = 520;
 /** Élément dont la fin d'animation marque la fin de la sortie. */
 const LAST_EXIT = '.boot-band-3';
 
+/** Classe posée sur <html> dès que la sortie commence : les écrans peuvent alors jouer leur entrée. */
+export const BOOTED_CLASS = 'is-booted';
+
 let holds = 0;
 let state: 'shown' | 'leaving' | 'gone' = 'shown';
 let checkScheduled = false;
@@ -46,8 +49,13 @@ function entryFinished(el: HTMLElement): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, Math.max(0, left)));
 }
 
+function markBooted(): void {
+  document.documentElement.classList.add(BOOTED_CLASS);
+}
+
 function leave(el: HTMLElement): void {
   state = 'leaving';
+  markBooted();
   el.setAttribute('aria-hidden', 'true');
   el.removeAttribute('role');
   const remove = () => {
@@ -74,6 +82,7 @@ function check(): void {
   const el = document.getElementById(BOOT_ID);
   if (!el) {
     state = 'gone';
+    markBooted();
     return;
   }
   waiting = true;
@@ -109,4 +118,5 @@ export function resetBootForTests(): void {
   state = 'shown';
   checkScheduled = false;
   waiting = false;
+  if (typeof document !== 'undefined') document.documentElement.classList.remove(BOOTED_CLASS);
 }

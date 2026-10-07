@@ -235,15 +235,15 @@ test.describe('profil', () => {
     expect(await page.evaluate(() => [window.localStorage.getItem('stacker-auth'), window.sessionStorage.getItem('stacker-auth')])).toEqual([null, null]);
     expect(supabase.fake.calls.some((c) => c.path.startsWith('/auth/v1/logout'))).toBe(true);
     await page.goto('/app');
-    await expect(page).toHaveURL(/\/app\/connexion$/);
+    await expect(page).toHaveURL(/\/app\/demarrer$/);
   });
 
-  test('session révoquée côté serveur : l’app déconnecte et renvoie vers la connexion', async ({ page, supabase }) => {
+  test('session révoquée côté serveur : l’app déconnecte et renvoie vers l’écran d’accueil', async ({ page, supabase }) => {
     await login(page, supabase.fake);
     // Révocation (ex. « déconnecter tous les appareils », compte bloqué) : le jeton stocké ne vaut plus rien.
     for (const s of supabase.fake.sessions) s.revoked = true;
     await page.reload();
-    await expect(page).toHaveURL(/\/app\/connexion$/);
+    await expect(page).toHaveURL(/\/app\/demarrer$/);
     expect(await page.evaluate(() => window.localStorage.getItem('stacker-auth'))).toBeNull();
     // Aucune donnée du profil n'a été affichée.
     await expect(page.getByText('Bonjour Inès')).toHaveCount(0);

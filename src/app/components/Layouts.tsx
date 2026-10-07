@@ -65,7 +65,9 @@ export function RequireAuth(): ReactElement {
   const { status } = useAuth();
   const location = useLocation();
   if (status === 'loading') return <Splash />;
-  if (status === 'signedOut') return <Navigate to={PATHS.login} replace state={{ from: location.pathname }} />;
+  // Ouverture de l'app sans session : écran d'accueil (créer un compte / se
+  // connecter). Lien profond (/app/profil…) : directement la connexion.
+  if (status === 'signedOut') return <Navigate to={location.pathname === PATHS.home ? PATHS.welcome : PATHS.login} replace state={{ from: location.pathname }} />;
   return <Outlet />;
 }
 

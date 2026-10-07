@@ -82,6 +82,84 @@
   .pw-rules li.is-ok { color: var(--st-green-ink); }
   .pw-rules li.is-ok .icon { color: var(--st-green-600); }
 
+  /* ---- Accueil avant connexion (/app/demarrer) : collage vox -------------- */
+  .welcome {
+    position: relative; isolation: isolate; display: flex; flex-direction: column; min-height: 100dvh;
+    width: 100%; max-width: 520px; margin-inline: auto; padding: 0 var(--st-gutter); overflow-x: clip;
+  }
+  .welcome-paper {
+    position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background:
+      radial-gradient(circle at 1px 1px, color-mix(in srgb, var(--st-ink) 16%, transparent) 1.1px, transparent 1.6px) 0 0 / 9px 9px,
+      var(--st-paper);
+    -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 34%, transparent 62%);
+    mask-image: linear-gradient(to bottom, #000 0, #000 34%, transparent 62%);
+  }
+  .welcome::before { /* fond uni sous le papier tramé */
+    content: ""; position: fixed; inset: 0; z-index: -2; background: var(--st-paper);
+  }
+  .welcome-top { display: flex; align-items: center; justify-content: space-between; gap: var(--st-space-3); padding: calc(var(--st-space-4) + env(safe-area-inset-top)) 0 var(--st-space-2); }
+  .welcome-login { display: inline-flex; align-items: center; min-height: var(--st-tap); font-weight: var(--st-weight-semibold); }
+  .welcome-main { flex: 1; display: flex; flex-direction: column; }
+
+  .welcome-collage { position: relative; height: 188px; margin: var(--st-space-1) 0 var(--st-space-2); }
+  @media (min-height: 860px) { .welcome-collage { height: 236px; margin-bottom: var(--st-space-3); } }
+  .welcome-burst {
+    position: absolute; left: 50%; top: 50%; width: 176px; height: 176px; margin: -88px 0 0 -88px;
+    background: var(--st-green);
+    clip-path: polygon(50% 0, 57% 17%, 72% 5%, 70% 23%, 89% 16%, 80% 32%, 100% 33%, 85% 45%, 100% 57%, 81% 61%, 93% 78%, 73% 75%, 74% 95%, 60% 81%, 50% 100%, 42% 82%, 28% 96%, 27% 76%, 8% 82%, 18% 64%, 0 57%, 16% 46%, 2% 32%, 21% 31%, 12% 14%, 30% 22%, 30% 3%, 43% 17%);
+    rotate: -8deg;
+  }
+  .welcome-logo { position: absolute; left: 50%; top: 50%; margin: -44px 0 0 -44px; rotate: -4deg; filter: drop-shadow(0 10px 18px rgba(20, 24, 40, .28)); }
+  .welcome-logo svg { display: block; }
+  .welcome-stk { position: absolute; z-index: 1; }
+  .welcome-stk-1 { left: 2%; top: 14%; --stk-rot: -7deg; }
+  .welcome-stk-2 { right: 0; top: 6%; }
+  .welcome-stk-3 { right: 3%; bottom: 10%; }
+  .welcome-stk-4 { left: 6%; bottom: 6%; }
+
+  .welcome-title { margin: 0; text-align: center; }
+  .welcome-ransom { font-size: 40px; justify-content: center; flex-wrap: wrap; }
+  @media (min-width: 400px) { .welcome-ransom { font-size: 46px; } }
+  .welcome-lead { margin-top: var(--st-space-4); text-align: center; text-wrap: balance; }
+  .welcome-points { list-style: none; margin: var(--st-space-5) 0 0; padding: 0; display: grid; gap: var(--st-space-3); }
+  .welcome-points li {
+    display: flex; align-items: center; gap: var(--st-space-3); padding: 10px var(--st-space-4); font-size: var(--st-text-sm);
+    border-radius: var(--st-r-md); background: var(--st-surface); box-shadow: var(--st-shadow-xs); line-height: 1.45; font-weight: var(--st-weight-medium);
+  }
+  .welcome-point-icon { display: grid; place-items: center; flex-shrink: 0; width: 28px; height: 28px; border-radius: 9px; background: var(--st-ink); color: #fff; }
+  .welcome-point-icon .icon { width: 16px; height: 16px; }
+  .welcome-points li:nth-child(1) .welcome-point-icon { background: var(--st-green); color: var(--st-ink); }
+  .welcome-points li:nth-child(2) .welcome-point-icon { background: var(--st-violet); color: var(--st-ink); }
+  .welcome-points li:nth-child(3) .welcome-point-icon { background: var(--st-orange); color: var(--st-ink); }
+
+  .welcome-actions {
+    position: sticky; bottom: 0; display: grid; gap: var(--st-space-2); margin-top: var(--st-space-4);
+    padding: var(--st-space-4) 0 calc(var(--st-space-4) + env(safe-area-inset-bottom));
+    background: linear-gradient(to top, var(--st-paper) 72%, color-mix(in srgb, var(--st-paper) 0%, transparent));
+  }
+  .welcome-legal { margin: 0; text-align: center; font-size: var(--st-text-xs); color: var(--st-text-2); }
+  .welcome-legal a { display: inline-block; padding: 8px 2px; color: inherit; }
+
+  /* Entrée : jouée quand l'écran de démarrage sort (html.is-booted). */
+  .welcome .wi { animation: welcome-in 520ms var(--st-ease-spring) both; animation-delay: calc(var(--wi) * 70ms + 120ms); }
+  .welcome .wi-0 { --wi: 0; } .welcome .wi-1 { --wi: 1; } .welcome .wi-2 { --wi: 2; } .welcome .wi-3 { --wi: 4; }
+  .welcome .wi-4 { --wi: 5; } .welcome .wi-5 { --wi: 6; } .welcome .wi-6 { --wi: 7; } .welcome .wi-7 { --wi: 9; }
+  .welcome .wi-8 { --wi: 10; } .welcome .wi-9 { --wi: 11; } .welcome .wi-10 { --wi: 12; } .welcome .wi-11 { --wi: 13; }
+  .welcome .welcome-burst.wi { animation-name: welcome-burst; animation-duration: 640ms; }
+  .welcome .welcome-logo.wi { animation-name: welcome-pop; }
+  .welcome .welcome-stk.wi { animation-name: welcome-slap; animation-duration: 420ms; }
+  .welcome .ransom.is-animated .l { animation-delay: calc(var(--i, 0) * 50ms + 420ms); }
+  html:not(.is-booted) .welcome .wi,
+  html:not(.is-booted) .welcome .ransom.is-animated .l { animation-play-state: paused; }
+  @keyframes welcome-in { from { opacity: 0; translate: 0 18px; } to { opacity: 1; translate: 0 0; } }
+  @keyframes welcome-burst { from { opacity: 0; scale: .2; rotate: -80deg; } to { opacity: 1; scale: 1; rotate: -8deg; } }
+  @keyframes welcome-pop { 0% { opacity: 0; scale: .3; } 70% { opacity: 1; scale: 1.08; } 100% { opacity: 1; scale: 1; } }
+  @keyframes welcome-slap { 0% { opacity: 0; scale: 1.9; } 100% { opacity: 1; scale: 1; } }
+  @media (prefers-reduced-motion: reduce) {
+    .welcome .wi, .welcome .ransom.is-animated .l { animation: none; }
+  }
+
   /* ---- Onboarding -------------------------------------------------------- */
   .onboarding { display: flex; flex-direction: column; min-height: 100dvh; width: 100%; max-width: 560px; margin-inline: auto; padding: 0 var(--st-gutter); }
   .onboarding-top { display: flex; align-items: center; justify-content: space-between; padding: calc(var(--st-space-4) + env(safe-area-inset-top)) 0 var(--st-space-3); }

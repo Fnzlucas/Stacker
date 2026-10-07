@@ -35,7 +35,21 @@ async function completeOnboarding(page: Page, opts: { firstName?: string } = {})
 }
 
 test.describe('accès protégé', () => {
-  for (const path of ['/app', '/app/prospects', '/app/deals', '/app/gains', '/app/profil', '/app/bienvenue']) {
+  test('sans session, /app ouvre l’écran d’accueil (créer un compte / se connecter)', async ({ page, supabase }) => {
+    await page.goto('/app');
+    await expect(page).toHaveURL(/\/app\/demarrer$/);
+    await expect(page.getByRole('heading', { level: 1, name: 'Stack tes clients.' })).toBeVisible();
+    await expectAccessible(page, 'accueil avant connexion');
+    await expectNoHorizontalOverflow(page, 'accueil avant connexion');
+    expect(supabase.fake.calls.filter((c) => c.path.startsWith('/rest/v1/'))).toEqual([]);
+    await page.getByRole('link', { name: 'J’ai déjà un compte' }).click();
+    await expect(page).toHaveURL(/\/app\/connexion$/);
+    await page.goBack();
+    await page.getByRole('link', { name: 'Créer mon compte' }).click();
+    await expect(page).toHaveURL(/\/app\/inscription$/);
+  });
+
+  for (const path of ['/app/prospects', '/app/deals', '/app/gains', '/app/profil', '/app/bienvenue']) {
     test(`sans session, ${path} redirige vers la connexion`, async ({ page, supabase }) => {
       await page.goto(path);
       await expect(page).toHaveURL(/\/app\/connexion$/);
@@ -45,9 +59,9 @@ test.describe('accès protégé', () => {
     });
   }
 
-  test('URL inconnue sous /app : retour à l’accueil (donc à la connexion)', async ({ page }) => {
+  test('URL inconnue sous /app : retour à l’accueil (donc à l’écran d’accueil)', async ({ page }) => {
     await page.goto('/app/nimporte-quoi');
-    await expect(page).toHaveURL(/\/app\/connexion$/);
+    await expect(page).toHaveURL(/\/app\/demarrer$/);
   });
 
   test('en-têtes de l’app : CSP stricte, non indexée', async ({ request }) => {
