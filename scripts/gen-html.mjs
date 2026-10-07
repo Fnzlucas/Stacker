@@ -60,6 +60,34 @@ ${head.join('\n')}
  */
 export const APP_FILE = 'app.html';
 
+/**
+ * Écran de démarrage statique de l'app (#boot) : peint avant le JavaScript
+ * (aucun écran blanc), animé en CSS uniquement (transform et opacity), puis
+ * retiré par src/app/boot.ts quand l'app est prête. Aucun script ni style
+ * inline (CSP). Géométrie du logo : design/logo.js (tuile 23 %, barres
+ * 58 % × 12,5 %, écart 6 %). Les barres s'empilent de bas en haut.
+ */
+export const BOOT_SPLASH = `<div id="boot" class="boot" role="status">
+<div class="boot-stage">
+<svg class="boot-tile" data-boot-entry viewBox="0 0 100 100" width="96" height="96" aria-hidden="true" focusable="false">
+<defs>
+<linearGradient id="boot-g" x1=".33" y1=".03" x2=".67" y2=".97"><stop offset="0" stop-color="#2a2a33"/><stop offset="1" stop-color="#0a0a0e"/></linearGradient>
+<linearGradient id="boot-h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/></linearGradient>
+</defs>
+<rect width="100" height="100" rx="23" fill="url(#boot-g)"/>
+<rect x=".75" y=".75" width="98.5" height="98.5" rx="22.25" fill="url(#boot-h)" stroke="#fff" stroke-opacity=".09" stroke-width="1.5"/>
+<rect class="boot-bar boot-bar-1" data-boot-entry x="21" y="25.25" width="58" height="12.5" rx="6.25" fill="#3ccf63"/>
+<rect class="boot-bar boot-bar-2" data-boot-entry x="21" y="43.75" width="58" height="12.5" rx="6.25" fill="#7b7bf0"/>
+<rect class="boot-bar boot-bar-3" data-boot-entry x="21" y="62.25" width="58" height="12.5" rx="6.25" fill="#f7a21b"/>
+</svg>
+<span class="boot-wordmark" data-boot-entry aria-hidden="true">Stacker</span>
+<span class="boot-progress" aria-hidden="true"><span class="boot-progress-bar"></span></span>
+<p class="boot-slow">Le chargement prend plus de temps que prévu. <a href="/app">Recharger</a></p>
+<noscript><p class="boot-noscript">L’espace stacker a besoin de JavaScript. <a href="/">Retour au site</a></p></noscript>
+</div>
+<span class="sr-only">Chargement de Stacker…</span>
+</div>`;
+
 export function renderAppTemplate() {
   const head = [
     '<meta charset="utf-8">',
@@ -72,6 +100,15 @@ export function renderAppTemplate() {
     '<meta name="format-detection" content="telephone=no">',
     '<meta name="referrer" content="strict-origin-when-cross-origin">',
     '<link rel="icon" type="image/svg+xml" href="/favicon.svg">',
+    // Installation sur l'écran d'accueil (PWA) : manifeste et icônes générées
+    // depuis le logo (scripts/gen-icons.mjs). Uniquement sur l'app connectée.
+    '<link rel="manifest" href="/manifest.webmanifest">',
+    '<link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">',
+    '<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">',
+    '<meta name="mobile-web-app-capable" content="yes">',
+    '<meta name="apple-mobile-web-app-capable" content="yes">',
+    '<meta name="apple-mobile-web-app-title" content="Stacker">',
+    '<meta name="apple-mobile-web-app-status-bar-style" content="default">',
     ...PRELOAD_FONTS.map((f) => `<link rel="preload" href="/fonts/${f}" as="font" type="font/woff2" crossorigin>`),
     '<link rel="stylesheet" href="/src/styles/app.css">',
     '<script type="module" src="/src/entries/app.tsx"></script>',
@@ -82,8 +119,8 @@ export function renderAppTemplate() {
 ${head.join('\n')}
 </head>
 <body class="grain">
-<div id="root"><div class="app-boot" role="status"><img src="/favicon.svg" width="56" height="56" alt=""><span class="sr-only">Chargement de Stacker…</span></div></div>
-<noscript><p class="noscript">L’espace stacker a besoin de JavaScript. <a href="/">Retour au site</a></p></noscript>
+${BOOT_SPLASH}
+<div id="root"></div>
 </body>
 </html>
 `;

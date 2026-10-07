@@ -11,10 +11,10 @@
 
 @layer components {
   /* ---- Démarrage, chargement --------------------------------------------- */
-  .app-boot, .app-splash {
+  .app-splash {
     display: grid; place-items: center; min-height: 100dvh; padding: var(--st-gutter);
   }
-  .app-boot svg, .app-splash > svg { animation: app-breathe 1.6s var(--st-ease-in-out) infinite; }
+  .app-splash > svg { animation: app-breathe 1.6s var(--st-ease-in-out) infinite; }
   @keyframes app-breathe { 50% { transform: scale(.94); opacity: .7; } }
 
   .page-heading:focus { outline: none; box-shadow: none; }
@@ -195,6 +195,74 @@
   @keyframes app-sheet-in { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
 
   @media (prefers-reduced-motion: reduce) {
-    .app-boot svg, .app-splash > svg, .app-dialog[open] { animation: none; }
+    .app-splash > svg, .app-dialog[open] { animation: none; }
   }
+}
+
+/* ---- Écran de démarrage (#boot, app.html) ---------------------------------
+   Hors @layer : ces classes vivent dans le HTML généré (scripts/gen-html.mjs),
+   que Tailwind ne lit pas ; elles ne doivent pas être purgées.
+   Animations en transform et opacity uniquement. Séquence (entrée ≈ 920 ms) :
+   tuile 0-360 ms, barres de bas en haut à 140 / 260 / 380 ms (440 ms, rebond),
+   wordmark à 600 ms (320 ms). Barre de progression après 1,2 s seulement,
+   message de lenteur après 10 s. Sortie : src/app/boot.ts (.is-leaving). */
+.boot {
+  position: fixed; inset: 0; z-index: calc(var(--st-z-max) - 1);
+  display: grid; place-items: center;
+  padding: calc(var(--st-gutter) + env(safe-area-inset-top)) var(--st-gutter) calc(var(--st-gutter) + env(safe-area-inset-bottom));
+  background: var(--st-bg);
+  transition: opacity 260ms var(--st-ease-out) 120ms;
+}
+.boot-stage {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  transform-origin: 50% 40%;
+  transition: transform 360ms var(--st-ease-in), opacity 300ms var(--st-ease-in);
+}
+.boot-tile { display: block; overflow: visible; filter: drop-shadow(0 14px 28px rgba(10, 10, 14, .22)); animation: boot-tile-in 360ms var(--st-ease-spring) both; }
+.boot-bar { transform-box: fill-box; transform-origin: 50% 100%; animation: boot-bar-in 440ms var(--st-ease-out) both; }
+.boot-bar-3 { animation-delay: 140ms; }
+.boot-bar-2 { animation-delay: 260ms; }
+.boot-bar-1 { animation-delay: 380ms; }
+.boot-wordmark {
+  margin-top: 22px;
+  font-family: var(--st-font-display); font-weight: 800; font-size: 34px; line-height: 1;
+  letter-spacing: var(--st-tracking-wordmark); color: var(--st-ink);
+  animation: boot-fade-up 320ms var(--st-ease-out) 600ms both;
+}
+.boot-progress {
+  position: relative; display: block; overflow: hidden;
+  width: 96px; height: 3px; margin-top: 28px; border-radius: 999px;
+  background: rgba(28, 28, 30, .08);
+  animation: boot-appear 240ms linear 1200ms both;
+}
+.boot-progress-bar {
+  position: absolute; inset: 0; width: 40%; border-radius: inherit; background: var(--st-ink);
+  animation: boot-progress 1100ms var(--st-ease-in-out) 1200ms infinite;
+}
+.boot-slow, .boot-noscript { max-width: 300px; margin-top: 20px; font-size: var(--st-text-sm); color: var(--st-text-2); }
+.boot-slow a, .boot-noscript a { color: var(--st-violet-ink); font-weight: var(--st-weight-semibold); }
+.boot-slow { visibility: hidden; animation: boot-reveal 1ms linear 10s both; }
+
+.boot.is-leaving { opacity: 0; pointer-events: none; }
+.boot.is-leaving .boot-stage { transform: translateY(-18px) scale(.9); opacity: 0; }
+
+@keyframes boot-tile-in { from { transform: scale(.82); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes boot-bar-in {
+  0% { transform: translateY(-36px) scaleY(1.15); opacity: 0; }
+  35% { opacity: 1; }
+  60% { transform: translateY(2.5px) scaleY(.82); }
+  80% { transform: translateY(-1.5px) scaleY(1.04); }
+  100% { transform: none; opacity: 1; }
+}
+@keyframes boot-fade-up { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes boot-appear { from { opacity: 0; } to { opacity: 1; } }
+@keyframes boot-progress { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
+@keyframes boot-reveal { from { visibility: hidden; } to { visibility: visible; } }
+
+/* Mouvement réduit : écran statique (logo et wordmark déjà en place), pas de
+   barre animée ; la sortie est immédiate (boot.ts). */
+@media (prefers-reduced-motion: reduce) {
+  .boot, .boot-stage { transition: none; }
+  .boot-tile, .boot-bar, .boot-wordmark, .boot-progress, .boot-progress-bar { animation: none; }
+  .boot-progress { display: none; }
 }

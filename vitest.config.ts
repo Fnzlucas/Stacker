@@ -14,7 +14,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text-summary', 'text', 'json-summary'],
-      include: ['src/lib/**/*.ts', 'src/app/lib/**/*.ts', 'src/app/paths.ts', 'src/config/**/*.ts', 'supabase/functions/_shared/**/*.ts', 'supabase/functions/waitlist-join/*.ts', 'supabase/functions/account-delete/*.ts'],
+      include: ['src/lib/**/*.ts', 'src/app/lib/**/*.ts', 'src/app/paths.ts', 'src/app/boot.ts', 'src/config/**/*.ts', 'supabase/functions/_shared/**/*.ts', 'supabase/functions/waitlist-join/*.ts', 'supabase/functions/account-delete/*.ts'],
       exclude: ['**/*.test.ts', 'supabase/functions/*/index.ts', 'src/app/lib/queries.ts'],
       thresholds: { lines: 90, functions: 90, branches: 85, statements: 90 },
     },

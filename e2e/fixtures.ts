@@ -97,6 +97,8 @@ export { expect };
 
 /** Aucune violation axe-core sérieuse ou critique (WCAG 2.1 A/AA). */
 export async function expectAccessible(page: Page, label: string): Promise<void> {
+  // L'écran de démarrage de l'app recouvre la page jusqu'à ce qu'elle soit prête : axe analyse l'écran réel.
+  await expect(page.locator('#boot')).toHaveCount(0);
   const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
   const serious = results.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical');
   const summary = serious.map((v) => `${v.id} (${String(v.impact)}) : ${v.nodes.map((n) => n.target.join(' ')).join(' | ')}`);

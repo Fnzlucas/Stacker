@@ -12,7 +12,7 @@ const PASSWORD = 'Plombier-Avignon-2026';
 
 async function shot(page: Page, name: string, fullPage = false) {
   // Jamais l'écran de chargement : on attend la page rendue.
-  await expect(page.locator('.app-splash, .app-boot')).toHaveCount(0);
+  await expect(page.locator('.app-splash, #boot')).toHaveCount(0);
   await expect(page.getByRole('heading', { level: 1 }).first()).toBeVisible();
   await page.evaluate(() => document.fonts.ready);
   await page.screenshot({ path: `${DIR}/${name}.png`, fullPage, animations: 'disabled' });

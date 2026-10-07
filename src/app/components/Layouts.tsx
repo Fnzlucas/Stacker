@@ -1,8 +1,9 @@
-import { useEffect, useRef, type ReactElement, type ReactNode } from 'react';
+import { useEffect, useLayoutEffect, useRef, type ReactElement, type ReactNode } from 'react';
 import { Link, Navigate, Outlet, useLocation } from 'react-router';
 import { Icon } from '../../components/Icon';
 import { Logo, LogoLockup } from '../../components/Logo';
 import { useAuth } from '../auth/AuthProvider';
+import { holdBoot } from '../boot';
 import { PATHS, safeReturnPath } from '../paths';
 
 export { safeReturnPath };
@@ -27,6 +28,8 @@ export function PageHeading({ children, className = 'h1' }: { children: ReactNod
 }
 
 export function Splash({ label = 'Chargement' }: { label?: string }): ReactElement {
+  // Tant qu'un écran d'attente est monté, l'écran de démarrage reste affiché.
+  useLayoutEffect(() => holdBoot(), []);
   return (
     <div className="app-splash" role="status" aria-live="polite">
       <Logo size={56} />

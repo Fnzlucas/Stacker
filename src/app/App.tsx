@@ -1,7 +1,8 @@
 import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { lazy, Suspense, type ReactElement } from 'react';
+import { lazy, Suspense, useEffect, type ReactElement } from 'react';
 import { Navigate, RouterProvider, createBrowserRouter } from 'react-router';
 import { AuthProvider } from './auth/AuthProvider';
+import { scheduleBootCheck } from './boot';
 import { RequireAuth, RequireGuest, Splash } from './components/Layouts';
 import { ApiError } from './lib/apiError';
 import { getBackend } from './lib/supabase';
@@ -83,6 +84,8 @@ const queryClient = new QueryClient({
 });
 
 export function App(): ReactElement {
+  // Premier rendu fait : l'écran de démarrage part dès que plus rien ne le retient.
+  useEffect(() => scheduleBootCheck(), []);
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider backend={getBackend()}>

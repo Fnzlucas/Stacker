@@ -1,0 +1,153 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { EXIT_MS, holdBoot, resetBootForTests, scheduleBootCheck } from './boot';
+
+/** Faux #boot minimal (environnement node, sans DOM). */
+class FakeBoot {
+  attrs = new Map<string, string>([['role', 'status']]);
+  classes = new Set<string>();
+  removed = false;
+  listeners: ((e: { target: unknown }) => void)[] = [];
+  entry: { playState: string; finished: Promise<unknown> }[] = [];
+  classList = { add: (c: string) => this.classes.add(c) };
+  setAttribute(k: string, v: string) {
+    this.attrs.set(k, v);
+  }
+  removeAttribute(k: string) {
+    this.attrs.delete(k);
+  }
+  remove() {
+    this.removed = true;
+  }
+  addEventListener(_type: string, fn: (e: { target: unknown }) => void) {
+    this.listeners.push(fn);
+  }
+  getAnimations = () => [];
+  querySelectorAll = () => [{ getAnimations: () => this.entry }];
+}
+
+let boot: FakeBoot | null;
+let reduced = false;
+let paintAt: number | undefined;
+
+function install(opts: { withAnimations?: boolean } = {}) {
+  boot = new FakeBoot();
+  if (opts.withAnimations === false) (boot as unknown as { getAnimations?: unknown }).getAnimations = undefined;
+  vi.stubGlobal('document', { getElementById: (id: string) => (id === 'boot' ? boot : null) });
+  vi.stubGlobal('window', { matchMedia: () => ({ matches: reduced }) });
+  vi.stubGlobal('requestAnimationFrame', (cb: () => void) => setTimeout(cb, 16));
+  vi.stubGlobal('performance', {
+    now: () => Date.now(),
+    getEntriesByType: () => (paintAt === undefined ? [] : [{ name: 'first-contentful-paint', startTime: paintAt }]),
+  });
+}
+
+describe('écran de démarrage', () => {
+  beforeEach(() => {
+    vi.useFakeTimers({ now: 0 });
+    resetBootForTests();
+    reduced = false;
+    paintAt = undefined;
+    install();
+  });
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.unstubAllGlobals();
+  });
+
+  it('reste affiché tant qu’un écran d’attente le retient, puis sort avec une transition', async () => {
+    const release = holdBoot();
+    scheduleBootCheck();
+    await vi.advanceTimersByTimeAsync(100);
+    expect(boot!.classes.has('is-leaving')).toBe(false);
+
+    release();
+    release(); // libérer deux fois n'a aucun effet
+    await vi.advanceTimersByTimeAsync(20);
+    expect(boot!.classes.has('is-leaving')).toBe(true);
+    expect(boot!.attrs.get('aria-hidden')).toBe('true');
+    expect(boot!.attrs.has('role')).toBe(false);
+    // transitionend d'un enfant : ignoré ; de l'écran lui-même : retiré.
+    boot!.listeners.forEach((fn) => fn({ target: {} }));
+    expect(boot!.removed).toBe(false);
+    boot!.listeners.forEach((fn) => fn({ target: boot }));
+    expect(boot!.removed).toBe(true);
+    await vi.advanceTimersByTimeAsync(EXIT_MS + 300);
+  });
+
+  it('attend la fin de l’animation d’entrée, jamais davantage', async () => {
+    let finish!: () => void;
+    boot!.entry = [
+      { playState: 'running', finished: new Promise<void>((r) => (finish = r)) },
+      { playState: 'finished', finished: Promise.resolve() },
+    ];
+    scheduleBootCheck();
+    scheduleBootCheck(); // une seule vérification planifiée
+    await vi.advanceTimersByTimeAsync(500);
+    expect(boot!.classes.has('is-leaving')).toBe(false);
+    finish();
+    await vi.advanceTimersByTimeAsync(0);
+    expect(boot!.classes.has('is-leaving')).toBe(true);
+    // Filet de sécurité sans transitionend.
+    await vi.advanceTimersByTimeAsync(EXIT_MS + 200);
+    expect(boot!.removed).toBe(true);
+  });
+
+  it('un écran d’attente apparu pendant l’animation d’entrée retarde la sortie', async () => {
+    let finish!: () => void;
+    boot!.entry = [{ playState: 'running', finished: new Promise<void>((r) => (finish = r)) }];
+    scheduleBootCheck();
+    await vi.advanceTimersByTimeAsync(20);
+    const release = holdBoot();
+    finish();
+    await vi.advanceTimersByTimeAsync(20);
+    expect(boot!.classes.has('is-leaving')).toBe(false);
+    release();
+    await vi.advanceTimersByTimeAsync(20);
+    expect(boot!.classes.has('is-leaving')).toBe(true);
+  });
+
+  it('mouvement réduit : sortie immédiate, sans transition', async () => {
+    reduced = true;
+    boot!.entry = [{ playState: 'running', finished: new Promise(() => undefined) }];
+    scheduleBootCheck();
+    await vi.advanceTimersByTimeAsync(20);
+    expect(boot!.removed).toBe(true);
+    expect(boot!.classes.has('is-leaving')).toBe(false);
+  });
+
+  it('sans Web Animations : se cale sur le premier rendu + durée d’entrée', async () => {
+    install({ withAnimations: false });
+    paintAt = 100;
+    scheduleBootCheck();
+    await vi.advanceTimersByTimeAsync(900);
+    expect(boot!.classes.has('is-leaving')).toBe(false);
+    await vi.advanceTimersByTimeAsync(200);
+    expect(boot!.classes.has('is-leaving')).toBe(true);
+  });
+
+  it('sans Web Animations ni mesure du premier rendu : sortie dès que possible', async () => {
+    install({ withAnimations: false });
+    vi.setSystemTime(5000);
+    scheduleBootCheck();
+    await vi.advanceTimersByTimeAsync(20);
+    expect(boot!.classes.has('is-leaving')).toBe(true);
+  });
+
+  it('écran absent (déjà retiré) : rien à faire, plus aucune vérification', async () => {
+    boot = null;
+    scheduleBootCheck();
+    await vi.advanceTimersByTimeAsync(20);
+    scheduleBootCheck();
+    await vi.advanceTimersByTimeAsync(20);
+    expect(boot).toBeNull();
+  });
+
+  it('une rejection d’animation (annulée) ne bloque pas la sortie', async () => {
+    const aborted = Promise.reject(new Error('AbortError'));
+    aborted.catch(() => undefined); // évite l'alerte « rejet non géré » avant que boot.ts ne s'y abonne
+    boot!.entry = [{ playState: 'running', finished: aborted }];
+    scheduleBootCheck();
+    await vi.advanceTimersByTimeAsync(20);
+    expect(boot!.classes.has('is-leaving')).toBe(true);
+  });
+});

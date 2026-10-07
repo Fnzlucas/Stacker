@@ -37,3 +37,4 @@ blob-report/
 .DS_Store
 *.log
 .vercel
+qa/demo/.raw/
