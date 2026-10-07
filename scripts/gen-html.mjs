@@ -62,29 +62,33 @@ export const APP_FILE = 'app.html';
 
 /**
  * Écran de démarrage statique de l'app (#boot) : peint avant le JavaScript
- * (aucun écran blanc), animé en CSS uniquement (transform et opacity), puis
- * retiré par src/app/boot.ts quand l'app est prête. Aucun script ni style
- * inline (CSP). Géométrie du logo : design/logo.js (tuile 23 %, barres
- * 58 % × 12,5 %, écart 6 %). Les barres s'empilent de bas en haut.
+ * (aucun écran blanc) et animé en CSS uniquement (transform et opacity, sur
+ * des éléments HTML : animations exécutées par le compositeur, jamais
+ * bloquées par le chargement du JavaScript). React ne le monte ni ne le
+ * remplace jamais : src/app/boot.ts ajoute seulement .is-leaving quand l'app
+ * est prête, puis le retire. Aucun script ni style inline (CSP).
+ * Géométrie du logo : design/logo.js (tuile 23 %, barres 58 % × 12,5 %,
+ * écart 6 %). Chorégraphie : src/styles/app.css (« Écran de démarrage »).
  */
+const BOOT_BAR = (n) =>
+  `<span class="boot-bar boot-bar-${String(n)}"><span class="boot-bx"><span class="boot-by"><span class="boot-bs"></span></span></span></span>`;
+const BOOT_LETTERS = [...'Stacker'].map((c) => `<span class="boot-l">${c}</span>`).join('');
+
 export const BOOT_SPLASH = `<div id="boot" class="boot" role="status">
+<div class="boot-bg"></div>
 <div class="boot-stage">
-<svg class="boot-tile" data-boot-entry viewBox="0 0 100 100" width="96" height="96" aria-hidden="true" focusable="false">
-<defs>
-<linearGradient id="boot-g" x1=".33" y1=".03" x2=".67" y2=".97"><stop offset="0" stop-color="#2a2a33"/><stop offset="1" stop-color="#0a0a0e"/></linearGradient>
-<linearGradient id="boot-h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/></linearGradient>
-</defs>
-<rect width="100" height="100" rx="23" fill="url(#boot-g)"/>
-<rect x=".75" y=".75" width="98.5" height="98.5" rx="22.25" fill="url(#boot-h)" stroke="#fff" stroke-opacity=".09" stroke-width="1.5"/>
-<rect class="boot-bar boot-bar-1" data-boot-entry x="21" y="25.25" width="58" height="12.5" rx="6.25" fill="#3ccf63"/>
-<rect class="boot-bar boot-bar-2" data-boot-entry x="21" y="43.75" width="58" height="12.5" rx="6.25" fill="#7b7bf0"/>
-<rect class="boot-bar boot-bar-3" data-boot-entry x="21" y="62.25" width="58" height="12.5" rx="6.25" fill="#f7a21b"/>
-</svg>
-<span class="boot-wordmark" data-boot-entry aria-hidden="true">Stacker</span>
+<div class="boot-logo" aria-hidden="true">
+<div class="boot-tile-x"><div class="boot-tile"><span class="boot-shine"></span></div></div>
+<div class="boot-bars">${[1, 2, 3].map(BOOT_BAR).join('')}</div>
+</div>
+<span class="boot-word" aria-hidden="true">${BOOT_LETTERS}</span>
+<div class="boot-foot">
 <span class="boot-progress" aria-hidden="true"><span class="boot-progress-bar"></span></span>
 <p class="boot-slow">Le chargement prend plus de temps que prévu. <a href="/app">Recharger</a></p>
 <noscript><p class="boot-noscript">L’espace stacker a besoin de JavaScript. <a href="/">Retour au site</a></p></noscript>
 </div>
+</div>
+<div class="boot-bands" aria-hidden="true"><span class="boot-band boot-band-1"></span><span class="boot-band boot-band-2"></span><span class="boot-band boot-band-3"></span></div>
 <span class="sr-only">Chargement de Stacker…</span>
 </div>`;
 

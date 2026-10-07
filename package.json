@@ -19,7 +19,7 @@
     "test:e2e": "playwright test",
     "qa:shots": "SHOTS=1 playwright test e2e/screenshots.spec.ts --project=mobile-390",
     "qa:shots:app": "SHOTS=1 playwright test e2e/screenshots-app.spec.ts",
-    "qa:demo:splash": "DEMO=1 playwright test e2e/splash-demo.spec.ts --project=mobile-390 && ffmpeg -y -loglevel error -i qa/demo/splash.webm -c:v libx264 -pix_fmt yuv420p -crf 20 -movflags +faststart qa/demo/splash.mp4 && rm -rf qa/demo/splash.webm qa/demo/.raw",
+    "qa:demo:splash": "DEMO=1 playwright test e2e/splash-demo.spec.ts --project=mobile-390 && ffmpeg -y -loglevel error -framerate 30 -i qa/demo/.raw/frames/%04d.png -c:v libx264 -preset slow -crf 18 -pix_fmt yuv420p -movflags +faststart qa/demo/splash_v2.mp4 && rm -rf qa/demo/.raw",
     "icons": "node scripts/gen-icons.mjs",
     "check:size": "node scripts/check-bundle-size.mjs",
     "check:secrets": "node scripts/scan-secrets.mjs",

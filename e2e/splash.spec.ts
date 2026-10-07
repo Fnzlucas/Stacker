@@ -3,7 +3,10 @@
  * - Peint par le HTML avant le JavaScript (aucun écran blanc), puis retiré
  *   quand l'app est prête, jamais avant la fin de l'animation d'entrée, ni
  *   longtemps après (aucun faux délai).
- * - Barre de progression seulement si le chargement dépasse 1,2 s.
+ * - UNE seule animation continue : jamais remontée ni redémarrée par React,
+ *   même avec un processeur lent (CPU ×4).
+ * - Barre de progression seulement si le chargement dépasse 1,6 s ; la tuile
+ *   « respire » sans que l'entrée recommence.
  * - Mouvement réduit : écran statique, sortie immédiate.
  * - Aucun impact sur les pages publiques.
  */
@@ -24,7 +27,7 @@ async function trackBoot(page: Page): Promise<void> {
         if (el.classList.contains('is-leaving') && w.__boot.leavingAt === null) {
           w.__boot.leavingAt = performance.now();
           // État des animations d'entrée au moment précis où la sortie commence.
-          const anims = Array.from(el.querySelectorAll('[data-boot-entry]')).flatMap((n) => n.getAnimations());
+          const anims = el.getAnimations({ subtree: true }).filter((a) => (a as CSSAnimation).animationName.startsWith('boot-in-'));
           w.__boot.entryDone = anims.every((a) => a.playState === 'finished');
           const starts = anims.map((a) => Number(a.startTime)).filter((n) => Number.isFinite(n));
           w.__boot.entryStart = starts.length ? Math.min(...starts) : null;
@@ -58,8 +61,10 @@ test.describe('écran de démarrage', () => {
     await page.goto('/app/connexion', { waitUntil: 'domcontentloaded' });
     const boot = page.locator('#boot');
     await expect(boot).toBeVisible();
-    await expect(boot.locator('.boot-wordmark')).toHaveText('Stacker');
+    await expect(boot.locator('.boot-word')).toHaveText('Stacker');
+    await expect(boot.locator('.boot-l')).toHaveCount(7);
     await expect(boot.locator('.boot-bar')).toHaveCount(3);
+    await expect(boot.locator('.boot-band')).toHaveCount(3);
     await expect(boot).toHaveCount(0, { timeout: 5000 });
     await expect(page.getByRole('heading', { level: 1, name: 'Content de te revoir' })).toBeVisible();
 
@@ -67,17 +72,19 @@ test.describe('écran de démarrage', () => {
     expect(t.seen).toBe(true);
     expect(t.leavingAt, 'sortie animée').not.toBeNull();
     expect(t.removedAt).not.toBeNull();
-    // Jamais avant la fin de l'animation d'entrée (920 ms)…
+    // Jamais avant la fin de l'animation d'entrée (1590 ms)…
     expect(t.entryDone, 'animations d’entrée terminées au début de la sortie').toBe(true);
     expect(t.entryStart).not.toBeNull();
-    expect(t.leavingAt! - t.entryStart!).toBeGreaterThanOrEqual(900);
+    expect(t.leavingAt! - t.entryStart!).toBeGreaterThanOrEqual(1570);
     // … et pas de délai artificiel au-delà (l'app locale est prête bien avant la fin de l'entrée).
-    expect(t.leavingAt! - t.entryStart!).toBeLessThan(1500);
-    expect(t.removedAt! - t.leavingAt!).toBeLessThan(800);
+    expect(t.leavingAt! - t.entryStart!).toBeLessThan(2200);
+    // Sortie (bandes) ≈ 520 ms.
+    expect(t.removedAt! - t.leavingAt!).toBeGreaterThanOrEqual(450);
+    expect(t.removedAt! - t.leavingAt!).toBeLessThan(1000);
   });
 
-  test('statique dans le HTML avant le JavaScript, barre de progression après 1,2 s seulement', async ({ page }) => {
-    await slowAppScript(page, 2500);
+  test('statique dans le HTML avant le JavaScript, respiration et barre de progression après 1,6 s seulement', async ({ page }) => {
+    await slowAppScript(page, 3000);
     // « commit » : DOMContentLoaded attendrait le module de l'app (retardé ici).
     await page.goto('/app/connexion', { waitUntil: 'commit' });
     const boot = page.locator('#boot');
@@ -86,12 +93,80 @@ test.describe('écran de démarrage', () => {
     await expect(boot).toHaveAttribute('role', 'status');
     await expect(boot.getByText('Chargement de Stacker…')).toBeAttached();
     await expect(boot.locator('.boot-progress')).toHaveCSS('opacity', '0');
-    await expect(boot.locator('.boot-wordmark')).toHaveCSS('opacity', '1');
-    await expect(boot.locator('.boot-progress')).toHaveCSS('opacity', '1', { timeout: 2000 });
+    // Entrée finie (≈ 1,6 s) : wordmark en place, la tuile respire, la barre apparaît.
+    await expect(boot.locator('.boot-progress')).toHaveCSS('opacity', '1', { timeout: 2500 });
+    await expect(boot.locator('.boot-logo')).toHaveCSS('animation-name', 'boot-breathe');
+    const state = await page.evaluate(() => {
+      const anims = document.getElementById('boot')!.getAnimations({ subtree: true });
+      const by = (p: string) => anims.filter((a) => (a as CSSAnimation).animationName.startsWith(p));
+      return { entry: by('boot-in-').map((a) => a.playState), breathe: by('boot-breathe').map((a) => a.playState) };
+    });
+    expect(state.entry.length, 'animations d’entrée').toBeGreaterThan(10);
+    expect(new Set(state.entry), 'l’entrée reste terminée, elle ne recommence pas').toEqual(new Set(['finished']));
+    expect(state.breathe).toEqual(['running']);
     await expect(boot.locator('.boot-slow')).toBeHidden();
     // Le JavaScript arrive : l'app prend le relais.
     await expect(boot).toHaveCount(0, { timeout: 8000 });
     await expect(page.getByRole('heading', { level: 1, name: 'Content de te revoir' })).toBeVisible();
+  });
+
+  test('une seule animation continue : jamais remontée ni redémarrée, même avec un processeur lent (CPU ×4)', async ({ page, browserName }) => {
+    test.skip(browserName !== 'chromium', 'ralentissement CPU via CDP (Chromium)');
+    const cdp = await page.context().newCDPSession(page);
+    await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
+    // À chaque image : même élément #boot, mêmes objets Animation, même startTime, horloge croissante.
+    await page.addInitScript(() => {
+      const s = { frames: 0, replaced: false, restarts: 0, backwards: 0, leaving: false };
+      (window as unknown as { __splash: typeof s }).__splash = s;
+      let ref: HTMLElement | null = null;
+      type Seen = Map<string, { a: Animation; start: number | null; time: number }>;
+      const seen = new WeakMap<Element, Seen>();
+      const tick = () => {
+        const el = document.getElementById('boot');
+        if (!el) return;
+        if (ref && el !== ref) s.replaced = true;
+        ref = el;
+        s.frames++;
+        s.leaving ||= el.classList.contains('is-leaving');
+        for (const a of el.getAnimations({ subtree: true })) {
+          const name = (a as CSSAnimation).animationName;
+          if (!name.startsWith('boot-in-')) continue;
+          const target = (a.effect as KeyframeEffect).target!;
+          const byName: Seen = seen.get(target) ?? new Map();
+          seen.set(target, byName);
+          const prev = byName.get(name);
+          const time = Number(a.currentTime);
+          const startTime = a.startTime === null ? null : Number(a.startTime);
+          if (prev && (prev.a !== a || (prev.start !== null && startTime !== prev.start))) s.restarts++;
+          if (prev && time < prev.time) s.backwards++;
+          byName.set(name, { a, start: prev?.start ?? startTime, time });
+        }
+        requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    });
+    await page.goto('/app/connexion', { waitUntil: 'commit' });
+    await expect(page.locator('#boot')).toHaveCount(0, { timeout: 15_000 });
+    await expect(page.getByRole('heading', { level: 1, name: 'Content de te revoir' })).toBeVisible();
+    const s = await page.evaluate(() => (window as unknown as { __splash: { frames: number; replaced: boolean; restarts: number; backwards: number; leaving: boolean } }).__splash);
+    expect(s.frames, 'images observées').toBeGreaterThan(20);
+    expect(s.replaced, '#boot remplacé').toBe(false);
+    expect(s.restarts, 'animation redémarrée').toBe(0);
+    expect(s.backwards, 'horloge d’animation revenue en arrière').toBe(0);
+    expect(s.leaving, 'sortie animée observée').toBe(true);
+    // Uniquement des propriétés exécutables par le compositeur, sur des éléments HTML (pas d'enfant SVG).
+    const props = await page.evaluate(async () => {
+      const r = await fetch(document.querySelector<HTMLLinkElement>('link[rel="stylesheet"]')!.href);
+      const css = await r.text();
+      const frames = [...css.matchAll(/@keyframes (boot-[\w-]+)\{(.*?\})\}/gs)];
+      return frames.map(([, name, body]) => ({ name, props: [...new Set([...body!.matchAll(/([a-z-]+):/g)].map((m) => m[1]))] }));
+    });
+    expect(props.length).toBeGreaterThan(10);
+    for (const { name, props: list } of props) {
+      const allowed = name === 'boot-reveal' ? ['visibility'] : ['transform', 'opacity', 'animation-timing-function'];
+      expect(list.filter((p) => !allowed.includes(p!)), name).toEqual([]);
+    }
+    await expect(page.locator('svg.boot-tile, .boot rect')).toHaveCount(0);
   });
 
   test('restauration de session : l’écran couvre le chargement, puis l’accueil connecté', async ({ page, supabase }) => {
@@ -120,11 +195,15 @@ test.describe('écran de démarrage', () => {
     await page.goto('/app/connexion', { waitUntil: 'commit' });
     const boot = page.locator('#boot');
     await expect(boot).toBeVisible();
-    for (const sel of ['.boot-tile', '.boot-bar-1', '.boot-bar-2', '.boot-bar-3', '.boot-wordmark']) {
-      await expect(boot.locator(sel)).toHaveCSS('animation-name', 'none');
+    for (const sel of ['.boot-tile', '.boot-shine', '.boot-logo', '.boot-bars', '.boot-bx', '.boot-by', '.boot-bs', '.boot-l']) {
+      for (const el of await boot.locator(sel).all()) await expect(el).toHaveCSS('animation-name', 'none');
     }
-    await expect(boot.locator('.boot-wordmark')).toHaveCSS('opacity', '1');
+    // Logo et wordmark en place, sobres : aucune transformation résiduelle.
+    await expect(boot.locator('.boot-l').first()).toHaveCSS('transform', 'none');
+    await expect(boot.locator('.boot-bs').first()).toHaveCSS('transform', 'none');
+    await expect(boot.locator('.boot-word')).toHaveCSS('opacity', '1');
     await expect(boot.locator('.boot-progress')).toBeHidden();
+    await expect(boot.locator('.boot-bands')).toBeHidden();
     await expect(boot).toHaveCount(0, { timeout: 6000 });
     await expect(page.getByRole('heading', { level: 1, name: 'Content de te revoir' })).toBeVisible();
     const t = await bootTimes(page);

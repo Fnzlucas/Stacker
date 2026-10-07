@@ -1,20 +1,26 @@
 /**
  * Écran de démarrage de l'app connectée (#boot, dans app.html, hors de
- * #root). Il est peint par le HTML et la CSS avant tout JavaScript, puis
- * retiré ici dès que l'app est prête :
- *   - plus aucun écran d'attente monté (<Splash /> = restauration de
+ * #root). Il est peint et animé par le HTML et la CSS avant tout JavaScript ;
+ * React ne le monte, ne le remplace ni ne le relance jamais. Ce module ne
+ * fait qu'ajouter .is-leaving (sortie) puis retirer l'élément, dès que :
+ *   - plus aucun écran d'attente n'est monté (<Splash /> = restauration de
  *     session, chargement d'un écran ou du profil) ;
- *   - ET animation d'entrée terminée (≈ 900 ms depuis le premier rendu).
+ *   - ET l'animation d'entrée est terminée (animations CSS « boot-in-* »,
+ *     ≈ 1,59 s depuis le premier rendu).
  * Aucun délai artificiel au-delà de l'animation d'entrée : si l'app est
  * prête plus tard, la sortie démarre aussitôt. En mouvement réduit, rien
  * n'est animé et la sortie est immédiate.
  */
 
 const BOOT_ID = 'boot';
-/** Durée de l'animation d'entrée (CSS : dernier élément = wordmark, 600 + 320 ms). */
-export const ENTRY_MS = 920;
-/** Durée de la transition de sortie (CSS .boot.is-leaving). */
-export const EXIT_MS = 420;
+/** Préfixe des images clés d'entrée (src/styles/app.css). */
+const ENTRY_PREFIX = 'boot-in-';
+/** Durée de l'animation d'entrée (CSS : dernière lettre du wordmark, 1150 + 440 ms). */
+export const ENTRY_MS = 1590;
+/** Durée de la sortie (CSS : dernière bande, 160 + 360 ms). */
+export const EXIT_MS = 520;
+/** Élément dont la fin d'animation marque la fin de la sortie. */
+const LAST_EXIT = '.boot-band-3';
 
 let holds = 0;
 let state: 'shown' | 'leaving' | 'gone' = 'shown';
@@ -27,11 +33,11 @@ const reducedMotion = (): boolean => typeof window.matchMedia === 'function' && 
 function entryFinished(el: HTMLElement): Promise<void> {
   if (reducedMotion()) return Promise.resolve();
   if (typeof el.getAnimations === 'function') {
-    // Seules les animations d'ENTRÉE comptent (tuile, barres, wordmark), jamais
-    // la barre de progression ni le message de lenteur.
-    const running = Array.from(el.querySelectorAll('[data-boot-entry]'))
-      .flatMap((node) => node.getAnimations())
-      .filter((a) => a.playState !== 'finished');
+    // Seules les animations d'ENTRÉE comptent (barres, tuile, reflet, lettres),
+    // jamais la respiration, la barre de progression ni le message de lenteur.
+    const running = el
+      .getAnimations({ subtree: true })
+      .filter((a) => (a as Partial<CSSAnimation>).animationName?.startsWith(ENTRY_PREFIX) && a.playState !== 'finished');
     return Promise.all(running.map((a) => a.finished.catch(() => undefined))).then(() => undefined);
   }
   // Repli (navigateur sans Web Animations) : temps écoulé depuis le premier rendu.
@@ -53,9 +59,12 @@ function leave(el: HTMLElement): void {
     remove();
     return;
   }
+  // Seule une classe est ajoutée : les animations de sortie sont posées sur
+  // d'autres éléments que celles d'entrée, rien n'est relancé.
   el.classList.add('is-leaving');
-  el.addEventListener('transitionend', (e) => e.target === el && remove());
-  // Filet de sécurité si transitionend ne vient pas (onglet en arrière-plan).
+  const last = el.querySelector(LAST_EXIT);
+  el.addEventListener('animationend', (e) => e.target === last && remove());
+  // Filet de sécurité si animationend ne vient pas (onglet en arrière-plan).
   setTimeout(remove, EXIT_MS + 200);
 }
 

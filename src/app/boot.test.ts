@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { EXIT_MS, holdBoot, resetBootForTests, scheduleBootCheck } from './boot';
+import { ENTRY_MS, EXIT_MS, holdBoot, resetBootForTests, scheduleBootCheck } from './boot';
 
 /** Faux #boot minimal (environnement node, sans DOM). */
 class FakeBoot {
@@ -7,7 +7,9 @@ class FakeBoot {
   classes = new Set<string>();
   removed = false;
   listeners: ((e: { target: unknown }) => void)[] = [];
-  entry: { playState: string; finished: Promise<unknown> }[] = [];
+  entry: { animationName?: string; playState: string; finished: Promise<unknown> }[] = [];
+  /** Dernière bande de sortie (.boot-band-3). */
+  lastBand = { band: 3 };
   classList = { add: (c: string) => this.classes.add(c) };
   setAttribute(k: string, v: string) {
     this.attrs.set(k, v);
@@ -21,8 +23,8 @@ class FakeBoot {
   addEventListener(_type: string, fn: (e: { target: unknown }) => void) {
     this.listeners.push(fn);
   }
-  getAnimations = () => [];
-  querySelectorAll = () => [{ getAnimations: () => this.entry }];
+  getAnimations = (opts?: { subtree?: boolean }) => (opts?.subtree ? this.entry : []);
+  querySelector = (sel: string) => (sel === '.boot-band-3' ? this.lastBand : null);
 }
 
 let boot: FakeBoot | null;
@@ -66,10 +68,10 @@ describe('écran de démarrage', () => {
     expect(boot!.classes.has('is-leaving')).toBe(true);
     expect(boot!.attrs.get('aria-hidden')).toBe('true');
     expect(boot!.attrs.has('role')).toBe(false);
-    // transitionend d'un enfant : ignoré ; de l'écran lui-même : retiré.
-    boot!.listeners.forEach((fn) => fn({ target: {} }));
-    expect(boot!.removed).toBe(false);
+    // animationend d'un autre élément : ignoré ; de la dernière bande : retiré.
     boot!.listeners.forEach((fn) => fn({ target: boot }));
+    expect(boot!.removed).toBe(false);
+    boot!.listeners.forEach((fn) => fn({ target: boot!.lastBand }));
     expect(boot!.removed).toBe(true);
     await vi.advanceTimersByTimeAsync(EXIT_MS + 300);
   });
@@ -77,8 +79,12 @@ describe('écran de démarrage', () => {
   it('attend la fin de l’animation d’entrée, jamais davantage', async () => {
     let finish!: () => void;
     boot!.entry = [
-      { playState: 'running', finished: new Promise<void>((r) => (finish = r)) },
-      { playState: 'finished', finished: Promise.resolve() },
+      { animationName: 'boot-in-tile', playState: 'running', finished: new Promise<void>((r) => (finish = r)) },
+      { animationName: 'boot-in-letter', playState: 'finished', finished: Promise.resolve() },
+      // Respiration (infinie), barre de progression, message de lenteur : jamais attendus.
+      { animationName: 'boot-breathe', playState: 'running', finished: new Promise(() => undefined) },
+      { animationName: 'boot-appear', playState: 'running', finished: new Promise(() => undefined) },
+      { playState: 'running', finished: new Promise(() => undefined) },
     ];
     scheduleBootCheck();
     scheduleBootCheck(); // une seule vérification planifiée
@@ -87,14 +93,14 @@ describe('écran de démarrage', () => {
     finish();
     await vi.advanceTimersByTimeAsync(0);
     expect(boot!.classes.has('is-leaving')).toBe(true);
-    // Filet de sécurité sans transitionend.
+    // Filet de sécurité sans animationend.
     await vi.advanceTimersByTimeAsync(EXIT_MS + 200);
     expect(boot!.removed).toBe(true);
   });
 
   it('un écran d’attente apparu pendant l’animation d’entrée retarde la sortie', async () => {
     let finish!: () => void;
-    boot!.entry = [{ playState: 'running', finished: new Promise<void>((r) => (finish = r)) }];
+    boot!.entry = [{ animationName: 'boot-in-x-left', playState: 'running', finished: new Promise<void>((r) => (finish = r)) }];
     scheduleBootCheck();
     await vi.advanceTimersByTimeAsync(20);
     const release = holdBoot();
@@ -108,7 +114,7 @@ describe('écran de démarrage', () => {
 
   it('mouvement réduit : sortie immédiate, sans transition', async () => {
     reduced = true;
-    boot!.entry = [{ playState: 'running', finished: new Promise(() => undefined) }];
+    boot!.entry = [{ animationName: 'boot-in-y', playState: 'running', finished: new Promise(() => undefined) }];
     scheduleBootCheck();
     await vi.advanceTimersByTimeAsync(20);
     expect(boot!.removed).toBe(true);
@@ -119,7 +125,7 @@ describe('écran de démarrage', () => {
     install({ withAnimations: false });
     paintAt = 100;
     scheduleBootCheck();
-    await vi.advanceTimersByTimeAsync(900);
+    await vi.advanceTimersByTimeAsync(ENTRY_MS - 50);
     expect(boot!.classes.has('is-leaving')).toBe(false);
     await vi.advanceTimersByTimeAsync(200);
     expect(boot!.classes.has('is-leaving')).toBe(true);
@@ -145,7 +151,7 @@ describe('écran de démarrage', () => {
   it('une rejection d’animation (annulée) ne bloque pas la sortie', async () => {
     const aborted = Promise.reject(new Error('AbortError'));
     aborted.catch(() => undefined); // évite l'alerte « rejet non géré » avant que boot.ts ne s'y abonne
-    boot!.entry = [{ playState: 'running', finished: aborted }];
+    boot!.entry = [{ animationName: 'boot-in-squash', playState: 'running', finished: aborted }];
     scheduleBootCheck();
     await vi.advanceTimersByTimeAsync(20);
     expect(boot!.classes.has('is-leaving')).toBe(true);
