@@ -98,6 +98,9 @@ test.describe('navigation', () => {
   test('clavier : les onglets se parcourent et s’activent sans souris', async ({ page, supabase, isMobile }) => {
     test.skip(isMobile, 'clavier physique : desktop');
     await login(page, supabase.fake);
+    // L'accueil (chargé à la demande) place le focus sur son titre en arrivant : on l'attend,
+    // sinon il vole le focus posé sur l'onglet (test instable : 1 échec sur 3 passages).
+    await expect(page.getByRole('heading', { level: 1, name: 'Bonjour Inès' })).toBeFocused();
     const gains = page.getByRole('link', { name: 'Gains' });
     await gains.focus();
     await page.keyboard.press('Enter');
