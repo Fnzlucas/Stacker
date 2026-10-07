@@ -132,7 +132,7 @@ describe('pages légales', () => {
     expect(t).toContain('Lucas Fernandez');
     expect(t).toContain('entrepreneur individuel');
     expect(t).toContain('Vercel Inc.');
-    expect(t).toContain('{{À COMPLÉTER : SIRET}}');
+    expect(t).toContain('SIRET 891 139 248 00027');
     expect(t).toContain('{{À COMPLÉTER : adresse}}');
     expect(t).toContain('{{À COMPLÉTER : email de contact}}');
   });
