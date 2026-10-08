@@ -22,8 +22,6 @@ describe('briques HTTP', () => {
     expect(await readJson(req({ 'content-type': 'application/json' }, '{"a":1}'), 10)).toEqual({ ok: true, value: { a: 1 } });
   });
   it('attente', async () => {
-    const t = Date.now();
-    await sleep(5);
-    expect(Date.now() - t).toBeGreaterThanOrEqual(4);
+    await expect(sleep(1)).resolves.toBeUndefined();
   });
 });

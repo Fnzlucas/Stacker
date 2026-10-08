@@ -136,3 +136,43 @@ verify_jwt = true
 import_map = "./functions/account-delete/deno.json"
 entrypoint = "./functions/account-delete/index.ts"
 
+
+# Lot 3 : prospection et campagnes.
+[functions.prospects-search]
+enabled = true
+verify_jwt = true
+import_map = "./functions/prospects-search/deno.json"
+entrypoint = "./functions/prospects-search/index.ts"
+
+# Public (lien des emails et formulaire) : protégé par jeton, Turnstile et rate limit.
+[functions.opposition-register]
+enabled = true
+verify_jwt = false
+import_map = "./functions/opposition-register/deno.json"
+entrypoint = "./functions/opposition-register/index.ts"
+
+# Tâches planifiées : protégées par CRON_SECRET (en-tête x-cron-secret).
+[functions.leads-enrich]
+enabled = true
+verify_jwt = false
+import_map = "./functions/leads-enrich/deno.json"
+entrypoint = "./functions/leads-enrich/index.ts"
+
+[functions.campaign-run]
+enabled = true
+verify_jwt = false
+import_map = "./functions/campaign-run/deno.json"
+entrypoint = "./functions/campaign-run/index.ts"
+
+[functions.mail-connect]
+enabled = true
+verify_jwt = true
+import_map = "./functions/mail-connect/deno.json"
+entrypoint = "./functions/mail-connect/index.ts"
+
+# Retour de Google / Microsoft (navigateur) : protégé par l'état signé.
+[functions.mail-callback]
+enabled = true
+verify_jwt = false
+import_map = "./functions/mail-callback/deno.json"
+entrypoint = "./functions/mail-callback/index.ts"

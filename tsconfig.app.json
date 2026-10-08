@@ -30,6 +30,6 @@
       "@shared/*": ["./supabase/functions/_shared/*"]
     }
   },
-  "include": ["src", "supabase/functions/_shared", "supabase/functions/waitlist-join", "supabase/functions/account-delete", "supabase/functions/prospects-search", "supabase/functions/opposition-register"],
+  "include": ["src", "supabase/functions/_shared", "supabase/functions/waitlist-join", "supabase/functions/account-delete", "supabase/functions/prospects-search", "supabase/functions/opposition-register", "supabase/functions/leads-enrich", "supabase/functions/mail-connect", "supabase/functions/mail-callback", "supabase/functions/campaign-run"],
   "exclude": ["supabase/functions/*/index.ts", "**/*.test.ts", "**/*.test.tsx"]
 }
