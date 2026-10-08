@@ -96,21 +96,23 @@ select is(
   (select array_agg(p.proname::text order by p.proname)
    from pg_proc p join pg_namespace n on n.oid = p.pronamespace
    where n.nspname = 'public' and has_function_privilege('authenticated', p.oid, 'EXECUTE')),
-  array['accept_prospecting_rules', 'complete_onboarding', 'export_my_data', 'my_prospect_quotas', 'my_prospects', 'prospect_add_note', 'prospect_claim',
+  array['accept_prospecting_rules', 'campaign_set_status', 'campaign_start', 'complete_onboarding', 'export_my_data', 'mail_disconnect', 'my_campaign', 'my_prospect_quotas', 'my_prospects', 'prospect_add_note', 'prospect_claim',
         'prospect_delete_note', 'prospect_detail', 'prospect_extend', 'prospect_log_call', 'prospect_mark_email_sent',
         'prospect_prepare_email', 'prospect_release', 'prospect_set_contact', 'prospect_set_status', 'siret_is_valid',
         'waitlist_count']::text[],
-  'authenticated n''exécute que les 18 fonctions prévues'
+  'authenticated n''exécute que les 22 fonctions prévues'
 );
 
 select is(
   (select array_agg(p.proname::text order by p.proname)
    from pg_proc p join pg_namespace n on n.oid = p.pronamespace
    where n.nspname = 'public' and has_function_privilege('service_role', p.oid, 'EXECUTE')),
-  array['account_erase_prepare', 'opposition_register_form', 'opposition_register_token', 'prospect_expire_due',
+  array['account_erase_prepare', 'budget_consume', 'campaign_fill_due', 'campaign_message_result', 'campaign_next_messages',
+        'enrich_mark_seen', 'enrich_query_begin', 'enrich_query_done', 'enrich_save_contact', 'enrich_targets', 'enrich_unseen',
+        'mail_account_error', 'mail_account_save', 'opposition_register_form', 'opposition_register_token', 'prospect_expire_due',
         'prospect_jobs_purge', 'prospect_mark_signed', 'prospects_annotate', 'prospects_cache_get', 'prospects_cache_put',
         'prospects_search_begin', 'rate_limit_hit', 'siret_is_valid', 'waitlist_count', 'waitlist_erase', 'waitlist_join']::text[],
-  'service_role exécute exactement les 15 fonctions prévues (aucune fonction de trigger)'
+  'service_role exécute exactement les 27 fonctions prévues (aucune fonction de trigger)'
 );
 
 select is(
