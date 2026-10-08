@@ -30,6 +30,6 @@
       "@shared/*": ["./supabase/functions/_shared/*"]
     }
   },
-  "include": ["src", "supabase/functions/_shared", "supabase/functions/waitlist-join", "supabase/functions/account-delete"],
+  "include": ["src", "supabase/functions/_shared", "supabase/functions/waitlist-join", "supabase/functions/account-delete", "supabase/functions/prospects-search", "supabase/functions/opposition-register"],
   "exclude": ["supabase/functions/*/index.ts", "**/*.test.ts", "**/*.test.tsx"]
 }

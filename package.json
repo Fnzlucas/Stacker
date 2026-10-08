@@ -12,7 +12,7 @@
     "build": "node scripts/build.mjs",
     "preview": "node scripts/serve-dist.mjs",
     "lint": "eslint --max-warnings=0 .",
-    "typecheck": "tsc -b --pretty && deno check --config supabase/functions/waitlist-join/deno.json supabase/functions/waitlist-join/index.ts && deno check --config supabase/functions/account-delete/deno.json supabase/functions/account-delete/index.ts",
+    "typecheck": "tsc -b --pretty && deno check --config supabase/functions/waitlist-join/deno.json supabase/functions/waitlist-join/index.ts && deno check --config supabase/functions/account-delete/deno.json supabase/functions/account-delete/index.ts && deno check --config supabase/functions/prospects-search/deno.json supabase/functions/prospects-search/index.ts && deno check --config supabase/functions/opposition-register/deno.json supabase/functions/opposition-register/index.ts",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:db": "bash scripts/test-db.sh",
