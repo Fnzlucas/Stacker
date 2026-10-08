@@ -23,16 +23,17 @@ select is(
   'anon n''a aucun privilège sur les tables et vues de public'
 );
 
--- Liste blanche exacte des privilèges de table d'authenticated (lot 2) :
--- lecture des paliers et de son profil (filtré par la RLS), rien d'autre.
+-- Liste blanche exacte des privilèges de table d'authenticated (lots 2 et 3) :
+-- lecture seule (filtrée par la RLS), aucune écriture directe.
 select is(
   (select array_agg(c.relname::text || ':' || priv order by c.relname, priv)
    from pg_class c join pg_namespace n on n.oid = c.relnamespace
    cross join unnest(array['SELECT', 'INSERT', 'UPDATE', 'DELETE', 'TRUNCATE', 'REFERENCES', 'TRIGGER']) priv
    where n.nspname = 'public' and c.relkind in ('r', 'p', 'v', 'm', 'f')
      and has_table_privilege('authenticated', c.oid, priv)),
-  array['commission_tiers:SELECT', 'profiles:SELECT']::text[],
-  'authenticated : uniquement SELECT sur commission_tiers et profiles (au niveau table)'
+  array['commission_tiers:SELECT', 'companies:SELECT', 'email_templates:SELECT', 'naf_presets:SELECT', 'profiles:SELECT',
+        'prospect_claims:SELECT', 'prospect_emails:SELECT', 'prospect_events:SELECT', 'prospect_notes:SELECT', 'prospect_settings:SELECT']::text[],
+  'authenticated : uniquement SELECT, sur les tables prévues (au niveau table)'
 );
 
 -- Colonnes modifiables par le stacker : uniquement les champs déclaratifs.
@@ -95,16 +96,21 @@ select is(
   (select array_agg(p.proname::text order by p.proname)
    from pg_proc p join pg_namespace n on n.oid = p.pronamespace
    where n.nspname = 'public' and has_function_privilege('authenticated', p.oid, 'EXECUTE')),
-  array['complete_onboarding', 'export_my_data', 'siret_is_valid', 'waitlist_count']::text[],
-  'authenticated n''exécute que les 4 fonctions prévues'
+  array['complete_onboarding', 'export_my_data', 'my_prospect_quotas', 'my_prospects', 'prospect_add_note', 'prospect_claim',
+        'prospect_delete_note', 'prospect_detail', 'prospect_extend', 'prospect_log_call', 'prospect_mark_email_sent',
+        'prospect_prepare_email', 'prospect_release', 'prospect_set_contact', 'prospect_set_status', 'siret_is_valid',
+        'waitlist_count']::text[],
+  'authenticated n''exécute que les 17 fonctions prévues'
 );
 
 select is(
   (select array_agg(p.proname::text order by p.proname)
    from pg_proc p join pg_namespace n on n.oid = p.pronamespace
    where n.nspname = 'public' and has_function_privilege('service_role', p.oid, 'EXECUTE')),
-  array['account_erase_prepare', 'rate_limit_hit', 'siret_is_valid', 'waitlist_count', 'waitlist_erase', 'waitlist_join']::text[],
-  'service_role exécute exactement les 6 fonctions prévues (aucune fonction de trigger)'
+  array['account_erase_prepare', 'opposition_register_form', 'opposition_register_token', 'prospect_expire_due',
+        'prospect_jobs_purge', 'prospect_mark_signed', 'prospects_annotate', 'prospects_cache_get', 'prospects_cache_put',
+        'prospects_search_begin', 'rate_limit_hit', 'siret_is_valid', 'waitlist_count', 'waitlist_erase', 'waitlist_join']::text[],
+  'service_role exécute exactement les 15 fonctions prévues (aucune fonction de trigger)'
 );
 
 select is(

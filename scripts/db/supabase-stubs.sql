@@ -32,6 +32,8 @@ grant usage on schema public to anon, authenticated, service_role;
 
 create schema if not exists extensions;
 grant usage on schema extensions to anon, authenticated, service_role;
+-- Comme sur Supabase : pgcrypto est déjà installée dans le schéma extensions.
+create extension if not exists pgcrypto with schema extensions;
 
 -- Schéma auth minimal (helpers lus depuis les claims JWT de la requête).
 create schema auth;
