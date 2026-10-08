@@ -24,36 +24,51 @@ import {
 } from '../lib/prospects';
 import { formatLongDate } from '../lib/dates';
 import { prospectPath } from '../paths';
+import { CampaignTab } from './Campagne';
 
-type View = 'trouver' | 'mes';
+type View = 'campagne' | 'mes' | 'trouver';
+
+const BOX_NOTICE: Record<string, string> = {
+  connectee: 'Boîte mail connectée.',
+  refusee: 'Connexion annulée : l’autorisation d’envoi n’a pas été donnée.',
+  erreur: 'La connexion de ta boîte a échoué. Réessaie.',
+};
 
 export function ProspectsPage(): ReactElement {
   usePageTitle('Prospects');
   const [params, setParams] = useSearchParams();
-  const view: View = params.get('vue') === 'mes' ? 'mes' : 'trouver';
+  const raw = params.get('vue');
+  const view: View = raw === 'mes' || raw === 'trouver' ? raw : 'campagne';
   const quotas = useProspectQuotas();
   const mine = useMyProspects();
   const count = mine.data?.length;
   const location = useLocation();
-  const [notice, setNotice] = useState<string | null>((location.state as { notice?: string } | null)?.notice ?? null);
+  const box = params.get('boite');
+  const [notice, setNotice] = useState<string | null>((location.state as { notice?: string } | null)?.notice ?? (box ? (BOX_NOTICE[box] ?? null) : null));
 
-  const setView = (v: View) => setParams(v === 'mes' ? { vue: 'mes' } : {}, { replace: true });
+  const setView = (v: View) => setParams(v === 'campagne' ? {} : { vue: v }, { replace: true });
+  const rulesAccepted = quotas.data ? quotas.data.rules_version !== null : false;
 
   return (
     <div className="app-container pros">
       <AppBar title="Prospects" />
       <div className="segmented pros-tabs" role="group" aria-label="Affichage">
-        <button type="button" aria-pressed={view === 'trouver'} onClick={() => setView('trouver')}>
-          Trouver
+        <button type="button" aria-pressed={view === 'campagne'} onClick={() => setView('campagne')}>
+          Campagne
         </button>
         <button type="button" aria-pressed={view === 'mes'} onClick={() => setView('mes')}>
           Mes prospects{count !== undefined ? ` (${String(count)})` : ''}
+        </button>
+        <button type="button" aria-pressed={view === 'trouver'} onClick={() => setView('trouver')}>
+          Recherche
         </button>
       </div>
       {quotas.data?.rules_version === null ? <RulesCard /> : null}
       {quotas.data && !quotas.data.enabled ? <FormAlert tone="info">La prospection est momentanément suspendue. Réessaie un peu plus tard.</FormAlert> : null}
       {notice ? <Toast onClose={() => setNotice(null)}>{notice}</Toast> : null}
-      {view === 'trouver' ? <FindTab rulesAccepted={quotas.data ? quotas.data.rules_version !== null : false} /> : <MineTab rows={mine.data} loading={mine.isPending} error={mine.isError} onFind={() => setView('trouver')} />}
+      {view === 'campagne' ? <CampaignTab rulesAccepted={rulesAccepted} /> : null}
+      {view === 'trouver' ? <FindTab rulesAccepted={rulesAccepted} /> : null}
+      {view === 'mes' ? <MineTab rows={mine.data} loading={mine.isPending} error={mine.isError} onFind={() => setView('campagne')} /> : null}
     </div>
   );
 }
@@ -65,7 +80,7 @@ export function ProspectsPage(): ReactElement {
 const RULES = [
   'Tu ne contactes que des entreprises, jamais des particuliers.',
   'Écris d’abord aux adresses génériques (contact@, bonjour@…) ; une adresse personnelle seulement si elle est publiée pour le travail.',
-  'Un email à la fois, depuis ta propre boîte, avec le lien d’opposition inclus.',
+  'Les emails partent depuis ta propre boîte, toujours avec le lien pour ne plus être contacté.',
   'Si quelqu’un ne veut plus être contacté, c’est définitif, pour tous les stackers.',
 ];
 
@@ -402,8 +417,8 @@ function MineTab({ rows, loading, error, onFind }: { rows: ProspectRow[] | undef
         </h2>
         <p>Réserve des entreprises de ta zone : elles restent à toi pendant que tu les contactes.</p>
         <button type="button" className="btn btn-primary" onClick={onFind}>
-          <Icon name="search" />
-          Trouver des entreprises
+          <Icon name="send" />
+          Lancer une campagne
         </button>
       </section>
     );

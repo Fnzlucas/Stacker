@@ -9,7 +9,7 @@ import { searchResponseSchema, type SearchItem, type SearchRequest } from '@shar
 import { ApiError } from './apiError';
 import type { Backend } from './supabase';
 
-export const PROSPECTING_RULES_VERSION = '2026-10-08';
+export const PROSPECTING_RULES_VERSION = '2026-10-09';
 
 export const STATUSES = ['a_contacter', 'contacte', 'a_repondu', 'rdv', 'signe', 'pas_interesse'] as const;
 export type ProspectStatus = (typeof STATUSES)[number];
@@ -158,6 +158,11 @@ const MESSAGES: Record<string, string> = {
   rate_limited: 'Trop de recherches d’affilée. Attends une minute.',
   source_busy: 'Le registre des entreprises est très sollicité. Réessaie dans quelques secondes.',
   unauthorized: 'Ta session a expiré. Reconnecte-toi.',
+  rules_required: 'Accepte d’abord les 4 règles de la prospection.',
+  mailbox_required: 'Connecte d’abord ta boîte mail : les emails partent depuis ton adresse.',
+  campaign_exists: 'Tu as déjà une campagne en cours.',
+  invalid_target: 'Choisis un volume entre 10 et 200 emails par jour.',
+  provider_unavailable: 'Cette messagerie n’est pas encore disponible. Essaie l’autre.',
   network: 'Connexion impossible. Vérifie ta connexion internet et réessaie.',
 };
 
@@ -368,4 +373,73 @@ export function eventLabel(e: { kind: string; payload: Record<string, unknown> }
     if (label) return `Appel : ${label.toLocaleLowerCase('fr-FR')}`;
   }
   return EVENT_LABELS[e.kind] ?? 'Mise à jour';
+}
+
+// ---------------------------------------------------------------------------
+// Campagnes (envoi en volume depuis la boîte du stacker)
+// ---------------------------------------------------------------------------
+
+export const campaignSchema = z.object({
+  enabled: z.boolean(),
+  max_per_day: z.number().int(),
+  mailbox: z
+    .object({
+      provider: z.enum(['gmail', 'outlook']),
+      email: z.string(),
+      status: z.enum(['active', 'error', 'revoked']),
+      connected_at: z.string(),
+      warmup_cap: z.number().int(),
+    })
+    .nullable(),
+  campaign: z
+    .object({
+      id: z.uuid(),
+      department: z.string(),
+      preset: z.string(),
+      daily_target: z.number().int(),
+      template_key: z.string(),
+      status: z.enum(['active', 'paused']),
+      created_at: z.string(),
+      cap_today: z.number().int(),
+      sent_today: z.number().int(),
+      queued: z.number().int(),
+      sent_total: z.number().int(),
+      failed_total: z.number().int(),
+      replied: z.number().int(),
+      available: z.number().int(),
+    })
+    .nullable(),
+});
+export type CampaignState = z.infer<typeof campaignSchema>;
+
+export const fetchCampaign = (b: Backend) => rpc(b, 'my_campaign', {}, campaignSchema);
+export const startCampaign = (b: Backend, input: { department: string; preset: string; dailyTarget: number; templateKey: string }) =>
+  rpc(b, 'campaign_start', { p_department: input.department, p_preset: input.preset, p_daily_target: input.dailyTarget, p_template_key: input.templateKey }, z.uuid());
+export const setCampaignStatus = (b: Backend, status: 'active' | 'paused' | 'stopped') => rpc(b, 'campaign_set_status', { p_status: status }, voidish);
+export const disconnectMailbox = (b: Backend) => rpc(b, 'mail_disconnect', {}, voidish);
+
+const connectSchema = z.union([z.object({ ok: z.literal(true), url: z.url() }), z.object({ ok: z.literal(false), error: z.string() })]);
+
+/** URL d'autorisation Google / Microsoft (Edge Function mail-connect, identité = jeton). */
+export async function connectMailbox(b: Backend, provider: 'gmail' | 'outlook', fetchFn: typeof fetch = fetch): Promise<string> {
+  const token = await b.accessToken();
+  if (!token) throw new ApiError('unauthorized');
+  let res: Response;
+  try {
+    res = await fetchFn(`${b.url}/functions/v1/mail-connect`, {
+      method: 'POST',
+      headers: { apikey: b.anonKey, Authorization: `Bearer ${token}`, 'content-type': 'application/json' },
+      body: JSON.stringify({ provider }),
+      signal: AbortSignal.timeout(15000),
+    });
+  } catch {
+    throw new ApiError('network');
+  }
+  const parsed = connectSchema.safeParse(await res.json().catch(() => null));
+  if (!parsed.success) throw new ApiError('server');
+  if (!parsed.data.ok) throw parsed.data.error === 'unauthorized' ? new ApiError('unauthorized') : new ProspectError(parsed.data.error);
+  const url = new URL(parsed.data.url);
+  // Seules les pages d'autorisation officielles (ou l'app elle-même) sont suivies.
+  if (!['accounts.google.com', 'login.microsoftonline.com', window.location.hostname].includes(url.hostname)) throw new ApiError('server');
+  return url.toString();
 }

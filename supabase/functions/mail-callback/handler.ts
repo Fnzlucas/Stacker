@@ -22,7 +22,7 @@ export function createHandler(deps: HandlerDeps): (req: Request) => Promise<Resp
   return async function handle(req: Request): Promise<Response> {
     if (!deps.config.ok) return new Response('Service indisponible', { status: 503 });
     const config = deps.config.config;
-    const back = (result: 'connectee' | 'refusee' | 'erreur') => redirect(`${config.siteUrl}/app/profil?boite=${result}`);
+    const back = (result: 'connectee' | 'refusee' | 'erreur') => redirect(`${config.siteUrl}/app/prospects?boite=${result}`);
     if (req.method !== 'GET') return new Response(null, { status: 405 });
     const q = new URL(req.url).searchParams;
     const state = await verifyState(config.stateKey, q.get('state') ?? '', now());

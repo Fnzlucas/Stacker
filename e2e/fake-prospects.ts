@@ -138,6 +138,12 @@ export class FakeProspects {
   rules = new Map<string, string>();
   usage = new Map<string, number>();
   enabled = true;
+  /** Boîtes connectées (stacker → boîte). */
+  mailboxes = new Map<string, { provider: 'gmail' | 'outlook'; email: string; status: 'active' | 'error' }>();
+  /** Campagnes ouvertes (une par stacker). */
+  campaigns = new Map<string, { id: string; department: string; preset: string; daily_target: number; template_key: string; status: 'active' | 'paused'; created_at: string; sent_today: number; sent_total: number }>();
+  /** Entreprises « prêtes » (adresse générique connue) que la campagne peut écrire. */
+  campaignAvailable = 340;
   /** Appels reçus par la fonction prospects-search (corps). */
   searchCalls: unknown[] = [];
   /** Réponse forcée de la fonction prospects-search (une fois). */
@@ -465,9 +471,68 @@ export class FakeProspects {
         this.applyStatus(c, c.status === 'a_contacter' ? 'contacte' : c.status, c.next_action_at);
         return [200, c.status];
       }
+      case 'my_campaign': {
+        if (!s) return pg(401, '42501', 'permission denied');
+        const m = this.mailboxes.get(s.id) ?? null;
+        const k = this.campaigns.get(s.id) ?? null;
+        const cap = k ? Math.min(k.daily_target, 20) : 0;
+        return [
+          200,
+          {
+            enabled: true,
+            max_per_day: 200,
+            mailbox: m ? { ...m, connected_at: new Date().toISOString(), warmup_cap: 20 } : null,
+            campaign: k
+              ? { ...k, cap_today: cap, queued: Math.max(0, Math.min(cap, this.campaignAvailable) - k.sent_today), failed_total: 0, replied: 0, available: this.campaignAvailable }
+              : null,
+          },
+        ];
+      }
+      case 'campaign_start': {
+        const g = this.guard(s);
+        if (g) return g;
+        if (!this.rules.has(s!.id)) return raise('rules_required');
+        if (!s!.firstName || !s!.lastName) return raise('profile_incomplete');
+        if (this.mailboxes.get(s!.id)?.status !== 'active') return raise('mailbox_required');
+        const target = Number(b['p_daily_target']);
+        if (!Number.isInteger(target) || target < 10 || target > 200) return pg(400, '22023', 'invalid_target');
+        if (!TEMPLATES.some((t) => t.key === b['p_template_key'])) return pg(400, '22023', 'unknown_template');
+        if (this.campaigns.has(s!.id)) return raise('campaign_exists');
+        const id = this.newId();
+        this.campaigns.set(s!.id, { id, department: String(b['p_department']), preset: String(b['p_preset']), daily_target: target, template_key: String(b['p_template_key']), status: 'active', created_at: new Date().toISOString(), sent_today: 0, sent_total: 0 });
+        return [200, id];
+      }
+      case 'campaign_set_status': {
+        const g = this.guard(s);
+        if (g) return g;
+        const k = this.campaigns.get(s!.id);
+        if (!k) return pg(404, 'P0002', 'not_found');
+        const status = String(b['p_status']);
+        if (status === 'stopped') this.campaigns.delete(s!.id);
+        else if (status === 'active' || status === 'paused') k.status = status;
+        else return pg(400, '22023', 'invalid_status');
+        return [204, null];
+      }
+      case 'mail_disconnect': {
+        const g = this.guard(s);
+        if (g) return g;
+        this.mailboxes.delete(s!.id);
+        const k = this.campaigns.get(s!.id);
+        if (k) k.status = 'paused';
+        return [204, null];
+      }
       default:
         return null;
     }
+  }
+
+  /** Edge Function mail-connect : ici, l'autorisation est accordée aussitôt et l'app est renvoyée vers la page de retour. */
+  mailConnect(b: Record<string, unknown>, s: StackerInfo | null, appOrigin: string): Reply {
+    if (!s) return [401, { ok: false, error: 'unauthorized' }];
+    const provider = b['provider'];
+    if (provider !== 'gmail' && provider !== 'outlook') return [400, { ok: false, error: 'invalid_request' }];
+    this.mailboxes.set(s.id, { provider, email: provider === 'gmail' ? 'ines.martin@gmail.com' : 'ines.martin@outlook.fr', status: 'active' });
+    return [200, { ok: true, url: `${appOrigin}/app/prospects?boite=connectee` }];
   }
 
   private oppose(c: FakeClaim): void {

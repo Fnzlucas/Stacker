@@ -5,6 +5,10 @@ import {
   addNote,
   claimProspect,
   deleteNote,
+  disconnectMailbox,
+  fetchCampaign,
+  setCampaignStatus,
+  startCampaign,
   extendClaim,
   fetchMyProspects,
   fetchProspect,
@@ -107,4 +111,29 @@ export function usePrepareEmail(id: string) {
 export function useMarkSent() {
   const { backend } = useSignedIn();
   return useProspectMutation((emailId: string) => markEmailSent(backend, emailId));
+}
+
+// ---------------------------------------------------------------------------
+// Campagnes
+// ---------------------------------------------------------------------------
+
+export function useCampaign() {
+  const { backend } = useSignedIn();
+  // Les compteurs bougent pendant la journée : rafraîchis toutes les 60 s.
+  return useQuery({ queryKey: [...PROSPECTS_KEY, 'campaign'], queryFn: () => fetchCampaign(backend), refetchInterval: 60_000 });
+}
+
+export function useStartCampaign() {
+  const { backend } = useSignedIn();
+  return useProspectMutation((v: { department: string; preset: string; dailyTarget: number; templateKey: string }) => startCampaign(backend, v));
+}
+
+export function useCampaignStatus() {
+  const { backend } = useSignedIn();
+  return useProspectMutation((status: 'active' | 'paused' | 'stopped') => setCampaignStatus(backend, status));
+}
+
+export function useDisconnectMailbox() {
+  const { backend } = useSignedIn();
+  return useProspectMutation(() => disconnectMailbox(backend));
 }

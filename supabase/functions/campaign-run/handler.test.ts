@@ -72,7 +72,7 @@ describe('mail-callback', () => {
     const state = await signState(SKEY, USER, 'gmail', 1000);
     const r = await call(`code=abc&state=${encodeURIComponent(state)}`);
     expect(r.status).toBe(302);
-    expect(r.headers.get('location')).toBe('https://stacker.example/app/profil?boite=connectee');
+    expect(r.headers.get('location')).toBe('https://stacker.example/app/prospects?boite=connectee');
     const save = calls.find((c) => c.url.endsWith('mail_account_save'))!;
     const args = JSON.parse(save.body) as Record<string, string>;
     expect(args).toMatchObject({ p_user: USER, p_provider: 'gmail', p_email: 'ines@gmail.com' });
@@ -80,7 +80,7 @@ describe('mail-callback', () => {
     expect(save.body).not.toContain('refresh-secret');
   });
   it('état faux ou expiré, refus de l’utilisateur, échec : jamais de détail', async () => {
-    expect((await call('code=abc&state=faux')).headers.get('location')).toBe('https://stacker.example/app/profil?boite=erreur');
+    expect((await call('code=abc&state=faux')).headers.get('location')).toBe('https://stacker.example/app/prospects?boite=erreur');
     const old = await signState(SKEY, USER, 'gmail', 0);
     expect((await call(`code=abc&state=${encodeURIComponent(old)}`)).headers.get('location')).toContain('boite=erreur');
     const state = await signState(SKEY, USER, 'gmail', 1000);

@@ -20,9 +20,10 @@ async function login(page: Page, fake: FakeSupabase, email = 'ines@exemple.fr', 
   return user;
 }
 
-async function openProspects(page: Page, acceptRules = true) {
+async function openProspects(page: Page, acceptRules = true, tab: 'Recherche' | 'Campagne' = 'Recherche') {
   await page.getByRole('navigation', { name: 'Navigation de l’application' }).getByRole('link', { name: 'Prospects' }).click();
   await expect(page.getByRole('heading', { level: 1, name: 'Prospects' })).toBeVisible();
+  if (tab === 'Recherche') await page.getByRole('button', { name: 'Recherche', exact: true }).click();
   if (acceptRules) {
     await page.getByRole('button', { name: 'J’ai compris, je m’engage' }).click();
     await expect(page.getByRole('heading', { name: 'Les 4 règles de la prospection' })).toHaveCount(0);
@@ -169,7 +170,7 @@ test.describe('prospection', () => {
 
     await page.goto('/app/prospects?vue=mes');
     await expect(page.getByRole('heading', { name: 'Aucun prospect pour l’instant' })).toBeVisible();
-    await page.getByRole('button', { name: 'Trouver', exact: true }).click();
+    await page.getByRole('button', { name: 'Recherche', exact: true }).click();
     await page.getByRole('button', { name: 'J’ai compris, je m’engage' }).waitFor({ state: 'detached' }).catch(() => undefined);
     await page.getByRole('button', { name: 'Artisans du bâtiment' }).click();
     await page.getByRole('button', { name: 'Rechercher' }).click();
@@ -234,8 +235,63 @@ test.describe('prospection', () => {
     await dialog.getByRole('button', { name: 'Enregistrer' }).click();
     await expect(page.getByRole('heading', { level: 1, name: 'Prospect introuvable' })).toBeVisible();
     await page.getByRole('link', { name: 'Retour à mes prospects' }).click();
-    await page.getByRole('button', { name: 'Trouver', exact: true }).click();
+    await page.getByRole('button', { name: 'Recherche', exact: true }).click();
     await searchBatiment(page);
     await expect(page.locator('.pros-list li').filter({ hasText: 'Coiffure Lea 3' }).getByText('En pause')).toBeVisible();
+  });
+
+  test('campagne : connexion de la boîte, lancement à 200/jour sans réserver à la main, montée progressive, pause, arrêt', async ({ page, supabase }) => {
+    await login(page, supabase.fake);
+    await openProspects(page, false, 'Campagne');
+    await expect(page.getByRole('button', { name: 'Campagne', exact: true })).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.getByRole('button', { name: 'Lancer la campagne' })).toBeDisabled();
+    await expectAccessible(page, 'campagne (départ)');
+    await expectNoHorizontalOverflow(page, 'campagne (départ)');
+    await page.getByRole('button', { name: 'J’ai compris, je m’engage' }).click();
+
+    // 1. Boîte mail : autorisation (simulée) puis retour dans l'app.
+    await page.getByRole('button', { name: 'Connecter Gmail' }).click();
+    await expect(page).toHaveURL(/\/app\/prospects\?boite=connectee$/);
+    await expect(page.getByRole('status').filter({ hasText: 'Boîte mail connectée.' })).toBeVisible();
+    await expect(page.getByText('ines.martin@gmail.com')).toBeVisible();
+
+    // 2. Campagne : aucun choix d'entreprise, seulement zone, secteur, volume, modèle.
+    await expect(page.getByLabel('Département')).toHaveValue('30');
+    await page.getByRole('button', { name: 'Lancer la campagne' }).click();
+    await expect(page.getByRole('alert')).toHaveText('Choisis un secteur.');
+    await page.getByRole('button', { name: 'Artisans du bâtiment' }).click();
+    await page.getByRole('button', { name: '200', exact: true }).click();
+    await expect(page.getByText('l’envoi démarre à 20 par jour et monte jusqu’à 200 en 3 semaines')).toBeVisible();
+    await page.getByRole('button', { name: 'Lancer la campagne' }).click();
+
+    const run = page.getByRole('region', { name: /Artisans du bâtiment · Gard/ });
+    await expect(run).toBeVisible();
+    await expect(run).toContainText('0 / 20 aujourd’hui');
+    await expect(run).toContainText('Montée progressive : 20 emails par jour pour l’instant, jusqu’à 200.');
+    await expect(run).toContainText('En cours');
+    const k = supabase.fake.prospects.campaigns.values().next().value;
+    expect(k).toMatchObject({ department: '30', preset: 'batiment', daily_target: 200, template_key: 'decouverte' });
+    expect(supabase.fake.prospects.claims).toHaveLength(0);
+    await expectAccessible(page, 'campagne (en cours)');
+    await expectNoHorizontalOverflow(page, 'campagne (en cours)');
+
+    await run.getByRole('button', { name: 'Mettre en pause' }).click();
+    await expect(run).toContainText('En pause');
+    await run.getByRole('button', { name: 'Reprendre' }).click();
+    await expect(run).toContainText('En cours');
+    await run.getByRole('button', { name: 'Arrêter' }).click();
+    await page.getByRole('dialog', { name: 'Arrêter la campagne ?' }).getByRole('button', { name: 'Arrêter la campagne' }).click();
+    await expect(page.getByRole('button', { name: 'Lancer la campagne' })).toBeVisible();
+  });
+
+  test('campagne : sans boîte connectée, impossible de lancer ; déconnexion possible', async ({ page, supabase }) => {
+    await login(page, supabase.fake);
+    await openProspects(page, true, 'Campagne');
+    await expect(page.getByRole('button', { name: 'Lancer la campagne' })).toBeDisabled();
+    await expect(page.getByText('Connecte d’abord ta boîte mail (étape 1).')).toBeVisible();
+    await page.getByRole('button', { name: 'Connecter Outlook' }).click();
+    await expect(page.getByText('ines.martin@outlook.fr')).toBeVisible();
+    await page.getByRole('button', { name: 'Déconnecter' }).click();
+    await expect(page.getByRole('button', { name: 'Connecter Gmail' })).toBeVisible();
   });
 });

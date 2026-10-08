@@ -250,7 +250,7 @@ export class FakeSupabase {
       return true;
     }
     const path = url.pathname;
-    const functions = ['/functions/v1/account-delete', '/functions/v1/prospects-search', '/functions/v1/opposition-register'];
+    const functions = ['/functions/v1/account-delete', '/functions/v1/prospects-search', '/functions/v1/opposition-register', '/functions/v1/mail-connect'];
     if (!path.startsWith('/auth/v1/') && !path.startsWith('/rest/v1/') && !functions.includes(path)) return false;
     let body: unknown = null;
     try {
@@ -462,6 +462,8 @@ export class FakeSupabase {
         return this.prospects.search(b, this.stacker(headers));
       case 'POST /functions/v1/opposition-register':
         return this.prospects.opposition(b);
+      case 'POST /functions/v1/mail-connect':
+        return this.prospects.mailConnect(b, this.stacker(headers), headers['origin'] ?? 'http://localhost:4174');
       default: {
         const rpc = /^\/rest\/v1\/rpc\/([a-z_]+)$/.exec(path);
         const handled = method === 'POST' && rpc?.[1] ? this.prospects.rpc(rpc[1], b, this.stacker(headers)) : null;
