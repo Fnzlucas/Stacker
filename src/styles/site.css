@@ -305,3 +305,15 @@
     .faq summary .icon { transition: none; }
   }
 }
+
+/* ---- Opposition à la prospection (/opposition) ---------------------------- */
+@layer components {
+  .opposition-card { position: relative; }
+  .opposition-title { font-size: 34px; outline: none; }
+  @media (min-width: 640px) { .opposition-title { font-size: var(--st-text-4xl); } }
+  .opposition-ok {
+    display: grid; place-items: center; width: 56px; height: 56px; margin-bottom: var(--st-space-5);
+    border-radius: 18px; background: var(--st-green); color: var(--st-ink); box-shadow: var(--st-shadow-sticker); rotate: -4deg;
+  }
+  .opposition-ok .icon { width: 28px; height: 28px; }
+}

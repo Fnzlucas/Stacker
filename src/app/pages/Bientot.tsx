@@ -1,42 +1,10 @@
 import type { ReactElement } from 'react';
-import { DEPARTMENTS } from '@shared/waitlist';
 import { Icon } from '../../components/Icon';
 import { Logo } from '../../components/Logo';
 import { AVAILABILITY_STEPS } from '../../components/Sections';
 import { AppBar, usePageTitle } from '../components/Layouts';
 import { FeatureList, LevelPill, SoonScreen } from '../components/Ui';
 import { useProfile, useTiers } from '../lib/queries';
-
-const departmentName = (code: string | null | undefined): string | null => DEPARTMENTS.find(([c]) => c === code)?.[1] ?? null;
-
-export function ProspectsPage(): ReactElement {
-  usePageTitle('Prospects');
-  const profile = useProfile();
-  const zone = departmentName(profile.data?.department);
-  return (
-    <div className="app-container">
-      <AppBar title="Prospects" />
-      <SoonScreen
-        icon="users"
-        title="Ton fichier de prospection arrive"
-        text={
-          zone
-            ? `À l’ouverture, l’app te proposera les entreprises actives de ta zone (${zone}), prêtes à être contactées.`
-            : 'À l’ouverture, l’app te proposera les entreprises actives de ta zone, prêtes à être contactées.'
-        }
-      />
-      <h2 className="h2 app-section-title">Ce qui arrive</h2>
-      <FeatureList
-        items={[
-          { icon: 'search', title: 'Recherche d’entreprises', text: 'Les entreprises actives de ton secteur, issues du registre public des entreprises.' },
-          { icon: 'sliders', title: 'Suivi par statut', text: 'À contacter, contacté, a répondu : tu vois où en est chaque prospect.' },
-          { icon: 'calendar', title: 'Notes et rappels', text: 'Garde le contexte de chaque échange et ne rate aucune relance.' },
-          { icon: 'mail', title: 'Modèles d’email', text: 'Des messages prêts à envoyer depuis ta propre messagerie, avec le lien d’opposition obligatoire.' },
-        ]}
-      />
-    </div>
-  );
-}
 
 export function DealsPage(): ReactElement {
   usePageTitle('Deals');

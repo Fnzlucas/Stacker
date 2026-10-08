@@ -96,7 +96,9 @@ test('SEO : HTML pré-rendu lisible sans JavaScript, canonical, sitemap et robot
   await context.close();
 
   const sitemap = await (await request.get('/sitemap.xml')).text();
-  for (const p of PUBLIC) expect(sitemap).toContain(`<loc>http://localhost:4174${p.path}</loc>`);
+  for (const p of PUBLIC.filter((x) => x.sitemap)) expect(sitemap).toContain(`<loc>http://localhost:4174${p.path}</loc>`);
+  // Page d'opposition : hors sitemap (non indexée).
+  expect(sitemap).not.toContain('/opposition');
   expect(await (await request.get('/robots.txt')).text()).toContain('Sitemap: http://localhost:4174/sitemap.xml');
 });
 

@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactElement, ReactNode } from 'react';
+import { useEffect, useRef, type CSSProperties, type ReactElement, type ReactNode } from 'react';
 import { Icon, type IconName } from '../../components/Icon';
 import { formatRate, type Tier } from '../lib/tiers';
 
@@ -77,7 +77,18 @@ export function FeatureList({ items }: { items: { icon: IconName; title: string;
   );
 }
 
+/** Durée d'affichage d'un message de confirmation (il ne doit pas masquer l'écran). */
+export const TOAST_MS = 5000;
+
 export function Toast({ children, onClose }: { children: ReactNode; onClose: () => void }): ReactElement {
+  const close = useRef(onClose);
+  useEffect(() => {
+    close.current = onClose;
+  }, [onClose]);
+  useEffect(() => {
+    const timer = setTimeout(() => close.current(), TOAST_MS);
+    return () => clearTimeout(timer);
+  }, [children]);
   return (
     <div className="toast app-toast" role="status">
       <span className="toast-icon">

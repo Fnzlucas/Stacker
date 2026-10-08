@@ -3,7 +3,7 @@
 begin;
 do $$ begin create extension if not exists pgtap with schema extensions; exception when others then null; end $$;
 
-select plan(22);
+select plan(25);
 
 insert into auth.users (id, email, email_confirmed_at, raw_user_meta_data) values
   ('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 'alice@exemple.fr', now(), '{"adult_declared": true, "terms_version": "v1", "first_name": "Alice"}');
@@ -47,6 +47,16 @@ select is((select string_agg(kind, ',' order by kind) from public.opposition_lis
           '... SIREN, email, téléphone et domaine inscrits');
 select ok(public.is_opposed(null, 'autre@boulangerie-sud.fr', null), '... toute adresse du domaine est désormais opposée');
 select ok(not public.is_opposed(null, 'quelquun@gmail.com', null), 'un domaine de messagerie grand public n''est jamais opposé en bloc');
+
+-- Règles de prospection acceptées (journalisées, idempotent par version)
+set local role authenticated;
+set local request.jwt.claims = '{"sub": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", "role": "authenticated"}';
+select is(public.my_prospect_quotas() ->> 'rules_version', null, 'règles pas encore acceptées');
+select public.accept_prospecting_rules('2026-10-08');
+select public.accept_prospecting_rules('2026-10-08');
+select is(public.my_prospect_quotas() ->> 'rules_version', '2026-10-08', 'règles acceptées (version)');
+reset role;
+select is((select count(*)::int from public.user_consents where purpose = 'prospecting_rules'), 1, '... une seule ligne de consentement');
 
 -- Export RGPD
 set local role authenticated;

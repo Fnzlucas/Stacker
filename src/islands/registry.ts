@@ -1,4 +1,5 @@
 import { ContactForm } from './ContactForm';
+import { OppositionForm } from './OppositionForm';
 import { WaitlistCount } from './WaitlistCount';
 import { WaitlistForm } from './WaitlistForm';
 
@@ -10,6 +11,7 @@ export const ISLANDS = {
   'waitlist-count': WaitlistCount,
   'waitlist-form': WaitlistForm,
   'contact-form': ContactForm,
+  'opposition-form': OppositionForm,
 } as const;
 
 export type IslandName = keyof typeof ISLANDS;

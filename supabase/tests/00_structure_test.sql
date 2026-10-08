@@ -96,11 +96,11 @@ select is(
   (select array_agg(p.proname::text order by p.proname)
    from pg_proc p join pg_namespace n on n.oid = p.pronamespace
    where n.nspname = 'public' and has_function_privilege('authenticated', p.oid, 'EXECUTE')),
-  array['complete_onboarding', 'export_my_data', 'my_prospect_quotas', 'my_prospects', 'prospect_add_note', 'prospect_claim',
+  array['accept_prospecting_rules', 'complete_onboarding', 'export_my_data', 'my_prospect_quotas', 'my_prospects', 'prospect_add_note', 'prospect_claim',
         'prospect_delete_note', 'prospect_detail', 'prospect_extend', 'prospect_log_call', 'prospect_mark_email_sent',
         'prospect_prepare_email', 'prospect_release', 'prospect_set_contact', 'prospect_set_status', 'siret_is_valid',
         'waitlist_count']::text[],
-  'authenticated n''exécute que les 17 fonctions prévues'
+  'authenticated n''exécute que les 18 fonctions prévues'
 );
 
 select is(

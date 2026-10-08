@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { fetchWaitlistCount, getWaitlistCountOnce, joinErrorMessage, joinWaitlist, resetWaitlistCountCache } from './api';
+import { fetchWaitlistCount, getWaitlistCountOnce, joinErrorMessage, joinWaitlist, registerOpposition, resetWaitlistCountCache } from './api';
 import { isSupabaseConfigured, readPublicEnv, type PublicEnv } from './env';
 import { formatInteger, frenchSpaces, plural, positionMessage, waitlistCountLabel } from './format';
 import { CONTACT_SUBJECTS, buildMailto, contactSchema } from './mailto';
@@ -199,5 +199,31 @@ describe('contact (mailto)', () => {
     expect(url.searchParams.get('subject')).toBe('[Stacker] Mes données personnelles (RGPD)');
     expect(url.searchParams.get('body')).toBe(`${valid.message}\n\n— Inès (ines@exemple.fr)`);
     expect(CONTACT_SUBJECTS.length).toBe(5);
+  });
+});
+
+describe('registerOpposition', () => {
+  const env: PublicEnv = readPublicEnv({ VITE_SUPABASE_URL: 'https://proj.supabase.co', VITE_SUPABASE_ANON_KEY: 'sb_publishable_cle' });
+  const off: PublicEnv = readPublicEnv({});
+  const reply = (status: number) => async () => new Response('{}', { status });
+  it('statuts ⇒ résultat, jamais de détail', async () => {
+    expect(await registerOpposition(off, { token: 'a' })).toEqual({ ok: false, error: 'not_configured' });
+    let sent: { url: string; body: unknown } | null = null;
+    expect(
+      await registerOpposition(env, { token: 'abc' }, async (url, init) => {
+        sent = { url, body: JSON.parse(init?.body as string) };
+        return new Response('{"ok":true}', { status: 200 });
+      }),
+    ).toEqual({ ok: true });
+    expect(sent).toEqual({ url: 'https://proj.supabase.co/functions/v1/opposition-register', body: { token: 'abc' } });
+    expect(await registerOpposition(env, { token: 'a' }, reply(400))).toEqual({ ok: false, error: 'invalid' });
+    expect(await registerOpposition(env, { token: 'a' }, reply(403))).toEqual({ ok: false, error: 'captcha' });
+    expect(await registerOpposition(env, { token: 'a' }, reply(429))).toEqual({ ok: false, error: 'rate_limited' });
+    expect(await registerOpposition(env, { token: 'a' }, reply(500))).toEqual({ ok: false, error: 'server' });
+    expect(
+      await registerOpposition(env, { token: 'a' }, async () => {
+        throw new Error('réseau');
+      }),
+    ).toEqual({ ok: false, error: 'network' });
   });
 });

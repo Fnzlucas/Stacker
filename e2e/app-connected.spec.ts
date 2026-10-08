@@ -60,7 +60,7 @@ test.describe('accueil', () => {
 });
 
 test.describe('navigation', () => {
-  test('barre basse : 5 onglets, onglet courant signalé, écrans « bientôt disponible » sans faux chiffres', async ({ page, supabase }) => {
+  test('barre basse : 5 onglets, onglet courant signalé, écrans sans faux chiffres', async ({ page, supabase }) => {
     await login(page, supabase.fake);
     const nav = page.getByRole('navigation', { name: 'Navigation de l’application' });
     await expect(nav.getByRole('link')).toHaveText(['Accueil', 'Prospects', 'Deals', 'Gains', 'Profil']);
@@ -70,8 +70,7 @@ test.describe('navigation', () => {
     await expect(page).toHaveURL(/\/app\/prospects$/);
     await expect(nav.getByRole('link', { name: 'Prospects' })).toHaveAttribute('aria-current', 'page');
     await expect(page.getByRole('heading', { level: 1, name: 'Prospects' })).toBeFocused();
-    await expect(page.locator('main')).toContainText('ta zone (Vaucluse)');
-    await expect(page.locator('main')).not.toContainText(/\d+ entreprises/);
+    await expect(page.getByRole('heading', { name: 'Les 4 règles de la prospection' })).toBeVisible();
     await expectAccessible(page, 'prospects');
     await expectNoHorizontalOverflow(page, 'prospects');
 

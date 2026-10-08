@@ -129,3 +129,33 @@ export function joinErrorMessage(error: Exclude<JoinResult, { ok: true }>['error
       return 'Le service est momentanément indisponible. Réessaie dans un instant.';
   }
 }
+
+// ---------------------------------------------------------------------------
+// Opposition à la prospection (page /opposition)
+// ---------------------------------------------------------------------------
+
+export type OppositionResult = { ok: true } | { ok: false; error: 'not_configured' | 'network' | 'invalid' | 'captcha' | 'rate_limited' | 'server' };
+
+/**
+ * Enregistre une demande d'opposition (lien d'un email ou formulaire). La
+ * réponse est la même qu'un jeton existe ou non : rien n'est révélé.
+ */
+export async function registerOpposition(env: PublicEnv, body: { token: string } | { siren?: string; email?: string; turnstileToken: string }, fetchFn: FetchLike = fetch): Promise<OppositionResult> {
+  if (!env.supabaseUrl || !env.supabaseAnonKey) return { ok: false, error: 'not_configured' };
+  let res: Response;
+  try {
+    res = await fetchFn(`${env.supabaseUrl}/functions/v1/opposition-register`, {
+      method: 'POST',
+      headers: { ...authHeaders(env.supabaseAnonKey), 'content-type': 'application/json', accept: 'application/json' },
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(15000),
+    });
+  } catch {
+    return { ok: false, error: 'network' };
+  }
+  if (res.ok) return { ok: true };
+  if (res.status === 400) return { ok: false, error: 'invalid' };
+  if (res.status === 403) return { ok: false, error: 'captcha' };
+  if (res.status === 429) return { ok: false, error: 'rate_limited' };
+  return { ok: false, error: 'server' };
+}

@@ -12,6 +12,7 @@ import { ContactPage } from '../pages/Contact';
 import { LandingPage } from '../pages/Landing';
 import { ListeAttentePage } from '../pages/ListeAttente';
 import { NotFoundPage } from '../pages/NotFound';
+import { OppositionPage } from '../pages/Opposition';
 import { TarifsPage } from '../pages/Tarifs';
 import { CguPage } from '../pages/legal/Cgu';
 import { CgvPage } from '../pages/legal/Cgv';
@@ -29,6 +30,7 @@ const PAGES: Record<string, () => ReactElement> = {
   cgv: CgvPage,
   confidentialite: ConfidentialitePage,
   remboursement: RemboursementPage,
+  opposition: OppositionPage,
   'not-found': NotFoundPage,
 };
 

@@ -13,7 +13,7 @@
     "file": "tarifs.html",
     "path": "/tarifs",
     "title": "Tarifs — Stacker",
-    "description": "Abonnement stacker à 6,99 € TTC par mois, sans engagement : logiciel de prospection, scripts et aide pour les appels, formation complète. Offre de lancement pour les 100 premiers.",
+    "description": "Abonnement stacker à 6,99 € par mois (TVA non applicable), sans engagement : logiciel de prospection, scripts et aide pour les appels, formation complète. Offre de lancement pour les 100 premiers.",
     "islands": true,
     "sitemap": true
   },
@@ -56,7 +56,7 @@
     "file": "cgv.html",
     "path": "/cgv",
     "title": "Conditions générales de vente — Stacker",
-    "description": "Prix, offre de lancement, résiliation, droit de rétractation de 14 jours et médiation pour l’abonnement Stacker à 6,99 € TTC par mois.",
+    "description": "Prix, offre de lancement, résiliation, droit de rétractation de 14 jours et médiation pour l’abonnement Stacker à 6,99 € par mois.",
     "sitemap": true
   },
   {
@@ -74,6 +74,15 @@
     "title": "Politique de remboursement — Stacker",
     "description": "Droit de rétractation de 14 jours, résiliation et remboursement de l’abonnement Stacker.",
     "sitemap": true
+  },
+  {
+    "id": "opposition",
+    "file": "opposition.html",
+    "path": "/opposition",
+    "title": "Ne plus être contacté — Stacker",
+    "description": "Vous ne souhaitez plus être contacté par les apporteurs d’affaires de Stacker ? Indiquez votre SIREN ou votre adresse email : c’est définitif.",
+    "islands": true,
+    "noindex": true
   },
   {
     "id": "not-found",

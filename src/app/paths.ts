@@ -18,8 +18,11 @@ export const PATHS = {
   deleted: '/app/compte-supprime',
 } as const;
 
+/** Fiche d'un prospect réservé. */
+export const prospectPath = (claimId: string): string => `${PATHS.prospects}/${encodeURIComponent(claimId)}`;
+
 /** Page demandée avant la connexion (uniquement un chemin interne de l'app). */
 export function safeReturnPath(state: unknown): string {
   const from = state && typeof state === 'object' && 'from' in state ? state.from : null;
-  return typeof from === 'string' && /^\/app(\/[a-z-]+)*$/.test(from) ? from : PATHS.home;
+  return typeof from === 'string' && /^\/app(\/[a-z0-9-]+)*$/.test(from) ? from : PATHS.home;
 }

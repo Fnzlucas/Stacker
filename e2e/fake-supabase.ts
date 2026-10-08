@@ -20,6 +20,7 @@
  */
 import { createHash } from 'node:crypto';
 import type { Route } from '@playwright/test';
+import { FakeProspects, type StackerInfo } from './fake-prospects';
 
 export const FAKE_SUPABASE = 'https://e2e-stacker.supabase.co';
 
@@ -118,6 +119,8 @@ export class FakeSupabase {
   /** Panne simulée : prochaine réponse forcée pour « MÉTHODE /chemin » ou « /chemin ». */
   failNext = new Map<string, { status: number; body: unknown }>();
   private seq = 0;
+  /** Prospection (lot 3) : réservations, emails, opposition, recherche. */
+  prospects = new FakeProspects(() => this.id());
 
   private id(): string {
     this.seq++;
@@ -247,7 +250,8 @@ export class FakeSupabase {
       return true;
     }
     const path = url.pathname;
-    if (!path.startsWith('/auth/v1/') && !path.startsWith('/rest/v1/') && path !== '/functions/v1/account-delete') return false;
+    const functions = ['/functions/v1/account-delete', '/functions/v1/prospects-search', '/functions/v1/opposition-register'];
+    if (!path.startsWith('/auth/v1/') && !path.startsWith('/rest/v1/') && !functions.includes(path)) return false;
     let body: unknown = null;
     try {
       body = req.postData() ? req.postDataJSON() : null;
@@ -450,9 +454,27 @@ export class FakeSupabase {
         for (const s of this.sessions) if (s.userId === cur.user.id) s.revoked = true;
         return [200, { ok: true, status: 'deleted' }];
       }
-      default:
+      case 'GET /rest/v1/email_templates': {
+        if (!this.current(headers)) return this.pgError(401, '42501', 'permission denied for table email_templates');
+        return [200, this.prospects.templates()];
+      }
+      case 'POST /functions/v1/prospects-search':
+        return this.prospects.search(b, this.stacker(headers));
+      case 'POST /functions/v1/opposition-register':
+        return this.prospects.opposition(b);
+      default: {
+        const rpc = /^\/rest\/v1\/rpc\/([a-z_]+)$/.exec(path);
+        const handled = method === 'POST' && rpc?.[1] ? this.prospects.rpc(rpc[1], b, this.stacker(headers)) : null;
+        if (handled) return handled;
         return this.pgError(404, 'PGRST202', `route inconnue du faux Supabase : ${method} ${path}`);
+      }
     }
+  }
+
+  private stacker(headers: Record<string, string>): StackerInfo | null {
+    const cur = this.current(headers);
+    const p = cur ? this.profiles.get(cur.user.id) : undefined;
+    return cur && p ? { id: p.id, onboarded: p.onboarding_completed_at !== null, firstName: p.first_name, lastName: p.last_name, phone: p.phone } : null;
   }
 
   private matches(p: FakeProfile, q: URLSearchParams): boolean {

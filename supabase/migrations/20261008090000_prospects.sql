@@ -1060,7 +1060,8 @@ begin
 
   perform public.usage_consume(v_uid, 'email_prepared', s.emails_prepared_per_day, null);
 
-  v_name := co.name;
+  -- « PLOMBERIE DURAND » → « Plomberie Durand » (registre en capitales).
+  v_name := initcap(lower(co.name));
   v_city := coalesce(initcap(lower(co.city)), 'votre secteur');
   v_subject := replace(replace(replace(t.subject, '{{entreprise}}', v_name), '{{commune}}', v_city), '{{prenom}}', p.first_name);
   v_subject := left(v_subject, 140);
@@ -1193,6 +1194,8 @@ begin
   select * into s from public.prospect_settings;
   return jsonb_build_object(
     'enabled', public.app_flag('prospects_enabled'),
+    'rules_version', (select c.document_version from public.user_consents c
+                      where c.user_id = v_uid and c.purpose = 'prospecting_rules' order by c.id desc limit 1),
     'searches', jsonb_build_object('used', public.usage_today(v_uid, 'search'), 'limit', s.searches_per_day),
     'claims_today', jsonb_build_object('used', public.usage_today(v_uid, 'claim'), 'limit', s.max_new_claims_per_day),
     'emails_today', jsonb_build_object('used', public.usage_today(v_uid, 'email_prepared'), 'limit', s.emails_prepared_per_day),
@@ -1200,6 +1203,35 @@ begin
       'used', (select count(*) from public.prospect_claims c where c.stacker_id = v_uid and c.released_at is null and c.status <> 'signe'),
       'limit', s.max_active_claims)
   );
+end;
+$$;
+
+-- Règles de prospection (bannière de première visite) : acceptation
+-- journalisée dans user_consents, comme les autres consentements.
+alter table public.user_consents drop constraint user_consents_purpose_check;
+alter table public.user_consents add constraint user_consents_purpose_check
+  check (purpose in ('terms_privacy', 'marketing_email', 'prospecting_rules'));
+
+create function public.accept_prospecting_rules(p_version text)
+returns void
+language plpgsql
+volatile
+security definer
+set search_path = ''
+as $$
+declare
+  v_uid uuid := (select auth.uid());
+begin
+  if v_uid is null then
+    raise exception 'not_authenticated' using errcode = '42501';
+  end if;
+  if p_version is null or char_length(p_version) not between 1 and 40 then
+    raise exception 'invalid_version' using errcode = '22023';
+  end if;
+  if not exists (select 1 from public.user_consents c where c.user_id = v_uid and c.purpose = 'prospecting_rules' and c.document_version = p_version) then
+    insert into public.user_consents (user_id, purpose, granted, document_version, source)
+    values (v_uid, 'prospecting_rules', true, p_version, 'prospects');
+  end if;
 end;
 $$;
 
@@ -1552,7 +1584,7 @@ revoke all on function
   public.prospect_set_contact(uuid, text, text, text), public.prospect_add_note(uuid, text), public.prospect_delete_note(uuid),
   public.prospect_log_call(uuid, public.call_outcome, timestamptz), public.prospect_extend(uuid), public.prospect_release(uuid, text),
   public.prospect_prepare_email(uuid, text), public.prospect_mark_email_sent(uuid), public.my_prospects(),
-  public.prospect_detail(uuid), public.my_prospect_quotas(), public.opposition_register_claim(uuid, text),
+  public.prospect_detail(uuid), public.my_prospect_quotas(), public.accept_prospecting_rules(text), public.opposition_register_claim(uuid, text),
   public.opposition_register_token(text), public.opposition_register_form(text, text), public.prospects_search_begin(uuid),
   public.prospects_cache_get(text), public.prospects_cache_put(text, jsonb, integer, jsonb), public.prospects_annotate(uuid, text[]),
   public.prospect_mark_signed(uuid, text), public.prospect_jobs_purge(), public.prospect_events_append_only(),
@@ -1565,7 +1597,7 @@ grant execute on function
   public.prospect_set_contact(uuid, text, text, text), public.prospect_add_note(uuid, text), public.prospect_delete_note(uuid),
   public.prospect_log_call(uuid, public.call_outcome, timestamptz), public.prospect_extend(uuid), public.prospect_release(uuid, text),
   public.prospect_prepare_email(uuid, text), public.prospect_mark_email_sent(uuid), public.my_prospects(),
-  public.prospect_detail(uuid), public.my_prospect_quotas()
+  public.prospect_detail(uuid), public.my_prospect_quotas(), public.accept_prospecting_rules(text)
   to authenticated;
 
 -- Edge Functions (service_role).
