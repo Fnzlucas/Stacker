@@ -20,6 +20,7 @@
  */
 import { createHash } from 'node:crypto';
 import type { Route } from '@playwright/test';
+import { FakeDeals } from './fake-deals';
 import { FakeProspects, type StackerInfo } from './fake-prospects';
 
 export const FAKE_SUPABASE = 'https://e2e-stacker.supabase.co';
@@ -121,6 +122,12 @@ export class FakeSupabase {
   private seq = 0;
   /** Prospection (lot 3) : réservations, emails, opposition, recherche. */
   prospects = new FakeProspects(() => this.id());
+  /** Deals et gains (lot 5). Taux = niveau du profil. */
+  deals = new FakeDeals(
+    () => this.id(),
+    (id) => TIERS.find((t) => t.code === this.profiles.get(id)?.tier)?.rate_bps ?? 1500,
+    () => this.prospects.claims,
+  );
 
   private id(): string {
     this.seq++;
@@ -466,7 +473,7 @@ export class FakeSupabase {
         return this.prospects.mailConnect(b, this.stacker(headers), headers['origin'] ?? 'http://localhost:4174');
       default: {
         const rpc = /^\/rest\/v1\/rpc\/([a-z_]+)$/.exec(path);
-        const handled = method === 'POST' && rpc?.[1] ? this.prospects.rpc(rpc[1], b, this.stacker(headers)) : null;
+        const handled = method === 'POST' && rpc?.[1] ? (this.prospects.rpc(rpc[1], b, this.stacker(headers)) ?? this.deals.rpc(rpc[1], b, this.stacker(headers))) : null;
         if (handled) return handled;
         return this.pgError(404, 'PGRST202', `route inconnue du faux Supabase : ${method} ${path}`);
       }

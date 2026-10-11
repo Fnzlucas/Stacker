@@ -76,17 +76,21 @@ test.describe('navigation', () => {
 
     await nav.getByRole('link', { name: 'Deals' }).click();
     await expect(page.getByRole('heading', { level: 1, name: 'Deals' })).toBeVisible();
-    await expect(page.locator('main')).toContainText('signe lui-même, sur son propre téléphone');
+    await expect(page.getByRole('link', { name: 'Faire signer un client' })).toBeVisible();
+    await expect(page.locator('main').getByText('Aucun deal pour l’instant')).toBeVisible();
     await expectAccessible(page, 'deals');
+    await expectNoHorizontalOverflow(page, 'deals');
 
     await nav.getByRole('link', { name: 'Gains' }).click();
     const main = page.locator('main');
     await expect(page.getByRole('heading', { level: 1, name: 'Gains' })).toBeVisible();
-    await expect(main.getByText('Aucun prévu')).toBeVisible();
-    await expect(main).not.toContainText(/\d+,\d{2}\s?€|Virer|Solde|sous 24 h|immédiat/i);
+    // Montants calculés par le serveur (zéro réel), aucun virement possible sans commission ni IBAN.
+    await expect(main.locator('.balance-amount')).toHaveText('0,00\u00a0€');
+    await expect(main.getByRole('button', { name: 'Virer sur mon compte' })).toHaveCount(0);
+    await expect(main.getByRole('heading', { name: 'Ton compte pour les virements' })).toBeVisible();
     await expect(main.locator('.tier-rows li')).toHaveCount(4);
-    await expect(main.locator('.tier-rows li.is-current')).toContainText('Ton niveau');
-    await expect(main).toContainText('Versement hebdomadaire');
+    await expect(main.locator('.tier-rows li.is-current')).toContainText('Rookie');
+    await expect(main.getByText('Aucune commission pour l’instant')).toBeVisible();
     await expectAccessible(page, 'gains');
     await expectNoHorizontalOverflow(page, 'gains');
 

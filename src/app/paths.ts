@@ -3,6 +3,7 @@ export const PATHS = {
   home: '/app',
   prospects: '/app/prospects',
   deals: '/app/deals',
+  dealNew: '/app/deals/nouveau',
   gains: '/app/gains',
   profile: '/app/profil',
   onboarding: '/app/bienvenue',
@@ -20,6 +21,12 @@ export const PATHS = {
 
 /** Fiche d'un prospect réservé. */
 export const prospectPath = (claimId: string): string => `${PATHS.prospects}/${encodeURIComponent(claimId)}`;
+
+/** Fiche d'un deal signé. */
+export const dealPath = (dealId: string): string => `${PATHS.deals}/${encodeURIComponent(dealId)}`;
+
+/** Faire signer un prospect réservé (formulaire pré-rempli). */
+export const dealFromProspectPath = (claimId: string): string => `${PATHS.dealNew}?prospect=${encodeURIComponent(claimId)}`;
 
 /** Page demandée avant la connexion (uniquement un chemin interne de l'app). */
 export function safeReturnPath(state: unknown): string {

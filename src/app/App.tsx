@@ -27,8 +27,10 @@ const AccueilPage = lazy(() => import('./pages/Accueil').then((m) => ({ default:
 const ProfilPage = lazy(() => import('./pages/Profil').then((m) => ({ default: m.ProfilPage })));
 const ProspectsPage = lazy(() => import('./pages/Prospects').then((m) => ({ default: m.ProspectsPage })));
 const ProspectFichePage = lazy(() => import('./pages/ProspectFiche').then((m) => ({ default: m.ProspectFichePage })));
-const DealsPage = lazy(() => import('./pages/Bientot').then((m) => ({ default: m.DealsPage })));
-const GainsPage = lazy(() => import('./pages/Bientot').then((m) => ({ default: m.GainsPage })));
+const DealsPage = lazy(() => import('./pages/Deals').then((m) => ({ default: m.DealsPage })));
+const DealNewPage = lazy(() => import('./pages/DealNew').then((m) => ({ default: m.DealNewPage })));
+const DealFichePage = lazy(() => import('./pages/DealFiche').then((m) => ({ default: m.DealFichePage })));
+const GainsPage = lazy(() => import('./pages/Gains').then((m) => ({ default: m.GainsPage })));
 
 const page = (el: ReactElement) => <Suspense fallback={<Splash />}>{el}</Suspense>;
 
@@ -59,6 +61,8 @@ export const router = createBrowserRouter([
           { path: PATHS.prospects, element: page(<ProspectsPage />) },
           { path: `${PATHS.prospects}/:claimId`, element: page(<ProspectFichePage />) },
           { path: PATHS.deals, element: page(<DealsPage />) },
+          { path: PATHS.dealNew, element: page(<DealNewPage />) },
+          { path: `${PATHS.deals}/:dealId`, element: page(<DealFichePage />) },
           { path: PATHS.gains, element: page(<GainsPage />) },
           { path: PATHS.profile, element: page(<ProfilPage />) },
         ],

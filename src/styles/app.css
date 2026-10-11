@@ -553,3 +553,138 @@
   .boot *:not(.boot-slow), .boot *::before { animation: none !important; }
   .boot-progress, .boot-bands { display: none; }
 }
+
+/* ---- Deals : signature d'un client, liste, fiche --------------------------- */
+@layer components {
+  .deals, .gains, .deal-new, .deal-offers, .deal-sign { display: grid; gap: var(--st-space-4); grid-template-columns: minmax(0, 1fr); }
+  .deals, .gains { padding-bottom: var(--st-space-6); }
+  .deals-hero { display: grid; gap: var(--st-space-3); color: var(--st-on-dark); }
+  .deals-hero .h2 { color: var(--st-on-dark); }
+  .deals-hero-text { color: var(--st-on-dark-2); }
+  .deals-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin: var(--st-space-2) 0 0; border-radius: var(--st-r-md); overflow: hidden; background: rgba(255, 255, 255, .1); }
+  .deals-stats > div { padding: 12px 14px; background: #17171c; }
+  .deals-stats dt { font-size: var(--st-text-xs); color: var(--st-on-dark-2); }
+  .deals-stats dd { margin: 2px 0 0; font-family: var(--st-font-display); font-weight: var(--st-weight-heavy); font-size: var(--st-text-lg); color: var(--st-on-dark); }
+  .deals-empty { display: grid; justify-items: center; gap: var(--st-space-2); text-align: center; }
+  .deals-row { gap: var(--st-space-3); text-decoration: none; color: inherit; align-items: center; }
+  .deals-row-amount { display: grid; justify-items: end; font-family: var(--st-font-display); font-weight: var(--st-weight-heavy); white-space: nowrap; }
+  .deals-row-amount small { font-family: var(--st-font-text); font-weight: var(--st-weight-medium); font-size: var(--st-text-xs); color: var(--st-text-2); }
+  .deal-com-pos { font-family: var(--st-font-display); font-weight: var(--st-weight-heavy); color: var(--st-green-ink); white-space: nowrap; }
+  .deal-com-pos small { font-weight: var(--st-weight-medium); color: var(--st-text-2); }
+
+  .deal-new { padding-bottom: calc(var(--st-space-6) + env(safe-area-inset-bottom)); }
+  .deal-new-bar { justify-content: space-between; padding-bottom: 0; }
+  .deal-new-count { font-size: var(--st-text-sm); color: var(--st-text-2); font-weight: var(--st-weight-medium); }
+  .deal-new-title { margin: 0; }
+  .deal-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; list-style: none; margin: 0; padding: 0; }
+  .deal-steps li { height: 6px; border-radius: var(--st-r-pill); background: var(--st-line-strong); }
+  .deal-steps li.is-done { background: var(--st-ink); }
+  .deal-steps li.is-current { background: var(--st-green); }
+  .deal-new-actions { display: grid; gap: var(--st-space-3); position: sticky; bottom: calc(var(--st-tabbar-h) + var(--st-space-2)); z-index: 5; }
+
+  .deal-brand { display: grid; gap: var(--st-space-2); }
+  .deal-formulas { display: grid; gap: var(--st-space-3); margin-top: var(--st-space-2); }
+  .deal-formula {
+    display: grid; gap: 6px; text-align: left; width: 100%; padding: var(--st-space-4); border-radius: var(--st-r-md);
+    background: var(--st-surface); border: 1.5px solid var(--st-line-strong); color: var(--st-ink); cursor: pointer;
+    transition: border-color .15s var(--st-ease-out), box-shadow .15s var(--st-ease-out);
+  }
+  .deal-formula:focus-visible { box-shadow: var(--st-focus); outline: none; }
+  .deal-formula.is-on { border-color: var(--st-ink); box-shadow: 0 0 0 2px var(--st-ink) inset; }
+  .deal-formula-head { display: flex; align-items: center; justify-content: space-between; gap: var(--st-space-2); }
+  .deal-formula-name { font-family: var(--st-font-display); font-weight: var(--st-weight-heavy); font-size: var(--st-text-md); }
+  .deal-formula-price { font-family: var(--st-font-display); font-weight: var(--st-weight-heavy); font-size: var(--st-text-xl); letter-spacing: var(--st-tracking-title); }
+  .deal-formula-price small, .deal-summary-price small, .gains-monthly-amount small { font-family: var(--st-font-text); font-size: var(--st-text-sm); font-weight: var(--st-weight-medium); color: var(--st-text-2); letter-spacing: 0; }
+  .deal-formula-features { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 4px; font-size: var(--st-text-sm); color: var(--st-text-2); }
+  .deal-formula-features li { display: flex; gap: 6px; align-items: flex-start; }
+  .deal-formula-features .icon { flex-shrink: 0; margin-top: 2px; color: var(--st-green-ink); }
+  .deal-formula-com { margin-top: 6px; padding: 8px 12px; border-radius: var(--st-r-sm); background: #e8f7ee; color: var(--st-green-ink); font-size: var(--st-text-sm); }
+  .deal-qty { display: grid; gap: var(--st-space-2); }
+  .deal-qty-total { font-size: var(--st-text-md); }
+
+  .deal-form { display: grid; gap: var(--st-space-4); }
+  .deal-row2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--st-space-3); }
+  .deal-summary { display: grid; gap: 4px; }
+  .deal-summary-offer { font-weight: var(--st-weight-semibold); }
+  .deal-summary-price { font-family: var(--st-font-display); font-weight: var(--st-weight-heavy); font-size: 40px; letter-spacing: var(--st-tracking-display); line-height: 1.05; }
+  .deal-summary-com { display: flex; gap: 8px; align-items: flex-start; margin-top: var(--st-space-2); padding: 10px 12px; border-radius: var(--st-r-sm); background: #e8f7ee; color: var(--st-green-ink); font-size: var(--st-text-sm); }
+  .deal-summary-com .icon { flex-shrink: 0; }
+  .deal-contract { display: grid; gap: var(--st-space-2); }
+  .deal-contract-text {
+    display: block; width: 100%; height: 320px; resize: none; border: 0; overflow-y: auto; white-space: pre-wrap; overflow-wrap: anywhere;
+    padding: var(--st-space-4); border-radius: var(--st-r-sm); background: var(--st-bg); font: inherit; font-size: var(--st-text-sm); line-height: 1.55; color: var(--st-ink);
+  }
+  .deal-contract-text:focus-visible { box-shadow: var(--st-focus); outline: none; }
+  .deal-details summary { cursor: pointer; list-style: none; }
+  .deal-details summary::-webkit-details-marker { display: none; }
+  .deal-details[open] { display: grid; gap: var(--st-space-3); }
+  .deal-signature { margin: 0; display: grid; gap: var(--st-space-2); }
+  .deal-signature img { width: 100%; max-height: 180px; object-fit: contain; border-radius: var(--st-r-sm); background: var(--st-bg); }
+  .deal-hash { overflow-wrap: anywhere; font-size: var(--st-text-xs); }
+
+  .sigpad { position: relative; }
+  .sigpad-canvas {
+    display: block; width: 100%; height: 200px; border-radius: var(--st-r-md); background: #fff; border: 2px dashed var(--st-line-strong);
+    touch-action: none; cursor: crosshair;
+  }
+  .sigpad-hint {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 8px; pointer-events: none;
+    color: var(--st-muted); font-weight: var(--st-weight-medium);
+  }
+  .sigpad-clear { position: absolute; right: 8px; bottom: 8px; }
+
+  /* Célébration après signature */
+  .deal-win {
+    position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; overflow: hidden; padding: var(--st-gutter);
+    background: radial-gradient(ellipse at 50% 30%, #23232c, #0b0b10 70%); color: var(--st-on-dark);
+    animation: win-in .35s var(--st-ease-out) both;
+  }
+  .deal-win-body { position: relative; z-index: 1; display: grid; justify-items: center; gap: var(--st-space-3); text-align: center; max-width: 420px; width: 100%; }
+  .deal-win-title { margin: 0; font-size: 64px; line-height: 1.1; }
+  .deal-win-title:focus { outline: none; }
+  .deal-win-company { font-family: var(--st-font-display); font-weight: var(--st-weight-heavy); font-size: var(--st-text-lg); }
+  .deal-win-amount {
+    margin: var(--st-space-2) 0 0; font-family: var(--st-font-display); font-weight: var(--st-weight-heavy); font-size: 52px; letter-spacing: var(--st-tracking-display);
+    color: var(--st-green); animation: win-pop .6s .35s var(--st-ease-out) both;
+  }
+  .deal-win-amount small { font-size: var(--st-text-md); color: var(--st-on-dark-2); letter-spacing: 0; }
+  .deal-win-text { color: var(--st-on-dark-2); font-size: var(--st-text-sm); }
+  .deal-win-actions { display: grid; gap: var(--st-space-2); width: 100%; margin-top: var(--st-space-3); }
+  .deal-win-confetti { position: absolute; inset: 0; pointer-events: none; }
+  .deal-win-confetti .cf { position: absolute; top: -20px; width: 10px; height: 16px; border-radius: 2px; animation: win-fall 2.6s linear both; }
+  .cf-0 { left: 6%; background: var(--st-green); animation-delay: .05s !important; }
+  .cf-1 { left: 14%; background: var(--st-violet); animation-delay: .4s !important; }
+  .cf-2 { left: 22%; background: var(--st-orange); animation-delay: .15s !important; }
+  .cf-3 { left: 31%; background: #fff; animation-delay: .6s !important; }
+  .cf-4 { left: 40%; background: var(--st-green); animation-delay: .25s !important; }
+  .cf-5 { left: 49%; background: var(--st-orange); animation-delay: .8s !important; }
+  .cf-6 { left: 57%; background: var(--st-violet); animation-delay: .1s !important; }
+  .cf-7 { left: 65%; background: var(--st-green); animation-delay: .5s !important; }
+  .cf-8 { left: 73%; background: #fff; animation-delay: .3s !important; }
+  .cf-9 { left: 81%; background: var(--st-orange); animation-delay: .7s !important; }
+  .cf-10 { left: 89%; background: var(--st-violet); animation-delay: .2s !important; }
+  .cf-11 { left: 95%; background: var(--st-green); animation-delay: .45s !important; }
+  .deal-win-confetti .cf:nth-child(n+13) { animation-duration: 3.1s; transform: rotate(30deg); }
+  .deal-win-confetti .cf:nth-child(n+25) { animation-duration: 3.6s; width: 8px; height: 12px; }
+
+  /* Gains */
+  .gains-actions { display: grid; gap: var(--st-space-2); margin-top: var(--st-space-5); }
+  .gains-account { display: flex; align-items: center; justify-content: space-between; gap: var(--st-space-2); font-size: var(--st-text-sm); color: var(--st-on-dark-2); }
+  .gains-pending { display: flex; gap: 8px; align-items: flex-start; margin-top: var(--st-space-4); padding: 10px 12px; border-radius: var(--st-r-sm); background: rgba(247, 162, 27, .14); color: var(--st-on-dark); font-size: var(--st-text-sm); }
+  .gains-pending .icon { flex-shrink: 0; color: var(--st-orange); }
+  .gains-iban { display: grid; gap: var(--st-space-4); }
+  .gains-monthly { display: grid; gap: var(--st-space-2); }
+  .gains-monthly-amount { font-family: var(--st-font-display); font-weight: var(--st-weight-heavy); font-size: 36px; letter-spacing: var(--st-tracking-display); }
+  .gains-level-head { display: flex; align-items: center; justify-content: space-between; gap: var(--st-space-3); margin-bottom: var(--st-space-3); }
+}
+
+@keyframes win-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes win-pop { 0% { transform: scale(.4); opacity: 0; } 60% { transform: scale(1.12); opacity: 1; } 100% { transform: none; } }
+@keyframes win-fall {
+  0% { transform: translateY(0) rotate(0); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(540deg); opacity: .9; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .deal-win, .deal-win-amount { animation: none; }
+  .deal-win-confetti { display: none; }
+}

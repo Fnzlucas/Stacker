@@ -4,7 +4,7 @@
 begin;
 do $$ begin create extension if not exists pgtap with schema extensions; exception when others then null; end $$;
 
-select plan(66);
+select plan(70);
 
 insert into auth.users (id, email, email_confirmed_at, raw_user_meta_data) values
   ('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 'alice@exemple.fr', now(), '{"adult_declared": true, "terms_version": "v1", "first_name": "Alice"}'),
@@ -57,7 +57,7 @@ select throws_ok($$select public.deal_preview((select j from t_in) || '{"siret":
 select throws_ok($$select public.deal_preview((select j from t_in) || '{"iban": "FR7630006000011234567890188"}')$$, '22023', 'invalid_iban', 'IBAN faux ⇒ invalid_iban');
 select throws_ok($$select public.deal_preview((select j from t_in) || '{"email": "pas-un-email"}')$$, '22023', 'invalid_email', 'email faux ⇒ invalid_email');
 select throws_ok($$select public.deal_preview((select j from t_in) || '{"phone": "0612345678"}')$$, '22023', 'invalid_phone', 'téléphone non E.164 ⇒ invalid_phone');
-select throws_ok($$select public.deal_preview((select j from t_in) || '{"accept_mandate": false}')$$, '22023', 'consent_required', 'mandat non accepté ⇒ consent_required');
+select throws_ok($$select public.deal_sign((select j from t_in) || '{"accept_mandate": false}', (select s from t_sig), repeat('0', 64))$$, '22023', 'consent_required', 'signature sans accord sur le mandat ⇒ consent_required');
 select throws_ok($$select public.deal_preview((select j from t_in) || '{"offer_id": "rh-pme-pro"}')$$, 'P0002', 'offer_unavailable', 'offre désactivée ⇒ offer_unavailable');
 select throws_ok($$select public.deal_preview((select j from t_in) || '{"offer_id": "inroom-petite-structure", "quantity": 50}')$$, '22023', 'invalid_quantity', 'quantité hors palier ⇒ invalid_quantity');
 select is((public.deal_preview((select j from t_in) || '{"offer_id": "inroom-hotel-moyen", "quantity": 30}') ->> 'monthly_price_cents')::int, 15000,
@@ -142,9 +142,21 @@ select is((select rate_bps from public.commission_entries e join public.deal_pay
           'paiement suivant commissionné au taux Pro (18 %)');
 
 -- ---------------------------------------------------------------- virements
+select ok((select bool_and(available_at between now() + interval '29 days' and now() + interval '31 days') from public.commission_entries e
+           join public.deal_payments p on p.id = e.payment_id where p.period = '2026-11-01'),
+          'premier paiement d''un nouveau client : commission disponible à 30 jours');
+select ok((select available_at between now() + interval '13 days' and now() + interval '15 days' from public.commission_entries e
+           join public.deal_payments p on p.id = e.payment_id where p.period = '2026-12-01'),
+          'paiements suivants : commission disponible à 14 jours');
 set local role authenticated;
 set local request.jwt.claims = '{"sub": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", "role": "authenticated"}';
-select is((public.my_earnings() ->> 'available_cents')::int, 1049 + 1500 + 1500 + 1800, 'my_earnings : solde disponible = somme des commissions');
+select is((public.my_earnings() ->> 'available_cents')::int, 0, 'pendant le délai : rien de disponible');
+select is((public.my_earnings() ->> 'validating_cents')::int, 1049 + 1500 + 1500 + 1800, '... tout « en validation »');
+reset role;
+update public.commission_entries set available_at = now() - interval '1 day';
+set local role authenticated;
+set local request.jwt.claims = '{"sub": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", "role": "authenticated"}';
+select is((public.my_earnings() ->> 'available_cents')::int, 1049 + 1500 + 1500 + 1800, 'délai passé : solde disponible = somme des commissions');
 select throws_ok($$select public.payout_request()$$, '55000', 'payout_account_required', 'virement sans IBAN ⇒ payout_account_required');
 select throws_ok($$select public.payout_set_account('Alice Martin', 'FR00 1234')$$, '22023', 'invalid_iban', 'IBAN de virement faux ⇒ invalid_iban');
 select lives_ok($$select public.payout_set_account('Alice Martin', 'FR7630006000011234567890189')$$, 'IBAN de virement enregistré');

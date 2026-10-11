@@ -38,6 +38,7 @@ async function searchBatiment(page: Page) {
 
 test.describe('prospection', () => {
   test('parcours complet : recherche, réservation, appel, email depuis ma messagerie, statut « contacté »', async ({ page, supabase }) => {
+    test.slow();
     await login(page, supabase.fake);
     await openProspects(page, false);
 

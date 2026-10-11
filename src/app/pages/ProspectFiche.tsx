@@ -45,7 +45,7 @@ import {
   type ProspectDetail,
   type ProspectStatus,
 } from '../lib/prospects';
-import { PATHS } from '../paths';
+import { PATHS, dealFromProspectPath } from '../paths';
 
 export function ProspectFichePage(): ReactElement {
   const { claimId = '' } = useParams();
@@ -135,6 +135,12 @@ function Fiche({ d, onToast }: { d: ProspectDetail; onToast: (m: string) => void
 
       {!signed ? (
         <>
+          {d.claim.status === 'a_repondu' || d.claim.status === 'rdv' ? (
+            <Link className="btn btn-accent btn-lg btn-block" to={dealFromProspectPath(d.claim.id)}>
+              <Icon name="signature" />
+              Faire signer ce client
+            </Link>
+          ) : null}
           <ContactCard key={`${d.claim.contact_phone ?? ''}|${d.claim.contact_email ?? ''}|${d.claim.contact_source ?? ''}`} d={d} onToast={onToast} />
           <CallCard d={d} onToast={onToast} />
           <EmailCard d={d} onToast={onToast} />

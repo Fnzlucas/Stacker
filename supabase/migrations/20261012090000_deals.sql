@@ -16,7 +16,11 @@
 --     caractères sont lisibles.
 --   * Délai de rétractation de 14 jours accordé à tous les clients ; le
 --     premier prélèvement intervient après ce délai.
---   * Commission : due quand le CLIENT A PAYÉ (deal_record_payment, appelée
+--   * Commission : créée quand le CLIENT A PAYÉ, disponible au virement
+--     14 jours après l'encaissement (30 jours pour le premier paiement d'un
+--     nouveau client), comme annoncé dans les CGU. Virements regroupés et
+--     traités chaque semaine.
+--   * Commission (suite) : due quand le CLIENT A PAYÉ (deal_record_payment, appelée
 --     par le serveur : webhook Mollie ou admin). Taux = niveau du stacker au
 --     moment du paiement (commission_tiers). Le premier paiement rend le
 --     client « actif » et fait progresser le niveau (profiles.active_clients).
@@ -41,11 +45,16 @@ create table public.deal_settings (
   max_deals_per_day     integer not null default 20,
   min_payout_cents      integer not null default 1000,
   withdrawal_days       integer not null default 14,
+  -- Délai entre l'encaissement du client et la disponibilité de la commission
+  -- (remboursements SEPA possibles) : identique aux CGU et au site.
+  availability_days            integer not null default 14,
+  availability_days_new_client integer not null default 30,
   contract_version      text not null default '2026-10-12',
   contract_template     text not null,
   updated_at            timestamptz not null default now(),
   constraint deal_settings_singleton check (id),
-  constraint deal_settings_bounds check (max_deals_per_day between 1 and 200 and min_payout_cents between 0 and 100000 and withdrawal_days between 14 and 60)
+  constraint deal_settings_bounds check (max_deals_per_day between 1 and 200 and min_payout_cents between 0 and 100000 and withdrawal_days between 14 and 60
+    and availability_days between 0 and 90 and availability_days_new_client between 0 and 120)
 );
 
 insert into public.deal_settings (contract_template) values ($tpl$CONTRAT D'ABONNEMENT ET MANDAT DE PRÉLÈVEMENT SEPA
@@ -249,6 +258,7 @@ create table public.commission_entries (
   rate_bps             integer not null,
   amount_cents         integer not null,
   status               public.commission_status not null default 'disponible',
+  available_at         timestamptz not null default now(),
   payout_id            uuid references public.payouts (id) on delete set null,
   created_at           timestamptz not null default now(),
   constraint commission_entries_rate check (rate_bps between 0 and 10000),
@@ -391,9 +401,9 @@ $$;
 -- Validation des données saisies et rendu du contrat
 -- -----------------------------------------------------------------------------
 
--- Valide et normalise la saisie du stacker. Renvoie un objet complet
+-- Valide et normalise la saisie du stacker (consentements exigés à la signature). Renvoie un objet complet
 -- (offre, prix, coordonnées normalisées, IBAN normalisé) ou lève un code.
-create function public.deal_validate(p_input jsonb)
+create function public.deal_validate(p_input jsonb, p_require_consent boolean)
 returns jsonb
 language plpgsql
 stable
@@ -456,8 +466,8 @@ begin
   if not public.iban_is_valid(v_iban) then
     raise exception 'invalid_iban' using errcode = '22023';
   end if;
-  if coalesce((p_input ->> 'accept_terms')::boolean, false) is not true
-     or coalesce((p_input ->> 'accept_mandate')::boolean, false) is not true then
+  if p_require_consent and (coalesce((p_input ->> 'accept_terms')::boolean, false) is not true
+     or coalesce((p_input ->> 'accept_mandate')::boolean, false) is not true) then
     raise exception 'consent_required' using errcode = '22023';
   end if;
   return jsonb_build_object(
@@ -594,7 +604,7 @@ set search_path = ''
 as $$
 declare
   v_uid uuid := public.deal_require_stacker();
-  v jsonb := public.deal_validate(p_input);
+  v jsonb := public.deal_validate(p_input, false);
   v_refs text[] := public.deal_preview_refs(v, v_uid);
   v_text text := public.deal_render_contract(v, v_refs[1], v_refs[2], v_uid);
   v_rate integer := public.deal_rate_bps(v_uid);
@@ -631,7 +641,7 @@ begin
   if (select count(*) from public.deals d where d.stacker_id = v_uid and d.created_at >= now() - interval '24 hours') >= s.max_deals_per_day then
     raise exception 'daily_quota' using errcode = '54000';
   end if;
-  v := public.deal_validate(p_input);
+  v := public.deal_validate(p_input, true);
   if p_signature is null or p_signature !~ '^data:image/png;base64,[A-Za-z0-9+/]+=*$'
      or char_length(p_signature) not between 1500 and 400000 then
     raise exception 'invalid_signature' using errcode = '22023';
@@ -753,7 +763,9 @@ declare
 begin
   return jsonb_build_object(
     'rate_bps', v_rate,
-    'available_cents', coalesce((select sum(e.amount_cents) from public.commission_entries e where e.stacker_id = v_uid and e.status = 'disponible'), 0),
+    'available_cents', coalesce((select sum(e.amount_cents) from public.commission_entries e where e.stacker_id = v_uid and e.status = 'disponible' and e.available_at <= now()), 0),
+    'validating_cents', coalesce((select sum(e.amount_cents) from public.commission_entries e where e.stacker_id = v_uid and e.status = 'disponible' and e.available_at > now()), 0),
+    'next_available_at', (select min(e.available_at) from public.commission_entries e where e.stacker_id = v_uid and e.status = 'disponible' and e.available_at > now()),
     'requested_cents', coalesce((select sum(e.amount_cents) from public.commission_entries e where e.stacker_id = v_uid and e.status = 'demandee'), 0),
     'paid_cents', coalesce((select sum(e.amount_cents) from public.commission_entries e where e.stacker_id = v_uid and e.status = 'versee'), 0),
     'monthly_cents', coalesce((select sum(d.monthly_price_cents) from public.deals d where d.stacker_id = v_uid and d.status = 'actif'), 0) * v_rate / 10000,
@@ -766,6 +778,7 @@ begin
       select jsonb_agg(x.j order by x.created_at desc) from (
         select jsonb_build_object('id', e.id, 'period', e.period, 'amount_cents', e.amount_cents, 'rate_bps', e.rate_bps,
                                   'client_amount_cents', e.client_amount_cents, 'status', e.status, 'created_at', e.created_at,
+                                  'available_at', e.available_at,
                                   'company_name', d.company_name, 'deal_id', d.id) j, e.created_at
         from public.commission_entries e join public.deals d on d.id = e.deal_id
         where e.stacker_id = v_uid order by e.created_at desc limit 100) x), '[]'::jsonb),
@@ -805,7 +818,7 @@ begin
 end;
 $$;
 
--- Demande de virement de tout le solde disponible.
+-- Demande de virement de tout le solde disponible (commissions dont le délai est passé).
 create function public.payout_request()
 returns uuid
 language plpgsql
@@ -826,13 +839,15 @@ begin
   if exists (select 1 from public.payouts p where p.stacker_id = v_uid and p.status = 'demande') then
     raise exception 'payout_pending' using errcode = '55000';
   end if;
-  perform 1 from public.commission_entries e where e.stacker_id = v_uid and e.status = 'disponible' for update;
-  select coalesce(sum(e.amount_cents), 0) into v_amount from public.commission_entries e where e.stacker_id = v_uid and e.status = 'disponible';
+  perform 1 from public.commission_entries e where e.stacker_id = v_uid and e.status = 'disponible' and e.available_at <= now() for update;
+  select coalesce(sum(e.amount_cents), 0) into v_amount from public.commission_entries e
+  where e.stacker_id = v_uid and e.status = 'disponible' and e.available_at <= now();
   if v_amount < (select s.min_payout_cents from public.deal_settings s where s.id) or v_amount <= 0 then
     raise exception 'payout_too_small' using errcode = '22023';
   end if;
   insert into public.payouts (stacker_id, amount_cents, iban_last4) values (v_uid, v_amount, a.iban_last4) returning id into v_id;
-  update public.commission_entries e set status = 'demandee', payout_id = v_id where e.stacker_id = v_uid and e.status = 'disponible';
+  update public.commission_entries e set status = 'demandee', payout_id = v_id
+  where e.stacker_id = v_uid and e.status = 'disponible' and e.available_at <= now();
   return v_id;
 end;
 $$;
@@ -887,8 +902,10 @@ begin
   values (d.id, v_period, p_amount_cents, left(p_provider_ref, 200)) returning id into v_pay;
   if d.stacker_id is not null then
     v_rate := public.deal_rate_bps(d.stacker_id);
-    insert into public.commission_entries (stacker_id, deal_id, payment_id, period, client_amount_cents, rate_bps, amount_cents)
-    values (d.stacker_id, d.id, v_pay, v_period, p_amount_cents, v_rate, (p_amount_cents * v_rate) / 10000);
+    insert into public.commission_entries (stacker_id, deal_id, payment_id, period, client_amount_cents, rate_bps, amount_cents, available_at)
+    select d.stacker_id, d.id, v_pay, v_period, p_amount_cents, v_rate, (p_amount_cents * v_rate) / 10000,
+           now() + make_interval(days => case when d.status = 'signe' then s.availability_days_new_client else s.availability_days end)
+    from public.deal_settings s where s.id;
   end if;
   if d.status in ('signe', 'suspendu') then
     update public.deals set status = 'actif', activated_at = coalesce(activated_at, now()), updated_at = now() where id = d.id;
@@ -1054,7 +1071,7 @@ $$;
 
 revoke all on function
   public.iban_normalize(text), public.iban_is_valid(text), public.eur(integer), public.iban_key(), public.request_header(text),
-  public.deal_rate_bps(uuid), public.deal_validate(jsonb), public.deal_render_contract(jsonb, text, text, uuid),
+  public.deal_rate_bps(uuid), public.deal_validate(jsonb, boolean), public.deal_render_contract(jsonb, text, text, uuid),
   public.deal_preview_refs(jsonb, uuid), public.deal_require_stacker(), public.deal_catalog(), public.deal_preview(jsonb),
   public.deal_sign(jsonb, text, text), public.my_deals(), public.deal_detail(uuid), public.my_earnings(),
   public.payout_set_account(text, text), public.payout_request(), public.deal_refresh_active_clients(uuid),
