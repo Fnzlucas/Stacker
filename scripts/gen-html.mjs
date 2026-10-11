@@ -88,7 +88,7 @@ export const BOOT_SPLASH = `<div id="boot" class="boot" role="status">
 <noscript><p class="boot-noscript">L’espace stacker a besoin de JavaScript. <a href="/">Retour au site</a></p></noscript>
 </div>
 </div>
-<div class="boot-bands" aria-hidden="true"><span class="boot-band boot-band-1"></span><span class="boot-band boot-band-2"></span><span class="boot-band boot-band-3"></span></div>
+
 <span class="sr-only">Chargement de Stacker…</span>
 </div>`;
 

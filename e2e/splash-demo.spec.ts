@@ -19,7 +19,7 @@ const FPS = 30;
 const DIR = 'qa/demo/.raw/frames';
 const ENTRY_MS = 1590;
 const EXIT_MS = 520;
-const EXIT_NAMES = ['boot-hide', 'boot-bar-out', 'boot-tile-out', 'boot-word-out', 'boot-band'];
+const EXIT_NAMES = ['boot-hide', 'boot-bar-out', 'boot-tile-out', 'boot-word-out'];
 
 test('démo : écran de démarrage v2, image par image', async ({ page, supabase }) => {
   test.setTimeout(120_000);

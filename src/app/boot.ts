@@ -17,10 +17,10 @@ const BOOT_ID = 'boot';
 const ENTRY_PREFIX = 'boot-in-';
 /** Durée de l'animation d'entrée (CSS : dernière lettre du wordmark, 1150 + 440 ms). */
 export const ENTRY_MS = 1590;
-/** Durée de la sortie (CSS : dernière bande, 160 + 360 ms). */
-export const EXIT_MS = 520;
-/** Élément dont la fin d'animation marque la fin de la sortie. */
-const LAST_EXIT = '.boot-band-3';
+/** Durée de la sortie (CSS : fondu de l'écran entier, 60 + 240 ms). */
+export const EXIT_MS = 300;
+/** Animation dont la fin marque la fin de la sortie (fondu de #boot). */
+const EXIT_ANIMATION = 'boot-hide';
 
 /** Classe posée sur <html> dès que la sortie commence : les écrans peuvent alors jouer leur entrée. */
 export const BOOTED_CLASS = 'is-booted';
@@ -70,8 +70,9 @@ function leave(el: HTMLElement): void {
   // Seule une classe est ajoutée : les animations de sortie sont posées sur
   // d'autres éléments que celles d'entrée, rien n'est relancé.
   el.classList.add('is-leaving');
-  const last = el.querySelector(LAST_EXIT);
-  el.addEventListener('animationend', (e) => e.target === last && remove());
+  el.addEventListener('animationend', (e) => {
+    if (e.target === el && e.animationName === EXIT_ANIMATION) remove();
+  });
   // Filet de sécurité si animationend ne vient pas (onglet en arrière-plan).
   setTimeout(remove, EXIT_MS + 200);
 }

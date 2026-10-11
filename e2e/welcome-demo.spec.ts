@@ -19,7 +19,7 @@ const FPS = 30;
 const DIR = 'qa/demo/.raw/frames';
 const ENTRY_MS = 1590;
 const EXIT_MS = 520;
-const EXIT_NAMES = ['boot-hide', 'boot-bar-out', 'boot-tile-out', 'boot-word-out', 'boot-band'];
+const EXIT_NAMES = ['boot-hide', 'boot-bar-out', 'boot-tile-out', 'boot-word-out'];
 
 const WELCOME_MS = 2100;
 

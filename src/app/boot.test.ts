@@ -6,10 +6,10 @@ class FakeBoot {
   attrs = new Map<string, string>([['role', 'status']]);
   classes = new Set<string>();
   removed = false;
-  listeners: ((e: { target: unknown }) => void)[] = [];
+  listeners: ((e: { target: unknown; animationName?: string }) => void)[] = [];
   entry: { animationName?: string; playState: string; finished: Promise<unknown> }[] = [];
-  /** Dernière bande de sortie (.boot-band-3). */
-  lastBand = { band: 3 };
+  /** Un enfant de #boot (barre du logo). */
+  child = { bar: 1 };
   classList = { add: (c: string) => this.classes.add(c) };
   setAttribute(k: string, v: string) {
     this.attrs.set(k, v);
@@ -20,11 +20,10 @@ class FakeBoot {
   remove() {
     this.removed = true;
   }
-  addEventListener(_type: string, fn: (e: { target: unknown }) => void) {
+  addEventListener(_type: string, fn: (e: { target: unknown; animationName?: string }) => void) {
     this.listeners.push(fn);
   }
   getAnimations = (opts?: { subtree?: boolean }) => (opts?.subtree ? this.entry : []);
-  querySelector = (sel: string) => (sel === '.boot-band-3' ? this.lastBand : null);
 }
 
 let boot: FakeBoot | null;
@@ -75,12 +74,13 @@ describe('écran de démarrage', () => {
     expect(boot!.classes.has('is-leaving')).toBe(true);
     expect(boot!.attrs.get('aria-hidden')).toBe('true');
     expect(boot!.attrs.has('role')).toBe(false);
-    // Les écrans jouent leur entrée pendant que les bandes sortent.
+    // Les écrans jouent leur entrée pendant que l'écran de démarrage s'efface.
     expect(htmlClasses.has('is-booted')).toBe(true);
-    // animationend d'un autre élément : ignoré ; de la dernière bande : retiré.
-    boot!.listeners.forEach((fn) => fn({ target: boot }));
+    // animationend d'un enfant ou d'une autre animation : ignoré ; fin du fondu de #boot : retiré.
+    boot!.listeners.forEach((fn) => fn({ target: boot!.child, animationName: 'boot-hide' }));
+    boot!.listeners.forEach((fn) => fn({ target: boot, animationName: 'boot-bar-out' }));
     expect(boot!.removed).toBe(false);
-    boot!.listeners.forEach((fn) => fn({ target: boot!.lastBand }));
+    boot!.listeners.forEach((fn) => fn({ target: boot, animationName: 'boot-hide' }));
     expect(boot!.removed).toBe(true);
     await vi.advanceTimersByTimeAsync(EXIT_MS + 300);
   });

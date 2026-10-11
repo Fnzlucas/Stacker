@@ -378,9 +378,9 @@
      940-1590    wordmark lettre par lettre, glissé de bas en haut sous masque.
    Attente : respiration de la tuile dès 1,59 s ; barre de progression unie
    après 1,6 s ; message de lenteur après 10 s.
-   Sortie 520 ms (.is-leaving) : les barres s'étirent à l'horizontale, puis
-   trois bandes plein écran (vert, violet, orange) balaient l'écran en
-   cascade ; le fond disparaît sous la première, la dernière révèle l'app. */
+   Sortie (.is-leaving) : le logo s'efface et l'écran entier fond en 240 ms
+   sur l'app déjà rendue (les bandes de balayage ont été retirées : elles
+   donnaient l'impression d'une page à moitié affichée). */
 .boot {
   --boot-logo: 112px;
   position: fixed; inset: 0; z-index: calc(var(--st-z-max) - 1);
@@ -466,30 +466,15 @@
 .boot-slow a, .boot-noscript a { color: var(--st-violet-ink); font-weight: var(--st-weight-semibold); }
 .boot-slow { visibility: hidden; animation: boot-reveal 1ms linear 10s both; }
 
-/* Bandes de sortie : parallélogrammes de 150vw, hors écran à gauche au repos ;
-   à mi-course (-25vw) chacune couvre tout l'écran. */
-.boot-bands { position: absolute; inset: 0; pointer-events: none; }
-.boot-band {
-  position: absolute; top: 0; bottom: 0; left: 0; width: 150vw;
-  clip-path: polygon(15% 0, 100% 0, 85% 100%, 0 100%);
-  transform: translateX(-100%); will-change: transform;
-}
-.boot-band-1 { background: #3ccf63; }
-.boot-band-2 { background: #7b7bf0; }
-.boot-band-3 { background: #f7a21b; }
 
 /* ---- Sortie ---- */
-.boot.is-leaving { pointer-events: none; }
-.boot.is-leaving .boot-bg { animation: boot-hide 1ms step-end 220ms both; }
+.boot.is-leaving { pointer-events: none; animation: boot-hide 240ms cubic-bezier(.4, 0, .2, 1) 60ms both; }
 .boot.is-leaving .boot-bar { animation: boot-bar-out 240ms cubic-bezier(.35, .15, .85, .5) both; }
 .boot.is-leaving .boot-bar-2 { animation-delay: 30ms; }
 .boot.is-leaving .boot-bar-3 { animation-delay: 60ms; }
 .boot.is-leaving .boot-tile-x { animation: boot-tile-out 220ms cubic-bezier(.35, .15, .85, .5) both; }
 .boot.is-leaving .boot-word, .boot.is-leaving .boot-foot { animation: boot-word-out 200ms cubic-bezier(.35, .15, .85, .5) both; }
-.boot.is-leaving .boot-band { animation: boot-band 360ms cubic-bezier(.7, 0, .3, 1) 40ms both; }
-.boot.is-leaving .boot-band-2 { animation-delay: 100ms; }
-.boot.is-leaving .boot-band-3 { animation-delay: 160ms; }
-
+.boot.is-leaving 
 /* ---- Images clés (entrée : boot-in-*) ---- */
 @keyframes boot-in-x-left {
   0% { transform: translateX(-64vw) rotate(-24deg); animation-timing-function: cubic-bezier(.12, .7, .25, 1); }
@@ -545,13 +530,12 @@
 @keyframes boot-bar-out { 0% { transform: none; opacity: 1; } 65% { opacity: 1; } 100% { transform: scale(9, .55); opacity: 0; } }
 @keyframes boot-tile-out { to { transform: scale(.72); opacity: 0; } }
 @keyframes boot-word-out { to { transform: translateY(-12px); opacity: 0; } }
-@keyframes boot-band { from { transform: translateX(-100%); } to { transform: translateX(66.667%); } }
 
 /* Mouvement réduit : écran statique et sobre (logo et wordmark en place),
-   ni barre animée ni bandes ; la sortie est immédiate (boot.ts). */
+   ni barre animée ; la sortie est immédiate (boot.ts). */
 @media (prefers-reduced-motion: reduce) {
   .boot *:not(.boot-slow), .boot *::before { animation: none !important; }
-  .boot-progress, .boot-bands { display: none; }
+  .boot-progress { display: none; }
 }
 
 /* ---- Deals : signature d'un client, liste, fiche --------------------------- */

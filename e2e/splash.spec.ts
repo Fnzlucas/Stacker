@@ -64,7 +64,8 @@ test.describe('écran de démarrage', () => {
     await expect(boot.locator('.boot-word')).toHaveText('Stacker');
     await expect(boot.locator('.boot-l')).toHaveCount(7);
     await expect(boot.locator('.boot-bar')).toHaveCount(3);
-    await expect(boot.locator('.boot-band')).toHaveCount(3);
+    // Sortie en fondu : aucune bande de balayage (impression de page à moitié affichée).
+    await expect(boot.locator('.boot-band, .boot-bands')).toHaveCount(0);
     await expect(boot).toHaveCount(0, { timeout: 5000 });
     await expect(page.getByRole('heading', { level: 1, name: 'Content de te revoir' })).toBeVisible();
 
@@ -78,9 +79,9 @@ test.describe('écran de démarrage', () => {
     expect(t.leavingAt! - t.entryStart!).toBeGreaterThanOrEqual(1570);
     // … et pas de délai artificiel au-delà (l'app locale est prête bien avant la fin de l'entrée).
     expect(t.leavingAt! - t.entryStart!).toBeLessThan(2200);
-    // Sortie (bandes) ≈ 520 ms.
-    expect(t.removedAt! - t.leavingAt!).toBeGreaterThanOrEqual(450);
-    expect(t.removedAt! - t.leavingAt!).toBeLessThan(1000);
+    // Sortie (fondu) ≈ 300 ms.
+    expect(t.removedAt! - t.leavingAt!).toBeGreaterThanOrEqual(250);
+    expect(t.removedAt! - t.leavingAt!).toBeLessThan(700);
   });
 
   test('statique dans le HTML avant le JavaScript, respiration et barre de progression après 1,6 s seulement', async ({ page }) => {
@@ -149,7 +150,8 @@ test.describe('écran de démarrage', () => {
     await expect(page.locator('#boot')).toHaveCount(0, { timeout: 15_000 });
     await expect(page.getByRole('heading', { level: 1, name: 'Content de te revoir' })).toBeVisible();
     const s = await page.evaluate(() => (window as unknown as { __splash: { frames: number; replaced: boolean; restarts: number; backwards: number; leaving: boolean } }).__splash);
-    expect(s.frames, 'images observées').toBeGreaterThan(20);
+    // Seuil bas : sous CPU ×4 et tests en parallèle, le navigateur peint peu d'images (la sortie en fondu ne dure que 300 ms).
+    expect(s.frames, 'images observées').toBeGreaterThan(8);
     expect(s.replaced, '#boot remplacé').toBe(false);
     expect(s.restarts, 'animation redémarrée').toBe(0);
     expect(s.backwards, 'horloge d’animation revenue en arrière').toBe(0);
@@ -203,7 +205,6 @@ test.describe('écran de démarrage', () => {
     await expect(boot.locator('.boot-bs').first()).toHaveCSS('transform', 'none');
     await expect(boot.locator('.boot-word')).toHaveCSS('opacity', '1');
     await expect(boot.locator('.boot-progress')).toBeHidden();
-    await expect(boot.locator('.boot-bands')).toBeHidden();
     await expect(boot).toHaveCount(0, { timeout: 6000 });
     await expect(page.getByRole('heading', { level: 1, name: 'Content de te revoir' })).toBeVisible();
     const t = await bootTimes(page);

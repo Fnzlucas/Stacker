@@ -91,9 +91,43 @@ const queryClient = new QueryClient({
   },
 });
 
+/** Écrans principaux chargés en arrière-plan après le démarrage : la navigation ne passe plus par un écran de chargement. */
+const PREFETCH = [
+  () => import('./pages/Accueil'),
+  () => import('./pages/Prospects'),
+  () => import('./pages/ProspectFiche'),
+  () => import('./pages/Deals'),
+  () => import('./pages/DealNew'),
+  () => import('./pages/DealFiche'),
+  () => import('./pages/Gains'),
+  () => import('./pages/Profil'),
+];
+
 export function App(): ReactElement {
   // Premier rendu fait : l'écran de démarrage part dès que plus rien ne le retient.
   useEffect(() => scheduleBootCheck(), []);
+  useEffect(() => {
+    // Après le départ de l'écran de démarrage, un écran à la fois, quand le navigateur est libre.
+    let cancelled = false;
+    const idle = (fn: () => void): void => {
+      if (typeof window.requestIdleCallback === 'function') window.requestIdleCallback(fn, { timeout: 2000 });
+      else setTimeout(fn, 200);
+    };
+    const next = (i: number) => {
+      const load = PREFETCH[i];
+      if (cancelled || !load) return;
+      idle(() => void load().catch(() => undefined).finally(() => next(i + 1)));
+    };
+    const start = window.setInterval(() => {
+      if (document.getElementById('boot')) return;
+      window.clearInterval(start);
+      next(0);
+    }, 500);
+    return () => {
+      cancelled = true;
+      window.clearInterval(start);
+    };
+  }, []);
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider backend={getBackend()}>
