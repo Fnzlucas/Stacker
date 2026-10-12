@@ -8,7 +8,7 @@ import { z } from 'zod';
 const date = z.string();
 export const itemSchema = z.object({
   id: z.number().int(),
-  kind: z.enum(['contrat_client', 'contrat_stacker', 'prenotification', 'bienvenue', 'abonnement_refuse', 'abonnement_coupe', 'prelevement_refuse']),
+  kind: z.enum(['contrat_client', 'contrat_stacker', 'prenotification', 'bienvenue', 'abonnement_refuse', 'abonnement_coupe', 'prelevement_refuse', 'virement_verse', 'virement_refuse']),
   to: z.string().nullable(),
   to_name: z.string().nullable(),
   data: z.record(z.string(), z.unknown()),
@@ -236,6 +236,28 @@ export function render(item: EmailItem, ctx: RenderContext): RenderedEmail {
         footer: stackerFooter,
       });
       return { subject: 'Ton abonnement Stacker est terminé', html, text, contract: false };
+    }
+    case 'virement_verse':
+    case 'virement_refuse': {
+      const amount = z.number().int().positive().safeParse(item.data['amount_cents']);
+      const last4 = z.string().safeParse(item.data['iban_last4']);
+      const reason = z.string().safeParse(item.data['reason']);
+      if (!amount.success) throw new RenderError('invalid_data');
+      const done = item.kind === 'virement_verse';
+      const { html, text } = layout({
+        eyebrow: 'Virement',
+        title: done ? `Ton virement de ${euros(amount.data)} est parti` : `Ton virement de ${euros(amount.data)} n’a pas pu être fait`,
+        paragraphs: done
+          ? [hi, `On vient de virer ${euros(amount.data)} sur ton compte${last4.success ? ` ••${last4.data}` : ''}. Selon ta banque, il arrive sous 1 à 3 jours ouvrés.`]
+          : [
+              hi,
+              `Ton virement n’a pas pu être fait${reason.success && reason.data ? ` : ${reason.data}` : ''}. Ton solde est de nouveau disponible dans Gains.`,
+              'Vérifie ton IBAN puis redemande le virement.',
+            ],
+        button: { label: 'Voir mes gains', url: `${app}/gains` },
+        footer: stackerFooter,
+      });
+      return { subject: done ? `Virement envoyé : ${euros(amount.data)}` : 'Ton virement Stacker n’a pas pu être fait', html, text, contract: false };
     }
     case 'prelevement_refuse': {
       const deal = needDeal();

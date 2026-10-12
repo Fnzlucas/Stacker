@@ -109,6 +109,13 @@ describe('modèles', () => {
     expect(render(item({ kind: 'abonnement_refuse', stacker: { first_name: null, last_name: null } }), CTX).text).toContain('Le paiement de ton abonnement n’est pas passé. Mets');
     expect(render(item({ kind: 'abonnement_coupe' }), CTX).text).toContain('Me réabonner : https://stacker.example/app/abonnement');
     expect(render(item({ kind: 'prelevement_refuse', deal: DEAL }), CTX).subject).toBe('Prélèvement refusé : Boulangerie Test');
+    const paid = render(item({ kind: 'virement_verse', data: { amount_cents: 1049, iban_last4: '7034' } }), CTX);
+    expect(paid.subject).toBe('Virement envoyé : 10,49 €');
+    expect(paid.text).toContain('sur ton compte ••7034');
+    expect(render(item({ kind: 'virement_verse', data: { amount_cents: 1000 } }), CTX).text).toContain('sur ton compte. Selon');
+    expect(render(item({ kind: 'virement_refuse', data: { amount_cents: 1049, reason: 'IBAN clôturé' } }), CTX).text).toContain('n’a pas pu être fait : IBAN clôturé.');
+    expect(render(item({ kind: 'virement_refuse', data: { amount_cents: 1049, reason: null } }), CTX).text).toContain('n’a pas pu être fait. Ton solde');
+    expect(() => render(item({ kind: 'virement_verse', data: {} }), CTX)).toThrow('invalid_data');
   });
   it('HTML échappé', () => {
     const m = render(item({ kind: 'contrat_stacker', deal: { ...DEAL, company_name: '<b>Evil</b> & Co' } }), CTX);

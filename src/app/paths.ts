@@ -6,6 +6,7 @@ export const PATHS = {
   dealNew: '/app/deals/nouveau',
   gains: '/app/gains',
   billing: '/app/abonnement',
+  admin: '/app/admin',
   profile: '/app/profil',
   onboarding: '/app/bienvenue',
   welcome: '/app/demarrer',

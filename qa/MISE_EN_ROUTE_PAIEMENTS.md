@@ -80,6 +80,25 @@ update public.app_flags set enabled = true where key = 'billing_required';
 
 Une fois l'interrupteur activé, il faut un abonnement à jour pour réserver un prospect, chercher, lancer une campagne ou faire signer un client. Il y a 3 jours de grâce après un paiement refusé. Sans abonnement, la campagne est mise en pause. Les gains restent toujours consultables et virables.
 
+## 7. Espace admin
+
+Une fois connecté à l'app avec ton compte, donne-toi le rôle admin (SQL Editor, une seule fois) :
+
+```sql
+insert into public.admins (user_id) select id from auth.users where email = '<TON EMAIL>';
+```
+
+Un lien « Admin » apparaît alors dans Profil. Il donne accès à :
+
+- la vue d'ensemble : chiffres clés et incidents ;
+- les virements à faire, avec l'IBAN complet à copier. Une fois le virement fait depuis ta banque, clique « Marquer versé » : le stacker reçoit un email. Un refus demande un motif, qui est envoyé au stacker ;
+- les deals : recherche, suspendre, résilier ou annuler (avec motif). Une résiliation arrête aussi le prélèvement Mollie ;
+- les offres : activer ou désactiver ;
+- la liste des stackers ;
+- les interrupteurs : abonnement obligatoire, prospection, campagnes, moteur.
+
+Chaque action est notée dans le journal. Personne ne peut se donner le rôle depuis l'app.
+
 ## Réglages (table `billing_settings`)
 
 | Champ | Défaut | Rôle |

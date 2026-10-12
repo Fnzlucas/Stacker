@@ -73,7 +73,7 @@ export interface FakeCommission {
   paid_at: string;
 }
 
-interface FakePayout {
+export interface FakePayout {
   id: string;
   stacker: string;
   amount_cents: number;
@@ -81,6 +81,7 @@ interface FakePayout {
   iban_last4: string;
   requested_at: string;
   processed_at: string | null;
+  reference?: string | null;
 }
 
 const DAY = 86_400_000;
@@ -117,7 +118,7 @@ export class FakeDeals {
   deals: FakeDeal[] = [];
   commissions: FakeCommission[] = [];
   payouts: FakePayout[] = [];
-  accounts = new Map<string, { holder: string; iban_last4: string }>();
+  accounts = new Map<string, { holder: string; iban_last4: string; iban: string }>();
   private seq = 0;
 
   constructor(
@@ -336,7 +337,7 @@ export class FakeDeals {
             signed_count: deals.filter((d) => ['signe', 'actif', 'suspendu'].includes(d.status)).length,
             active_count: deals.filter((d) => d.status === 'actif').length,
             min_payout_cents: 1000,
-            payout_account: this.accounts.get(st.id) ?? null,
+            payout_account: ((a) => (a ? { holder: a.holder, iban_last4: a.iban_last4 } : null))(this.accounts.get(st.id)),
             entries: [...mine]
               .sort((x, y) => y.created_at.localeCompare(x.created_at))
               .map((c) => ({
@@ -361,7 +362,7 @@ export class FakeDeals {
         if (holder.length < 2) return pg(400, '22023', 'invalid_holder');
         if (!ibanOk(iban)) return pg(400, '22023', 'invalid_iban');
         if (this.payouts.some((p) => p.stacker === st.id && p.status === 'demande')) return raise('payout_pending');
-        this.accounts.set(st.id, { holder, iban_last4: iban.slice(-4) });
+        this.accounts.set(st.id, { holder, iban_last4: iban.slice(-4), iban: iban.replace(/\s/g, '').toUpperCase() });
         return [204, null];
       }
       case 'payout_request': {

@@ -20,6 +20,7 @@
  */
 import { createHash } from 'node:crypto';
 import type { Route } from '@playwright/test';
+import { FakeAdmin } from './fake-admin';
 import { FakeBilling } from './fake-billing';
 import { FakeDeals } from './fake-deals';
 import { FakeProspects, type StackerInfo } from './fake-prospects';
@@ -130,6 +131,22 @@ export class FakeSupabase {
     (id) => TIERS.find((t) => t.code === this.profiles.get(id)?.tier)?.rate_bps ?? 1500,
     () => this.prospects.claims,
   );
+  /** Espace admin (lot 8). */
+  admin = new FakeAdmin(this.deals, this.billing, {
+    name: (id) => {
+      const p = this.profiles.get(id);
+      return p ? [p.first_name, p.last_name].filter(Boolean).join(' ') || null : null;
+    },
+    email: (id) => this.users.get(id)?.email ?? null,
+    stackers: () =>
+      [...this.profiles.values()].map((p) => ({
+        id: p.id,
+        name: [p.first_name, p.last_name].filter(Boolean).join(' ') || null,
+        email: this.users.get(p.id)?.email ?? '',
+        onboarded: p.onboarding_completed_at !== null,
+        created_at: this.users.get(p.id)?.createdAt ?? new Date().toISOString(),
+      })),
+  });
 
   private id(): string {
     this.seq++;
@@ -480,7 +497,7 @@ export class FakeSupabase {
         return this.prospects.mailConnect(b, this.stacker(headers), headers['origin'] ?? 'http://localhost:4174');
       default: {
         const rpc = /^\/rest\/v1\/rpc\/([a-z_]+)$/.exec(path);
-        const handled = method === 'POST' && rpc?.[1] ? (this.billing.rpc(rpc[1], b, this.stacker(headers)) ?? this.prospects.rpc(rpc[1], b, this.stacker(headers)) ?? this.deals.rpc(rpc[1], b, this.stacker(headers))) : null;
+        const handled = method === 'POST' && rpc?.[1] ? (this.admin.rpc(rpc[1], b, this.stacker(headers)) ?? this.billing.rpc(rpc[1], b, this.stacker(headers)) ?? this.prospects.rpc(rpc[1], b, this.stacker(headers)) ?? this.deals.rpc(rpc[1], b, this.stacker(headers))) : null;
         if (handled) return handled;
         return this.pgError(404, 'PGRST202', `route inconnue du faux Supabase : ${method} ${path}`);
       }

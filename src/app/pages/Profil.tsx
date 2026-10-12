@@ -12,6 +12,7 @@ import { ApiError, apiErrorMessage, deleteAccount, exportMyData, type Profile } 
 import { authErrorOutcome } from '../lib/authErrors';
 import { formatLongDate, initials } from '../lib/dates';
 import { BILLING_STATUS_LABELS } from '../lib/billing';
+import { useIsAdmin } from '../lib/adminQueries';
 import { useBilling } from '../lib/billingQueries';
 import { useProfile, useTiers, useUpdateProfile } from '../lib/queries';
 import { PATHS } from '../paths';
@@ -61,6 +62,7 @@ export function ProfilPage(): ReactElement {
         </div>
       </section>
       <BillingLink />
+      <AdminLink />
       <ProfileForm key={p.id} profile={p} />
       <DataSection />
       <AccountSection />
@@ -81,6 +83,25 @@ function BillingLink(): ReactElement {
         <p className="list-title">Abonnement</p>
         <p className="list-sub">
           <span>{label}</span>
+        </p>
+      </div>
+      <Icon name="chevron-right" />
+    </Link>
+  );
+}
+
+function AdminLink(): ReactElement | null {
+  const admin = useIsAdmin();
+  if (admin.data !== true) return null;
+  return (
+    <Link className="card list-row profile-billing" to={PATHS.admin}>
+      <span className="avatar avatar-dark" aria-hidden="true">
+        <Icon name="shield" />
+      </span>
+      <div className="min-w-0 flex-1">
+        <p className="list-title">Admin</p>
+        <p className="list-sub">
+          <span>Virements, deals, offres, réglages</span>
         </p>
       </div>
       <Icon name="chevron-right" />
