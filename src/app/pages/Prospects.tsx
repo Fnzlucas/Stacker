@@ -113,6 +113,42 @@ function RulesCard(): ReactElement {
 }
 
 // ---------------------------------------------------------------------------
+// Comment marche la réservation
+// ---------------------------------------------------------------------------
+
+const HOW_RESERVE: [string, string][] = [
+  ['Réserver = l’entreprise est à toi seul', 'Les autres stackers la voient « Prise par un autre stacker » et ne peuvent pas la contacter.'],
+  ['Tu as quelques jours pour la contacter', 'La date limite est affichée sur sa fiche. Chaque étape (contactée, rendez-vous) te donne plus de temps.'],
+  ['Elle signe : elle reste à toi', 'Le client et ses commissions te restent rattachés, sans date limite.'],
+  ['Tu ne fais rien : elle est libérée', 'Passé la date limite, elle redevient disponible pour les autres. Tu peux aussi la libérer toi-même.'],
+];
+
+function ReservationHelp({ open = false }: { open?: boolean }): ReactElement {
+  return (
+    <details className="card pros-how" open={open}>
+      <summary>
+        <Icon name="info" />
+        <span>Comment marche la réservation ?</span>
+        <Icon name="chevron-down" />
+      </summary>
+      <ol className="pros-how-list">
+        {HOW_RESERVE.map(([title, text], i) => (
+          <li key={title}>
+            <span className="pros-rules-num" aria-hidden="true">
+              {i + 1}
+            </span>
+            <span>
+              <strong>{title}</strong>
+              <span className="text-2"> {text}</span>
+            </span>
+          </li>
+        ))}
+      </ol>
+    </details>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Trouver
 // ---------------------------------------------------------------------------
 
@@ -186,7 +222,7 @@ function FindTab({ rulesAccepted }: { rulesAccepted: boolean }): ReactElement {
     claim.mutate(item.siret, {
       onSuccess: (claimId) => {
         setResults((prev) => (prev ? { ...prev, items: prev.items.map((i) => (i.siret === item.siret ? { ...i, state: 'a_moi', claim_id: claimId } : i)) } : prev));
-        setToast(`${displayName(item.name)} est réservée pour toi.`);
+        setToast(`${displayName(item.name)} est à toi : aucun autre stacker ne peut la contacter. Retrouve-la dans « Mes prospects ».`);
       },
       onError: (e) => setClaimError({ siret: item.siret, message: prospectErrorMessage(e) }),
     });
@@ -285,6 +321,7 @@ function FindTab({ rulesAccepted }: { rulesAccepted: boolean }): ReactElement {
             </h2>
             <span className="text-small">Source : registre SIRENE</span>
           </div>
+          <ReservationHelp />
           {results.items.length === 0 ? (
             <div className="card empty">
               <p>Aucune entreprise disponible avec ces critères. Élargis la zone ou change de secteur.</p>
@@ -360,7 +397,7 @@ function ResultRow({ item, canClaim, claiming, error, onClaim }: { item: SearchI
               <Icon name="arrow-right" />
             </Link>
           ) : item.state === 'deja_suivie' ? (
-            <span className="chip">Déjà suivie</span>
+            <span className="chip">Prise par un autre stacker</span>
           ) : (
             <span className="chip chip-orange">En pause</span>
           )}
@@ -417,7 +454,7 @@ function MineTab({ rows, loading, error, onFind }: { rows: ProspectRow[] | undef
         <h2 id="empty-title" className="h3">
           Aucun prospect pour l’instant
         </h2>
-        <p>Réserve des entreprises de ta zone : elles restent à toi pendant que tu les contactes.</p>
+        <p>Réserve des entreprises : tant que tu t’en occupes, elles sont à toi seul et aucun autre stacker ne peut les contacter.</p>
         <button type="button" className="btn btn-primary" onClick={onFind}>
           <Icon name="send" />
           Lancer une campagne
@@ -429,6 +466,7 @@ function MineTab({ rows, loading, error, onFind }: { rows: ProspectRow[] | undef
   const visible = rows.filter((r) => matches(r, filter, now));
   return (
     <>
+      <ReservationHelp />
       <div className="pros-chips pros-filters" role="group" aria-label="Filtrer par statut">
         {FILTERS.map(([key, label]) => (
           <button key={key} type="button" className="chip chip-filter" aria-pressed={filter === key} onClick={() => setFilter(key)}>

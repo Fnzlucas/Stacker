@@ -127,7 +127,7 @@ function Fiche({ d, onToast }: { d: ProspectDetail; onToast: (m: string) => void
           <p className={`form-note mt-4${left <= 2 ? ' pros-expiring' : ''}`}>
             <Icon name="clock" />
             <span>
-              Réservée pour toi jusqu’au {formatLongDate(d.claim.expires_at)} ({left === 0 ? 'expire aujourd’hui' : `encore ${String(left)} j`}). Chaque avancée prolonge la réservation.
+              À toi seul jusqu’au {formatLongDate(d.claim.expires_at)} ({left === 0 ? 'dernier jour' : `encore ${String(left)} j`}). Passé cette date sans avancée, elle sera rendue aux autres stackers. Marque-la « contactée » ou « rendez-vous » pour avoir plus de temps.
             </span>
           </p>
         ) : null}
@@ -439,7 +439,7 @@ function EmailCard({ d, onToast }: { d: ProspectDetail; onToast: (m: string) => 
                 onSuccess: () => {
                   setPrepared(null);
                   setCopied(false);
-                  onToast('Envoi noté. Ta réservation est prolongée.');
+                  onToast('Envoi noté. Tu as plus de temps pour cette entreprise.');
                 },
               })
             }
@@ -590,12 +590,12 @@ function DangerZone({ d, onToast }: { d: ProspectDetail; onToast: (m: string) =>
       {canExtend ? (
         <button type="button" className={`btn btn-secondary btn-block${extend.isPending ? ' is-loading' : ''}`} disabled={extend.isPending} onClick={() => extend.mutate(undefined, { onSuccess: () => onToast('Réservation prolongée de 7 jours.') })}>
           <Icon name="clock" />
-          Prolonger de 7 jours
+          Prolonger de 7 jours (une seule fois)
         </button>
       ) : null}
       {extend.isError ? <FormAlert>{prospectErrorMessage(extend.error)}</FormAlert> : null}
       <button type="button" className="btn btn-ghost btn-block" onClick={() => setConfirm('manuel')}>
-        Libérer ce prospect
+        Libérer (la rendre aux autres stackers)
       </button>
       <button type="button" className="btn btn-danger btn-block" onClick={() => setConfirm('opposition')}>
         Il ne veut plus être contacté

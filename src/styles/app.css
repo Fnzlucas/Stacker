@@ -163,6 +163,13 @@
   .pros-none { text-align: center; padding: var(--st-space-6) 0; }
   .pros-empty .btn { margin-top: var(--st-space-4); }
 
+  .pros-how { padding: 0; margin-bottom: var(--st-space-4); }
+  .pros-how summary { display: flex; align-items: center; gap: var(--st-space-2); padding: 14px 16px; cursor: pointer; list-style: none; font-weight: var(--st-weight-semibold); }
+  .pros-how summary::-webkit-details-marker { display: none; }
+  .pros-how summary > span { flex: 1; }
+  .pros-how[open] summary .icon:last-child { transform: rotate(180deg); }
+  .pros-how-list { list-style: none; margin: 0; padding: 0 16px 16px; display: grid; gap: var(--st-space-3); font-size: var(--st-text-sm); line-height: 1.45; }
+  .pros-how-list li { display: flex; gap: var(--st-space-3); align-items: flex-start; }
   .pros-rules { position: relative; display: grid; gap: var(--st-space-4); }
   .pros-rules-sticker { position: absolute; top: -10px; right: var(--st-space-4); }
   .pros-rules-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--st-space-3); }

@@ -58,12 +58,12 @@ test.describe('prospection', () => {
     await expectNoHorizontalOverflow(page, 'prospects (résultats)');
 
     await page.getByRole('button', { name: 'Réserver Plomberie Durand 1' }).click();
-    await expect(page.getByRole('status').filter({ hasText: 'Plomberie Durand 1 est réservée pour toi.' })).toBeVisible();
+    await expect(page.getByRole('status').filter({ hasText: 'Plomberie Durand 1 est à toi' })).toBeVisible();
     await page.getByRole('link', { name: 'Ouvrir la fiche de Plomberie Durand 1' }).click();
 
     // Fiche
     await expect(page.getByRole('heading', { level: 1, name: 'Plomberie Durand 1' })).toBeVisible();
-    await expect(page.locator('main')).toContainText('Réservée pour toi jusqu’au');
+    await expect(page.locator('main')).toContainText('À toi seul jusqu’au');
     await expect(page.getByRole('link', { name: 'Chercher sur Google' })).toHaveAttribute('href', /google\.com\/search\?q=PLOMBERIE%20DURAND%201%20VILLENEUVE/);
     await expect(page.getByRole('link', { name: 'Fiche officielle' })).toHaveAttribute('href', 'https://annuaire-entreprises.data.gouv.fr/entreprise/300000001');
     await expect(page.getByRole('button', { name: 'Ajoute d’abord un numéro' })).toBeDisabled();
@@ -126,7 +126,7 @@ test.describe('prospection', () => {
     await expectAccessible(page, 'mes prospects');
   });
 
-  test('exclusivité : B voit « Déjà suivie » et ne peut pas réserver', async ({ page, supabase, browser }) => {
+  test('exclusivité : B voit « Prise par un autre stacker » et ne peut pas réserver', async ({ page, supabase, browser }) => {
     await login(page, supabase.fake);
     await openProspects(page);
     await searchBatiment(page);
@@ -143,7 +143,7 @@ test.describe('prospection', () => {
     await openProspects(pageB);
     await searchBatiment(pageB);
     const row = pageB.locator('.pros-list li').filter({ hasText: 'Plomberie Durand 1' }).first();
-    await expect(row.getByText('Déjà suivie')).toBeVisible();
+    await expect(row.getByText('Prise par un autre stacker')).toBeVisible();
     await expect(row.getByRole('button', { name: /Réserver/ })).toHaveCount(0);
     expect(supabase.fake.prospects.claims).toHaveLength(1);
     await ctx.close();
