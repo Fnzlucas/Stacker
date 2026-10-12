@@ -197,3 +197,10 @@ enabled = true
 verify_jwt = false
 import_map = "./functions/mollie-run/deno.json"
 entrypoint = "./functions/mollie-run/index.ts"
+
+# Lot 7 : emails transactionnels (Brevo), tâche planifiée protégée par CRON_SECRET.
+[functions.email-run]
+enabled = true
+verify_jwt = false
+import_map = "./functions/email-run/deno.json"
+entrypoint = "./functions/email-run/index.ts"

@@ -30,7 +30,7 @@ Les autres secrets (`SUPABASE_ANON_KEY`, `SITE_URL`, `ALLOWED_ORIGINS`, `CRON_SE
 
 ```bash
 supabase db push
-supabase functions deploy billing-checkout mollie-webhook mollie-run prospects-search
+supabase functions deploy billing-checkout mollie-webhook mollie-run prospects-search email-run
 ```
 
 ## 4. Tâche planifiée (SQL Editor)
@@ -42,6 +42,27 @@ select cron.schedule('mollie-run', '7 * * * *', $$
     headers := '{"x-cron-secret": "<CRON_SECRET>"}'::jsonb, timeout_milliseconds := 120000)
 $$);
 ```
+
+## 4 bis. Emails automatiques (Brevo)
+
+Secrets Supabase (déjà utilisés par la liste d'attente) : `BREVO_API_KEY`, `BREVO_SENDER_EMAIL` (adresse d'un domaine validé dans Brevo), `BREVO_SENDER_NAME` (facultatif, « Stacker » par défaut) et `CONTACT_EMAIL` (adresse de réponse, sinon stacker-contact@outlook.com, celle du contrat).
+
+```sql
+-- Emails : toutes les 5 minutes
+select cron.schedule('email-run', '*/5 * * * *', $$
+  select net.http_post('https://<PROJET>.supabase.co/functions/v1/email-run',
+    headers := '{"x-cron-secret": "<CRON_SECRET>"}'::jsonb, timeout_milliseconds := 120000)
+$$);
+```
+
+Ce qui part tout seul :
+
+- le contrat signé en PDF, au client et au stacker ;
+- l'avis de prélèvement, 3 à 6 jours avant chaque prélèvement SEPA (obligation : au moins 2 jours) ;
+- la bienvenue à la fin de l'inscription ;
+- au stacker : son paiement d'abonnement refusé (avec la date de coupure), puis son abonnement coupé, et le prélèvement refusé d'un de ses clients.
+
+Un envoi refusé par Brevo est retenté 5 fois (15 min, 1 h, 4 h…). Les emails envoyés sont effacés après 90 jours.
 
 ## 5. Essai complet en mode test (avec la clé `test_…`)
 
@@ -70,6 +91,5 @@ Une fois l'interrupteur activé, il faut un abonnement à jour pour réserver un
 
 ## À savoir
 
-- **Prévenir le client avant chaque prélèvement (obligation SEPA).** Le contrat indique le montant mensuel et prévoit un email au moins 2 jours avant chaque prélèvement. Cet email automatique fait partie du lot « emails transactionnels », à brancher avant le premier vrai prélèvement.
 - **Un stacker qui conteste son propre paiement d'abonnement** : c'est seulement journalisé (`stacker_chargeback`), sans coupure automatique. Ces cas sont à traiter à la main dans Mollie.
 - **Un contrat résilié ou annulé** (`deal_set_status`) : son abonnement Mollie est arrêté au passage suivant de `mollie-run`.
