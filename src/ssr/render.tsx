@@ -5,7 +5,7 @@
  * leur hydratation dans le navigateur (src/entries/islands.tsx).
  */
 import { createElement, type ReactElement } from 'react';
-import { renderToString } from 'react-dom/server';
+import { renderToStaticMarkup, renderToString } from 'react-dom/server';
 import { beginIslandCollection, endIslandCollection, type IslandSlot } from '../islands/Island';
 import { ISLANDS } from '../islands/registry';
 import { ContactPage } from '../pages/Contact';
@@ -13,7 +13,11 @@ import { LandingPage } from '../pages/Landing';
 import { ListeAttentePage } from '../pages/ListeAttente';
 import { NotFoundPage } from '../pages/NotFound';
 import { OppositionPage } from '../pages/Opposition';
+import { GuidePage } from '../pages/Guide';
 import { TarifsPage } from '../pages/Tarifs';
+import { FAQ_BILLING, FAQ_GENERAL, type FaqItem } from '../site/faq';
+import { GUIDES } from '../site/guides';
+import { htmlToText, jsonLd, jsonLdTag } from '../site/seo';
 import { CguPage } from '../pages/legal/Cgu';
 import { CgvPage } from '../pages/legal/Cgv';
 import { ConfidentialitePage } from '../pages/legal/Confidentialite';
@@ -32,6 +36,7 @@ const PAGES: Record<string, () => ReactElement> = {
   remboursement: RemboursementPage,
   opposition: OppositionPage,
   'not-found': NotFoundPage,
+  ...Object.fromEntries(GUIDES.map((g) => [g.id, () => <GuidePage guide={g} />])),
 };
 
 export const PAGE_IDS = Object.keys(PAGES);
@@ -62,4 +67,17 @@ export function renderPage(id: string): string {
     if (!slot) throw new Error(`Îlot introuvable : ${index}`);
     return renderIsland(slot);
   });
+}
+
+/** Questions affichées sur chaque page (pour la FAQ en données structurées). */
+function pageFaq(id: string): FaqItem[] {
+  if (id === 'landing') return FAQ_GENERAL;
+  if (id === 'tarifs') return FAQ_BILLING;
+  return GUIDES.find((g) => g.id === id)?.faq ?? [];
+}
+
+/** Données structurées (JSON-LD) d'une page publique, à insérer dans le <head>. */
+export function renderJsonLd(id: string, path: string, site: string): string {
+  const faq = pageFaq(id).map((i) => ({ q: i.q, a: htmlToText(renderToStaticMarkup(createElement('div', null, i.a))) }));
+  return jsonLdTag(jsonLd(id, path, site, faq));
 }

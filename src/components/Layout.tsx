@@ -59,6 +59,13 @@ export function SiteFooter(): ReactElement {
               <li><a href="/contact">Contact</a></li>
             </ul>
           </nav>
+          <nav aria-labelledby="footer-guides">
+            <h2 id="footer-guides">Guides</h2>
+            <ul>
+              <li><a href="/gagner-argent-telephone">Gagner de l’argent avec son téléphone</a></li>
+              <li><a href="/devenir-apporteur-affaires">Devenir apporteur d’affaires</a></li>
+            </ul>
+          </nav>
           <nav aria-labelledby="footer-legal">
             <h2 id="footer-legal">Informations légales</h2>
             <ul>

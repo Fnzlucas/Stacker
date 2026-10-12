@@ -96,6 +96,7 @@ git push origin origin/refonte:main --force-with-lease=main:origin/main
 4. [ ] Admin → Offres : ne laisser actives que les offres ouvertes au lancement.
 5. [ ] Contrôle rapide en production : inscription, page Abonnement, recherche de prospects. Tu peux payer ton propre abonnement pour vérifier toute la chaîne.
 6. [ ] Prévenir la liste d'attente.
+7. [ ] Référencement : Google Search Console et Bing Webmaster Tools, avec envoi du sitemap (voir `SEO_GEO.md`).
 
 ## D. Les jours suivants
 

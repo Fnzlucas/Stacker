@@ -33,6 +33,37 @@ function siteUrl() {
   return url.origin;
 }
 
+/** Robots des moteurs de recherche et des assistants IA : tous bienvenus sur le site, jamais dans l'app. */
+const BOTS = ['Googlebot', 'Bingbot', 'GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'Claude-SearchBot', 'Claude-User', 'PerplexityBot', 'Perplexity-User', 'Google-Extended', 'Applebot', 'Applebot-Extended', 'Amazonbot', 'meta-externalagent', 'MistralAI-User', 'DuckAssistBot'];
+
+export function robotsTxt(site) {
+  const named = BOTS.map((b) => `User-agent: ${b}\nAllow: /\nDisallow: /app\n`).join('\n');
+  return `# Stacker : le site public est ouvert aux moteurs de recherche et aux assistants IA.\n${named}\nUser-agent: *\nAllow: /\nDisallow: /app\n\nSitemap: ${site}/sitemap.xml\n`;
+}
+
+/** Résumé du site pour les assistants IA (https://llmstxt.org). */
+export function llmsTxt(site) {
+  const useful = ['gagner-argent-telephone', 'devenir-apporteur-affaires', 'tarifs', 'liste-attente', 'contact', 'cgv'];
+  const guides = useful.map((id) => pages.find((p) => p.id === id)).filter(Boolean);
+  return [
+    '# Stacker',
+    '',
+    '> Application française d’apport d’affaires pour gagner de l’argent avec son téléphone : des indépendants (les « stackers ») trouvent des entreprises, leur présentent des services réalisés par Stacker (site web, avis Google, visibilité locale, réseaux sociaux) et touchent de 15 à 25 % de commission sur chaque paiement mensuel du client, tant qu’il reste abonné.',
+    '',
+    '- Abonnement stacker : 6,99 € par mois, sans engagement (TVA non applicable). Les 100 premiers : 0 % prélevé sur leurs commissions pendant 12 mois.',
+    '- Commission : 15 % (Rookie), 18 % (Pro), 22 % (Legend), 25 % (Elite) selon le nombre de clients actifs ; disponible 14 jours après le paiement du client (30 jours pour un premier paiement), virements hebdomadaires.',
+    '- Inclus : recherche d’entreprises par zone, emails de prospection envoyés depuis la boîte du stacker, scripts d’appel, formation, signature du contrat client sur le téléphone.',
+    '- Aucun montant de gain n’est promis : les commissions dépendent uniquement des clients signés et payants.',
+    '- Réservé aux majeurs. Ouverture le 20 octobre 2026. Éditeur : Lucas Fernandez EI, Villeneuve-lès-Avignon (France).',
+    '',
+    '## Pages',
+    '',
+    `- [Accueil](${site}/): présentation, fonctionnement, commissions, abonnement, FAQ`,
+    ...guides.map((p) => `- [${p.title.replace(/ — Stacker$/, '')}](${site}${p.path}): ${p.description}`),
+    '',
+  ].join('\n');
+}
+
 const MARKERS = /\{\{À (COMPLÉTER|VÉRIFIER) : ([^}]*)\}\}/g;
 
 async function main() {
@@ -43,14 +74,17 @@ async function main() {
   await build({ root, logLevel: 'warn', build: { ssr: 'src/ssr/render.tsx', outDir: ssrDir, emptyOutDir: true } });
   await build({ root, logLevel: 'warn', build: { outDir, emptyOutDir: true } });
 
-  const { renderPage } = await import(pathToFileURL(join(ssrDir, 'render.js')).href);
+  const { renderPage, renderJsonLd } = await import(pathToFileURL(join(ssrDir, 'render.js')).href);
   const todos = new Map();
 
   for (const page of pages) {
     const file = join(outDir, page.file);
     const template = readFileSync(file, 'utf8');
     if (!template.includes('<!--ssr-outlet-->')) throw new Error(`${page.file} : emplacement <!--ssr-outlet--> introuvable`);
-    const html = template.replace('<!--ssr-outlet-->', () => renderPage(page.id)).replaceAll('%%SITE_URL%%', site);
+    const html = template
+      .replace('<!--ssr-outlet-->', () => renderPage(page.id))
+      .replace('<!--jsonld-->', () => renderJsonLd(page.id, page.path, site))
+      .replaceAll('%%SITE_URL%%', site);
     if (/\sstyle="/.test(html)) throw new Error(`${page.file} : attribut style interdit par la CSP`);
     for (const m of html.matchAll(MARKERS)) {
       const key = `${m[1]} : ${m[2]}`;
@@ -63,12 +97,17 @@ async function main() {
   const appHtml = readFileSync(join(outDir, APP_FILE), 'utf8');
   if (/\sstyle="/.test(appHtml) || /<script(?![^>]*\bsrc=)[^>]*>/.test(appHtml)) throw new Error(`${APP_FILE} : style ou script inline interdit par la CSP`);
 
-  const urls = pages.filter((p) => p.sitemap).map((p) => `  <url><loc>${site}${p.path === '/' ? '/' : p.path}</loc></url>`);
+  // Sitemap (date de génération), robots.txt (robots des moteurs et des IA nommés), llms.txt.
+  const today = new Date().toISOString().slice(0, 10);
+  const urls = pages
+    .filter((p) => p.sitemap)
+    .map((p) => `  <url><loc>${site}${p.path === '/' ? '/' : p.path}</loc><lastmod>${today}</lastmod></url>`);
   writeFileSync(
     join(outDir, 'sitemap.xml'),
     `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`,
   );
-  writeFileSync(join(outDir, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /app\n\nSitemap: ${site}/sitemap.xml\n`);
+  writeFileSync(join(outDir, 'robots.txt'), robotsTxt(site));
+  writeFileSync(join(outDir, 'llms.txt'), llmsTxt(site));
 
   rmSync(ssrDir, { recursive: true, force: true });
   for (const file of [...pages.map((p) => p.file), APP_FILE]) if (existsSync(join(root, file))) rmSync(join(root, file));

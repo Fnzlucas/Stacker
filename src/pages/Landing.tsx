@@ -32,6 +32,14 @@ export function LandingPage(): ReactElement {
                 <a className="font-semibold text-ink underline" href="/contact">
                   Écris-nous
                 </a>
+                . Pour aller plus loin, lis nos guides{' '}
+                <a className="font-semibold text-ink underline" href="/gagner-argent-telephone">
+                  gagner de l’argent avec son téléphone
+                </a>{' '}
+                et{' '}
+                <a className="font-semibold text-ink underline" href="/devenir-apporteur-affaires">
+                  devenir apporteur d’affaires
+                </a>
                 .
               </>
             }
