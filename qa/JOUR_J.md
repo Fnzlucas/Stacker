@@ -10,12 +10,14 @@ Le détail de chaque service est dans `MISE_EN_ROUTE_CAMPAGNES.md` (Google, Outl
 
 ### 1. Deux informations légales
 
-Sans elles, Vercel refuse le déploiement de production : le site affiche encore deux champs « À COMPLÉTER ».
+Tant qu'il en manque, Vercel refuse le déploiement de production : le site affiche encore deux champs « À COMPLÉTER ».
 
-- [ ] **Ton numéro de téléphone professionnel.** Il est obligatoire dans les mentions légales (LCEN) et dans les CGV. À mettre dans `src/config/site.ts`, à la ligne `ENTITY.phone`.
+- [x] **Ton numéro de téléphone professionnel** : renseigné (07 50 98 33 67).
 - [ ] **Un médiateur de la consommation.** C'est obligatoire dès qu'on vend à des particuliers, et les stackers peuvent en être. Choisis-en un sur la liste officielle (economie.gouv.fr, « liste des médiateurs notifiés ») et souscris l'adhésion. Mets son nom, son adresse et son site dans `src/config/site.ts`, bloc `MEDIATOR`.
 
-Envoie-moi les deux et je les intègre.
+- [ ] **La région de ton projet Supabase** (Paris eu-west-3 ou Francfort eu-central-1), affichée dans la politique de confidentialité.
+
+Envoie-moi le médiateur choisi et la région, et je les intègre.
 
 ### 2. Relecture juridique (recommandée avant les premiers vrais clients)
 

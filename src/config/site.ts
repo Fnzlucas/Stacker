@@ -26,7 +26,7 @@ export const ENTITY = {
   registry: 'Immatriculé au Registre national des entreprises (RNE), SIREN 891 139 248',
   vat: 'TVA non applicable, art. 293 B du CGI',
   email: 'stacker-contact@outlook.com',
-  phone: todo('téléphone'),
+  phone: '07 50 98 33 67',
 } as const;
 
 export const HOST = {

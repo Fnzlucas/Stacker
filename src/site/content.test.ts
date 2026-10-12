@@ -136,7 +136,8 @@ describe('pages légales', () => {
     expect(t).toContain('4 impasse Jean Roussière, 30400 Villeneuve-lès-Avignon');
     expect(t).toContain('stacker-contact@outlook.com');
     expect(t).toContain('TVA non applicable, art. 293 B du CGI');
-    expect(t).toContain('{{À COMPLÉTER : téléphone}}');
+    expect(t).toContain('07 50 98 33 67');
+    expect(t).toContain('{{À COMPLÉTER : médiateur de la consommation}}');
   });
 
   it('CGV : rétractation 14 jours, résiliation simple, offre des 100 premiers', () => {
