@@ -120,7 +120,7 @@ function StartCard({ s, rulesAccepted }: { s: CampaignState; rulesAccepted: bool
 
   function launch() {
     if (!department) {
-      setError('Choisis ton département.');
+      setError('Choisis le département à prospecter.');
       return;
     }
     if (!preset) {
@@ -141,8 +141,8 @@ function StartCard({ s, rulesAccepted }: { s: CampaignState; rulesAccepted: bool
           Ta campagne
         </h2>
       </div>
-      <p className="text-2 text-sm">Chaque jour, l’app choisit des entreprises de ta zone qui publient une adresse email, et leur écrit de ta part. Tu n’as plus qu’à rappeler celles qui répondent.</p>
-      <SelectField label="Département" options={DEPARTMENTS.map(([c, n]) => [c, `${c} · ${n}`] as const)} placeholder="Choisis un département" value={department} onChange={(e) => setDepartment(e.target.value)} />
+      <p className="text-2 text-sm">Chaque jour, l’app choisit des entreprises du département choisi (n’importe où en France) qui publient une adresse email, et leur écrit de ta part. Tu n’as plus qu’à rappeler celles qui répondent.</p>
+      <SelectField label="Département à prospecter" options={DEPARTMENTS.map(([c, n]) => [c, `${c} · ${n}`] as const)} placeholder="Choisis un département" value={department} onChange={(e) => setDepartment(e.target.value)} />
       <fieldset className="pros-fieldset">
         <legend className="field-label">Secteur</legend>
         <div className="pros-chips" role="group" aria-label="Secteur">

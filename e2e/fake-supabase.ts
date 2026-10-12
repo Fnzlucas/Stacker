@@ -300,6 +300,19 @@ export class FakeSupabase {
     return true;
   }
 
+  /**
+   * Même traitement que handle(), sans Playwright : utilisé par la démo
+   * navigateur (src/demo), qui intercepte fetch. null = route non gérée.
+   */
+  respond(method: string, rawUrl: string, headers: Record<string, string>, body: unknown): [number, unknown] | null {
+    const url = new URL(rawUrl);
+    const path = url.pathname;
+    const functions = ['/functions/v1/account-delete', '/functions/v1/prospects-search', '/functions/v1/opposition-register', '/functions/v1/mail-connect', '/functions/v1/billing-checkout'];
+    if (!path.startsWith('/auth/v1/') && !path.startsWith('/rest/v1/') && !functions.includes(path)) return null;
+    this.calls.push({ method, path: `${path}${url.search}`, body, headers });
+    return this.dispatch(method, path, url.searchParams, (body ?? {}) as Record<string, unknown>, headers);
+  }
+
   private async reply(route: Route, status: number, payload: unknown): Promise<void> {
     if (status === 204) return route.fulfill({ status, headers: CORS });
     return route.fulfill({ status, headers: { ...CORS, 'x-supabase-api-version': '2024-01-01' }, contentType: 'application/json', body: JSON.stringify(payload) });

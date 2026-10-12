@@ -151,7 +151,7 @@ export async function deleteAccount(b: Backend, fetchFn: typeof fetch = fetch): 
 export function profileChecklist(p: Profile): { key: 'identity' | 'zone' | 'status'; label: string; done: boolean }[] {
   return [
     { key: 'identity', label: 'Ajoute ton nom et ton téléphone', done: Boolean(p.last_name && p.phone) },
-    { key: 'zone', label: 'Indique ta ville de prospection', done: Boolean(p.department && p.city) },
+    { key: 'zone', label: 'Indique ta ville', done: Boolean(p.department && p.city) },
     { key: 'status', label: 'Déclare ton statut juridique', done: p.legal_status !== null },
   ];
 }

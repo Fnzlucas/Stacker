@@ -770,3 +770,6 @@
   .formation-answers > div { padding: 12px; border-radius: var(--st-r-md); border: 1px solid var(--st-line); }
   .pros-script-link { justify-self: start; }
 }
+
+/* Démo navigateur (src/demo) : bandeau discret. */
+.demo-ribbon { position: fixed; z-index: 1000; top: calc(env(safe-area-inset-top, 0px) + 6px); left: 50%; transform: translateX(-50%); padding: 3px 10px; border-radius: 999px; background: #f7a21b; color: #1c1c1e; font: 600 11px/1.4 var(--st-font-text, sans-serif); pointer-events: none; }

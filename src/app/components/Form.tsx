@@ -98,12 +98,14 @@ type SelectProps = Omit<SelectHTMLAttributes<HTMLSelectElement>, 'id' | 'classNa
   label: ReactNode;
   error?: string | undefined;
   optional?: boolean;
+  hint?: ReactNode;
   options: readonly (readonly [string, string])[];
   placeholder: string;
 };
 
-export function SelectField({ label, error, optional, options, placeholder, ...select }: SelectProps): ReactElement {
+export function SelectField({ label, error, optional, hint, options, placeholder, ...select }: SelectProps): ReactElement {
   const id = useId();
+  const describedBy = error ? `${id}-error` : hint ? `${id}-hint` : undefined;
   return (
     <div className={`field${error ? ' is-error' : ''}`}>
       <label className="field-label" htmlFor={id}>
@@ -111,7 +113,7 @@ export function SelectField({ label, error, optional, options, placeholder, ...s
         {optional ? <span className="field-optional"> (facultatif)</span> : null}
       </label>
       <div className="select-wrap">
-        <select id={id} className="input" aria-invalid={error ? true : undefined} aria-describedby={error ? `${id}-error` : undefined} {...select}>
+        <select id={id} className="input" aria-invalid={error ? true : undefined} aria-describedby={describedBy} {...select}>
           <option value="">{placeholder}</option>
           {options.map(([code, name]) => (
             <option key={code} value={code}>
@@ -120,6 +122,11 @@ export function SelectField({ label, error, optional, options, placeholder, ...s
           ))}
         </select>
       </div>
+      {hint && !error ? (
+        <span className="field-hint" id={`${id}-hint`}>
+          {hint}
+        </span>
+      ) : null}
       <FieldError id={`${id}-error`} message={error} />
     </div>
   );

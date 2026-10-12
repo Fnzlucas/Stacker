@@ -154,7 +154,7 @@ export const GUIDES: Guide[] = [
           <ol>
             <li>Crée ton compte Stacker (réservé aux majeurs) et suis la formation intégrée.</li>
             <li>Active l’abonnement ({PRICE} par mois, sans engagement).</li>
-            <li>Réserve tes premières entreprises dans ton département et appelle avec les scripts.</li>
+            <li>Réserve tes premières entreprises, dans ta région ou ailleurs en France, et appelle avec les scripts.</li>
             <li>Fais signer le client sur ton téléphone : ta commission tombe à chacun de ses paiements.</li>
           </ol>
         ),

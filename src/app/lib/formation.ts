@@ -119,7 +119,7 @@ export const FORMATION: FormationModule[] = [
       {
         title: 'Où trouver tes prospects',
         bullets: [
-          'Recherche : ton département ou un rayon autour de toi, par type d’activité.',
+          'Recherche : n’importe quel département de France, un code postal ou un rayon autour de toi, par type d’activité.',
           'Campagne : l’app prépare et envoie chaque jour des emails depuis ta boîte. Appelle en priorité ceux qui répondent.',
           'Ton réseau : artisans et commerçants que tu connais déjà. C’est souvent là que se signent les premiers clients.',
         ],

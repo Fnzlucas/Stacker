@@ -73,7 +73,7 @@ function OnboardingFlow({ initialFirstName, initialDepartment }: { initialFirstN
     });
   }
 
-  const titles = ['Comment veux-tu qu’on t’appelle ?', 'Où vas-tu prospecter ?', 'Quel est ton objectif ?', 'Tes niveaux et tes commissions'];
+  const titles = ['Comment veux-tu qu’on t’appelle ?', 'Où habites-tu ?', 'Quel est ton objectif ?', 'Tes niveaux et tes commissions'];
 
   return (
     <div className="onboarding">
@@ -116,7 +116,7 @@ function OnboardingFlow({ initialFirstName, initialDepartment }: { initialFirstN
 
           {step === 1 ? (
             <>
-              <p className="lead mt-2">L’app te proposera des entreprises de ce département. Tu pourras préciser ta ville dans ton profil.</p>
+              <p className="lead mt-2">Tu peux prospecter partout en France : depuis Nîmes, tu peux très bien démarcher Paris ou Lille. Ton département sert seulement à pré-remplir tes recherches, et tu en changes quand tu veux.</p>
               <div className="mt-8">
                 <SelectField label="Département" name="department" placeholder="Choisis ton département" options={DEPARTMENTS.map(([code, name]) => [code, `${code} · ${name}`] as const)} value={department} onChange={(e) => setDepartment(e.target.value)} error={error ?? undefined} required />
               </div>

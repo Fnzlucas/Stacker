@@ -23,7 +23,7 @@ async function completeOnboarding(page: Page, opts: { firstName?: string } = {})
   await expect(page.getByRole('heading', { level: 1, name: 'Comment veux-tu qu’on t’appelle ?' })).toBeVisible();
   if (opts.firstName !== undefined) await page.getByLabel('Prénom').fill(opts.firstName);
   await page.getByRole('button', { name: 'Continuer' }).click();
-  await expect(page.getByRole('heading', { level: 1, name: 'Où vas-tu prospecter ?' })).toBeFocused();
+  await expect(page.getByRole('heading', { level: 1, name: 'Où habites-tu ?' })).toBeFocused();
   await page.getByLabel('Département').selectOption('84');
   await page.getByRole('button', { name: 'Continuer' }).click();
   await expect(page.getByRole('heading', { level: 1, name: 'Quel est ton objectif ?' })).toBeFocused();

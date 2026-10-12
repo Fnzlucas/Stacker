@@ -157,7 +157,7 @@ function ProfileForm({ profile }: { profile: Profile }): ReactElement {
       </fieldset>
       <fieldset className="form-group">
         <legend className="eyebrow">Zone de prospection</legend>
-        <SelectField label="Département" name="department" optional placeholder="Choisis ton département" options={DEPARTMENTS.map(([code, name]) => [code, `${code} · ${name}`] as const)} value={values.department} onChange={(e) => set('department', e.target.value)} error={errors['department']} />
+        <SelectField label="Département où tu habites" name="department" optional hint="Sert à pré-remplir tes recherches. Tu peux prospecter partout en France." placeholder="Choisis ton département" options={DEPARTMENTS.map(([code, name]) => [code, `${code} · ${name}`] as const)} value={values.department} onChange={(e) => set('department', e.target.value)} error={errors['department']} />
         <TextField label="Ville" name="city" autoComplete="address-level2" icon="map-pin" optional value={values.city} onChange={(e) => set('city', e.target.value)} error={errors['city']} maxLength={80} />
       </fieldset>
       <fieldset className="form-group">

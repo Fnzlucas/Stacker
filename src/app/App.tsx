@@ -1,6 +1,6 @@
 import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { lazy, Suspense, useEffect, type ReactElement } from 'react';
-import { Navigate, RouterProvider, createBrowserRouter } from 'react-router';
+import { Navigate, RouterProvider, createBrowserRouter, type RouteObject } from 'react-router';
 import { AuthProvider } from './auth/AuthProvider';
 import { scheduleBootCheck } from './boot';
 import { RequireAuth, RequireGuest, Splash } from './components/Layouts';
@@ -37,7 +37,8 @@ const AbonnementPage = lazy(() => import('./pages/Abonnement').then((m) => ({ de
 
 const page = (el: ReactElement) => <Suspense fallback={<Splash />}>{el}</Suspense>;
 
-export const router = createBrowserRouter([
+/** Routes de l'app (aussi utilisées par la démo, avec un routeur en mémoire). */
+export const routes: RouteObject[] = [
   {
     element: <RequireGuest />,
     children: [
@@ -76,7 +77,9 @@ export const router = createBrowserRouter([
     ],
   },
   { path: '/app/*', element: <Navigate to={PATHS.home} replace /> },
-]);
+];
+
+let browserRouter: ReturnType<typeof createBrowserRouter> | undefined;
 
 /** Jeton refusé par le serveur (session révoquée, compte supprimé) : déconnexion locale, l'app renvoie vers la connexion. */
 function onApiError(error: unknown): void {
@@ -111,7 +114,7 @@ const PREFETCH = [
   () => import('./pages/Formation'),
 ];
 
-export function App(): ReactElement {
+export function App({ router }: { router?: ReturnType<typeof createBrowserRouter> } = {}): ReactElement {
   // Premier rendu fait : l'écran de démarrage part dès que plus rien ne le retient.
   useEffect(() => scheduleBootCheck(), []);
   useEffect(() => {
@@ -139,7 +142,7 @@ export function App(): ReactElement {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider backend={getBackend()}>
-        <RouterProvider router={router} />
+        <RouterProvider router={router ?? (browserRouter ??= createBrowserRouter(routes))} />
       </AuthProvider>
     </QueryClientProvider>
   );

@@ -215,7 +215,7 @@ function FindTab({ rulesAccepted }: { rulesAccepted: boolean }): ReactElement {
             ))}
           </div>
           {zoneType === 'departement' ? (
-            <SelectField label="Département" options={DEPARTMENTS.map(([c, n]) => [c, `${c} · ${n}`] as const)} placeholder="Choisis un département" value={department} onChange={(e) => setDepartment(e.target.value)} />
+            <SelectField label="Département à prospecter" hint="N’importe où en France, pas seulement près de chez toi." options={DEPARTMENTS.map(([c, n]) => [c, `${c} · ${n}`] as const)} placeholder="Choisis un département" value={department} onChange={(e) => setDepartment(e.target.value)} />
           ) : null}
           {zoneType === 'code_postal' ? (
             <TextField label="Code postal" inputMode="numeric" autoComplete="postal-code" maxLength={5} value={postcode} onChange={(e) => setPostcode(e.target.value.replace(/\D/g, ''))} />

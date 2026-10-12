@@ -38,3 +38,4 @@ blob-report/
 *.log
 .vercel
 qa/demo/.raw/
+dist-demo/
