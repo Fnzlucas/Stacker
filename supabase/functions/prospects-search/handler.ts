@@ -112,6 +112,7 @@ export function createHandler(deps: HandlerDeps): (req: Request) => Promise<Resp
         const code = sqlCode(error);
         if (code === 'daily_quota') return fail(429, 'quota_exceeded', cors);
         if (code === 'onboarding_required') return fail(403, 'onboarding_required', cors);
+        if (code === 'subscription_required') return fail(402, 'subscription_required', cors);
         if (code === 'disabled') return fail(503, 'disabled', cors);
         throw error;
       }

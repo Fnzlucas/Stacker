@@ -1,3 +1,4 @@
+import { SubscriptionBanner } from '../components/SubscriptionBanner';
 import { useEffect, useMemo, useRef, useState, type ReactElement } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router';
 import { formatPhone } from '@shared/account';
@@ -124,6 +125,7 @@ function Wizard({ initial }: { initial: DealInput }): ReactElement {
           Étape {index + 1} / {STEPS.length}
         </span>
       </header>
+      <SubscriptionBanner what="faire signer ce client" />
       <ol className="deal-steps" aria-label="Étapes">
         {STEPS.map((s, i) => (
           <li key={s} className={i < index ? 'is-done' : i === index ? 'is-current' : undefined} aria-current={i === index ? 'step' : undefined}>

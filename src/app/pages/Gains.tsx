@@ -257,6 +257,27 @@ function History({ e }: { e: Earnings }): ReactElement {
         <ul className="card list">
           {e.entries.map((x) => {
             const validating = x.status === 'disponible' && Date.parse(x.available_at) > now;
+            const chip = (
+              <p className="pros-tags">
+                <span className={validating ? 'chip chip-orange' : x.status === 'versee' ? 'chip chip-dark' : 'chip chip-green'}>
+                  {validating ? `Disponible le ${formatLongDate(x.available_at) ?? ''}` : COMMISSION_STATUS_LABELS[x.status]}
+                </span>
+              </p>
+            );
+            if (x.kind === 'abonnement' || !x.deal_id) {
+              return (
+                <li key={x.id} className="list-row deals-row">
+                  <div className="min-w-0 flex-1">
+                    <p className="list-title">Abonnement Stacker</p>
+                    <p className="list-sub">
+                      <span>Payé avec tes gains · {formatLongDate(x.created_at)}</span>
+                    </p>
+                  </div>
+                  <span className="deal-com-neg num">− {formatEuros(-x.amount_cents, { always: true })}</span>
+                </li>
+              );
+            }
+            const reprise = x.kind === 'reprise';
             return (
               <li key={x.id}>
                 <Link className="list-row deals-row" to={dealPath(x.deal_id)}>
@@ -264,16 +285,18 @@ function History({ e }: { e: Earnings }): ReactElement {
                     <p className="list-title">{x.company_name}</p>
                     <p className="list-sub">
                       <span>
-                        {periodLabel(x.period)} · {formatRate(x.rate_bps)} de {formatEuros(x.client_amount_cents)}
+                        {reprise
+                          ? `${periodLabel(x.period)} · paiement remboursé au client, commission reprise`
+                          : `${periodLabel(x.period)} · ${formatRate(x.rate_bps)} de ${formatEuros(x.client_amount_cents)}`}
                       </span>
                     </p>
-                    <p className="pros-tags">
-                      <span className={validating ? 'chip chip-orange' : x.status === 'versee' ? 'chip chip-dark' : 'chip chip-green'}>
-                        {validating ? `Disponible le ${formatLongDate(x.available_at) ?? ''}` : COMMISSION_STATUS_LABELS[x.status]}
-                      </span>
-                    </p>
+                    {reprise ? null : chip}
                   </div>
-                  <span className="deal-com-pos num">+ {formatEuros(x.amount_cents, { always: true })}</span>
+                  {reprise ? (
+                    <span className="deal-com-neg num">− {formatEuros(-x.amount_cents, { always: true })}</span>
+                  ) : (
+                    <span className="deal-com-pos num">+ {formatEuros(x.amount_cents, { always: true })}</span>
+                  )}
                 </Link>
               </li>
             );

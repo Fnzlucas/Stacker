@@ -211,6 +211,7 @@ describe('prospects-search', () => {
     const err = (message: string) => res(400, { code: 'P0001', message });
     expect(await json(await setup({ begin: err('daily_quota') }).handle(request()))).toEqual({ ok: false, error: 'quota_exceeded' });
     expect((await setup({ begin: err('onboarding_required') }).handle(request())).status).toBe(403);
+    expect((await setup({ begin: err('subscription_required') }).handle(request())).status).toBe(402);
     expect(await json(await setup({ begin: err('disabled') }).handle(request()))).toEqual({ ok: false, error: 'disabled' });
     expect((await setup({ begin: err('autre') }).handle(request())).status).toBe(500);
     const limited = await setup({ userRate: false }).handle(request());

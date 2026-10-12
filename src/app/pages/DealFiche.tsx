@@ -116,9 +116,14 @@ function Fiche({ d }: { d: DealDetail }): ReactElement {
                   <p className="list-sub">
                     <span>Payé par le client : {formatEuros(p.amount_cents)}</span>
                   </p>
+                  {p.reversed ? (
+                    <p className="pros-tags">
+                      <span className="chip chip-red">Remboursé au client · commission reprise</span>
+                    </p>
+                  ) : null}
                 </div>
                 {p.commission_cents !== null ? (
-                  <span className="deal-com-pos num">
+                  <span className={`deal-com-pos num${p.reversed ? ' is-reversed' : ''}`}>
                     + {formatEuros(p.commission_cents, { always: true })}
                     {p.rate_bps !== null ? <small> ({formatRate(p.rate_bps)})</small> : null}
                   </span>

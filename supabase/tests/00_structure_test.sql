@@ -96,25 +96,25 @@ select is(
   (select array_agg(p.proname::text order by p.proname)
    from pg_proc p join pg_namespace n on n.oid = p.pronamespace
    where n.nspname = 'public' and has_function_privilege('authenticated', p.oid, 'EXECUTE')),
-  array['accept_prospecting_rules', 'campaign_set_status', 'campaign_start', 'complete_onboarding', 'deal_catalog', 'deal_detail', 'deal_preview', 'deal_sign',
-        'export_my_data', 'mail_disconnect', 'my_campaign', 'my_deals', 'my_earnings', 'my_prospect_quotas', 'my_prospects', 'payout_request', 'payout_set_account',
+  array['accept_prospecting_rules', 'billing_set_auto_renew', 'campaign_set_status', 'campaign_start', 'complete_onboarding', 'deal_catalog', 'deal_detail', 'deal_preview', 'deal_sign',
+        'export_my_data', 'mail_disconnect', 'my_billing', 'my_campaign', 'my_deals', 'my_earnings', 'my_prospect_quotas', 'my_prospects', 'payout_request', 'payout_set_account',
         'prospect_add_note', 'prospect_claim',
         'prospect_delete_note', 'prospect_detail', 'prospect_extend', 'prospect_log_call', 'prospect_mark_email_sent',
         'prospect_prepare_email', 'prospect_release', 'prospect_set_contact', 'prospect_set_status', 'siret_is_valid',
         'waitlist_count']::text[],
-  'authenticated n''exécute que les 30 fonctions prévues'
+  'authenticated n''exécute que les 32 fonctions prévues'
 );
 
 select is(
   (select array_agg(p.proname::text order by p.proname)
    from pg_proc p join pg_namespace n on n.oid = p.pronamespace
    where n.nspname = 'public' and has_function_privilege('service_role', p.oid, 'EXECUTE')),
-  array['account_erase_prepare', 'budget_consume', 'campaign_fill_due', 'campaign_message_result', 'campaign_next_messages',
-        'deal_record_payment', 'deal_set_status', 'enrich_mark_seen', 'enrich_query_begin', 'enrich_query_done', 'enrich_save_contact', 'enrich_targets', 'enrich_unseen',
+  array['account_erase_prepare', 'billing_charge_created', 'billing_checkout_prepare', 'billing_payment_failed', 'billing_payment_paid', 'billing_renew_due', 'billing_set_customer', 'budget_consume', 'campaign_fill_due', 'campaign_message_result', 'campaign_next_messages',
+        'deal_mollie_cancelled', 'deal_mollie_cancels', 'deal_mollie_failed', 'deal_mollie_pending', 'deal_mollie_progress', 'deal_payment_failed_from_mollie', 'deal_payment_from_mollie', 'deal_payment_reversed', 'deal_record_payment', 'deal_set_status', 'enrich_mark_seen', 'enrich_query_begin', 'enrich_query_done', 'enrich_save_contact', 'enrich_targets', 'enrich_unseen',
         'mail_account_error', 'mail_account_save', 'opposition_register_form', 'opposition_register_token', 'payout_mark', 'prospect_expire_due',
         'prospect_jobs_purge', 'prospect_mark_signed', 'prospects_annotate', 'prospects_cache_get', 'prospects_cache_put',
         'prospects_search_begin', 'rate_limit_hit', 'siret_is_valid', 'waitlist_count', 'waitlist_erase', 'waitlist_join']::text[],
-  'service_role exécute exactement les 30 fonctions prévues (aucune fonction de trigger)'
+  'service_role exécute exactement les 44 fonctions prévues (aucune fonction de trigger)'
 );
 
 select is(

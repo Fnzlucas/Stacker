@@ -176,3 +176,24 @@ enabled = true
 verify_jwt = false
 import_map = "./functions/mail-callback/deno.json"
 entrypoint = "./functions/mail-callback/index.ts"
+
+# Lot 6 : paiements Mollie (clé MOLLIE_API_KEY dans les secrets Supabase).
+[functions.billing-checkout]
+enabled = true
+verify_jwt = true
+import_map = "./functions/billing-checkout/deno.json"
+entrypoint = "./functions/billing-checkout/index.ts"
+
+# Appelé par Mollie : aucun jeton, l'état du paiement est relu auprès de l'API Mollie.
+[functions.mollie-webhook]
+enabled = true
+verify_jwt = false
+import_map = "./functions/mollie-webhook/deno.json"
+entrypoint = "./functions/mollie-webhook/index.ts"
+
+# Tâche planifiée (toutes les heures) : protégée par CRON_SECRET.
+[functions.mollie-run]
+enabled = true
+verify_jwt = false
+import_map = "./functions/mollie-run/deno.json"
+entrypoint = "./functions/mollie-run/index.ts"

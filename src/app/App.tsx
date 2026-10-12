@@ -31,6 +31,7 @@ const DealsPage = lazy(() => import('./pages/Deals').then((m) => ({ default: m.D
 const DealNewPage = lazy(() => import('./pages/DealNew').then((m) => ({ default: m.DealNewPage })));
 const DealFichePage = lazy(() => import('./pages/DealFiche').then((m) => ({ default: m.DealFichePage })));
 const GainsPage = lazy(() => import('./pages/Gains').then((m) => ({ default: m.GainsPage })));
+const AbonnementPage = lazy(() => import('./pages/Abonnement').then((m) => ({ default: m.AbonnementPage })));
 
 const page = (el: ReactElement) => <Suspense fallback={<Splash />}>{el}</Suspense>;
 
@@ -64,6 +65,7 @@ export const router = createBrowserRouter([
           { path: PATHS.dealNew, element: page(<DealNewPage />) },
           { path: `${PATHS.deals}/:dealId`, element: page(<DealFichePage />) },
           { path: PATHS.gains, element: page(<GainsPage />) },
+          { path: PATHS.billing, element: page(<AbonnementPage />) },
           { path: PATHS.profile, element: page(<ProfilPage />) },
         ],
       },
@@ -101,6 +103,7 @@ const PREFETCH = [
   () => import('./pages/DealFiche'),
   () => import('./pages/Gains'),
   () => import('./pages/Profil'),
+  () => import('./pages/Abonnement'),
 ];
 
 export function App(): ReactElement {

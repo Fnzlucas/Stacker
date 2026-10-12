@@ -6,6 +6,7 @@ import { PRESETS, PRESET_KEYS, SIZES, SIZE_KEYS, type PresetKey, type SearchItem
 import { Icon } from '../../components/Icon';
 import { useSignedIn } from '../auth/AuthProvider';
 import { FormAlert, SelectField, TextField } from '../components/Form';
+import { SubscriptionBanner } from '../components/SubscriptionBanner';
 import { AppBar, usePageTitle } from '../components/Layouts';
 import { Toast } from '../components/Ui';
 import { useProfile } from '../lib/queries';
@@ -52,6 +53,7 @@ export function ProspectsPage(): ReactElement {
   return (
     <div className="app-container pros">
       <AppBar title="Prospects" />
+      <SubscriptionBanner what="réserver des prospects et lancer ta campagne" />
       <div className="segmented pros-tabs" role="group" aria-label="Affichage">
         <button type="button" aria-pressed={view === 'campagne'} onClick={() => setView('campagne')}>
           Campagne

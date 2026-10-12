@@ -11,6 +11,8 @@ import { LevelPill } from '../components/Ui';
 import { ApiError, apiErrorMessage, deleteAccount, exportMyData, type Profile } from '../lib/api';
 import { authErrorOutcome } from '../lib/authErrors';
 import { formatLongDate, initials } from '../lib/dates';
+import { BILLING_STATUS_LABELS } from '../lib/billing';
+import { useBilling } from '../lib/billingQueries';
 import { useProfile, useTiers, useUpdateProfile } from '../lib/queries';
 import { PATHS } from '../paths';
 
@@ -58,10 +60,31 @@ export function ProfilPage(): ReactElement {
           </div>
         </div>
       </section>
+      <BillingLink />
       <ProfileForm key={p.id} profile={p} />
       <DataSection />
       <AccountSection />
     </div>
+  );
+}
+
+function BillingLink(): ReactElement {
+  const billing = useBilling();
+  const b = billing.data;
+  const label = !b ? '…' : b.status === 'actif' && b.cancel_at_period_end ? 'Résilié' : BILLING_STATUS_LABELS[b.status];
+  return (
+    <Link className="card list-row profile-billing" to={PATHS.billing}>
+      <span className="avatar avatar-violet" aria-hidden="true">
+        <Icon name="star" />
+      </span>
+      <div className="min-w-0 flex-1">
+        <p className="list-title">Abonnement</p>
+        <p className="list-sub">
+          <span>{label}</span>
+        </p>
+      </div>
+      <Icon name="chevron-right" />
+    </Link>
   );
 }
 

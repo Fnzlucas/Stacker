@@ -320,6 +320,7 @@ export const SEARCH_ERROR_CODES = [
   'payload_too_large',
   'rate_limited',
   'quota_exceeded',
+  'subscription_required',
   'onboarding_required',
   'disabled',
   'source_busy',

@@ -109,7 +109,14 @@ export const dealDetailSchema = z.object({
   activated_at: z.string().nullable(),
   ended_at: z.string().nullable(),
   payments: z.array(
-    z.object({ period: z.string(), amount_cents: z.number().int(), paid_at: z.string(), commission_cents: z.number().int().nullable(), rate_bps: z.number().int().nullable() }),
+    z.object({
+      period: z.string(),
+      amount_cents: z.number().int(),
+      paid_at: z.string(),
+      reversed: z.boolean().default(false),
+      commission_cents: z.number().int().nullable(),
+      rate_bps: z.number().int().nullable(),
+    }),
   ),
 });
 export type DealDetail = z.infer<typeof dealDetailSchema>;
@@ -140,8 +147,9 @@ export const earningsSchema = z.object({
       status: z.enum(['disponible', 'demandee', 'versee']),
       created_at: z.string(),
       available_at: z.string(),
-      company_name: z.string(),
-      deal_id: z.uuid(),
+      kind: z.enum(['commission', 'reprise', 'abonnement']).default('commission'),
+      company_name: z.string().nullable(),
+      deal_id: z.uuid().nullable(),
     }),
   ),
   payouts: z.array(
@@ -313,6 +321,7 @@ export class DealError extends Error {
 
 const MESSAGES: Record<string, string> = {
   onboarding_required: 'Termine ton inscription pour faire signer un client.',
+  subscription_required: 'Active ton abonnement Stacker pour faire signer un client.',
   offer_unavailable: 'Cette offre n’est plus disponible. Choisis-en une autre.',
   invalid_quantity: 'Quantité invalide pour cette offre.',
   invalid_siret: 'SIRET invalide.',

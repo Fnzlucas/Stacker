@@ -20,6 +20,7 @@
  */
 import { createHash } from 'node:crypto';
 import type { Route } from '@playwright/test';
+import { FakeBilling } from './fake-billing';
 import { FakeDeals } from './fake-deals';
 import { FakeProspects, type StackerInfo } from './fake-prospects';
 
@@ -123,6 +124,7 @@ export class FakeSupabase {
   /** Prospection (lot 3) : réservations, emails, opposition, recherche. */
   prospects = new FakeProspects(() => this.id());
   /** Deals et gains (lot 5). Taux = niveau du profil. */
+  billing = new FakeBilling();
   deals = new FakeDeals(
     () => this.id(),
     (id) => TIERS.find((t) => t.code === this.profiles.get(id)?.tier)?.rate_bps ?? 1500,
@@ -257,7 +259,7 @@ export class FakeSupabase {
       return true;
     }
     const path = url.pathname;
-    const functions = ['/functions/v1/account-delete', '/functions/v1/prospects-search', '/functions/v1/opposition-register', '/functions/v1/mail-connect'];
+    const functions = ['/functions/v1/account-delete', '/functions/v1/prospects-search', '/functions/v1/opposition-register', '/functions/v1/mail-connect', '/functions/v1/billing-checkout'];
     if (!path.startsWith('/auth/v1/') && !path.startsWith('/rest/v1/') && !functions.includes(path)) return false;
     let body: unknown = null;
     try {
@@ -465,15 +467,20 @@ export class FakeSupabase {
         if (!this.current(headers)) return this.pgError(401, '42501', 'permission denied for table email_templates');
         return [200, this.prospects.templates()];
       }
-      case 'POST /functions/v1/prospects-search':
-        return this.prospects.search(b, this.stacker(headers));
+      case 'POST /functions/v1/prospects-search': {
+        const st = this.stacker(headers);
+        if (st && !this.billing.hasAccess(st.id)) return [402, { ok: false, error: 'subscription_required' }];
+        return this.prospects.search(b, st);
+      }
+      case 'POST /functions/v1/billing-checkout':
+        return this.billing.checkout(this.stacker(headers));
       case 'POST /functions/v1/opposition-register':
         return this.prospects.opposition(b);
       case 'POST /functions/v1/mail-connect':
         return this.prospects.mailConnect(b, this.stacker(headers), headers['origin'] ?? 'http://localhost:4174');
       default: {
         const rpc = /^\/rest\/v1\/rpc\/([a-z_]+)$/.exec(path);
-        const handled = method === 'POST' && rpc?.[1] ? (this.prospects.rpc(rpc[1], b, this.stacker(headers)) ?? this.deals.rpc(rpc[1], b, this.stacker(headers))) : null;
+        const handled = method === 'POST' && rpc?.[1] ? (this.billing.rpc(rpc[1], b, this.stacker(headers)) ?? this.prospects.rpc(rpc[1], b, this.stacker(headers)) ?? this.deals.rpc(rpc[1], b, this.stacker(headers))) : null;
         if (handled) return handled;
         return this.pgError(404, 'PGRST202', `route inconnue du faux Supabase : ${method} ${path}`);
       }
