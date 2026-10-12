@@ -324,6 +324,19 @@
   [data-parallax] { translate: 0 var(--py, 0px); }
   .motion [data-parallax] { will-change: translate; }
 
+  /* Navigateurs récents : même calcul que le script (décalage nul au centre de
+     l'écran, borné), mais exécuté par le navigateur au rythme du défilement. */
+  .motion-css { --pmax: 40px; }
+  @media (min-width: 768px) { .motion-css { --pmax: 120px; } }
+  .motion-css [data-parallax] {
+    animation: site-parallax linear both;
+    animation-timeline: view();
+  }
+  @keyframes site-parallax {
+    from { translate: 0 calc(var(--ps, 0) * var(--pmax) * -1); }
+    to { translate: 0 calc(var(--ps, 0) * var(--pmax)); }
+  }
+
   /* Apparition : seulement quand le script tourne (sinon tout reste visible). */
   .motion [data-reveal] {
     opacity: 0;

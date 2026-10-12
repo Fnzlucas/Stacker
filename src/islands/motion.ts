@@ -36,6 +36,15 @@ export function initMotion(doc: Document = document): void {
   // Parallaxe : seuls les éléments proches de l'écran sont recalculés.
   const items = [...doc.querySelectorAll<HTMLElement>('[data-parallax]')].map((el) => ({ el, speed: parseSpeed(el.dataset['parallax']), applied: 0 }));
   if (items.length === 0) return;
+
+  // Navigateurs récents : animation liée au défilement, calculée par le navigateur
+  // lui-même (hors du fil JavaScript), donc parfaitement fluide. Le script ne fait
+  // que poser la vitesse de chaque élément, une fois.
+  if ('CSS' in win && win.CSS.supports('animation-timeline: view()')) {
+    for (const item of items) item.el.style.setProperty('--ps', String(item.speed));
+    doc.documentElement.classList.add('motion-css');
+    return;
+  }
   const visible = new Set<(typeof items)[number]>();
   const byEl = new Map(items.map((i) => [i.el, i]));
   const io = new win.IntersectionObserver(
