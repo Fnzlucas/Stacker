@@ -317,3 +317,35 @@
   }
   .opposition-ok .icon { width: 28px; height: 28px; }
 }
+
+/* ---- Mouvement au défilement (src/islands/motion.ts) ---------------------- */
+@layer components {
+  /* Parallaxe : `translate` s'ajoute aux rotations des stickers. */
+  [data-parallax] { translate: 0 var(--py, 0px); }
+  .motion [data-parallax] { will-change: translate; }
+
+  /* Apparition : seulement quand le script tourne (sinon tout reste visible). */
+  .motion [data-reveal] {
+    opacity: 0;
+    transform: translateY(28px) scale(.985);
+    transition: opacity 700ms cubic-bezier(.2, .7, .2, 1) var(--reveal-delay, 0ms), transform 700ms cubic-bezier(.2, .7, .2, 1) var(--reveal-delay, 0ms);
+  }
+  .motion [data-reveal].is-revealed { opacity: 1; transform: none; }
+
+  /* Barres du logo en décor derrière le hero. */
+  .hero-section { position: relative; overflow: clip; }
+  .hero-deco { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+  .hero-section > .site-container { z-index: 1; }
+  .hero-bar { position: absolute; display: block; height: 34px; border-radius: 999px; opacity: .9; }
+  /* Téléphone : barres au bord de l'écran, jamais sous le texte. */
+  .hero-bar { height: 26px; }
+  .hero-bar-green { width: 120px; background: var(--st-green); top: 3%; right: -90px; rotate: -14deg; }
+  .hero-bar-violet { width: 110px; background: #7b7bf0; top: 62%; right: -75px; rotate: 10deg; }
+  .hero-bar-orange { width: 100px; background: #f7a21b; bottom: 3%; left: -70px; rotate: -8deg; }
+  @media (min-width: 1024px) {
+    .hero-bar { height: 46px; }
+    .hero-bar-green { width: 260px; top: 10%; right: -80px; }
+    .hero-bar-violet { width: 200px; top: 64%; right: 38%; }
+    .hero-bar-orange { width: 170px; bottom: 12%; left: -60px; }
+  }
+}

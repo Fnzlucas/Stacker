@@ -46,7 +46,13 @@ export function LandingPage(): ReactElement {
 function Hero(): ReactElement {
   return (
     <section className="site-section hero-section" aria-labelledby="hero-title">
-      <div className="site-container grid grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
+      {/* Barres du logo en décor, chacune à sa vitesse au défilement. */}
+      <div className="hero-deco" aria-hidden="true">
+        <span className="hero-bar hero-bar-green" data-parallax="0.35" />
+        <span className="hero-bar hero-bar-violet" data-parallax="-0.2" />
+        <span className="hero-bar hero-bar-orange" data-parallax="0.55" />
+      </div>
+      <div className="site-container relative grid grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
         <div>
           <span className="chip chip-outline h-9 px-3 text-sm">
             <Icon name="calendar" />
@@ -91,11 +97,11 @@ function HeroVisual(): ReactElement {
       <figcaption id="hero-visual-caption" className="sr-only">
         Exemple illustratif de l’app : niveau Pro à 18 %, et statut de trois commissions.
       </figcaption>
-      <span className="sticker deco-sticker hero-sticker-top">
+      <span className="sticker deco-sticker hero-sticker-top" data-parallax="0.1">
         <Icon name="trending-up" />
         Commission récurrente
       </span>
-      <div className="card" aria-hidden="true">
+      <div className="card" aria-hidden="true" data-parallax="0.04">
         <div className="flex items-center justify-between gap-2">
           <span className="level level-pro">
             <span className="level-mark">
@@ -111,7 +117,7 @@ function HeroVisual(): ReactElement {
           <span className="progress-bar" />
         </div>
       </div>
-      <div className="card card-dark mt-4" aria-hidden="true">
+      <div className="card card-dark mt-4" aria-hidden="true" data-parallax="0.07">
         <div className="flex items-center justify-between gap-2">
           <p className="text-sm font-medium text-on-dark-2">Tes commissions</p>
           <span className="chip chip-on-dark">En temps réel</span>
@@ -128,7 +134,9 @@ function HeroVisual(): ReactElement {
           ))}
         </ul>
       </div>
-      <span className="sticker sticker-paper sticker-serif deco-sticker hero-sticker-bottom">sans engagement</span>
+      <span className="sticker sticker-paper sticker-serif deco-sticker hero-sticker-bottom" data-parallax="-0.08">
+        sans engagement
+      </span>
     </figure>
   );
 }
@@ -173,7 +181,7 @@ function HowItWorks(): ReactElement {
         />
         <ol className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
           {STEPS.map((step, i) => (
-            <li key={step.title} className="card relative">
+            <li key={step.title} className="card relative" data-reveal>
               <span className={`${step.sticker} step-num`} aria-hidden="true">
                 0{i + 1}
               </span>
@@ -212,7 +220,7 @@ function Services(): ReactElement {
         />
         <ul className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-2">
           {SERVICES.map((s) => (
-            <li key={s.title} className="card flex gap-4">
+            <li key={s.title} className="card flex gap-4" data-reveal>
               <span className={`avatar ${s.tone}`}>
                 <Icon name={s.icon} />
               </span>
@@ -235,7 +243,7 @@ function Commissions(): ReactElement {
         <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-2">
           <div>
             <span className="eyebrow">Commissions</span>
-            <h2 id="paliers-title" className="mt-5">
+            <h2 id="paliers-title" className="mt-5" data-parallax="0.08">
               <Ransom text="De 15 à 25 %" className="ransom-fluid justify-start" />
             </h2>
             <p className="lead mt-6 max-w-xl">
@@ -246,10 +254,12 @@ function Commissions(): ReactElement {
               Aucun montant de gain n’est promis : tes commissions dépendent uniquement des clients que tu apportes.
             </p>
           </div>
-          <TierList />
+          <div data-reveal>
+            <TierList />
+          </div>
         </div>
 
-        <div className="card mt-10">
+        <div className="card mt-10" data-reveal>
           <h3 className="h3">Quand ta commission est disponible</h3>
           <ol className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
             {AVAILABILITY_STEPS.map((step, i) => (
@@ -284,7 +294,7 @@ function Subscription(): ReactElement {
           }
           lead="Le logiciel de prospection, les scripts et la formation sont inclus dans l’abonnement stacker."
         />
-        <div className="mt-12 grid grid-cols-1 items-stretch gap-6 lg:grid-cols-2">
+        <div className="mt-12 grid grid-cols-1 items-stretch gap-6 lg:grid-cols-2" data-reveal>
           <PricingCard />
           <LaunchOfferCard />
         </div>

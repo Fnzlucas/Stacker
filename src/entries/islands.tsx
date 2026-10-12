@@ -4,7 +4,11 @@
  */
 import { createElement, type ReactElement } from 'react';
 import { hydrateRoot } from 'react-dom/client';
+import { initMotion } from '../islands/motion';
 import { ISLANDS, isIslandName } from '../islands/registry';
+
+// Parallaxe et apparitions au défilement (pages publiques).
+initMotion();
 
 for (const el of document.querySelectorAll<HTMLElement>('[data-island]')) {
   const name = el.dataset['island'] ?? '';
