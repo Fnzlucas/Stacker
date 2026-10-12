@@ -3,6 +3,7 @@
  * (Edge Function billing-checkout), résiliation / reprise.
  */
 import { z } from 'zod';
+import { CGV_VERSION } from '@shared/legal';
 import { ApiError } from './apiError';
 import type { Backend } from './supabase';
 
@@ -43,6 +44,8 @@ export class BillingError extends Error {
 const FALLBACK = 'Le service est momentanément indisponible. Réessaie dans un instant.';
 const MESSAGES: Record<string, string> = {
   already_active: 'Ton abonnement est déjà actif.',
+  consent_required: 'Coche les deux cases pour continuer.',
+  terms_outdated: 'Les conditions ont été mises à jour : recharge la page pour lire la nouvelle version.',
   onboarding_required: 'Termine ton inscription avant de t’abonner.',
   no_subscription: 'Tu n’as pas d’abonnement en cours.',
   payment_unavailable: 'Le paiement est momentanément indisponible. Réessaie dans quelques minutes.',
@@ -112,7 +115,8 @@ export async function startCheckout(b: Backend, fetchFn: typeof fetch = fetch): 
     res = await fetchFn(`${b.url}/functions/v1/billing-checkout`, {
       method: 'POST',
       headers: { apikey: b.anonKey, Authorization: `Bearer ${token}`, 'content-type': 'application/json' },
-      body: '{}',
+      // Consentements cochés sur la page Abonnement (le bouton est bloqué sans eux), avec la version des CGV affichée.
+      body: JSON.stringify({ accept_terms: true, immediate_start: true, terms_version: CGV_VERSION }),
       signal: AbortSignal.timeout(20000),
     });
   } catch {

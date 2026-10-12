@@ -18,11 +18,13 @@ export function LegalPage({
   intro,
   sections,
   version = PRODUCT.legalVersion,
+  updatedLabel = PRODUCT.legalUpdatedLabel,
 }: {
   title: string;
   intro: ReactNode;
   sections: LegalSection[];
   version?: string;
+  updatedLabel?: string;
 }): ReactElement {
   return (
     <PageShell current="legal">
@@ -46,7 +48,7 @@ export function LegalPage({
               {title}
             </h1>
             <p className="text-small mt-4">
-              Dernière mise à jour : {PRODUCT.legalUpdatedLabel}
+              Dernière mise à jour : {updatedLabel}
             </p>
             <div className="prose-legal mt-8">
               <div className="lead">{intro}</div>

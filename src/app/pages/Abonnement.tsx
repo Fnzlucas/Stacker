@@ -2,7 +2,7 @@ import { useEffect, useState, type ReactElement } from 'react';
 import { useSearchParams } from 'react-router';
 import { Icon } from '../../components/Icon';
 import { Logo } from '../../components/Logo';
-import { FormAlert } from '../components/Form';
+import { CheckField, FormAlert } from '../components/Form';
 import { AppBar, usePageTitle } from '../components/Layouts';
 import { formatLongDate } from '../lib/dates';
 import { BILLING_STATUS_LABELS, billingErrorMessage, billingView, type Billing } from '../lib/billing';
@@ -58,12 +58,18 @@ function Status({ b }: { b: Billing }): ReactElement {
   const checkout = useStartCheckout();
   const renew = useSetAutoRenew();
   const [confirmStop, setConfirmStop] = useState(false);
-  const pay = () =>
+  const [terms, setTerms] = useState(false);
+  const [immediate, setImmediate] = useState(false);
+  const [tried, setTried] = useState(false);
+  const pay = () => {
+    setTried(true);
+    if (!terms || !immediate) return;
     checkout.mutate(undefined, {
       onSuccess: (url) => {
         window.location.assign(url);
       },
     });
+  };
 
   if (view === 'active' || view === 'ending') {
     return (
@@ -181,6 +187,19 @@ function Status({ b }: { b: Billing }): ReactElement {
           <b className="num">{seats}</b> place{seats > 1 ? 's' : ''} de lancement restante{seats > 1 ? 's' : ''}
         </p>
       ) : null}
+      <div className="billing-consents">
+        <CheckField checked={terms} onChange={(e) => setTerms(e.target.checked)} error={tried && !terms ? 'Accepte les conditions générales de vente pour continuer.' : undefined}>
+          J’accepte les{' '}
+          <a href="/cgv" target="_blank" rel="noopener">
+            conditions générales de vente
+          </a>{' '}
+          de l’abonnement ({formatEuros(b.price_cents, { always: true })} par mois, sans engagement, renouvelé chaque mois).
+        </CheckField>
+        <CheckField checked={immediate} onChange={(e) => setImmediate(e.target.checked)} error={tried && !immediate ? 'Coche cette case pour accéder aux outils dès maintenant.' : undefined}>
+          Je demande l’accès aux outils dès maintenant, avant la fin du délai de rétractation de 14 jours. Si je me rétracte, je paierai
+          seulement la part du mois déjà utilisée.
+        </CheckField>
+      </div>
       <button type="button" className={`btn btn-accent btn-lg btn-block${checkout.isPending ? ' is-loading' : ''}`} disabled={checkout.isPending} onClick={pay}>
         <Icon name="lock" />
         {view === 'unpaid' ? 'Mettre à jour et payer' : `Payer ${formatEuros(b.price_cents, { always: true })} et activer`}

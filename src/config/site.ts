@@ -33,7 +33,8 @@ export const HOST = {
   name: 'Vercel Inc.',
   address: '440 N Barranca Avenue #4133, Covina, CA 91723, États-Unis',
   // LCEN art. 6 III 1° : le numéro de téléphone de l'hébergeur est obligatoire.
-  phone: toVerify('téléphone de l’hébergeur, à relever sur vercel.com/legal'),
+  // Relevé sur vercel.com/legal/dmca-policy (12 octobre 2026).
+  phone: '+1 559 288 7060',
   website: 'https://vercel.com',
 } as const;
 

@@ -44,7 +44,7 @@ select is((public.my_billing() ->> 'price_cents')::int, 699, '... 6,99 €/mois'
 select throws_ok($$select * from public.stacker_billing$$, '42501', null, 'lecture directe de stacker_billing interdite');
 select throws_ok($$select * from public.billing_charges$$, '42501', null, 'lecture directe de billing_charges interdite');
 select throws_ok($$select public.billing_payment_paid('tr_x', 'mdt_x', 'x')$$, '42501', null, 'stacker : confirmer un paiement interdit');
-select throws_ok($$select public.billing_checkout_prepare('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa')$$, '42501', null, 'stacker : préparer un paiement pour un autre interdit');
+select throws_ok($$select public.billing_checkout_prepare('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', '2026-10-12', true)$$, '42501', null, 'stacker : préparer un paiement pour un autre interdit');
 select throws_ok($$select public.deal_mollie_pending(10)$$, '42501', null, 'stacker : lire les IBAN à déclarer interdit');
 reset role;
 
@@ -61,8 +61,8 @@ reset role;
 
 -- ---------------------------------------------------------------- premier paiement
 set local role service_role;
-select throws_ok($$select public.billing_checkout_prepare('cccccccc-cccc-4ccc-8ccc-cccccccccccc')$$, 'P0001', 'onboarding_required', 'onboarding non terminé ⇒ pas de paiement');
-insert into t_out select public.billing_checkout_prepare('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa');
+select throws_ok($$select public.billing_checkout_prepare('cccccccc-cccc-4ccc-8ccc-cccccccccccc', '2026-10-12', true)$$, 'P0001', 'onboarding_required', 'onboarding non terminé ⇒ pas de paiement');
+insert into t_out select public.billing_checkout_prepare('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', '2026-10-12', true);
 select ok((select j ->> 'email' = 'alice@exemple.fr' and (j ->> 'amount_cents')::int = 699 and j ->> 'customer_id' is null from t_out),
   'préparation : email, montant, pas encore de client Mollie');
 select public.billing_set_customer('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 'cst_alice');
@@ -74,13 +74,13 @@ select is((select status from public.billing_charges where mollie_payment_id = '
 
 set local role service_role;
 truncate t_out;
-insert into t_out select public.billing_checkout_prepare('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa');
+insert into t_out select public.billing_checkout_prepare('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', '2026-10-12', true);
 select is((select j ->> 'customer_id' from t_out), 'cst_alice', 'nouvel essai : client Mollie réutilisé');
 select lives_ok($$select public.billing_charge_created('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 'premier', (select d from t_today), 699, 'tr_a2')$$,
   '... nouveau paiement pour la même période après un échec');
 select public.billing_payment_paid('tr_a2', 'mdt_alice', 'Carte •••• 4242');
 select public.billing_payment_paid('tr_a2', 'mdt_alice', 'Carte •••• 4242');
-select throws_ok($$select public.billing_checkout_prepare('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa')$$, 'P0001', 'already_active', 'abonné à jour : pas de second paiement');
+select throws_ok($$select public.billing_checkout_prepare('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', '2026-10-12', true)$$, 'P0001', 'already_active', 'abonné à jour : pas de second paiement');
 reset role;
 select ok((select status = 'actif' and mollie_mandate_id = 'mdt_alice' and method_label = 'Carte •••• 4242'
            from public.stacker_billing where stacker_id = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'), 'paiement confirmé : abonnement actif, mandat enregistré');
@@ -104,7 +104,7 @@ reset role;
 update public.billing_settings set launch_seats = 1;
 update public.profiles set launch_priority = false where id = 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb';
 set local role service_role;
-select public.billing_checkout_prepare('bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb');
+select public.billing_checkout_prepare('bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb', '2026-10-12', true);
 select public.billing_set_customer('bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb', 'cst_bob');
 select public.billing_charge_created('bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb', 'premier', (select d from t_today), 699, 'tr_b1');
 select public.billing_payment_paid('tr_b1', 'mdt_bob', 'SEPA •••• 0189');
@@ -206,7 +206,7 @@ reset role;
 -- ---------------------------------------------------------------- page de paiement rouverte
 update public.profiles set onboarding_completed_at = now() where id = 'cccccccc-cccc-4ccc-8ccc-cccccccccccc';
 set local role service_role;
-select public.billing_checkout_prepare('cccccccc-cccc-4ccc-8ccc-cccccccccccc');
+select public.billing_checkout_prepare('cccccccc-cccc-4ccc-8ccc-cccccccccccc', '2026-10-12', true);
 select public.billing_charge_created('cccccccc-cccc-4ccc-8ccc-cccccccccccc', 'premier', (select d from t_today), 699, 'tr_ch1');
 select public.billing_charge_created('cccccccc-cccc-4ccc-8ccc-cccccccccccc', 'premier', (select d from t_today), 699, 'tr_ch2');
 reset role;

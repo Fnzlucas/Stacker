@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { CGV_VERSION } from '@shared/legal';
 import { ApiError } from './apiError';
 import { BillingError, billingErrorMessage, billingView, fetchBilling, needsSubscription, setAutoRenew, startCheckout, type Billing } from './billing';
 import type { Backend } from './supabase';
@@ -36,6 +37,7 @@ describe('état affiché', () => {
   });
   it('messages', () => {
     expect(billingErrorMessage(new BillingError('already_active'))).toMatch(/déjà actif/);
+    expect(billingErrorMessage(new BillingError('terms_outdated'))).toMatch(/recharge la page/);
     expect(billingErrorMessage(new BillingError('inconnu'))).toMatch(/momentanément/);
     expect(billingErrorMessage(new ApiError('network'))).toMatch(/Connexion impossible/);
     expect(billingErrorMessage(new ApiError('server'))).toMatch(/momentanément/);
@@ -81,6 +83,7 @@ describe('appels serveur', () => {
     });
     expect(ok).toBe('https://www.mollie.com/checkout/abc');
     expect(seen[0]?.headers).toMatchObject({ Authorization: 'Bearer jwt', apikey: 'anon' });
+    expect(JSON.parse(seen[0]?.body as string)).toEqual({ accept_terms: true, immediate_start: true, terms_version: CGV_VERSION });
     await expect(startCheckout(b(null), reply(200, { ok: true, url: 'https://evil.example/pay' }))).rejects.toMatchObject({ kind: 'server' });
     await expect(startCheckout(b(null), reply(200, { ok: true, url: 'http://www.mollie.com/x' }))).rejects.toMatchObject({ kind: 'server' });
     await expect(startCheckout(b(null), reply(409, { ok: false, error: 'already_active' }))).rejects.toMatchObject({ code: 'already_active' });

@@ -6,7 +6,8 @@
  */
 import { z } from 'zod';
 import { callRpc, fetchAuthUser, RpcError, type FetchLike } from '../_shared/rest.ts';
-import { bearer, corsHeaders, jsonResponse } from '../_shared/http.ts';
+import { bearer, corsHeaders, jsonResponse, readJson } from '../_shared/http.ts';
+import { CGV_VERSION } from '../_shared/legal.ts';
 import { createMollie, MollieError, mollieAmount, type BillingConfigResult } from '../_shared/mollie.ts';
 
 export interface HandlerDeps {
@@ -24,7 +25,10 @@ const prepareSchema = z.object({
   period_start: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
 });
 
-const KNOWN: Record<string, number> = { already_active: 409, onboarding_required: 403 };
+const KNOWN: Record<string, number> = { already_active: 409, onboarding_required: 403, consent_required: 400 };
+
+/** Le stacker accepte les CGV (version affichée) et demande l'accès immédiat (rétractation : articles L221-25 et suivants). */
+const bodySchema = z.strictObject({ accept_terms: z.literal(true), immediate_start: z.literal(true), terms_version: z.string().max(20) });
 
 export function createHandler(deps: HandlerDeps): (req: Request) => Promise<Response> {
   if (!deps.config.ok) deps.log('config_invalid', { variables: deps.config.missing });
@@ -38,6 +42,10 @@ export function createHandler(deps: HandlerDeps): (req: Request) => Promise<Resp
     const cors = corsHeaders(origin);
     if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
     if (req.method !== 'POST') return jsonResponse(405, { ok: false, error: 'method_not_allowed' }, cors);
+    const body = await readJson(req, 512);
+    const consent = body.ok ? bodySchema.safeParse(body.value) : null;
+    if (!consent?.success) return jsonResponse(400, { ok: false, error: 'consent_required' }, cors);
+    if (consent.data.terms_version !== CGV_VERSION) return jsonResponse(409, { ok: false, error: 'terms_outdated' }, cors);
     const token = bearer(req);
     if (!token) return jsonResponse(401, { ok: false, error: 'unauthorized' }, cors);
     const rpc = (fn: string, args: Record<string, unknown>) => callRpc(deps.fetch, config.supabaseUrl, config.serviceRoleKey, fn, args);
@@ -47,7 +55,7 @@ export function createHandler(deps: HandlerDeps): (req: Request) => Promise<Resp
       if (!user) return jsonResponse(401, { ok: false, error: 'unauthorized' }, cors);
       let prep: z.infer<typeof prepareSchema>;
       try {
-        prep = prepareSchema.parse(await rpc('billing_checkout_prepare', { p_stacker: user.id }));
+        prep = prepareSchema.parse(await rpc('billing_checkout_prepare', { p_stacker: user.id, p_terms_version: CGV_VERSION, p_immediate_start: true }));
       } catch (error) {
         const code = error instanceof RpcError ? error.message : '';
         const status = KNOWN[code];

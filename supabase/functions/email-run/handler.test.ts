@@ -116,6 +116,21 @@ describe('modèles', () => {
     expect(render(item({ kind: 'virement_refuse', data: { amount_cents: 1049, reason: 'IBAN clôturé' } }), CTX).text).toContain('n’a pas pu être fait : IBAN clôturé.');
     expect(render(item({ kind: 'virement_refuse', data: { amount_cents: 1049, reason: null } }), CTX).text).toContain('n’a pas pu être fait. Ton solde');
     expect(() => render(item({ kind: 'virement_verse', data: {} }), CTX)).toThrow('invalid_data');
+    const sub = render(item({ kind: 'abonnement_confirme', data: { price_cents: 699, launch_member: true, launch_until: '2027-10-20', period_end: '2026-11-20', terms_version: '2026-10-12' } }), CTX);
+    expect(sub.subject).toBe('Ton abonnement Stacker est actif');
+    expect(sub.text).toContain('Prix : 6,99 € par mois');
+    expect(sub.text).toContain('Offre de lancement : 0 % prélevé sur tes gains jusqu’au 20 octobre 2027');
+    expect(sub.text).toContain('Prochain renouvellement : 20 novembre 2026');
+    expect(sub.text).toContain('Conditions acceptées : CGV du 12 octobre 2026');
+    expect(sub.text).toContain('rétracter pendant 14 jours');
+    const plain = render(item({ kind: 'abonnement_confirme', data: { price_cents: 699, launch_member: true } }), CTX).text;
+    expect(plain).toContain('Offre de lancement : 0 % prélevé sur tes gains\n');
+    expect(render(item({ kind: 'abonnement_confirme', data: { price_cents: 699 } }), CTX).text).not.toContain('Offre de lancement');
+    expect(() => render(item({ kind: 'abonnement_confirme', data: {} }), CTX)).toThrow('invalid_data');
+    const stop = render(item({ kind: 'abonnement_resilie', data: { access_until: '2026-11-20' } }), CTX);
+    expect(stop.subject).toBe('Confirmation de résiliation de ton abonnement Stacker');
+    expect(stop.text).toContain('Tu gardes l’accès jusqu’au 20 novembre 2026.');
+    expect(render(item({ kind: 'abonnement_resilie' }), CTX).text).toContain('ne sera prélevé.\n\nTes gains');
   });
   it('HTML échappé', () => {
     const m = render(item({ kind: 'contrat_stacker', deal: { ...DEAL, company_name: '<b>Evil</b> & Co' } }), CTX);

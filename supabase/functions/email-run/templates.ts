@@ -8,7 +8,7 @@ import { z } from 'zod';
 const date = z.string();
 export const itemSchema = z.object({
   id: z.number().int(),
-  kind: z.enum(['contrat_client', 'contrat_stacker', 'prenotification', 'bienvenue', 'abonnement_refuse', 'abonnement_coupe', 'prelevement_refuse', 'virement_verse', 'virement_refuse']),
+  kind: z.enum(['contrat_client', 'contrat_stacker', 'prenotification', 'bienvenue', 'abonnement_refuse', 'abonnement_coupe', 'prelevement_refuse', 'virement_verse', 'virement_refuse', 'abonnement_confirme', 'abonnement_resilie']),
   to: z.string().nullable(),
   to_name: z.string().nullable(),
   data: z.record(z.string(), z.unknown()),
@@ -258,6 +258,48 @@ export function render(item: EmailItem, ctx: RenderContext): RenderedEmail {
         footer: stackerFooter,
       });
       return { subject: done ? `Virement envoyé : ${euros(amount.data)}` : 'Ton virement Stacker n’a pas pu être fait', html, text, contract: false };
+    }
+    case 'abonnement_confirme': {
+      const price = z.number().int().positive().safeParse(item.data['price_cents']);
+      const launch = item.data['launch_member'] === true;
+      const until = z.string().regex(/^\d{4}-\d{2}-\d{2}$/).safeParse(item.data['launch_until']);
+      const next = z.string().regex(/^\d{4}-\d{2}-\d{2}$/).safeParse(item.data['period_end']);
+      const terms = z.string().safeParse(item.data['terms_version']);
+      if (!price.success) throw new RenderError('invalid_data');
+      const { html, text } = layout({
+        eyebrow: 'Confirmation de souscription',
+        title: 'Ton abonnement Stacker est actif',
+        paragraphs: [
+          hi,
+          'Merci ! Ton paiement est confirmé et tu as accès à tous les outils : prospection, campagnes, scripts et formation, signature des clients.',
+          `Abonnement sans engagement, renouvelé chaque mois. Chaque mois, il est payé avec tes gains disponibles s’ils suffisent, sinon avec ton moyen de paiement. Tu peux le résilier à tout moment depuis ton profil (Abonnement) : il s’arrête à la fin du mois déjà payé.`,
+          `Rétractation : tu as demandé l’accès immédiat. Tu peux encore te rétracter pendant 14 jours en écrivant à ${ctx.contactEmail} ; tu paieras seulement la part du mois déjà utilisée.`,
+        ],
+        facts: [
+          ['Prix', `${euros(price.data)} par mois`],
+          ...(launch ? ([['Offre de lancement', until.success ? `0 % prélevé sur tes gains jusqu’au ${longDate(until.data)}` : '0 % prélevé sur tes gains']] as [string, string][]) : []),
+          ...(next.success ? ([['Prochain renouvellement', longDate(next.data)]] as [string, string][]) : []),
+          ...(terms.success ? ([['Conditions acceptées', `CGV du ${longDate(terms.data)}`]] as [string, string][]) : []),
+        ],
+        button: { label: 'Lire les conditions générales de vente', url: `${ctx.siteUrl}/cgv` },
+        footer: stackerFooter,
+      });
+      return { subject: 'Ton abonnement Stacker est actif', html, text, contract: false };
+    }
+    case 'abonnement_resilie': {
+      const until = z.string().regex(/^\d{4}-\d{2}-\d{2}$/).safeParse(item.data['access_until']);
+      const { html, text } = layout({
+        eyebrow: 'Confirmation de résiliation',
+        title: 'Ta résiliation est enregistrée',
+        paragraphs: [
+          hi,
+          `Ton abonnement ne sera pas renouvelé : aucun nouveau paiement ne sera prélevé.${until.success ? ` Tu gardes l’accès jusqu’au ${longDate(until.data)}.` : ''}`,
+          'Tes gains restent à toi : ils restent consultables et virables dans l’app. Tu as changé d’avis ? Tu peux reprendre ton abonnement depuis la même page avant cette date.',
+        ],
+        button: { label: 'Gérer mon abonnement', url: `${app}/abonnement` },
+        footer: stackerFooter,
+      });
+      return { subject: 'Confirmation de résiliation de ton abonnement Stacker', html, text, contract: false };
     }
     case 'prelevement_refuse': {
       const deal = needDeal();

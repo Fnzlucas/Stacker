@@ -6,6 +6,8 @@ import { PageHeading, usePageTitle } from '../components/Layouts';
 import { LevelPill, ProgressBar, Toast } from '../components/Ui';
 import { profileChecklist } from '../lib/api';
 import { initials, todayLabel } from '../lib/dates';
+import { formationProgress } from '../lib/formation';
+import { useFormation } from '../lib/formationQueries';
 import { useProfile, useTiers } from '../lib/queries';
 import { tierProgress } from '../lib/tiers';
 import { PATHS } from '../paths';
@@ -158,22 +160,33 @@ export function AccueilPage(): ReactElement {
               </Link>
             </li>
           ))}
-          <li>
-            <div className="list-row mission is-soon">
-              <span className="avatar" aria-hidden="true">
-                <Icon name="graduation" />
-              </span>
-              <span className="list-main">
-                <span className="list-title">Suivre la formation</span>
-                <span className="list-sub">Disponible à l’ouverture</span>
-              </span>
-              <span className="chip chip-outline">Bientôt</span>
-            </div>
-          </li>
+          <FormationMission />
         </ul>
       </section>
 
       {notice ? <Toast onClose={() => setNotice(null)}>{notice}</Toast> : null}
     </div>
+  );
+}
+
+function FormationMission(): ReactElement {
+  const formation = useFormation();
+  const p = formationProgress(formation.data ?? []);
+  const finished = p.done === p.total;
+  return (
+    <li>
+      <Link className="list-row mission" to={PATHS.formation}>
+        <span className="avatar" aria-hidden="true">
+          <Icon name="graduation" />
+        </span>
+        <span className="list-main">
+          <span className="list-title">Suivre la formation</span>
+          <span className="list-sub">{finished ? 'Terminée' : `${String(p.done)} / ${String(p.total)} modules · scripts d’appel inclus`}</span>
+        </span>
+        <span className={`mission-check${finished ? ' is-checked' : ''}`} aria-hidden="true">
+          <Icon name="check" />
+        </span>
+      </Link>
+    </li>
   );
 }

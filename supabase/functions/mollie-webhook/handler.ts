@@ -11,7 +11,7 @@
  */
 import { z } from 'zod';
 import { callRpc, RpcError, type FetchLike } from '../_shared/rest.ts';
-import { jsonResponse } from '../_shared/http.ts';
+import { clientIp, jsonResponse, sha256Hex } from '../_shared/http.ts';
 import { centsOf, createMollie, methodLabel, MollieError, parisDate, type BillingConfigResult, type MolliePayment } from '../_shared/mollie.ts';
 
 export interface HandlerDeps {
@@ -29,6 +29,8 @@ const stackerMeta = z.object({
   period: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
 });
 const FAILED = new Set(['failed', 'canceled', 'expired']);
+/** Appels par adresse IP et par minute (Mollie réessaie plus tard en cas de 429). */
+export const IP_RATE = { max: 300, windowSeconds: 60 };
 
 export function createHandler(deps: HandlerDeps): (req: Request) => Promise<Response> {
   if (!deps.config.ok) deps.log('config_invalid', { variables: deps.config.missing });
@@ -42,6 +44,18 @@ export function createHandler(deps: HandlerDeps): (req: Request) => Promise<Resp
     if (!ID.test(id)) return jsonResponse(400, { ok: false, error: 'invalid_request' });
     const rpc = (fn: string, args: Record<string, unknown>) => callRpc(deps.fetch, config.supabaseUrl, config.serviceRoleKey, fn, args);
     const mollie = createMollie(deps.fetch, config.mollieKey, deps.mollieBase);
+
+    // Porte publique : limite par IP (hachée, la clé serveur servant de sel) avant tout appel à Mollie.
+    try {
+      const bucket = `mollie-webhook:${await sha256Hex(`${clientIp(req) ?? 'inconnue'}:${config.serviceRoleKey}`)}`;
+      if ((await rpc('rate_limit_hit', { p_bucket: bucket, p_max: IP_RATE.max, p_window_seconds: IP_RATE.windowSeconds })) !== true) {
+        deps.log('rate_limited');
+        return jsonResponse(429, { ok: false, error: 'rate_limited' }, { 'Retry-After': String(IP_RATE.windowSeconds) });
+      }
+    } catch {
+      deps.log('rate_limit_unavailable');
+      return jsonResponse(503, { ok: false, error: 'retry' });
+    }
 
     let payment: MolliePayment;
     try {

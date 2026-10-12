@@ -145,5 +145,10 @@ describe('pages légales', () => {
     expect(t).toContain('Résilier mon abonnement');
     expect(t).toContain('Offre de lancement des 100 premiers');
     expect(t).toContain('0 %');
+    // Règles réellement appliquées par l'app (lot 6).
+    expect(t).toContain('payé en priorité par compensation avec ce solde');
+    expect(t).toContain('maintenu pendant 3 jours');
+    expect(t).toContain('Mollie B.V.');
+    expect(t).toContain('Dernière mise à jour : 12 octobre 2026');
   });
 });

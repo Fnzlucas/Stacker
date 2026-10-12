@@ -31,6 +31,7 @@ const DealsPage = lazy(() => import('./pages/Deals').then((m) => ({ default: m.D
 const DealNewPage = lazy(() => import('./pages/DealNew').then((m) => ({ default: m.DealNewPage })));
 const DealFichePage = lazy(() => import('./pages/DealFiche').then((m) => ({ default: m.DealFichePage })));
 const GainsPage = lazy(() => import('./pages/Gains').then((m) => ({ default: m.GainsPage })));
+const FormationPage = lazy(() => import('./pages/Formation').then((m) => ({ default: m.FormationPage })));
 const AdminPage = lazy(() => import('./pages/Admin').then((m) => ({ default: m.AdminPage })));
 const AbonnementPage = lazy(() => import('./pages/Abonnement').then((m) => ({ default: m.AbonnementPage })));
 
@@ -68,6 +69,7 @@ export const router = createBrowserRouter([
           { path: PATHS.gains, element: page(<GainsPage />) },
           { path: PATHS.billing, element: page(<AbonnementPage />) },
           { path: PATHS.admin, element: page(<AdminPage />) },
+          { path: PATHS.formation, element: page(<FormationPage />) },
           { path: PATHS.profile, element: page(<ProfilPage />) },
         ],
       },
@@ -106,6 +108,7 @@ const PREFETCH = [
   () => import('./pages/Gains'),
   () => import('./pages/Profil'),
   () => import('./pages/Abonnement'),
+  () => import('./pages/Formation'),
 ];
 
 export function App(): ReactElement {

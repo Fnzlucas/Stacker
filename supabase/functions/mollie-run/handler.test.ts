@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { CGV_VERSION } from '../_shared/legal.ts';
 import { loadBillingConfig } from '../_shared/mollie.ts';
 import { createHandler as createRun } from './handler.ts';
 import { createHandler as createCheckout } from '../billing-checkout/handler.ts';
@@ -36,7 +37,8 @@ function world(w: World) {
     if (url === `${SB}/auth/v1/user`) return w.user ?? json(200, { id: USER, email: 'ines@exemple.fr' });
     if (url.startsWith(`${SB}/rest/v1/rpc/`)) {
       const fn = url.slice(`${SB}/rest/v1/rpc/`.length);
-      rpcCalls.push({ fn, args: body ?? {} });
+      if (fn !== 'rate_limit_hit') rpcCalls.push({ fn, args: body ?? {} });
+      if (fn === 'rate_limit_hit' && !w.rpc?.[fn]) return json(200, true);
       return w.rpc?.[fn]?.(body ?? {}) ?? json(200, null);
     }
     const path = url.replace('https://api.mollie.com/v2', '');
@@ -52,11 +54,13 @@ const PAYMENT = { id: 'tr_abcd1', status: 'open', amount: { value: '6.99', curre
 
 describe('billing-checkout', () => {
   const prep = (customer: string | null = null) => () => json(200, { customer_id: customer, name: 'Inès Martin', email: 'ines@exemple.fr', amount_cents: 699, period_start: '2026-10-20' });
-  const call = (w: ReturnType<typeof world>, opts: { origin?: string; auth?: string | null; method?: string; env?: Record<string, string | undefined> } = {}) => {
+  const CONSENT = { accept_terms: true, immediate_start: true, terms_version: CGV_VERSION };
+  const call = (w: ReturnType<typeof world>, opts: { origin?: string; auth?: string | null; method?: string; env?: Record<string, string | undefined>; body?: unknown } = {}) => {
     const handle = createCheckout({ ...w.deps, config: loadBillingConfig(opts.env ?? ENV) });
-    const headers = new Headers({ origin: opts.origin ?? ORIGIN });
+    const headers = new Headers({ origin: opts.origin ?? ORIGIN, 'content-type': 'application/json' });
     if (opts.auth !== null) headers.set('authorization', opts.auth ?? 'Bearer a.b.c');
-    return handle(new Request(`${SB}/functions/v1/billing-checkout`, { method: opts.method ?? 'POST', headers }));
+    const method = opts.method ?? 'POST';
+    return handle(new Request(`${SB}/functions/v1/billing-checkout`, { method, headers, body: method === 'POST' ? JSON.stringify(opts.body ?? CONSENT) : undefined }));
   };
 
   it('nouveau client : client Mollie, premier paiement, URL de paiement', async () => {
@@ -65,7 +69,7 @@ describe('billing-checkout', () => {
     expect(r.status).toBe(200);
     expect(await r.json()).toEqual({ ok: true, url: PAYMENT._links.checkout.href });
     expect(w.rpcCalls.map((c) => c.fn)).toEqual(['billing_checkout_prepare', 'billing_set_customer', 'billing_charge_created']);
-    expect(w.rpcCalls[0]?.args).toEqual({ p_stacker: USER });
+    expect(w.rpcCalls[0]?.args).toEqual({ p_stacker: USER, p_terms_version: CGV_VERSION, p_immediate_start: true });
     expect(w.rpcCalls[2]?.args).toEqual({ p_stacker: USER, p_kind: 'premier', p_period: '2026-10-20', p_amount: 699, p_payment: 'tr_abcd1' });
     expect(w.mollieCalls[0]?.key).toBe(`stacker-${USER}-customer`);
     expect(w.mollieCalls[1]?.body).toMatchObject({
@@ -91,6 +95,12 @@ describe('billing-checkout', () => {
     expect((await call(ok, { method: 'OPTIONS' })).status).toBe(204);
     expect((await call(ok, { method: 'GET' })).status).toBe(405);
     expect((await call(ok, { auth: null })).status).toBe(401);
+    // Consentements obligatoires, version des CGV à jour.
+    expect(await (await call(ok, { body: { ...CONSENT, immediate_start: false } })).json()).toEqual({ ok: false, error: 'consent_required' });
+    expect((await call(ok, { body: { accept_terms: true, terms_version: CGV_VERSION } })).status).toBe(400);
+    expect((await call(ok, { body: { ...CONSENT, extra: 1 } })).status).toBe(400);
+    expect(await (await call(ok, { body: { ...CONSENT, terms_version: '2020-01-01' } })).json()).toEqual({ ok: false, error: 'terms_outdated' });
+    expect((await call(world({ rpc: { billing_checkout_prepare: () => json(400, { code: '22023', message: 'consent_required' }) } }))).status).toBe(400);
     expect((await call(world({ user: json(401, {}) }))).status).toBe(401);
     expect((await call(ok, { env: { ...ENV, MOLLIE_API_KEY: undefined } })).status).toBe(503);
     expect((await call(ok, { env: { ...ENV, SUPABASE_ANON_KEY: undefined } })).status).toBe(503);
@@ -176,6 +186,10 @@ describe('mollie-webhook', () => {
     expect((await hook(world({}), 'id=tr_abcd1', { env: { ...ENV, MOLLIE_API_KEY: 'x' } })).status).toBe(503);
     expect((await hook(world({ mollie: () => json(503, {}) }))).status).toBe(502);
     expect((await hook(world({ mollie: () => json(200, { id: 'tr_abcd1' }) }))).status).toBe(502);
+    const limited = await hook(world({ rpc: { rate_limit_hit: () => json(200, false) } }));
+    expect(limited.status).toBe(429);
+    expect(limited.headers.get('retry-after')).toBe('60');
+    expect((await hook(world({ rpc: { rate_limit_hit: () => json(500, {}) } }))).status).toBe(503);
     const dbDown = world({ mollie: pay({ status: 'paid', subscriptionId: 'sub_1' }), rpc: { deal_payment_from_mollie: () => json(500, {}) } });
     expect((await hook(dbDown)).status).toBe(500);
   });

@@ -6,12 +6,15 @@
 import type { ReactElement } from 'react';
 import { Fill } from '../../components/Fill';
 import { LegalPage } from '../../components/LegalPage';
+import { CGV_VERSION } from '@shared/legal';
 import { ENTITY, LAUNCH_OFFER, MEDIATOR, PRODUCT } from '../../config/site';
 
 export function CgvPage(): ReactElement {
   return (
     <LegalPage
       title="Conditions générales de vente de l’abonnement stacker"
+      version={CGV_VERSION}
+      updatedLabel="12 octobre 2026"
       intro={
         <p>
           Ces conditions s’appliquent à l’abonnement Stacker souscrit par une personne (le « stacker ») pour utiliser l’application. Elles ne
@@ -109,12 +112,23 @@ export function CgvPage(): ReactElement {
           id: 'paiement',
           title: '6. Paiement',
           body: (
-            <p>
-              Le paiement est traité par un prestataire de paiement agréé ; Stacker n’a jamais accès aux numéros de carte bancaire. Le premier
-              mois est payé à la souscription, les mois suivants à la même date chaque mois, par le moyen de paiement enregistré. En cas d’échec de
-              paiement, Stacker en informe le stacker ; à défaut de régularisation, l’accès aux outils peut être suspendu. Les commissions déjà
-              acquises ne sont pas affectées.
-            </p>
+            <>
+              <p>
+                Le paiement est traité par la société Mollie B.V., prestataire de paiement agréé ; Stacker n’a jamais accès aux numéros de carte
+                bancaire. Le premier mois est payé à la souscription, par carte bancaire ou par un autre moyen proposé sur la page de paiement, qui
+                est enregistré pour les mois suivants.
+              </p>
+              <p>
+                <strong>Paiement avec les gains.</strong> À chaque échéance mensuelle, si le solde de commissions disponible du stacker (délai de
+                validation écoulé) couvre le prix de l’abonnement, l’abonnement est payé en priorité par compensation avec ce solde ; la
+                compensation apparaît dans l’historique des gains. À défaut, le prix est prélevé sur le moyen de paiement enregistré.
+              </p>
+              <p>
+                <strong>Échec de paiement.</strong> Stacker en informe le stacker par email. L’accès aux outils est maintenu pendant 3 jours à
+                compter de l’échéance ; à défaut de régularisation dans ce délai, l’abonnement prend fin et l’accès aux outils de prospection, de
+                campagne et de signature est suspendu. Les commissions déjà acquises ne sont pas affectées et restent consultables et virables.
+              </p>
+            </>
           ),
         },
         {

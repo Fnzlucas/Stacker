@@ -89,7 +89,8 @@ export class FakeBilling {
   }
 
   /** Edge Function billing-checkout : page de paiement Mollie (simulée). */
-  checkout(st: StackerInfo | null): Reply {
+  checkout(st: StackerInfo | null, body: Record<string, unknown> = {}): Reply {
+    if (body['accept_terms'] !== true || body['immediate_start'] !== true || typeof body['terms_version'] !== 'string') return [400, { ok: false, error: 'consent_required' }];
     if (!st) return [401, { ok: false, error: 'unauthorized' }];
     if (!st.onboarded) return [403, { ok: false, error: 'onboarding_required' }];
     const s = this.sub(st.id);

@@ -97,12 +97,12 @@ select is(
    from pg_proc p join pg_namespace n on n.oid = p.pronamespace
    where n.nspname = 'public' and has_function_privilege('authenticated', p.oid, 'EXECUTE')),
   array['accept_prospecting_rules', 'admin_deal_set_status', 'admin_deals', 'admin_offer_set_active', 'admin_offers', 'admin_overview', 'admin_payout_mark', 'admin_payouts', 'admin_set_flag', 'admin_stackers', 'billing_set_auto_renew', 'campaign_set_status', 'campaign_start', 'complete_onboarding', 'deal_catalog', 'deal_detail', 'deal_preview', 'deal_sign',
-        'export_my_data', 'is_admin', 'mail_disconnect', 'my_billing', 'my_campaign', 'my_deals', 'my_earnings', 'my_prospect_quotas', 'my_prospects', 'payout_request', 'payout_set_account',
+        'export_my_data', 'formation_set_done', 'is_admin', 'mail_disconnect', 'my_billing', 'my_campaign', 'my_deals', 'my_earnings', 'my_formation', 'my_prospect_quotas', 'my_prospects', 'payout_request', 'payout_set_account',
         'prospect_add_note', 'prospect_claim',
         'prospect_delete_note', 'prospect_detail', 'prospect_extend', 'prospect_log_call', 'prospect_mark_email_sent',
         'prospect_prepare_email', 'prospect_release', 'prospect_set_contact', 'prospect_set_status', 'siret_is_valid',
         'waitlist_count']::text[],
-  'authenticated n''exécute que les 42 fonctions prévues'
+  'authenticated n''exécute que les 44 fonctions prévues'
 );
 
 select is(

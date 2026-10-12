@@ -131,6 +131,8 @@ export class FakeSupabase {
     (id) => TIERS.find((t) => t.code === this.profiles.get(id)?.tier)?.rate_bps ?? 1500,
     () => this.prospects.claims,
   );
+  /** Formation (lot 9) : modules terminés par stacker. */
+  formation = new Map<string, string[]>();
   /** Espace admin (lot 8). */
   admin = new FakeAdmin(this.deals, this.billing, {
     name: (id) => {
@@ -490,11 +492,25 @@ export class FakeSupabase {
         return this.prospects.search(b, st);
       }
       case 'POST /functions/v1/billing-checkout':
-        return this.billing.checkout(this.stacker(headers));
+        return this.billing.checkout(this.stacker(headers), b);
       case 'POST /functions/v1/opposition-register':
         return this.prospects.opposition(b);
       case 'POST /functions/v1/mail-connect':
         return this.prospects.mailConnect(b, this.stacker(headers), headers['origin'] ?? 'http://localhost:4174');
+      case 'POST /rest/v1/rpc/my_formation': {
+        const st = this.stacker(headers);
+        if (!st) return this.pgError(401, '42501', 'unauthorized');
+        return [200, this.formation.get(st.id) ?? []];
+      }
+      case 'POST /rest/v1/rpc/formation_set_done': {
+        const st = this.stacker(headers);
+        if (!st) return this.pgError(401, '42501', 'unauthorized');
+        const id = typeof b['p_module'] === 'string' ? b['p_module'] : '';
+        if (!/^[a-z0-9-]{2,40}$/.test(id) || typeof b['p_done'] !== 'boolean') return this.pgError(400, '22023', 'invalid_request');
+        const cur = (this.formation.get(st.id) ?? []).filter((m) => m !== id);
+        this.formation.set(st.id, b['p_done'] ? [...cur, id] : cur);
+        return [200, this.formation.get(st.id)];
+      }
       default: {
         const rpc = /^\/rest\/v1\/rpc\/([a-z_]+)$/.exec(path);
         const handled = method === 'POST' && rpc?.[1] ? (this.admin.rpc(rpc[1], b, this.stacker(headers)) ?? this.billing.rpc(rpc[1], b, this.stacker(headers)) ?? this.prospects.rpc(rpc[1], b, this.stacker(headers)) ?? this.deals.rpc(rpc[1], b, this.stacker(headers))) : null;

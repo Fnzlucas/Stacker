@@ -41,10 +41,18 @@ test.describe('abonnement', () => {
     await expectAccessible(page, 'abonnement');
     await expectNoHorizontalOverflow(page, 'abonnement');
 
+    // Sans les deux cases : rien ne part.
+    await page.getByRole('button', { name: 'Payer 6,99 € et activer' }).click();
+    await expect(page.getByText('Accepte les conditions générales de vente pour continuer.')).toBeVisible();
+    await expect(page.getByText('Coche cette case pour accéder aux outils dès maintenant.')).toBeVisible();
+    expect(supabase.fake.calls.some((c) => c.path === '/functions/v1/billing-checkout')).toBe(false);
+    await page.getByLabel(/J’accepte les conditions générales de vente/).check();
+    await page.getByLabel(/Je demande l’accès aux outils dès maintenant/).check();
     await page.getByRole('button', { name: 'Payer 6,99 € et activer' }).click();
     await page.waitForURL(CHECKOUT_URL);
     const checkout = supabase.fake.calls.find((c) => c.path === '/functions/v1/billing-checkout');
     expect(checkout?.headers['authorization']).toMatch(/^Bearer /);
+    expect(checkout?.body).toMatchObject({ accept_terms: true, immediate_start: true });
 
     // Mollie confirme le paiement (webhook), puis le stacker revient sur l'app.
     supabase.fake.billing.confirmPayment(user.id);

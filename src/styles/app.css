@@ -695,6 +695,9 @@
   .billing-facts dt { font-size: var(--st-text-xs); color: var(--st-on-dark-2); }
   .billing-facts dd { margin: 2px 0 0; font-weight: var(--st-weight-semibold); }
   .billing-stop { display: grid; gap: var(--st-space-3); }
+  .billing-consents { display: grid; gap: var(--st-space-2); }
+  .billing-hero .check { color: var(--st-on-dark); font-size: var(--st-text-sm); }
+  .billing-hero .check a { color: inherit; text-decoration: underline; }
   .billing-stop-actions { display: flex; flex-wrap: wrap; gap: var(--st-space-2); }
   .billing-hero > .btn-sm { justify-self: start; }
   .sub-banner { display: flex; gap: var(--st-space-3); align-items: center; }
@@ -738,4 +741,32 @@
   .admin-switch.is-on span { transform: translateX(20px); }
   .admin-switch:disabled { opacity: .6; }
   .admin-flag { align-items: flex-start; }
+}
+
+/* ---------------------------------------------------------------- Formation */
+@layer components {
+  .formation { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--st-space-4); }
+  .formation-head { display: grid; gap: var(--st-space-3); }
+  .formation-list { display: grid; gap: var(--st-space-3); margin: 0; padding: 0; list-style: none; }
+  .formation-module { padding: 0; overflow: hidden; }
+  .formation-module summary { display: flex; align-items: center; gap: var(--st-space-3); padding: 16px; cursor: pointer; list-style: none; }
+  .formation-module summary::-webkit-details-marker { display: none; }
+  .formation-module summary .list-title { display: block; white-space: normal; }
+  .formation-index { display: block; font-size: var(--st-text-xs); font-weight: var(--st-weight-semibold); color: var(--st-text-2); text-transform: uppercase; letter-spacing: .04em; }
+  .formation-summary { display: block; font-size: var(--st-text-sm); color: var(--st-text-2); }
+  .formation-chevron { flex: none; color: var(--st-text-2); transition: transform var(--st-dur-fast); }
+  .formation-module[open] .formation-chevron { transform: rotate(180deg); }
+  .formation-body { display: grid; gap: var(--st-space-4); padding: 0 16px 16px; }
+  .formation-section { display: grid; gap: var(--st-space-2); font-size: var(--st-text-sm); line-height: 1.55; color: var(--st-ink); }
+  .formation-section p { margin: 0; }
+  .formation-section ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
+  .formation-section-title { margin: 0; font-size: var(--st-text-base); font-weight: var(--st-weight-bold); }
+  .formation-script, .formation-answers { display: grid; gap: var(--st-space-2); margin: 0; }
+  .formation-script > div { padding: 10px 12px; border-radius: var(--st-r-md); background: color-mix(in srgb, var(--st-ink) 5%, transparent); }
+  .formation-script > div.is-toi { background: color-mix(in srgb, var(--st-green) 14%, transparent); }
+  .formation-script dt, .formation-answers dt { font-size: var(--st-text-xs); font-weight: var(--st-weight-bold); color: var(--st-text-2); text-transform: uppercase; letter-spacing: .04em; }
+  .formation-answers dt { text-transform: none; letter-spacing: 0; font-size: var(--st-text-sm); color: var(--st-ink); }
+  .formation-script dd, .formation-answers dd { margin: 2px 0 0; }
+  .formation-answers > div { padding: 12px; border-radius: var(--st-r-md); border: 1px solid var(--st-line); }
+  .pros-script-link { justify-self: start; }
 }

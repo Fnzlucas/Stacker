@@ -45,7 +45,7 @@ import {
   type ProspectDetail,
   type ProspectStatus,
 } from '../lib/prospects';
-import { PATHS, dealFromProspectPath } from '../paths';
+import { PATHS, dealFromProspectPath, formationModulePath } from '../paths';
 
 export function ProspectFichePage(): ReactElement {
   const { claimId = '' } = useParams();
@@ -141,6 +141,10 @@ function Fiche({ d, onToast }: { d: ProspectDetail; onToast: (m: string) => void
               Faire signer ce client
             </Link>
           ) : null}
+          <Link className="btn btn-ghost btn-sm pros-script-link" to={formationModulePath('appel')}>
+            <Icon name="phone" />
+            Script d’appel et objections
+          </Link>
           <ContactCard key={`${d.claim.contact_phone ?? ''}|${d.claim.contact_email ?? ''}|${d.claim.contact_source ?? ''}`} d={d} onToast={onToast} />
           <CallCard d={d} onToast={onToast} />
           <EmailCard d={d} onToast={onToast} />

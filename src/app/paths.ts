@@ -7,6 +7,7 @@ export const PATHS = {
   gains: '/app/gains',
   billing: '/app/abonnement',
   admin: '/app/admin',
+  formation: '/app/formation',
   profile: '/app/profil',
   onboarding: '/app/bienvenue',
   welcome: '/app/demarrer',
@@ -23,6 +24,9 @@ export const PATHS = {
 
 /** Fiche d'un prospect réservé. */
 export const prospectPath = (claimId: string): string => `${PATHS.prospects}/${encodeURIComponent(claimId)}`;
+
+/** Module de la formation (ouvert directement). */
+export const formationModulePath = (id: string): string => `${PATHS.formation}?module=${encodeURIComponent(id)}`;
 
 /** Fiche d'un deal signé. */
 export const dealPath = (dealId: string): string => `${PATHS.deals}/${encodeURIComponent(dealId)}`;
