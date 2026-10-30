@@ -18,7 +18,7 @@ interface People {
 
 export class FakeAdmin {
   admins = new Set<string>();
-  flags: Record<string, boolean> = { prospects_enabled: true, campaigns_enabled: true, leads_enrich_enabled: true };
+  flags: Record<string, boolean> = { prospects_enabled: true, campaigns_enabled: true, leads_enrich_enabled: true, roleplay_required: false };
   log: { action: string; target: string; detail: Record<string, unknown>; created_at: string; admin: string | null }[] = [];
 
   constructor(
@@ -192,7 +192,7 @@ export class FakeAdmin {
       }
       case 'admin_set_flag': {
         const key = text('p_key');
-        if (!['prospects_enabled', 'campaigns_enabled', 'leads_enrich_enabled', 'billing_required'].includes(key) || typeof b['p_enabled'] !== 'boolean') return pg(400, '22023', 'invalid_request');
+        if (!['prospects_enabled', 'campaigns_enabled', 'leads_enrich_enabled', 'billing_required', 'roleplay_required'].includes(key) || typeof b['p_enabled'] !== 'boolean') return pg(400, '22023', 'invalid_request');
         if (key === 'billing_required') this.billing.required = b['p_enabled'];
         else this.flags[key] = b['p_enabled'];
         this.audit(st.id, 'flag', key, { enabled: b['p_enabled'] });

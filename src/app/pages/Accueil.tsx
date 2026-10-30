@@ -8,6 +8,7 @@ import { profileChecklist } from '../lib/api';
 import { initials, todayLabel } from '../lib/dates';
 import { formationProgress } from '../lib/formation';
 import { useFormation } from '../lib/formationQueries';
+import { useRoleplay } from '../lib/roleplayQueries';
 import { useProfile, useTiers } from '../lib/queries';
 import { tierProgress } from '../lib/tiers';
 import { PATHS } from '../paths';
@@ -161,11 +162,33 @@ export function AccueilPage(): ReactElement {
             </li>
           ))}
           <FormationMission />
+          <TrainingMission />
         </ul>
       </section>
 
       {notice ? <Toast onClose={() => setNotice(null)}>{notice}</Toast> : null}
     </div>
+  );
+}
+
+function TrainingMission(): ReactElement {
+  const state = useRoleplay();
+  const passed = state.data?.passed === true;
+  return (
+    <li>
+      <Link className={`list-row mission${passed ? ' is-done' : ''}`} to={PATHS.training}>
+        <span className={`avatar ${passed ? 'avatar-green' : 'avatar-orange'}`} aria-hidden="true">
+          <Icon name="mic" />
+        </span>
+        <span className="list-main">
+          <span className="list-title">Réussir un appel d’entraînement</span>
+          <span className="list-sub">{passed ? 'Réussi' : state.data?.required ? 'Obligatoire avant ta première signature' : 'Face à un commerçant joué par une IA'}</span>
+        </span>
+        <span className={`mission-check${passed ? ' is-checked' : ''}`} aria-hidden="true">
+          <Icon name="check" />
+        </span>
+      </Link>
+    </li>
   );
 }
 

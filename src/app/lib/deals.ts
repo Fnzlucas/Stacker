@@ -322,6 +322,7 @@ export class DealError extends Error {
 const MESSAGES: Record<string, string> = {
   onboarding_required: 'Termine ton inscription pour faire signer un client.',
   subscription_required: 'Active ton abonnement Stacker pour faire signer un client.',
+  training_required: 'Réussis d’abord une simulation d’appel dans Entraînement pour faire signer un client.',
   offer_unavailable: 'Cette offre n’est plus disponible. Choisis-en une autre.',
   invalid_quantity: 'Quantité invalide pour cette offre.',
   invalid_siret: 'SIRET invalide.',

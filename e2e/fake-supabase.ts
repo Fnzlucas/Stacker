@@ -24,6 +24,7 @@ import { FakeAdmin } from './fake-admin';
 import { FakeBilling } from './fake-billing';
 import { FakeDeals } from './fake-deals';
 import { FakeProspects, type StackerInfo } from './fake-prospects';
+import { FakeRoleplay } from './fake-roleplay';
 
 export const FAKE_SUPABASE = 'https://e2e-stacker.supabase.co';
 
@@ -133,6 +134,11 @@ export class FakeSupabase {
   );
   /** Formation (lot 9) : modules terminés par stacker. */
   formation = new Map<string, string[]>();
+  /** Entraînement à l'appel (lot 10). */
+  roleplay = new FakeRoleplay(
+    () => this.id(),
+    () => this.admin.flags['roleplay_required'] === true,
+  );
   /** Espace admin (lot 8). */
   admin = new FakeAdmin(this.deals, this.billing, {
     name: (id) => {
@@ -278,7 +284,7 @@ export class FakeSupabase {
       return true;
     }
     const path = url.pathname;
-    const functions = ['/functions/v1/account-delete', '/functions/v1/prospects-search', '/functions/v1/opposition-register', '/functions/v1/mail-connect', '/functions/v1/billing-checkout'];
+    const functions = ['/functions/v1/account-delete', '/functions/v1/prospects-search', '/functions/v1/opposition-register', '/functions/v1/mail-connect', '/functions/v1/billing-checkout', '/functions/v1/roleplay'];
     if (!path.startsWith('/auth/v1/') && !path.startsWith('/rest/v1/') && !functions.includes(path)) return false;
     let body: unknown = null;
     try {
@@ -307,7 +313,7 @@ export class FakeSupabase {
   respond(method: string, rawUrl: string, headers: Record<string, string>, body: unknown): [number, unknown] | null {
     const url = new URL(rawUrl);
     const path = url.pathname;
-    const functions = ['/functions/v1/account-delete', '/functions/v1/prospects-search', '/functions/v1/opposition-register', '/functions/v1/mail-connect', '/functions/v1/billing-checkout'];
+    const functions = ['/functions/v1/account-delete', '/functions/v1/prospects-search', '/functions/v1/opposition-register', '/functions/v1/mail-connect', '/functions/v1/billing-checkout', '/functions/v1/roleplay'];
     if (!path.startsWith('/auth/v1/') && !path.startsWith('/rest/v1/') && !functions.includes(path)) return null;
     this.calls.push({ method, path: `${path}${url.search}`, body, headers });
     return this.dispatch(method, path, url.searchParams, (body ?? {}) as Record<string, unknown>, headers);
@@ -510,6 +516,8 @@ export class FakeSupabase {
         return this.prospects.opposition(b);
       case 'POST /functions/v1/mail-connect':
         return this.prospects.mailConnect(b, this.stacker(headers), headers['origin'] ?? 'http://localhost:4174');
+      case 'POST /functions/v1/roleplay':
+        return this.roleplay.call(b, this.stacker(headers));
       case 'POST /rest/v1/rpc/my_formation': {
         const st = this.stacker(headers);
         if (!st) return this.pgError(401, '42501', 'unauthorized');
@@ -526,7 +534,9 @@ export class FakeSupabase {
       }
       default: {
         const rpc = /^\/rest\/v1\/rpc\/([a-z_]+)$/.exec(path);
-        const handled = method === 'POST' && rpc?.[1] ? (this.admin.rpc(rpc[1], b, this.stacker(headers)) ?? this.billing.rpc(rpc[1], b, this.stacker(headers)) ?? this.prospects.rpc(rpc[1], b, this.stacker(headers)) ?? this.deals.rpc(rpc[1], b, this.stacker(headers))) : null;
+        const st = this.stacker(headers);
+        if (method === 'POST' && rpc?.[1] === 'deal_sign' && st && this.roleplay.blocksSigning(st.id)) return this.pgError(403, '42501', 'training_required');
+        const handled = method === 'POST' && rpc?.[1] ? (this.roleplay.rpc(rpc[1], b, st) ?? this.admin.rpc(rpc[1], b, this.stacker(headers)) ?? this.billing.rpc(rpc[1], b, this.stacker(headers)) ?? this.prospects.rpc(rpc[1], b, this.stacker(headers)) ?? this.deals.rpc(rpc[1], b, this.stacker(headers))) : null;
         if (handled) return handled;
         return this.pgError(404, 'PGRST202', `route inconnue du faux Supabase : ${method} ${path}`);
       }

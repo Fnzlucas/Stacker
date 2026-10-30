@@ -204,3 +204,10 @@ enabled = true
 verify_jwt = false
 import_map = "./functions/email-run/deno.json"
 entrypoint = "./functions/email-run/index.ts"
+
+# Lot 10 : entraînement à l'appel face à une IA (stacker connecté).
+[functions.roleplay]
+enabled = true
+verify_jwt = true
+import_map = "./functions/roleplay/deno.json"
+entrypoint = "./functions/roleplay/index.ts"

@@ -104,6 +104,7 @@ export type AdminStacker = z.infer<typeof adminStackerSchema>;
 /** Interrupteurs modifiables depuis l'admin, avec leur explication. */
 export const FLAGS: { key: string; label: string; help: string; danger?: boolean }[] = [
   { key: 'billing_required', label: 'Abonnement obligatoire', help: 'Sans abonnement à jour : plus de réservation, recherche, campagne ni signature.', danger: true },
+  { key: 'roleplay_required', label: 'Entraînement obligatoire', help: 'Une simulation d’appel réussie est exigée avant la première signature.', danger: true },
   { key: 'prospects_enabled', label: 'Prospection', help: 'Recherche et réservation de prospects.' },
   { key: 'campaigns_enabled', label: 'Campagnes d’emails', help: 'Envoi automatique des emails de prospection.' },
   { key: 'leads_enrich_enabled', label: 'Moteur de recherche d’emails', help: 'Recherche des coordonnées des entreprises (Google Maps, sites).' },

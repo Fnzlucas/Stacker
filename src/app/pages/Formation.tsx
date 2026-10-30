@@ -2,10 +2,12 @@ import type { ReactElement } from 'react';
 import { useSearchParams } from 'react-router';
 import { Icon } from '../../components/Icon';
 import { FormAlert } from '../components/Form';
+import { Link } from 'react-router';
 import { AppBar, usePageTitle } from '../components/Layouts';
 import { ProgressBar } from '../components/Ui';
 import { FORMATION, formationProgress, type FormationModule, type FormationSection } from '../lib/formation';
 import { useFormation, useSetModuleDone } from '../lib/formationQueries';
+import { PATHS } from '../paths';
 
 /** Formation : 13 modules, scripts d’appel, objections et exercices. */
 export function FormationPage(): ReactElement {
@@ -28,6 +30,16 @@ export function FormationPage(): ReactElement {
           {progress.next ? `À suivre : ${progress.next.title} (${String(progress.next.minutes)} min).` : 'Garde les scripts sous la main : ils restent ici.'}
         </p>
       </section>
+      <Link className="card training-cta" to={PATHS.training}>
+        <span className="avatar avatar-orange" aria-hidden="true">
+          <Icon name="mic" />
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="list-title">Entraîne-toi à voix haute</span>
+          <span className="list-sub">Appelle un commerçant joué par une IA, puis reçois ta note et des conseils.</span>
+        </span>
+        <Icon name="chevron-right" />
+      </Link>
       {formation.isError ? <FormAlert>La progression n’a pas pu être chargée. Tu peux quand même lire les modules.</FormAlert> : null}
       <ol className="formation-list">
         {FORMATION.map((m, i) => (

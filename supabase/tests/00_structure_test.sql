@@ -97,12 +97,12 @@ select is(
    from pg_proc p join pg_namespace n on n.oid = p.pronamespace
    where n.nspname = 'public' and has_function_privilege('authenticated', p.oid, 'EXECUTE')),
   array['accept_prospecting_rules', 'admin_deal_set_status', 'admin_deals', 'admin_offer_set_active', 'admin_offers', 'admin_overview', 'admin_payout_mark', 'admin_payouts', 'admin_set_flag', 'admin_stackers', 'billing_set_auto_renew', 'campaign_set_status', 'campaign_start', 'complete_onboarding', 'deal_catalog', 'deal_detail', 'deal_preview', 'deal_sign',
-        'export_my_data', 'formation_set_done', 'is_admin', 'mail_disconnect', 'my_billing', 'my_campaign', 'my_deals', 'my_earnings', 'my_formation', 'my_prospect_quotas', 'my_prospects', 'payout_request', 'payout_set_account',
+        'export_my_data', 'formation_set_done', 'is_admin', 'mail_disconnect', 'my_billing', 'my_campaign', 'my_deals', 'my_earnings', 'my_formation', 'my_prospect_quotas', 'my_prospects', 'my_roleplay', 'payout_request', 'payout_set_account',
         'prospect_add_note', 'prospect_claim',
         'prospect_delete_note', 'prospect_detail', 'prospect_extend', 'prospect_log_call', 'prospect_mark_email_sent',
-        'prospect_prepare_email', 'prospect_release', 'prospect_set_contact', 'prospect_set_status', 'siret_is_valid',
+        'prospect_prepare_email', 'prospect_release', 'prospect_set_contact', 'prospect_set_status', 'roleplay_detail', 'siret_is_valid',
         'waitlist_count']::text[],
-  'authenticated n''exécute que les 44 fonctions prévues'
+  'authenticated n''exécute que les 46 fonctions prévues'
 );
 
 select is(
@@ -113,8 +113,8 @@ select is(
         'deal_mollie_cancelled', 'deal_mollie_cancels', 'deal_mollie_failed', 'deal_mollie_pending', 'deal_mollie_progress', 'deal_payment_failed_from_mollie', 'deal_payment_from_mollie', 'deal_payment_reversed', 'deal_record_payment', 'deal_set_status', 'email_next', 'email_result', 'email_schedule_prenotifications', 'enrich_mark_seen', 'enrich_query_begin', 'enrich_query_done', 'enrich_save_contact', 'enrich_targets', 'enrich_unseen',
         'mail_account_error', 'mail_account_save', 'opposition_register_form', 'opposition_register_token', 'payout_mark', 'prospect_expire_due',
         'prospect_jobs_purge', 'prospect_mark_signed', 'prospects_annotate', 'prospects_cache_get', 'prospects_cache_put',
-        'prospects_search_begin', 'rate_limit_hit', 'siret_is_valid', 'waitlist_count', 'waitlist_erase', 'waitlist_join']::text[],
-  'service_role exécute exactement les 47 fonctions prévues (aucune fonction de trigger)'
+        'prospects_search_begin', 'rate_limit_hit', 'roleplay_append', 'roleplay_finish', 'roleplay_get', 'roleplay_start', 'siret_is_valid', 'waitlist_count', 'waitlist_erase', 'waitlist_join']::text[],
+  'service_role exécute exactement les 51 fonctions prévues (aucune fonction de trigger)'
 );
 
 select is(

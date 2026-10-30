@@ -31,7 +31,7 @@ Envoie-moi le médiateur choisi et la région, et je les intègre.
 ### 3. Supabase (projet de production)
 
 - [ ] Extensions **pg_cron** et **pg_net** activées.
-- [ ] Base à jour : `supabase db push`. Toutes les migrations jusqu'à `20261016090000_launch.sql`.
+- [ ] Base à jour : `supabase db push`. Toutes les migrations jusqu'à `20261030090000_roleplay.sql`.
 - [ ] Secrets des Edge Functions (Project Settings → Edge Functions → Secrets) :
 
 | Secret | Pour quoi |
@@ -47,11 +47,13 @@ Envoie-moi le médiateur choisi et la région, et je les intègre.
 | `GOOGLE_PLACES_SERVER_KEY` | moteur de recherche d'emails (**une nouvelle clé**, jamais l'ancienne clé Huntlist) |
 | `BREVO_API_KEY`, `BREVO_SENDER_EMAIL`, `BREVO_SENDER_NAME`, `CONTACT_EMAIL` | emails automatiques |
 | `MOLLIE_API_KEY` | `test_…` pour les essais, `live_…` le jour J |
+| `ANTHROPIC_API_KEY` | l'IA de l'entraînement à l'appel (console.anthropic.com → API Keys) |
+| `ROLEPLAY_MODEL` | facultatif : modèle utilisé (par défaut `claude-haiku-5-5`, rapide et économique) |
 
 - [ ] Déployer toutes les fonctions :
 
 ```bash
-supabase functions deploy waitlist-join account-delete prospects-search opposition-register leads-enrich mail-connect mail-callback campaign-run billing-checkout mollie-webhook mollie-run email-run
+supabase functions deploy waitlist-join account-delete prospects-search opposition-register leads-enrich mail-connect mail-callback campaign-run billing-checkout mollie-webhook mollie-run email-run roleplay
 ```
 
 - [ ] Tâches planifiées. 4 sont à créer à la main (SQL dans les deux docs) : `campaign-run`, `leads-enrich`, `mollie-run`, `email-run`. Les autres sont créées par les migrations.
@@ -75,6 +77,7 @@ supabase functions deploy waitlist-join account-delete prospects-search oppositi
 - [ ] Lancer `mollie-run` à la main. Le client, le mandat et l'abonnement apparaissent chez Mollie (test).
 - [ ] Admin : vue d'ensemble, faire un virement de test (« Marquer versé »). L'email au stacker doit arriver.
 - [ ] Résilier l'abonnement de test. L'email de résiliation doit arriver.
+- [ ] Entraînement : appeler un commerçant (au micro, sur ton téléphone), raccrocher, vérifier le bilan. Le coût de chaque appel est visible dans la console Anthropic.
 
 ---
 
@@ -92,7 +95,7 @@ git push origin origin/refonte:main --force-with-lease=main:origin/main
    Vercel redéploie la production tout seul. Si le build échoue, c'est qu'il reste un champ « À COMPLÉTER » (étape 1).
 
 2. [ ] Secret `MOLLIE_API_KEY` : remplacer la clé `test_…` par la clé `live_…`, puis redéployer `billing-checkout mollie-webhook mollie-run`.
-3. [ ] Admin → Réglages : activer **Abonnement obligatoire**.
+3. [ ] Admin → Réglages : activer **Abonnement obligatoire** et **Entraînement obligatoire** (une simulation d'appel réussie avant la première signature).
 4. [ ] Admin → Offres : ne laisser actives que les offres ouvertes au lancement.
 5. [ ] Contrôle rapide en production : inscription, page Abonnement, recherche de prospects. Tu peux payer ton propre abonnement pour vérifier toute la chaîne.
 6. [ ] Prévenir la liste d'attente.

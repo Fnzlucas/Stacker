@@ -8,6 +8,7 @@ export const PATHS = {
   billing: '/app/abonnement',
   admin: '/app/admin',
   formation: '/app/formation',
+  training: '/app/entrainement',
   profile: '/app/profil',
   onboarding: '/app/bienvenue',
   welcome: '/app/demarrer',

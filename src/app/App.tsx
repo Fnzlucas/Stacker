@@ -32,6 +32,7 @@ const DealNewPage = lazy(() => import('./pages/DealNew').then((m) => ({ default:
 const DealFichePage = lazy(() => import('./pages/DealFiche').then((m) => ({ default: m.DealFichePage })));
 const GainsPage = lazy(() => import('./pages/Gains').then((m) => ({ default: m.GainsPage })));
 const FormationPage = lazy(() => import('./pages/Formation').then((m) => ({ default: m.FormationPage })));
+const EntrainementPage = lazy(() => import('./pages/Entrainement').then((m) => ({ default: m.EntrainementPage })));
 const AdminPage = lazy(() => import('./pages/Admin').then((m) => ({ default: m.AdminPage })));
 const AbonnementPage = lazy(() => import('./pages/Abonnement').then((m) => ({ default: m.AbonnementPage })));
 
@@ -71,6 +72,7 @@ export const routes: RouteObject[] = [
           { path: PATHS.billing, element: page(<AbonnementPage />) },
           { path: PATHS.admin, element: page(<AdminPage />) },
           { path: PATHS.formation, element: page(<FormationPage />) },
+          { path: PATHS.training, element: page(<EntrainementPage />) },
           { path: PATHS.profile, element: page(<ProfilPage />) },
         ],
       },
@@ -112,6 +114,7 @@ const PREFETCH = [
   () => import('./pages/Profil'),
   () => import('./pages/Abonnement'),
   () => import('./pages/Formation'),
+  () => import('./pages/Entrainement'),
 ];
 
 export function App({ router }: { router?: ReturnType<typeof createBrowserRouter> } = {}): ReactElement {
