@@ -76,6 +76,10 @@ test.describe('entraînement', () => {
     await expect(page.getByText('« Si je comprends bien, des clients viennent pour rien le dimanche ? »')).toBeVisible();
     await expectAccessible(page, 'bilan');
     if (process.env['DEMO']) await page.screenshot({ path: `qa/entrainement-bilan-${test.info().project.name}.png`, fullPage: true });
+    if (process.env['DEMO']) {
+      await page.getByRole('heading', { name: 'Le détail' }).scrollIntoViewIfNeeded();
+      await page.screenshot({ path: `qa/entrainement-bilan-ecran-${test.info().project.name}.png` });
+    }
     expect(supabase.fake.roleplay.passed(user.id)).toBe(true);
 
     // Historique et relecture.
