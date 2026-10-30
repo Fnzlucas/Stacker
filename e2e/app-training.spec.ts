@@ -45,10 +45,15 @@ test.describe('entraînement', () => {
     await expect(page.getByRole('listitem').filter({ hasText: 'Boulangerie Martin' })).toContainText('Aucune photo du magasin sur la fiche.');
     await expectAccessible(page, 'entraînement');
     await expectNoHorizontalOverflow(page, 'entraînement');
-    if (process.env['DEMO']) await page.screenshot({ path: `qa/entrainement-choix-${test.info().project.name}.png`, fullPage: true });
+    if (process.env['DEMO']) await page.evaluate(() => window.scrollTo(0, 0)).then(() => page.waitForTimeout(900));
+    if (process.env['DEMO']) await page.screenshot({ path: `qa/entrainement-choix-${test.info().project.name}.png` });
 
     // Un premier appel trop court : pas réussi.
     await page.getByRole('button', { name: 'Appeler Sophie' }).click();
+    if (process.env['DEMO']) {
+      await page.waitForTimeout(700);
+      await page.screenshot({ path: `qa/entrainement-sonnerie-${test.info().project.name}.png` });
+    }
     await expect(page.getByRole('log', { name: 'Conversation' }).getByText('Boulangerie Martin, bonjour !')).toBeVisible();
     await say(page, 'Bonjour, Inès Martin, apporteuse d’affaires indépendante pour Stacker.', 'Oui, c’est pour quoi ?');
     await page.getByRole('button', { name: 'Raccrocher et voir mon bilan' }).click();
@@ -66,7 +71,7 @@ test.describe('entraînement', () => {
     await say(page, 'Non. Je passe jeudi à 10 h pour vous montrer ?', 'D’accord, passez jeudi à 10 h.');
     await expect(page.getByRole('status').filter({ hasText: 'À toi de parler' })).toBeVisible();
     await expectNoHorizontalOverflow(page, 'appel');
-    if (process.env['DEMO']) await page.screenshot({ path: `qa/entrainement-appel-${test.info().project.name}.png`, fullPage: true });
+    if (process.env['DEMO']) await page.screenshot({ path: `qa/entrainement-appel-${test.info().project.name}.png` });
     await page.getByRole('button', { name: 'Raccrocher et voir mon bilan' }).click();
 
     await expect(page.getByRole('heading', { name: '80/100' })).toBeVisible();
@@ -75,8 +80,9 @@ test.describe('entraînement', () => {
     await expect(page.getByText('Présentation de l’offre')).toBeVisible();
     await expect(page.getByText('« Si je comprends bien, des clients viennent pour rien le dimanche ? »')).toBeVisible();
     await expectAccessible(page, 'bilan');
-    if (process.env['DEMO']) await page.screenshot({ path: `qa/entrainement-bilan-${test.info().project.name}.png`, fullPage: true });
     if (process.env['DEMO']) {
+      await page.waitForTimeout(1600);
+      await page.screenshot({ path: `qa/entrainement-bilan-${test.info().project.name}.png` });
       await page.getByRole('heading', { name: 'Le détail' }).scrollIntoViewIfNeeded();
       await page.screenshot({ path: `qa/entrainement-bilan-ecran-${test.info().project.name}.png` });
     }
