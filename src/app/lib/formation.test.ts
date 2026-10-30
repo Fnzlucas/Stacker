@@ -28,7 +28,7 @@ describe('contenu de la formation', () => {
 describe('progression', () => {
   it('compte, pourcentage, module suivant', () => {
     expect(formationProgress([])).toMatchObject({ done: 0, total: FORMATION.length, percent: 0, next: { id: 'bases' } });
-    expect(formationProgress(['bases', 'inconnu'])).toMatchObject({ done: 1, next: { id: 'regles' } });
+    expect(formationProgress(['bases', 'inconnu'])).toMatchObject({ done: 1, next: { id: 'mental' } });
     expect(formationProgress(FORMATION_IDS)).toMatchObject({ done: FORMATION.length, percent: 100, next: null });
   });
   it('appels serveur et erreurs', async () => {

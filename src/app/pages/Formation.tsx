@@ -7,7 +7,7 @@ import { ProgressBar } from '../components/Ui';
 import { FORMATION, formationProgress, type FormationModule, type FormationSection } from '../lib/formation';
 import { useFormation, useSetModuleDone } from '../lib/formationQueries';
 
-/** Formation : 8 modules courts, scripts d'appel et réponses aux objections. */
+/** Formation : 13 modules, scripts d’appel, objections et exercices. */
 export function FormationPage(): ReactElement {
   usePageTitle('Formation');
   const [params, setParams] = useSearchParams();

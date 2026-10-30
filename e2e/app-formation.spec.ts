@@ -16,13 +16,13 @@ test('formation : progression, scripts, accès depuis l’accueil', async ({ pag
 
   await page.getByRole('link', { name: /Suivre la formation/ }).click();
   await expect(page.getByRole('heading', { level: 1, name: 'Formation' })).toBeVisible();
-  await expect(page.getByText('0 module sur 8')).toBeVisible();
+  await expect(page.getByText('0 module sur 13')).toBeVisible();
   await expectAccessible(page, 'formation');
 
   await page.getByText('Comment Stacker fonctionne', { exact: true }).click();
   await expect(page.getByText('Aucun revenu n’est garanti', { exact: false })).toBeVisible();
   await page.getByRole('button', { name: 'J’ai terminé ce module' }).click();
-  await expect(page.getByText('1 module sur 8')).toBeVisible();
+  await expect(page.getByText('1 module sur 13')).toBeVisible();
   expect(supabase.fake.formation.get(user.id)).toEqual(['bases']);
 
   await page.goto('/app/formation?module=objections');
@@ -33,8 +33,8 @@ test('formation : progression, scripts, accès depuis l’accueil', async ({ pag
   await expect(page.getByText('Les 5 temps')).toBeVisible();
   // Capture pour relecture visuelle, à la demande : DEMO=1.
   if (process.env['DEMO']) await page.screenshot({ path: `qa/formation-${test.info().project.name}.png`, fullPage: true });
-  await expect(page.getByText('1 module sur 8')).toBeVisible();
+  await expect(page.getByText('1 module sur 13')).toBeVisible();
 
   await page.goto('/app');
-  await expect(page.getByText('1 / 8 modules · scripts d’appel inclus')).toBeVisible();
+  await expect(page.getByText('1 / 13 modules · scripts d’appel inclus')).toBeVisible();
 });
