@@ -16,6 +16,9 @@ import {
   fromB64url,
   refreshAccessToken,
   sendMail,
+  formatAddress,
+  DAILY_PAUSE_SECONDS,
+  RATE_PAUSE_SECONDS,
   signState,
   unsubscribeUrlFrom,
   verifyState,
@@ -134,8 +137,45 @@ describe('envoi', () => {
     expect(calls[0]?.url).toBe(GMAIL_SEND);
     expect(calls[1]).toMatchObject({ url: MS_SEND, body: { message: { subject: mail.subject, toRecipients: [{ emailAddress: { address: mail.to } }] }, saveToSentItems: true } });
     await expect(sendMail(async () => json(401, {}), 'gmail', 'acc', mail, 'm')).rejects.toMatchObject({ revoked: true });
-    await expect(sendMail(async () => json(429, {}), 'outlook', 'acc', mail, 'm')).rejects.toEqual(new SendError('http_429', false));
+    await expect(sendMail(async () => json(429, {}), 'outlook', 'acc', mail, 'm')).rejects.toEqual(new SendError('rate_limited', false, RATE_PAUSE_SECONDS));
+    await expect(sendMail(async () => json(500, {}), 'gmail', 'acc', mail, 'm')).rejects.toEqual(new SendError('http_500', false));
     expect(await sendMail(async () => new Response('pas json', { status: 200 }), 'gmail', 'acc', mail, 'm3')).toBe('m3');
+  });
+
+  it('limites du fournisseur : pause, jamais « boîte à reconnecter »', async () => {
+    const gmail403 = (reason: string) => json(403, { error: { code: 403, errors: [{ reason, domain: 'usageLimits' }], status: 'PERMISSION_DENIED' } });
+    await expect(sendMail(async () => gmail403('userRateLimitExceeded'), 'gmail', 'acc', mail, 'm')).rejects.toMatchObject({ revoked: false, retryAfterSeconds: RATE_PAUSE_SECONDS });
+    await expect(sendMail(async () => gmail403('dailyLimitExceeded'), 'gmail', 'acc', mail, 'm')).rejects.toMatchObject({ code: 'daily_limit', revoked: false, retryAfterSeconds: DAILY_PAUSE_SECONDS });
+    await expect(sendMail(async () => json(429, { error: { code: 429, status: 'RESOURCE_EXHAUSTED' } }), 'gmail', 'acc', mail, 'm')).rejects.toMatchObject({ revoked: false });
+    const retry = new Response('{}', { status: 429, headers: { 'retry-after': '120' } });
+    await expect(sendMail(async () => retry, 'outlook', 'acc', mail, 'm')).rejects.toMatchObject({ retryAfterSeconds: 120 });
+    const soon = new Response('{}', { status: 429, headers: { 'retry-after': '5' } });
+    await expect(sendMail(async () => soon, 'outlook', 'acc', mail, 'm')).rejects.toMatchObject({ retryAfterSeconds: 60 });
+    const date = new Response('{}', { status: 429, headers: { 'retry-after': new Date(Date.now() + 600_000).toUTCString() } });
+    const err = (await sendMail(async () => date, 'outlook', 'acc', mail, 'm').catch((e: unknown) => e)) as SendError;
+    expect(err.retryAfterSeconds).toBeGreaterThan(500);
+    const junk = new Response('{}', { status: 429, headers: { 'retry-after': 'bientôt' } });
+    await expect(sendMail(async () => junk, 'outlook', 'acc', mail, 'm')).rejects.toMatchObject({ retryAfterSeconds: RATE_PAUSE_SECONDS });
+    await expect(sendMail(async () => json(403, { error: { code: 'ErrorExceededMessageLimit', message: 'x' } }), 'outlook', 'acc', mail, 'm')).rejects.toMatchObject({ code: 'daily_limit' });
+    await expect(sendMail(async () => json(429, { error: { code: 'ApplicationThrottled' } }), 'outlook', 'acc', mail, 'm')).rejects.toMatchObject({ code: 'rate_limited' });
+  });
+
+  it('accès réellement refusé : boîte à reconnecter', async () => {
+    await expect(sendMail(async () => json(403, { error: { code: 403, errors: [{ reason: 'insufficientPermissions' }] } }), 'gmail', 'acc', mail, 'm')).rejects.toMatchObject({ revoked: true, retryAfterSeconds: null });
+    await expect(sendMail(async () => json(403, { error: { code: 'ErrorAccessDenied' } }), 'outlook', 'acc', mail, 'm')).rejects.toMatchObject({ revoked: true });
+    await expect(sendMail(async () => new Response('html', { status: 403 }), 'gmail', 'acc', mail, 'm')).rejects.toMatchObject({ revoked: true });
+  });
+
+  it('nom affiché dans From, sans injection ; gros message encodé sans dépassement de pile', () => {
+    expect(formatAddress('ines@gmail.com', 'Inès Martin')).toBe(`=?UTF-8?B?${Buffer.from('Inès Martin').toString('base64')}?= <ines@gmail.com>`);
+    expect(formatAddress('bob@outlook.fr', 'Bob "Le" Durand')).toBe('"Bob Le Durand" <bob@outlook.fr>');
+    expect(formatAddress('bob@outlook.fr', '  ')).toBe('bob@outlook.fr');
+    expect(formatAddress('bob@outlook.fr', null)).toBe('bob@outlook.fr');
+    expect(formatAddress('bob@outlook.fr', 'Bob\r\nBcc: x@y.fr <z>')).toBe('"Bob Bcc: x@y.fr z" <bob@outlook.fr>');
+    expect(buildMime({ ...mail, fromName: 'Inès Martin' }, 'id')).toContain('From: =?UTF-8?B?');
+    expect(buildMime(mail, 'id')).toContain('From: ines@gmail.com\r\n');
+    const big = new Uint8Array(500_000).fill(65);
+    expect(b64url(big)).toHaveLength(Math.ceil((500_000 * 4) / 3));
   });
 
   it('lien de désinscription extrait du pied', () => {

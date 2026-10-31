@@ -136,8 +136,19 @@ const PUBLIC_PROVIDERS = new Set(['gmail.com', 'hotmail.com', 'hotmail.fr', 'out
 const NOISE_DOMAINS = /(^|\.)(example\.(com|fr)|domain\.(com|fr)|email\.(com|fr)|sentry\.io|wixpress\.com|sentry-next\.wixpress\.com|godaddy\.com|ovh\.(net|com)|ionos\.fr|o2switch\.fr|wordpress\.(com|org)|jimdo\.com|squarespace\.com|google\.com|facebook\.com)$/;
 const PRIORITY = ['contact', 'devis', 'info', 'infos', 'accueil', 'bonjour', 'hello', 'commercial'];
 
+/** Adresse masquée par Cloudflare (« email protection », très courant) : XOR avec le premier octet. */
+export function decodeCfEmail(hex: string): string {
+  if (!/^(?:[0-9a-f]{2}){2,128}$/i.test(hex)) return '';
+  const key = Number.parseInt(hex.slice(0, 2), 16);
+  let out = '';
+  for (let i = 2; i < hex.length; i += 2) out += String.fromCharCode(Number.parseInt(hex.slice(i, i + 2), 16) ^ key);
+  return out;
+}
+
 export function decodeObfuscation(html: string): string {
   return html
+    .replace(/data-cfemail=["']([0-9a-f]+)["']/gi, (_, h: string) => ` ${decodeCfEmail(h)} `)
+    .replace(/\/cdn-cgi\/l\/email-protection#([0-9a-f]+)/gi, (_, h: string) => ` ${decodeCfEmail(h)} `)
     .replace(/&#(\d+);/g, (_, n: string) => String.fromCharCode(Number(n)))
     .replace(/&#x([0-9a-f]+);/gi, (_, n: string) => String.fromCharCode(Number.parseInt(n, 16)))
     .replace(/&commat;|&#64;/gi, '@')
@@ -165,6 +176,12 @@ export function extractEmails(html: string, siteHost: string, businessName: stri
     const [local = '', domain = ''] = email.split('@');
     if (NOISE_DOMAINS.test(domain) || /\.(png|jpe?g|gif|webp|svg)$/.test(domain)) return false;
     if (domain === site || domain.endsWith(`.${site}`) || site.endsWith(`.${domain}`)) return GENERIC_LOCAL.test(local);
+    // Site hébergé ailleurs (Wix, Pages Jaunes…) ou autre nom de domaine : adresse générique d'un domaine au nom de l'entreprise.
+    if (!PUBLIC_PROVIDERS.has(domain) && GENERIC_LOCAL.test(local)) {
+      const label = domain.split('.').slice(0, -1).join('').replace(/-/g, '');
+      // Deux mots du nom au moins (un seul s'il n'y en a qu'un) : « garage » seul ne suffit pas.
+      return tokens.length > 0 && tokens.filter((t) => label.includes(t)).length >= Math.min(2, tokens.length);
+    }
     // Boîte grand public utilisée par l'entreprise : acceptée si elle porte son nom et n'a pas la forme prenom.nom.
     if (PUBLIC_PROVIDERS.has(domain)) return !/^[a-z]+[._-][a-z]+$/.test(local) ? tokens.some((t) => local.includes(t)) || GENERIC_LOCAL.test(local) : tokens.some((t) => local.includes(t));
     return false;
@@ -228,7 +245,8 @@ export async function scrapeSite(fetchFn: FetchLike, website: string, businessNa
   let disallows: string[] = [];
   try {
     if (await hostIsPublic(home, resolve)) {
-      const res = await fetchFn(new URL('/robots.txt', home).toString(), { headers: { 'user-agent': USER_AGENT }, redirect: 'follow', signal: AbortSignal.timeout(4000) });
+      // Pas de redirection suivie : aucune requête ne doit pouvoir être déviée vers un hôte interne.
+      const res = await fetchFn(new URL('/robots.txt', home).toString(), { headers: { 'user-agent': USER_AGENT }, redirect: 'manual', signal: AbortSignal.timeout(4000) });
       if (res.ok) disallows = robotsDisallows((await res.text()).slice(0, 50_000));
     }
   } catch {

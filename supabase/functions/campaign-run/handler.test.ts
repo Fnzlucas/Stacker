@@ -98,12 +98,12 @@ describe('campaign-run', () => {
   async function setup(opts: { refresh?: Response; send?: Response; batch?: unknown } = {}) {
     const enc = await encryptToken(KEY, '1//refresh');
     const results: Record<string, unknown>[] = [];
-    const sends: { url: string; auth: string | null }[] = [];
+    const sends: { url: string; auth: string | null; body: string }[] = [];
     const logs: string[] = [];
     const fetchFn = async (url: string, init?: RequestInit) => {
       if (url.endsWith('/rest/v1/rpc/campaign_next_messages'))
         return json(200, opts.batch ?? [
-          { id: '22222222-2222-4222-8222-222222222222', stacker_id: USER, provider: 'gmail', from_email: 'ines@gmail.com', token_enc: enc, recipient: 'contact@plomberie.fr', subject: 'Objet', text: `Bonjour\n—\nPour ne plus être contacté par Stacker : https://s.fr/opposition?t=${'b'.repeat(48)}` },
+          { id: '22222222-2222-4222-8222-222222222222', stacker_id: USER, provider: 'gmail', from_email: 'ines@gmail.com', from_name: 'Inès Martin', token_enc: enc, recipient: 'contact@plomberie.fr', subject: 'Objet', text: `Bonjour\n—\nPour ne plus être contacté par Stacker : https://s.fr/opposition?t=${'b'.repeat(48)}` },
           { id: '33333333-3333-4333-8333-333333333333', stacker_id: '44444444-4444-4444-8444-444444444444', provider: 'outlook', from_email: 'bob@outlook.fr', token_enc: enc, recipient: 'contact@garage.fr', subject: 'Objet', text: 'Bonjour' },
         ]);
       if (url.endsWith('/rest/v1/rpc/campaign_message_result')) {
@@ -112,7 +112,7 @@ describe('campaign-run', () => {
       }
       if (url === GOOGLE_TOKEN || url === MS_TOKEN) return opts.refresh?.clone() ?? json(200, { access_token: 'acc' });
       if (url === GMAIL_SEND || url === MS_SEND) {
-        sends.push({ url, auth: new Headers(init?.headers).get('authorization') });
+        sends.push({ url, auth: new Headers(init?.headers).get('authorization'), body: (init?.body as string | undefined) ?? '' });
         return opts.send?.clone() ?? (url === GMAIL_SEND ? json(200, { id: 'g-1' }) : new Response(null, { status: 202 }));
       }
       return json(404, {});
@@ -124,12 +124,14 @@ describe('campaign-run', () => {
 
   it('envoie depuis la boîte de chaque stacker et enregistre le résultat', async () => {
     const { handle, req, results, sends, logs } = await setup();
-    expect(await (await handle(req())).json()).toEqual({ ok: true, sent: 2, failed: 0, revoked: 0 });
+    expect(await (await handle(req())).json()).toEqual({ ok: true, sent: 2, failed: 0, revoked: 0, throttled: 0 });
     expect(sends.map((s) => s.url).sort()).toEqual([GMAIL_SEND, MS_SEND].sort());
     expect(sends.every((s) => s.auth === 'Bearer acc')).toBe(true);
     expect(results.map((r) => r['p_ok'])).toEqual([true, true]);
     expect(results.find((r) => r['p_id'] === '22222222-2222-4222-8222-222222222222')?.['p_provider_id']).toBe('g-1');
     expect(logs.join()).not.toMatch(/plomberie|garage|ines|bob/);
+    const raw = (JSON.parse(sends.find((s) => s.url === GMAIL_SEND)!.body) as { raw: string }).raw;
+    expect(Buffer.from(raw, 'base64url').toString('utf8')).toContain('From: =?UTF-8?B?');
   });
 
   it('jeton révoqué : boîte mise en erreur (et non échec d’envoi)', async () => {
@@ -138,10 +140,16 @@ describe('campaign-run', () => {
     expect(results.every((r) => r['p_auth_error'] === true && r['p_error'] === 'invalid_grant')).toBe(true);
   });
 
-  it('refus temporaire du fournisseur : échec ordinaire (nouvel essai plus tard)', async () => {
+  it('limite d’envoi du fournisseur : boîte en pause, aucun échec compté', async () => {
     const { handle, req, results } = await setup({ send: json(429, {}) });
-    expect(await (await handle(req())).json()).toMatchObject({ failed: 2 });
-    expect(results.every((r) => r['p_ok'] === false && r['p_auth_error'] === false)).toBe(true);
+    expect(await (await handle(req())).json()).toMatchObject({ failed: 0, revoked: 0, throttled: 2 });
+    expect(results.every((r) => r['p_ok'] === false && r['p_auth_error'] === false && r['p_retry_after_seconds'] === 900)).toBe(true);
+  });
+
+  it('erreur serveur du fournisseur : échec ordinaire (nouvel essai plus tard)', async () => {
+    const { handle, req, results } = await setup({ send: json(503, {}) });
+    expect(await (await handle(req())).json()).toMatchObject({ failed: 2, throttled: 0 });
+    expect(results.every((r) => r['p_ok'] === false && r['p_auth_error'] === false && r['p_retry_after_seconds'] === null)).toBe(true);
   });
 
   it('accès : secret obligatoire ; file illisible ⇒ 500', async () => {

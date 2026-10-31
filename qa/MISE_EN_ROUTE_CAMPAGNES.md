@@ -70,7 +70,7 @@ $$);
 
 | Réglage | Défaut | Rôle |
 |---|---|---|
-| `campaign_max_per_day` | 200 | Plafond d'emails par stacker et par jour |
+| `campaign_max_per_day` | 50 | Plafond d'emails par stacker et par jour (au-delà, risque de blocage des boîtes Gmail personnelles) |
 | `places_monthly_budget_usd` | 50 | Dépense Google Maps maximale par mois (coupe-circuit) |
 | `campaign_no_reply_cooldown_days` | 90 | Pause d'une entreprise écrite sans réponse |
 
@@ -78,6 +78,6 @@ Coupe-circuits immédiats (table `app_flags`) : `campaigns_enabled`, `leads_enri
 
 ## Ce qu'il faut savoir
 
-- **Coût Google** : ~35 $ les 1 000 requêtes, une requête = 20 entreprises. Un stacker à 200 emails/jour ≈ 15 à 20 $/mois tant que la zone n'a pas été parcourue ; ensuite les entreprises déjà trouvées servent à tous.
+- **Coût Google** : ~35 $ les 1 000 requêtes, une requête = 20 entreprises. Un stacker à 50 emails/jour ≈ 4 à 5 $/mois tant que la zone n'a pas été parcourue ; ensuite les entreprises déjà trouvées servent à tous.
 - **Conditions Google (EEE)** : la constitution de fichiers de prospection à partir de Google Maps n'est pas dans les usages autorisés. Atténuation : rien de Google n'est conservé (seulement le `place_id`) ; l'email vient du site de l'entreprise, l'identité vient de SIRENE.
-- **Délivrabilité** : montée progressive automatique (20 → 200/jour en 3 semaines), envoi étalé de 8 h 30 à 18 h 30 en semaine, en-tête de désinscription (Gmail).
+- **Délivrabilité** : montée progressive automatique (10 → 50/jour en 3 semaines), envoi étalé de 8 h 30 à 18 h 30 en semaine, nom du stacker dans l'expéditeur, en-tête de désinscription (Gmail). Limite d'envoi atteinte chez Gmail ou Outlook : la boîte est mise en pause (15 min, ou 24 h pour la limite du jour) puis l'envoi reprend seul, sans échec compté ni boîte « à reconnecter ».

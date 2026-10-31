@@ -40,7 +40,7 @@ test('visite de l’app', async ({ browser, supabase }) => {
   const fp = supabase.fake.prospects;
   fp.rules.set(user.id, '2026-10-09');
   fp.mailboxes.set(user.id, { provider: 'gmail', email: 'ines.martin@gmail.com', status: 'active' });
-  fp.campaigns.set(user.id, { id: '00000000-0000-4000-8000-0000000000aa', department: '30', preset: 'batiment', daily_target: 200, template_key: 'decouverte', status: 'active', created_at: new Date().toISOString(), sent_today: 13, sent_total: 128 });
+  fp.campaigns.set(user.id, { id: '00000000-0000-4000-8000-0000000000aa', department: '30', preset: 'batiment', daily_target: 50, template_key: 'decouverte', status: 'active', created_at: new Date().toISOString(), sent_today: 13, sent_total: 128 });
   const statuses = ['a_repondu', 'rdv', 'contacte', 'contacte', 'a_contacter'];
   const sirets = [...fp.companies.keys()].slice(0, 5);
   sirets.forEach((siret, i) => {

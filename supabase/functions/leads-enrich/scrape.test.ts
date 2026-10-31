@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { contactLinks, decodeObfuscation, extractEmails, extractPhone, extractSiren, fetchPage, isPrivateIp, pathAllowed, robotsDisallows, safeUrl, scrapeSite } from './scrape.ts';
+import { contactLinks, decodeCfEmail, decodeObfuscation, extractEmails, extractPhone, extractSiren, fetchPage, isPrivateIp, pathAllowed, robotsDisallows, safeUrl, scrapeSite } from './scrape.ts';
 
 const html = (body: string, status = 200, headers: Record<string, string> = {}) => new Response(body, { status, headers: { 'content-type': 'text/html; charset=utf-8', ...headers } });
 
@@ -52,6 +52,18 @@ describe('extraction', () => {
     const page = `<a href="mailto:Contact@Plomberie-Durand.fr">Écrire</a> paul.durand@plomberie-durand.fr devis@plomberie-durand.fr
       logo@2x.png support@wixpress.com webmaster@agence-web.fr info [at] plomberie-durand [dot] fr`;
     expect(extractEmails(page, 'www.plomberie-durand.fr', 'Plomberie Durand')).toEqual(['contact@plomberie-durand.fr', 'devis@plomberie-durand.fr', 'info@plomberie-durand.fr']);
+  });
+  it('adresse masquée par Cloudflare décodée', () => {
+    const encode = (email: string, key = 0x42) => key.toString(16).padStart(2, '0') + Array.from(new TextEncoder().encode(email), (c) => (c ^ key).toString(16).padStart(2, '0')).join('');
+    expect(decodeCfEmail(encode('contact@garage-dupont.fr'))).toBe('contact@garage-dupont.fr');
+    expect(decodeCfEmail('zz')).toBe('');
+    const page = `<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="${encode('contact@garage-dupont.fr')}">[email&#160;protected]</a>
+      <a href="/cdn-cgi/l/email-protection#${encode('devis@garage-dupont.fr', 0x17)}">Devis</a>`;
+    expect(extractEmails(page, 'garage-dupont.fr', 'Garage Dupont')).toEqual(['contact@garage-dupont.fr', 'devis@garage-dupont.fr']);
+  });
+  it('site hébergé ailleurs : adresse générique d’un domaine au nom de l’entreprise', () => {
+    const page = 'contact@garagedupont.com info@agence-web.fr paul@garagedupont.com contact@garage-martin.fr';
+    expect(extractEmails(page, 'garage-dupont.wixsite.com', 'Garage Dupont')).toEqual(['contact@garagedupont.com']);
   });
   it('boîte grand public au nom de l’entreprise acceptée, personnelle refusée', () => {
     const page = 'plomberie.durand30@gmail.com jean.martin@gmail.com contact@orange.fr';

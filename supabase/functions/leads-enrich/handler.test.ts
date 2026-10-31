@@ -111,9 +111,10 @@ describe('leads-enrich', () => {
   });
 
   it('budget du mois épuisé : arrêt immédiat, Google n’est pas appelé', async () => {
-    const { handle, google, logs } = setup({ budget: false });
+    const { handle, google, logs, rpc } = setup({ budget: false });
     expect(await (await handle(req())).json()).toMatchObject({ ok: true, budget_stop: true, queries: 0 });
     expect(google).toHaveLength(0);
+    expect(rpc.filter((c) => c.fn === 'enrich_query_cancel')).toHaveLength(1);
     expect(logs.some((l) => l.event === 'budget_exhausted')).toBe(true);
   });
 
@@ -124,9 +125,11 @@ describe('leads-enrich', () => {
   });
 
   it('Google refuse (clé, quota) : arrêt propre', async () => {
-    const { handle, google } = setup({ places: json(403, { error: {} }) });
+    const { handle, google, rpc } = setup({ places: json(403, { error: {} }) });
     expect((await handle(req())).status).toBe(200);
     expect(google).toHaveLength(1);
+    // La requête n'a rien donné : elle sera rejouée (et non écartée 90 jours).
+    expect(rpc.find((c) => c.fn === 'enrich_query_cancel')?.args['p_key']).toEqual(rpc.find((c) => c.fn === 'enrich_query_begin')?.args['p_key']);
   });
 
   it('limiteur de l’API publique saturé : le lieu est marqué en erreur, pas de rattachement', async () => {

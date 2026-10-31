@@ -475,12 +475,12 @@ export class FakeProspects {
         if (!s) return pg(401, '42501', 'permission denied');
         const m = this.mailboxes.get(s.id) ?? null;
         const k = this.campaigns.get(s.id) ?? null;
-        const cap = k ? Math.min(k.daily_target, 20) : 0;
+        const cap = k ? Math.min(k.daily_target, 10) : 0;
         return [
           200,
           {
             enabled: true,
-            max_per_day: 200,
+            max_per_day: 50,
             mailbox: m ? { ...m, connected_at: new Date().toISOString(), warmup_cap: 20 } : null,
             campaign: k
               ? { ...k, cap_today: cap, queued: Math.max(0, Math.min(cap, this.campaignAvailable) - k.sent_today), failed_total: 0, replied: 0, available: this.campaignAvailable }

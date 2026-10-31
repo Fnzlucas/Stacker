@@ -4,6 +4,8 @@
  * passage, espacement et plafond calculés en base), rafraîchit l'accès à la
  * boîte du stacker, envoie, puis enregistre le résultat. Une boîte refusée
  * (jeton révoqué) passe en erreur : le stacker est invité à la reconnecter.
+ * Une limite d'envoi du fournisseur (débit, volume du jour) met seulement la
+ * boîte en pause : l'email repart plus tard, sans compter d'échec.
  * Journaux sans destinataire, objet ni identifiant.
  */
 import { z } from 'zod';
@@ -12,8 +14,8 @@ import { jsonResponse } from '../_shared/http.ts';
 import { OAuthError, SendError, decryptToken, refreshAccessToken, sendMail, unsubscribeUrlFrom } from '../_shared/mail.ts';
 import type { MailConfigResult } from '../_shared/mailConfig.ts';
 
-export const BATCH = 50;
-export const CONCURRENCY = 5;
+export const BATCH = 100;
+export const CONCURRENCY = 10;
 
 export interface HandlerDeps {
   config: MailConfigResult;
@@ -28,6 +30,7 @@ const messagesSchema = z.array(
     stacker_id: z.uuid(),
     provider: z.enum(['gmail', 'outlook']),
     from_email: z.string(),
+    from_name: z.string().nullish(),
     token_enc: z.string(),
     recipient: z.string(),
     subject: z.string(),
@@ -54,7 +57,7 @@ export function createHandler(deps: HandlerDeps): (req: Request) => Promise<Resp
     if (req.method !== 'POST') return jsonResponse(405, { ok: false, error: 'method_not_allowed' });
     if (!sameSecret(req.headers.get('x-cron-secret') ?? '', cronSecret)) return jsonResponse(403, { ok: false, error: 'forbidden' });
     const rpc = (fn: string, args: Record<string, unknown>) => callRpc(deps.fetch, config.supabaseUrl, config.serviceRoleKey, fn, args);
-    const stats = { sent: 0, failed: 0, revoked: 0 };
+    const stats = { sent: 0, failed: 0, revoked: 0, throttled: 0 };
     try {
       const messages = messagesSchema.parse(await rpc('campaign_next_messages', { p_limit: BATCH }));
       for (let i = 0; i < messages.length; i += CONCURRENCY) {
@@ -66,15 +69,17 @@ export function createHandler(deps: HandlerDeps): (req: Request) => Promise<Resp
               const refresh = await decryptToken(config.tokenKey, m.token_enc);
               const access = await refreshAccessToken(deps.fetch, m.provider, client, refresh);
               const domain = m.from_email.split('@')[1] ?? 'stacker.local';
-              const providerId = await sendMail(deps.fetch, m.provider, access, { from: m.from_email, to: m.recipient, subject: m.subject, text: m.text, unsubscribeUrl: unsubscribeUrlFrom(m.text) }, `${uuid()}@${domain}`);
+              const providerId = await sendMail(deps.fetch, m.provider, access, { from: m.from_email, fromName: m.from_name ?? null, to: m.recipient, subject: m.subject, text: m.text, unsubscribeUrl: unsubscribeUrlFrom(m.text) }, `${uuid()}@${domain}`);
               await rpc('campaign_message_result', { p_id: m.id, p_ok: true, p_provider_id: providerId, p_error: null, p_auth_error: false });
               stats.sent++;
             } catch (error) {
               const revoked = (error instanceof OAuthError || error instanceof SendError) && error.revoked;
               const code = error instanceof OAuthError || error instanceof SendError ? error.code : 'exception';
+              const retryAfter = error instanceof SendError ? error.retryAfterSeconds : null;
               if (revoked) stats.revoked++;
+              else if (retryAfter !== null) stats.throttled++;
               else stats.failed++;
-              await rpc('campaign_message_result', { p_id: m.id, p_ok: false, p_provider_id: null, p_error: code, p_auth_error: revoked }).catch(() => undefined);
+              await rpc('campaign_message_result', { p_id: m.id, p_ok: false, p_provider_id: null, p_error: code, p_auth_error: revoked, p_retry_after_seconds: retryAfter }).catch(() => undefined);
             }
           }),
         );

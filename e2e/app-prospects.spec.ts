@@ -241,7 +241,7 @@ test.describe('prospection', () => {
     await expect(page.locator('.pros-list li').filter({ hasText: 'Coiffure Lea 3' }).getByText('En pause')).toBeVisible();
   });
 
-  test('campagne : connexion de la boîte, lancement à 200/jour sans réserver à la main, montée progressive, pause, arrêt', async ({ page, supabase }) => {
+  test('campagne : connexion de la boîte, lancement à 50/jour sans réserver à la main, montée progressive, pause, arrêt', async ({ page, supabase }) => {
     await login(page, supabase.fake);
     await openProspects(page, false, 'Campagne');
     await expect(page.getByRole('button', { name: 'Campagne', exact: true })).toHaveAttribute('aria-pressed', 'true');
@@ -261,17 +261,17 @@ test.describe('prospection', () => {
     await page.getByRole('button', { name: 'Lancer la campagne' }).click();
     await expect(page.getByRole('alert')).toHaveText('Choisis un secteur.');
     await page.getByRole('button', { name: 'Artisans du bâtiment' }).click();
-    await page.getByRole('button', { name: '200', exact: true }).click();
-    await expect(page.getByText('l’envoi démarre à 20 par jour et monte jusqu’à 200 en 3 semaines')).toBeVisible();
+    await page.getByRole('button', { name: '50', exact: true }).click();
+    await expect(page.getByText('l’envoi démarre à 10 par jour et monte jusqu’à 50 en 3 semaines')).toBeVisible();
     await page.getByRole('button', { name: 'Lancer la campagne' }).click();
 
     const run = page.getByRole('region', { name: /Artisans du bâtiment · Gard/ });
     await expect(run).toBeVisible();
-    await expect(run).toContainText('0 / 20 aujourd’hui');
-    await expect(run).toContainText('Montée progressive : 20 emails par jour pour l’instant, jusqu’à 200.');
+    await expect(run).toContainText('0 / 10 aujourd’hui');
+    await expect(run).toContainText('Montée progressive : 10 emails par jour pour l’instant, jusqu’à 50.');
     await expect(run).toContainText('En cours');
     const k = supabase.fake.prospects.campaigns.values().next().value;
-    expect(k).toMatchObject({ department: '30', preset: 'batiment', daily_target: 200, template_key: 'decouverte' });
+    expect(k).toMatchObject({ department: '30', preset: 'batiment', daily_target: 50, template_key: 'decouverte' });
     expect(supabase.fake.prospects.claims).toHaveLength(0);
     await expectAccessible(page, 'campagne (en cours)');
     await expectNoHorizontalOverflow(page, 'campagne (en cours)');

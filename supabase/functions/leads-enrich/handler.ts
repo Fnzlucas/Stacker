@@ -85,6 +85,7 @@ export function createHandler(deps: HandlerDeps): (req: Request) => Promise<Resp
             const key = `${target.department}|${target.preset}|${commune.code}|${await sha256Hex(keyword).then((h) => h.slice(0, 12))}`;
             if ((await rpc('enrich_query_begin', { p_key: key, p_department: target.department, p_preset: target.preset })) !== true) continue;
             if ((await rpc('budget_consume', { p_metric: 'places', p_micro_usd: PLACES_COST_MICRO_USD })) !== true) {
+              await rpc('enrich_query_cancel', { p_key: key });
               stats.budget_stop = true;
               deps.log('budget_exhausted');
               break outer;
@@ -95,6 +96,8 @@ export function createHandler(deps: HandlerDeps): (req: Request) => Promise<Resp
               places = await searchPlaces(deps.fetch, config.placesKey, `${keyword} ${commune.nom}`);
             } catch (error) {
               deps.log('places_error', { status: error instanceof PlacesError ? error.status : 0 });
+              // Requête non aboutie : rejouable au prochain passage.
+              await rpc('enrich_query_cancel', { p_key: key }).catch(() => undefined);
               if (error instanceof PlacesError && (error.status === 403 || error.status === 429)) break outer;
               continue;
             }

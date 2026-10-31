@@ -11,7 +11,7 @@ import { useCampaign, useCampaignStatus, useDisconnectMailbox, useEmailTemplates
 import { connectMailbox, prospectErrorMessage, type CampaignState } from '../lib/prospects';
 import { formatInteger } from '../../lib/format';
 
-const VOLUMES = [50, 100, 200] as const;
+const VOLUMES = [20, 35, 50] as const;
 const PROVIDER_LABEL = { gmail: 'Gmail', outlook: 'Outlook' } as const;
 const departmentName = (code: string) => DEPARTMENTS.find(([c]) => c === code)?.[1] ?? code;
 
@@ -112,7 +112,7 @@ function StartCard({ s, rulesAccepted }: { s: CampaignState; rulesAccepted: bool
   const start = useStartCampaign();
   const [department, setDepartment] = useState(profile.data?.department ?? '');
   const [preset, setPreset] = useState<PresetKey | null>(null);
-  const [volume, setVolume] = useState<number>(Math.min(200, s.max_per_day));
+  const [volume, setVolume] = useState<number>(Math.min(50, s.max_per_day));
   const [template, setTemplate] = useState('decouverte');
   const [error, setError] = useState<string | null>(null);
   const ready = s.mailbox?.status === 'active';
@@ -162,7 +162,7 @@ function StartCard({ s, rulesAccepted }: { s: CampaignState; rulesAccepted: bool
             </button>
           ))}
         </div>
-        <p className="text-small">Pour ne pas finir en spam, l’envoi démarre à 20 par jour et monte jusqu’à {volume} en 3 semaines. En semaine, de 8 h 30 à 18 h 30.</p>
+        <p className="text-small">Pour ne pas finir en spam, l’envoi démarre à 10 par jour et monte jusqu’à {volume} en 3 semaines. En semaine, de 8 h 30 à 18 h 30. Si ta boîte atteint sa limite d’envoi, l’app fait une pause et reprend toute seule.</p>
       </fieldset>
       <SelectField label="Modèle d’email" options={(templates.data ?? []).map((t) => [t.key, t.label] as const)} placeholder="Choisis un modèle" value={template} onChange={(e) => setTemplate(e.target.value)} />
       {noLastName ? <FormAlert tone="info">Ajoute ton nom de famille dans ton profil : il signe chacun de tes emails.</FormAlert> : null}

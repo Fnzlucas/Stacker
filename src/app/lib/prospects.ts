@@ -162,7 +162,7 @@ const MESSAGES: Record<string, string> = {
   rules_required: 'Accepte d’abord les 4 règles de la prospection.',
   mailbox_required: 'Connecte d’abord ta boîte mail : les emails partent depuis ton adresse.',
   campaign_exists: 'Tu as déjà une campagne en cours.',
-  invalid_target: 'Choisis un volume entre 10 et 200 emails par jour.',
+  invalid_target: 'Choisis un volume entre 10 et 50 emails par jour.',
   provider_unavailable: 'Cette messagerie n’est pas encore disponible. Essaie l’autre.',
   network: 'Connexion impossible. Vérifie ta connexion internet et réessaie.',
 };

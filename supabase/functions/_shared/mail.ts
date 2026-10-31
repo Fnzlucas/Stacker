@@ -35,7 +35,14 @@ export interface OAuthClient {
 // Encodages
 // ---------------------------------------------------------------------------
 
-export const b64url = (bytes: Uint8Array): string => btoa(String.fromCharCode(...bytes)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+/** Base64 brut par blocs : pas de dépassement de pile sur un gros message. */
+function b64bytes(bytes: Uint8Array): string {
+  let bin = '';
+  for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+  return btoa(bin);
+}
+
+export const b64url = (bytes: Uint8Array): string => b64bytes(bytes).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 
 export function fromB64url(value: string): Uint8Array<ArrayBuffer> {
   const b64 = value.replace(/-/g, '+').replace(/_/g, '/');
@@ -49,10 +56,7 @@ const utf8 = (s: string) => new TextEncoder().encode(s);
 
 /** Encodage base64 standard d'une chaîne UTF-8 (MIME). */
 export function b64utf8(s: string): string {
-  const bytes = utf8(s);
-  let bin = '';
-  for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
-  return btoa(bin);
+  return b64bytes(utf8(s));
 }
 
 // ---------------------------------------------------------------------------
@@ -204,6 +208,8 @@ export async function refreshAccessToken(fetchFn: FetchLike, provider: Provider,
 
 export interface OutgoingMail {
   from: string;
+  /** Nom affiché (« Inès Martin ») ; null : adresse seule. */
+  fromName?: string | null;
   to: string;
   subject: string;
   text: string;
@@ -214,10 +220,18 @@ export interface OutgoingMail {
 const encodedWord = (s: string) => (/^[\x20-\x7e]*$/.test(s) ? s : `=?UTF-8?B?${b64utf8(s)}?=`);
 const noCrlf = (s: string) => s.replace(/[\r\n]+/g, ' ').trim();
 
+/** « Nom <adresse> », nom encodé (RFC 2047) ou entre guillemets, protégé contre l'injection. */
+export function formatAddress(email: string, name?: string | null): string {
+  const addr = noCrlf(email);
+  const clean = noCrlf(name ?? '').replace(/["\\<>]/g, '').slice(0, 80).trim();
+  if (!clean) return addr;
+  return /^[\x20-\x7e]*$/.test(clean) ? `"${clean}" <${addr}>` : `=?UTF-8?B?${b64utf8(clean)}?= <${addr}>`;
+}
+
 /** Message RFC 5322 texte (UTF-8, base64), en-têtes protégés contre l'injection. */
 export function buildMime(mail: OutgoingMail, messageId: string): string {
   const headers = [
-    `From: ${noCrlf(mail.from)}`,
+    `From: ${formatAddress(mail.from, mail.fromName)}`,
     `To: ${noCrlf(mail.to)}`,
     `Subject: ${encodedWord(noCrlf(mail.subject))}`,
     `Message-ID: <${messageId}>`,
@@ -233,11 +247,67 @@ export function buildMime(mail: OutgoingMail, messageId: string): string {
 export class SendError extends Error {
   constructor(
     readonly code: string,
+    /** true : la boîte refuse l'accès (jeton révoqué, droits retirés) ; à reconnecter. */
     readonly revoked: boolean,
+    /** Limite du fournisseur : réessayer après ce délai (secondes), sans compter d'échec. */
+    readonly retryAfterSeconds: number | null = null,
   ) {
     super(code);
     this.name = 'SendError';
   }
+}
+
+/** Pause après une limite de débit (par minute) ou de volume (par jour). */
+export const RATE_PAUSE_SECONDS = 900;
+export const DAILY_PAUSE_SECONDS = 86400;
+
+const RATE_REASONS = new Set(['userRateLimitExceeded', 'rateLimitExceeded', 'concurrentLimitExceeded', 'ApplicationThrottled', 'MailboxConcurrency', 'TooManyRequests']);
+const DAILY_REASONS = new Set(['dailyLimitExceeded', 'quotaExceeded', 'ErrorExceededMessageLimit', 'ErrorQuotaExceeded', 'ErrorMessageSubmissionBlocked']);
+
+const providerErrorSchema = z
+  .object({
+    error: z
+      .object({
+        code: z.union([z.string(), z.number()]).optional(),
+        status: z.string().optional(),
+        errors: z.array(z.object({ reason: z.string().optional() }).loose()).optional(),
+      })
+      .loose(),
+  })
+  .loose();
+
+function retryAfterHeader(res: Response): number | null {
+  const v = res.headers.get('retry-after');
+  if (!v) return null;
+  const n = Number(v);
+  if (Number.isFinite(n) && n >= 0) return Math.ceil(n);
+  const at = Date.parse(v);
+  return Number.isNaN(at) ? null : Math.max(0, Math.ceil((at - Date.now()) / 1000));
+}
+
+/**
+ * Classe une réponse en erreur de Gmail ou d'Outlook (Graph).
+ *   - limite de débit ou de volume (429, 403 rateLimit, dailyLimit…) → pause ;
+ *   - 401, ou 403 d'accès refusé → boîte à reconnecter ;
+ *   - le reste → échec ordinaire (réessayé 3 fois).
+ */
+export async function classifySendFailure(res: Response): Promise<SendError> {
+  const code = `http_${String(res.status)}`;
+  const parsed = providerErrorSchema.safeParse(await res.json().catch(() => null));
+  const reasons = new Set<string>();
+  if (parsed.success) {
+    const e = parsed.data.error;
+    if (typeof e.code === 'string') reasons.add(e.code);
+    if (e.status) reasons.add(e.status);
+    for (const r of e.errors ?? []) if (r.reason) reasons.add(r.reason);
+  }
+  const has = (set: Set<string>) => [...reasons].some((r) => set.has(r));
+  if (has(DAILY_REASONS)) return new SendError('daily_limit', false, DAILY_PAUSE_SECONDS);
+  if (res.status === 429 || has(RATE_REASONS) || reasons.has('RESOURCE_EXHAUSTED')) {
+    return new SendError('rate_limited', false, Math.max(retryAfterHeader(res) ?? RATE_PAUSE_SECONDS, 60));
+  }
+  if (res.status === 401 || res.status === 403) return new SendError(code, true);
+  return new SendError(code, false);
 }
 
 /** Envoie le message depuis la boîte du stacker. Renvoie l'identifiant du fournisseur. */
@@ -259,8 +329,7 @@ export async function sendMail(fetchFn: FetchLike, provider: Provider, accessTok
           }),
           signal: AbortSignal.timeout(15000),
         });
-  if (res.status === 401 || res.status === 403) throw new SendError(`http_${String(res.status)}`, true);
-  if (!res.ok) throw new SendError(`http_${String(res.status)}`, false);
+  if (!res.ok) throw await classifySendFailure(res);
   if (provider === 'gmail') {
     const body = z.object({ id: z.string() }).loose().safeParse(await res.json().catch(() => null));
     return body.success ? body.data.id : messageId;

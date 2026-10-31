@@ -219,7 +219,7 @@ reset role;
 select is((select count(*)::int from public.billing_charges where stacker_id = 'cccccccc-cccc-4ccc-8ccc-cccccccccccc' and status = 'paye'), 2,
   '... les deux paiements finalement payés sont acceptés');
 select is((select current_period_end from public.stacker_billing where stacker_id = 'cccccccc-cccc-4ccc-8ccc-cccccccccccc'),
-  ((select d from t_today) + interval '2 months')::date, '... payé deux fois : deux mois couverts, rien de perdu');
+  (((select d from t_today) + interval '1 month')::date + interval '1 month')::date, '... payé deux fois : deux mois couverts, rien de perdu');
 
 -- ---------------------------------------------------------------- résiliation par le stacker
 set local role authenticated;

@@ -38,7 +38,7 @@ test('démo : campagne de prospection', async ({ browser, supabase }) => {
   await page.getByRole('button', { name: 'Artisans du bâtiment' }).scrollIntoViewIfNeeded();
   await page.getByRole('button', { name: 'Artisans du bâtiment' }).click();
   await page.waitForTimeout(500);
-  await page.getByRole('button', { name: '200', exact: true }).click();
+  await page.getByRole('button', { name: '50', exact: true }).click();
   await page.waitForTimeout(900);
   await page.getByRole('button', { name: 'Lancer la campagne' }).scrollIntoViewIfNeeded();
   await page.waitForTimeout(500);
