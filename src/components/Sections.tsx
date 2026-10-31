@@ -36,7 +36,7 @@ export function TierList(): ReactElement {
 /* Disponibilité des commissions                                             */
 /* ------------------------------------------------------------------------ */
 
-export const AVAILABILITY_SENTENCE = `Ta commission est visible dès la signature. Elle devient disponible ${String(PAYOUT.availabilityDays)} jours après l’encaissement effectif du paiement de ton client (${String(PAYOUT.availabilityDaysNewClient)} jours pour un nouveau client), puis elle est versée avec le virement groupé de la semaine.`;
+export const AVAILABILITY_SENTENCE = `Ta commission est visible « en attente » dès la signature. Elle est débloquée le jour où ton client est prélevé, et tu peux demander ton virement le jour même : il est envoyé sous ${String(PAYOUT.transferBusinessDays)} jours ouvrés.`;
 
 export const AVAILABILITY_STEPS: { icon: IconName; title: string; text: string }[] = [
   {
@@ -46,13 +46,13 @@ export const AVAILABILITY_STEPS: { icon: IconName; title: string; text: string }
   },
   {
     icon: 'clock',
-    title: 'Encaissement et délai',
-    text: `Elle devient disponible ${String(PAYOUT.availabilityDays)} jours après l’encaissement effectif du paiement du client, ${String(PAYOUT.availabilityDaysNewClient)} jours pour un nouveau client.`,
+    title: 'Prélèvement du client',
+    text: 'Elle est débloquée le jour où ton client est prélevé. Aucun délai d’attente en plus.',
   },
   {
     icon: 'euro',
-    title: 'Versement hebdomadaire',
-    text: 'Les commissions disponibles sont versées par virement, regroupées une fois par semaine.',
+    title: 'Virement',
+    text: `Tu demandes ton virement le jour même ; il est envoyé sous ${String(PAYOUT.transferBusinessDays)} jours ouvrés.`,
   },
 ];
 

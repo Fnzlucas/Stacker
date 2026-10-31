@@ -334,6 +334,16 @@ export class FakeDeals {
             paid_cents: sum((c) => c.status === 'versee'),
             monthly_cents: Math.floor((deals.filter((d) => d.status === 'actif').reduce((a, d) => a + d.monthly_price_cents, 0) * rate) / 10000),
             pending_monthly_cents: Math.floor((deals.filter((d) => d.status === 'signe').reduce((a, d) => a + d.monthly_price_cents, 0) * rate) / 10000),
+            pending_cents: deals.filter((d) => d.status === 'signe').reduce((a, d) => a + Math.floor((d.monthly_price_cents * rate) / 10000), 0),
+            pending_deals: deals
+              .filter((d) => d.status === 'signe')
+              .map((d) => ({
+                deal_id: d.id,
+                company_name: d.input['company_name'] ?? '',
+                expected_cents: Math.floor((d.monthly_price_cents * rate) / 10000),
+                first_debit_on: new Date(Date.parse(d.withdrawal_until) + 86_400_000).toISOString().slice(0, 10),
+                signed_at: d.signed_at,
+              })),
             signed_count: deals.filter((d) => ['signe', 'actif', 'suspendu'].includes(d.status)).length,
             active_count: deals.filter((d) => d.status === 'actif').length,
             min_payout_cents: 1000,

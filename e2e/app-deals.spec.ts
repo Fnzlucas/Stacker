@@ -158,7 +158,7 @@ test.describe('gains', () => {
     const fake = supabase.fake;
     // Deux deals signés de TEST, payés par les clients (données de test).
     fake.deals.deals.push(
-      ...[1, 2].map((i) => ({
+      ...[1, 2, 3].map((i) => ({
         id: `00000000-0000-4000-8000-0000000002b${String(i)}`,
         reference: `STK-T${String(i)}`,
         stacker: user.id,
@@ -184,7 +184,9 @@ test.describe('gains', () => {
     await page.getByRole('navigation', { name: 'Navigation de l’application' }).getByRole('link', { name: 'Gains' }).click();
     const main = page.locator('main');
     await expect(main.locator('.balance-amount')).toHaveText('10,49 €');
-    await expect(main.locator('.balance-split')).toContainText('10,49');
+    // En attente : 10,49 € encore en validation + 10,49 € du contrat signé (client 3) pas encore prélevé.
+    await expect(main.locator('.balance-split')).toContainText('20,98');
+    await expect(main.getByRole('list', { name: 'Commissions en attente' })).toContainText('Client test 3 · 10,49 € débloqués dès le prélèvement du client');
     await expect(main.getByText(/Prochaine commission disponible le/)).toBeVisible();
     await expect(main.locator('.gains-monthly-amount')).toContainText('20,99');
     await expect(main.getByText(/Disponible le/)).toBeVisible();

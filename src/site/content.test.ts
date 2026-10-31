@@ -97,12 +97,11 @@ describe('faits produit', () => {
     }
   });
 
-  it('règle de disponibilité des commissions : signature, encaissement + 14 j / 30 j, hebdomadaire', () => {
+  it('règle de disponibilité des commissions : en attente à la signature, débloquée au prélèvement, virement sous 2 jours ouvrés', () => {
     const t = text(html['tarifs'] ?? '');
-    expect(t).toContain('visible dès la signature');
-    expect(t).toContain('14 jours après l’encaissement effectif');
-    expect(t).toContain('30 jours pour un nouveau client');
-    expect(t).toMatch(/une fois par semaine|hebdomadaire/);
+    expect(t).toContain('« en attente » dès la signature');
+    expect(t).toContain('débloquée le jour où ton client est prélevé');
+    expect(t).toContain('sous 2 jours ouvrés');
   });
 
   it('lancement le 20 octobre 2026 annoncé sur la landing', () => {

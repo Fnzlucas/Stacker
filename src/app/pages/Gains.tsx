@@ -66,8 +66,8 @@ function Balance({ e }: { e: Earnings }): ReactElement {
       <p className="balance-amount num">{formatEuros(e.available_cents, { always: true })}</p>
       <dl className="balance-split">
         <div>
-          <dt>En validation</dt>
-          <dd className="num">{formatEuros(e.validating_cents, { always: true })}</dd>
+          <dt>En attente</dt>
+          <dd className="num">{formatEuros(e.pending_cents + e.validating_cents, { always: true })}</dd>
         </div>
         <div>
           <dt>Déjà versé</dt>
@@ -77,12 +77,24 @@ function Balance({ e }: { e: Earnings }): ReactElement {
       {e.next_available_at ? (
         <p className="home-balance-text mt-3">Prochaine commission disponible le {formatLongDate(e.next_available_at)}.</p>
       ) : null}
+      {e.pending_deals.length > 0 ? (
+        <ul className="gains-waiting" aria-label="Commissions en attente">
+          {e.pending_deals.map((d) => (
+            <li key={d.deal_id}>
+              <Icon name="clock" />
+              <span>
+                <b>{d.company_name}</b> · {formatEuros(d.expected_cents, { always: true })} débloqués dès le prélèvement du client, prévu vers le {formatLongDate(d.first_debit_on)}
+              </span>
+            </li>
+          ))}
+        </ul>
+      ) : null}
 
       {pending ? (
         <p className="gains-pending">
           <Icon name="clock" />
           <span>
-            Virement de <b>{formatEuros(pending.amount_cents, { always: true })}</b> en cours vers le compte ••{pending.iban_last4}. Les virements sont traités chaque semaine.
+            Virement de <b>{formatEuros(pending.amount_cents, { always: true })}</b> en cours vers le compte ••{pending.iban_last4}. Il est envoyé sous 2 jours ouvrés.
           </span>
         </p>
       ) : null}

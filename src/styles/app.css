@@ -664,6 +664,9 @@
   .gains-account { display: flex; align-items: center; justify-content: space-between; gap: var(--st-space-2); font-size: var(--st-text-sm); color: var(--st-on-dark-2); }
   .gains-pending { display: flex; gap: 8px; align-items: flex-start; margin-top: var(--st-space-4); padding: 10px 12px; border-radius: var(--st-r-sm); background: rgba(247, 162, 27, .14); color: var(--st-on-dark); font-size: var(--st-text-sm); }
   .gains-pending .icon { flex-shrink: 0; color: var(--st-orange); }
+  .gains-waiting { list-style: none; margin: var(--st-space-3) 0 0; padding: 0; display: grid; gap: 6px; }
+  .gains-waiting li { display: flex; gap: 8px; align-items: flex-start; padding: 8px 12px; border-radius: var(--st-r-sm); background: rgba(255, 255, 255, .08); color: var(--st-on-dark); font-size: var(--st-text-sm); }
+  .gains-waiting .icon { flex-shrink: 0; color: var(--st-orange); }
   .gains-iban { display: grid; gap: var(--st-space-4); }
   .gains-monthly { display: grid; gap: var(--st-space-2); }
   .gains-monthly-amount { font-family: var(--st-font-display); font-weight: var(--st-weight-heavy); font-size: 36px; letter-spacing: var(--st-tracking-display); }

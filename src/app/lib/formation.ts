@@ -66,8 +66,8 @@ export const FORMATION: FormationModule[] = [
         bullets: [
           'Chaque fois qu’un client que tu as signé paie son mois, tu touches une commission sur ce paiement, au taux de ton niveau ce jour-là.',
           'Les niveaux dépendent de ton nombre de clients actifs : Rookie 15 % (0 à 2 clients), Pro 18 % (3 à 9), Legend 22 % (10 à 24), Elite 25 % (25 et plus). Ces seuils peuvent évoluer : l’app affiche toujours ceux qui s’appliquent.',
-          'Une commission devient disponible 14 jours après le paiement du client (30 jours pour le tout premier paiement d’un nouveau client), le temps qu’un prélèvement ne puisse plus être contesté facilement.',
-          'Tu demandes ton virement dans Gains dès 10 € disponibles. Les virements sont traités chaque semaine.',
+          'Dès la signature, ta commission apparaît « en attente » dans Gains. Elle est débloquée le jour où ton client est prélevé.',
+          'Tu demandes ton virement dans Gains le jour même (dès 10 € disponibles) : il est envoyé sous 2 jours ouvrés. Si un client conteste un prélèvement, la commission est reprise sur ton solde.',
           'Si un client se fait rembourser un prélèvement par sa banque, la commission correspondante est reprise.',
         ],
       },

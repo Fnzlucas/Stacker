@@ -51,7 +51,7 @@ export function llmsTxt(site) {
     '> Application française d’apport d’affaires pour gagner de l’argent avec son téléphone : des indépendants (les « stackers ») trouvent des entreprises, leur présentent des services réalisés par Stacker (site web, avis Google, visibilité locale, réseaux sociaux) et touchent de 15 à 25 % de commission sur chaque paiement mensuel du client, tant qu’il reste abonné.',
     '',
     '- Abonnement stacker : 6,99 € par mois, sans engagement (TVA non applicable). Les 100 premiers : 0 % prélevé sur leurs commissions pendant 12 mois.',
-    '- Commission : 15 % (Rookie), 18 % (Pro), 22 % (Legend), 25 % (Elite) selon le nombre de clients actifs ; disponible 14 jours après le paiement du client (30 jours pour un premier paiement), virements hebdomadaires.',
+    '- Commission : 15 % (Rookie), 18 % (Pro), 22 % (Legend), 25 % (Elite) selon le nombre de clients actifs ; en attente dès la signature, débloquée le jour du prélèvement du client, virement envoyé sous 2 jours ouvrés.',
     '- Inclus : recherche d’entreprises par zone, emails de prospection envoyés depuis la boîte du stacker, scripts d’appel, formation, signature du contrat client sur le téléphone.',
     '- Aucun montant de gain n’est promis : les commissions dépendent uniquement des clients signés et payants.',
     '- Réservé aux majeurs. Ouverture le 20 octobre 2026. Éditeur : Lucas Fernandez EI, Villeneuve-lès-Avignon (France).',

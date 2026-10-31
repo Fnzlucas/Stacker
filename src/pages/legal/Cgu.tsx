@@ -147,9 +147,8 @@ export function CguPage(): ReactElement {
                 </li>
                 <li>la commission est récurrente : elle est due chaque mois tant que l’entreprise cliente reste abonnée ;</li>
                 <li>
-                  une commission est visible dès la signature du client et devient disponible {PAYOUT.availabilityDays} jours après l’encaissement
-                  effectif du paiement correspondant ({PAYOUT.availabilityDaysNewClient} jours pour un nouveau client). Les commissions disponibles
-                  sont versées par virements groupés hebdomadaires ;
+                  une commission est visible « en attente » dès la signature du client et devient disponible dès l’encaissement effectif du
+                  paiement correspondant. Le stacker peut alors en demander le virement, envoyé sous {PAYOUT.transferBusinessDays} jours ouvrés ;
                 </li>
                 <li>
                   en cas d’impayé, de remboursement, de contestation de prélèvement ou de rétractation du client, la commission correspondante est

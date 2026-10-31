@@ -49,10 +49,9 @@ export const FAQ_GENERAL: FaqItem[] = [
     a: (
       <>
         <p>
-          Elle est visible dans l’app dès la signature du client. Elle devient disponible {PAYOUT.availabilityDays} jours après l’encaissement
-          effectif du paiement de ton client ({PAYOUT.availabilityDaysNewClient} jours pour un nouveau client).
+          Elle est visible « en attente » dans l’app dès la signature du client, et débloquée le jour où ton client est prélevé.
         </p>
-        <p>Les commissions disponibles sont versées par virement, regroupées une fois par semaine.</p>
+        <p>Tu peux demander ton virement le jour même : il est envoyé sous {PAYOUT.transferBusinessDays} jours ouvrés.</p>
       </>
     ),
   },

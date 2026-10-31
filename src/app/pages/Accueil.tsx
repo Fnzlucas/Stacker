@@ -59,7 +59,7 @@ export function AccueilPage(): ReactElement {
         </h2>
         <p className="home-balance-empty">Aucune pour l’instant</p>
         <p className="home-balance-text">
-          Quand un client que tu as apporté signe, ta commission apparaît d’abord comme estimée. Elle est acquise après l’encaissement et le délai prévu, puis virée avec le lot de la semaine.
+          Quand un client que tu as apporté signe, ta commission apparaît d’abord comme estimée. Elle est débloquée le jour où ton client est prélevé, et tu peux la virer le jour même.
         </p>
         <div className="balance-actions home-balance-actions">
           <Link className="btn btn-glass" to={PATHS.gains}>

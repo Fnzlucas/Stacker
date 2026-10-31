@@ -133,6 +133,9 @@ export const earningsSchema = z.object({
   paid_cents: z.number().int(),
   monthly_cents: z.number().int(),
   pending_monthly_cents: z.number().int(),
+  /** Commission du premier mois des contrats signés, débloquée au premier prélèvement. */
+  pending_cents: z.number().int(),
+  pending_deals: z.array(z.object({ deal_id: z.uuid(), company_name: z.string(), expected_cents: z.number().int(), first_debit_on: z.string(), signed_at: z.string() })),
   signed_count: z.number().int(),
   active_count: z.number().int(),
   min_payout_cents: z.number().int(),

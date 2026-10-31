@@ -63,10 +63,11 @@ export const TIERS = [
   { id: 'elite', name: 'Elite', rate: 25, icon: 'trophy' },
 ] as const;
 
-/** Règle de disponibilité des commissions (verdict Lead, C3). */
+/** Règle de disponibilité des commissions : dès l'encaissement du client ; virement envoyé sous 2 jours ouvrés. */
 export const PAYOUT = {
-  availabilityDays: 14,
-  availabilityDaysNewClient: 30,
+  availabilityDays: 0,
+  availabilityDaysNewClient: 0,
+  transferBusinessDays: 2,
 } as const;
 
 /** Offre de lancement. Sa durée n'est pas encore fixée : jeton dans les CGV. */

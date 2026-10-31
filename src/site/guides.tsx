@@ -140,9 +140,8 @@ export const GUIDES: Guide[] = [
               tant qu’il reste client.
             </p>
             <p>
-              C’est un exemple, pas une promesse : tes revenus dépendent uniquement des clients que tu signes et qui paient. Une commission devient
-              disponible {PAYOUT.availabilityDays} jours après le paiement du client ({PAYOUT.availabilityDaysNewClient} jours pour un premier paiement), et les virements
-              sont faits chaque semaine.
+              C’est un exemple, pas une promesse : tes revenus dépendent uniquement des clients que tu signes et qui paient. Une commission est
+              débloquée le jour où ton client est prélevé, et le virement est envoyé sous {PAYOUT.transferBusinessDays} jours ouvrés après ta demande.
             </p>
           </>
         ),
@@ -301,8 +300,8 @@ export const GUIDES: Guide[] = [
         q: 'Quand l’apporteur d’affaires est-il payé sur Stacker ?',
         a: (
           <p>
-            À chaque paiement du client. La commission devient disponible {PAYOUT.availabilityDays} jours après le paiement ({PAYOUT.availabilityDaysNewClient} jours
-            pour un premier paiement) et tu peux la virer dès que ton solde atteint le minimum de virement ; les virements sont faits chaque semaine.
+            À chaque paiement du client. La commission est débloquée le jour où le client est prélevé ; tu peux demander ton virement le jour même
+            (dès que ton solde atteint le minimum de virement), il est envoyé sous {PAYOUT.transferBusinessDays} jours ouvrés.
           </p>
         ),
       },

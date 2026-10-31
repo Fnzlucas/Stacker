@@ -4,7 +4,7 @@
 begin;
 do $$ begin create extension if not exists pgtap with schema extensions; exception when others then null; end $$;
 
-select plan(70);
+select plan(72);
 
 insert into auth.users (id, email, email_confirmed_at, raw_user_meta_data) values
   ('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 'alice@exemple.fr', now(), '{"adult_declared": true, "terms_version": "v1", "first_name": "Alice"}'),
@@ -132,7 +132,13 @@ insert into public.deals (reference, stacker_id, offer_id, offer_snapshot, month
 select 'STK-T' || i, 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 'alma-pro', '{}', 10000, '73282932000074', 'Client ' || i, 'adresse',
   'A', 'B', 'Gérant', 'a@b.fr', '+33600000000', 'X', 'FR', '0000', '\x00', 'RUM-T' || i, 'v', 't', repeat('a', 64), 's', now()
 from generate_series(1, 2) i;
-set local role service_role;
+set local role authenticated;
+set local request.jwt.claims = '{"sub": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", "role": "authenticated"}';
+select is((public.my_earnings() ->> 'pending_cents')::int, 974 + 1500 + 1500, 'contrats signés : commission « en attente » dès la signature');
+select is((select string_agg(x ->> 'company_name' || ':' || (x ->> 'expected_cents') || ':' || (x ->> 'first_debit_on'), ',' order by x ->> 'company_name')
+           from jsonb_array_elements(public.my_earnings() -> 'pending_deals') x where x ->> 'company_name' like 'Client %'),
+          'Client 1:1500:' || ((now() at time zone 'Europe/Paris')::date + 1) || ',Client 2:1500:' || ((now() at time zone 'Europe/Paris')::date + 1),
+          '... détail par client, avec la date du premier prélèvement');
 reset role;
 select public.deal_record_payment(id, date '2026-11-01', 10000, null) from public.deals where reference like 'STK-T%';
 select is((select tier from public.profiles where id = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'), 'pro', '3 clients actifs ⇒ niveau Pro');
@@ -142,16 +148,16 @@ select is((select rate_bps from public.commission_entries e join public.deal_pay
           'paiement suivant commissionné au taux Pro (18 %)');
 
 -- ---------------------------------------------------------------- virements
-select ok((select bool_and(available_at between now() + interval '29 days' and now() + interval '31 days') from public.commission_entries e
+select ok((select bool_and(available_at <= now()) from public.commission_entries e
            join public.deal_payments p on p.id = e.payment_id where p.period = '2026-11-01'),
-          'premier paiement d''un nouveau client : commission disponible à 30 jours');
-select ok((select available_at between now() + interval '13 days' and now() + interval '15 days' from public.commission_entries e
+          'premier paiement d''un nouveau client : commission disponible tout de suite');
+select ok((select available_at <= now() from public.commission_entries e
            join public.deal_payments p on p.id = e.payment_id where p.period = '2026-12-01'),
-          'paiements suivants : commission disponible à 14 jours');
+          'paiements suivants : commission disponible tout de suite');
 set local role authenticated;
 set local request.jwt.claims = '{"sub": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", "role": "authenticated"}';
-select is((public.my_earnings() ->> 'available_cents')::int, 0, 'pendant le délai : rien de disponible');
-select is((public.my_earnings() ->> 'validating_cents')::int, 1049 + 1500 + 1500 + 1800, '... tout « en validation »');
+select is((public.my_earnings() ->> 'available_cents')::int, 1049 + 1500 + 1500 + 1800, 'client prélevé : commission retirable le jour même');
+select is((public.my_earnings() ->> 'validating_cents')::int, 0, '... rien « en validation »');
 reset role;
 update public.commission_entries set available_at = now() - interval '1 day';
 set local role authenticated;
