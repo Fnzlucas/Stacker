@@ -21,6 +21,7 @@ Créer un projet **« Stacker »** (pas celui de Huntlist).
    - Authorized redirect URI : `https://<PROJET>.supabase.co/functions/v1/mail-callback`
 4. Secrets Supabase : `GOOGLE_OAUTH_CLIENT_ID`, `GOOGLE_OAUTH_CLIENT_SECRET`.
 5. Tant que Google n'a pas validé l'application : 100 utilisateurs maximum et un écran « application non vérifiée » (le stacker clique « Continuer »). Demander la validation dès maintenant (*Publish app* → *Prepare for verification*) : `gmail.send` est un périmètre « sensible », compter quelques semaines.
+   **Important** : passer l'application en *In production* tout de suite (même non vérifiée). En statut *Testing*, Google fait expirer l'accès au bout de 7 jours : toutes les boîtes passeraient « à reconnecter » chaque semaine et les campagnes s'arrêteraient.
 
 ## 2. Microsoft (Outlook)
 
