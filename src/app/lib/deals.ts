@@ -139,6 +139,11 @@ export const earningsSchema = z.object({
   signed_count: z.number().int(),
   active_count: z.number().int(),
   min_payout_cents: z.number().int(),
+  /** Versé ou en cours de virement cette année ; au-delà du seuil, SIRET obligatoire. */
+  year_paid_cents: z.number().int(),
+  siret_threshold_cents: z.number().int(),
+  siret_warning_cents: z.number().int(),
+  has_siret: z.boolean(),
   payout_account: z.object({ holder: z.string(), iban_last4: z.string() }).nullable(),
   entries: z.array(
     z.object({
@@ -345,6 +350,7 @@ const MESSAGES: Record<string, string> = {
   not_found: 'Introuvable (déjà signé ou plus dans ta liste).',
   payout_account_required: 'Ajoute d’abord ton IBAN pour recevoir tes virements.',
   payout_pending: 'Un virement est déjà en cours.',
+  siret_required: 'Ajoute ton numéro de SIRET dans ton profil pour dépasser 1 000 € de virements dans l’année.',
   payout_too_small: 'Ton solde disponible est inférieur au minimum de virement.',
   unauthorized: 'Ta session a expiré. Reconnecte-toi.',
   network: 'Connexion impossible. Vérifie ta connexion internet et réessaie.',

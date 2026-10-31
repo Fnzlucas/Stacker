@@ -208,4 +208,40 @@ test.describe('gains', () => {
     expect(fake.deals.payouts).toHaveLength(1);
     expect(fake.deals.payouts[0]?.amount_cents).toBe(1049);
   });
+
+  test('sans SIRET, au-delà du seuil annuel : virement bloqué, lien vers le profil', async ({ page, supabase }) => {
+    const user = await login(page, supabase.fake);
+    const fake = supabase.fake;
+    fake.deals.siretThresholdCents = 500;
+    fake.deals.deals.push({
+      id: '00000000-0000-4000-8000-0000000002c1',
+      reference: 'STK-S1',
+      stacker: user.id,
+      claim_id: null,
+      offer: fake.deals.offers[1]!,
+      quantity: 1,
+      monthly_price_cents: 6999,
+      input: { company_name: 'Client siret', siret: SIRET, company_address: 'adresse', first_name: 'A', last_name: 'B', role: 'Gérant', email: 'a@b.fr', phone: '+33600000000', iban: 'FR7630006000011234567890189' },
+      iban_last4: '0189',
+      mandate_ref: 'RUMS1',
+      contract_text: 'contrat',
+      contract_sha256: 'a'.repeat(64),
+      signature_png: 'data:image/png;base64,AAAA',
+      signed_at: new Date().toISOString(),
+      withdrawal_until: new Date().toISOString(),
+      status: 'signe' as const,
+      activated_at: null,
+    });
+    fake.deals.recordPayment('00000000-0000-4000-8000-0000000002c1', '2026-11-01', 6999, -1);
+    fake.deals.accounts.set(user.id, { holder: 'Inès Martin', iban_last4: '0189', iban: 'FR7630006000011234567890189' });
+
+    await page.goto('/app/gains');
+    const main = page.locator('main');
+    await expect(main.locator('.balance-amount')).toHaveText('10,49 €');
+    await expect(main.getByRole('status').filter({ hasText: 'il te faut un numéro de SIRET' })).toBeVisible();
+    await expect(main.getByRole('button', { name: 'Virer sur mon compte' })).toBeDisabled();
+    await expectAccessible(page, 'gains-siret');
+    await main.getByRole('link', { name: 'Ajouter mon SIRET' }).click();
+    await expect(page.getByRole('heading', { level: 1, name: 'Profil' })).toBeVisible();
+  });
 });

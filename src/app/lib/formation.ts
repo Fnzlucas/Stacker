@@ -68,6 +68,7 @@ export const FORMATION: FormationModule[] = [
           'Les niveaux dépendent de ton nombre de clients actifs : Rookie 15 % (0 à 2 clients), Pro 18 % (3 à 9), Legend 22 % (10 à 24), Elite 25 % (25 et plus). Ces seuils peuvent évoluer : l’app affiche toujours ceux qui s’appliquent.',
           'Dès la signature, ta commission apparaît « en attente » dans Gains. Elle est débloquée le jour où ton client est prélevé.',
           'Tu demandes ton virement dans Gains le jour même (dès 10 € disponibles) : il est envoyé sous 2 jours ouvrés. Si un client conteste un prélèvement, la commission est reprise sur ton solde.',
+          'Tu peux démarrer sans SIRET. Au-delà de 1 000 € de virements dans l’année, il te faut une micro-entreprise (gratuite, en ligne sur le guichet unique) : tes commissions restent sur ton solde en attendant.',
           'Si un client se fait rembourser un prélèvement par sa banque, la commission correspondante est reprise.',
         ],
       },

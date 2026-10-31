@@ -49,6 +49,8 @@ describe('pages pré-rendues', () => {
       const t = text(html[id] ?? '');
       for (const m of t.matchAll(/(\d[\d ]*(?:,\d+)?) ?€/g)) {
         if (m[1] === '6,99') continue;
+        // Seuil légal de SIRET (pas une promesse de revenu).
+        if (t.slice(m.index, m.index + 120).includes('de commissions versées dans l’année civile, un numéro')) continue;
         const before = t.slice(Math.max(0, m.index - 300), m.index);
         expect(before, `${id} : ${m[0]}`).toContain('Exemple illustratif');
       }

@@ -19,7 +19,7 @@ import {
 } from '../lib/deals';
 import { useProfile, useTiers } from '../lib/queries';
 import { formatRate, tierProgress } from '../lib/tiers';
-import { dealPath } from '../paths';
+import { PATHS, dealPath } from '../paths';
 
 /** Onglet « Gains » : solde, virements, commissions mois par mois, niveau. */
 export function GainsPage(): ReactElement {
@@ -50,7 +50,10 @@ function Balance({ e }: { e: Earnings }): ReactElement {
   const request = useRequestPayout();
   const [editing, setEditing] = useState(false);
   const pending = e.payouts.find((p) => p.status === 'demande');
-  const canRequest = Boolean(e.payout_account) && !pending && e.available_cents >= e.min_payout_cents && e.available_cents > 0;
+  const yearAfter = e.year_paid_cents + e.available_cents;
+  const siretBlocked = !e.has_siret && yearAfter > e.siret_threshold_cents;
+  const siretSoon = !e.has_siret && !siretBlocked && yearAfter >= e.siret_warning_cents;
+  const canRequest = Boolean(e.payout_account) && !pending && !siretBlocked && e.available_cents >= e.min_payout_cents && e.available_cents > 0;
 
   const showForm = !e.payout_account || editing;
   return (
@@ -97,6 +100,30 @@ function Balance({ e }: { e: Earnings }): ReactElement {
             Virement de <b>{formatEuros(pending.amount_cents, { always: true })}</b> en cours vers le compte ••{pending.iban_last4}. Il est envoyé sous 2 jours ouvrés.
           </span>
         </p>
+      ) : null}
+
+      {siretBlocked ? (
+        <div className="gains-siret" role="status">
+          <Icon name="alert" />
+          <p>
+            Au-delà de {formatEuros(e.siret_threshold_cents)} de virements dans l’année, il te faut un numéro de SIRET. Tes commissions restent sur ton solde :{' '}
+            crée ta micro-entreprise (gratuit, en ligne) puis ajoute ton SIRET dans ton profil.{' '}
+            <Link to={PATHS.profile} state={{ champ: 'legal_status' }}>
+              Ajouter mon SIRET
+            </Link>
+          </p>
+        </div>
+      ) : siretSoon ? (
+        <div className="gains-siret" role="status">
+          <Icon name="info" />
+          <p>
+            Tu approches {formatEuros(e.siret_threshold_cents)} de virements cette année. Au-delà, un numéro de SIRET sera obligatoire : pense à créer ta micro-entreprise
+            (gratuit, en ligne).{' '}
+            <Link to={PATHS.profile} state={{ champ: 'legal_status' }}>
+              Ajouter mon SIRET
+            </Link>
+          </p>
+        </div>
       ) : null}
 
       {!showForm && e.payout_account ? (

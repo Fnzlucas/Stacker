@@ -4,7 +4,7 @@
 begin;
 do $$ begin create extension if not exists pgtap with schema extensions; exception when others then null; end $$;
 
-select plan(72);
+select plan(75);
 
 insert into auth.users (id, email, email_confirmed_at, raw_user_meta_data) values
   ('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 'alice@exemple.fr', now(), '{"adult_declared": true, "terms_version": "v1", "first_name": "Alice"}'),
@@ -166,6 +166,17 @@ select is((public.my_earnings() ->> 'available_cents')::int, 1049 + 1500 + 1500 
 select throws_ok($$select public.payout_request()$$, '55000', 'payout_account_required', 'virement sans IBAN ⇒ payout_account_required');
 select throws_ok($$select public.payout_set_account('Alice Martin', 'FR00 1234')$$, '22023', 'invalid_iban', 'IBAN de virement faux ⇒ invalid_iban');
 select lives_ok($$select public.payout_set_account('Alice Martin', 'FR7630006000011234567890189')$$, 'IBAN de virement enregistré');
+reset role;
+update public.deal_settings set siret_threshold_cents = 5000, siret_warning_cents = 4000;
+set local role authenticated;
+set local request.jwt.claims = '{"sub": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", "role": "authenticated"}';
+select throws_ok($$select public.payout_request()$$, '55000', 'siret_required', 'sans SIRET, au-delà du seuil annuel ⇒ siret_required');
+select is((public.my_earnings() ->> 'has_siret')::boolean, false, '... my_earnings signale l''absence de SIRET');
+reset role;
+update public.profiles set legal_status = 'micro_entrepreneur', siret = '73282932000074' where id = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
+update public.deal_settings set siret_threshold_cents = 100000, siret_warning_cents = 70000;
+set local role authenticated;
+set local request.jwt.claims = '{"sub": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", "role": "authenticated"}';
 select lives_ok($$select public.payout_request()$$, 'demande de virement de tout le solde');
 select throws_ok($$select public.payout_request()$$, '55000', 'payout_pending', 'une seule demande à la fois');
 select is((public.my_earnings() ->> 'available_cents')::int, 0, '... solde disponible à zéro, montant « demandé »');
@@ -176,6 +187,7 @@ set local role service_role;
 select lives_ok($$select public.payout_mark((select id from t_po), 'verse', 'vir_1')$$, 'serveur : virement effectué');
 reset role;
 select is((select count(*)::int from public.commission_entries where status = 'versee'), 4, 'commissions passées en « versée »');
+select is(public.payout_year_total('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'), 1049 + 1500 + 1500 + 1800, 'total versé dans l''année (pour le seuil SIRET)');
 
 -- ---------------------------------------------------------------- résiliation, export, suppression du compte
 create temporary table t_t2 on commit drop as select id from public.deals where reference = 'STK-T2';

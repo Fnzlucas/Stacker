@@ -546,7 +546,7 @@ export class FakeSupabase {
   private stacker(headers: Record<string, string>): StackerInfo | null {
     const cur = this.current(headers);
     const p = cur ? this.profiles.get(cur.user.id) : undefined;
-    return cur && p ? { id: p.id, onboarded: p.onboarding_completed_at !== null, firstName: p.first_name, lastName: p.last_name, phone: p.phone } : null;
+    return cur && p ? { id: p.id, onboarded: p.onboarding_completed_at !== null, siret: p.siret, firstName: p.first_name, lastName: p.last_name, phone: p.phone } : null;
   }
 
   private matches(p: FakeProfile, q: URLSearchParams): boolean {

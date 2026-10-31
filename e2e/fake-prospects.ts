@@ -121,6 +121,7 @@ function emailKind(email: string, officers: FakeCompany['officers']): 'generique
 export interface StackerInfo {
   id: string;
   onboarded: boolean;
+  siret?: string | null;
   firstName: string | null;
   lastName: string | null;
   phone: string | null;

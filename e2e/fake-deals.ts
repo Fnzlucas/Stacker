@@ -204,6 +204,14 @@ export class FakeDeals {
     ].join('\n\n');
   }
 
+  /** Seuil annuel au-delà duquel le SIRET est exigé pour un virement. */
+  siretThresholdCents = 100_000;
+
+  private yearPaid(stacker: string): number {
+    const year = new Date().getFullYear();
+    return this.payouts.filter((p) => p.stacker === stacker && p.status !== 'refuse' && new Date(p.requested_at).getFullYear() === year).reduce((a, p) => a + p.amount_cents, 0);
+  }
+
   rpc(fn: string, b: Record<string, unknown>, st: StackerInfo | null): Reply | null {
     const known = ['deal_catalog', 'deal_preview', 'deal_sign', 'my_deals', 'deal_detail', 'my_earnings', 'payout_set_account', 'payout_request'];
     if (!known.includes(fn)) return null;
@@ -347,6 +355,10 @@ export class FakeDeals {
             signed_count: deals.filter((d) => ['signe', 'actif', 'suspendu'].includes(d.status)).length,
             active_count: deals.filter((d) => d.status === 'actif').length,
             min_payout_cents: 1000,
+            year_paid_cents: this.yearPaid(st.id),
+            siret_threshold_cents: this.siretThresholdCents,
+            siret_warning_cents: Math.round(this.siretThresholdCents * 0.7),
+            has_siret: Boolean(st.siret),
             payout_account: ((a) => (a ? { holder: a.holder, iban_last4: a.iban_last4 } : null))(this.accounts.get(st.id)),
             entries: [...mine]
               .sort((x, y) => y.created_at.localeCompare(x.created_at))
@@ -382,6 +394,7 @@ export class FakeDeals {
         const ready = this.commissions.filter((c) => c.stacker === st.id && c.status === 'disponible' && Date.parse(c.available_at) <= Date.now());
         const amount = ready.reduce((a, c) => a + c.amount_cents, 0);
         if (amount < 1000) return pg(400, '22023', 'payout_too_small');
+        if (!st.siret && this.yearPaid(st.id) + amount > this.siretThresholdCents) return raise('siret_required', 400);
         const id = this.newId();
         this.payouts.push({ id, stacker: st.id, amount_cents: amount, status: 'demande', iban_last4: acc.iban_last4, requested_at: new Date().toISOString(), processed_at: null });
         for (const c of ready) {

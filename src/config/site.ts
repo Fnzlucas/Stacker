@@ -68,6 +68,8 @@ export const PAYOUT = {
   availabilityDays: 0,
   availabilityDaysNewClient: 0,
   transferBusinessDays: 2,
+  /** Au-delà de ce montant versé dans l'année, SIRET obligatoire pour être viré. */
+  siretThresholdEuros: 1000,
 } as const;
 
 /** Offre de lancement. Sa durée n'est pas encore fixée : jeton dans les CGV. */

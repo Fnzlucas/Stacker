@@ -212,6 +212,10 @@ export function CguPage(): ReactElement {
                 immatriculation (par exemple le statut de micro-entrepreneur) et la déclaration des revenus perçus.
               </p>
               <p>
+                Le stacker peut commencer sans numéro SIRET. Au-delà de {PAYOUT.siretThresholdEuros} € de commissions versées dans l’année civile, un numéro
+                SIRET valide est obligatoire pour tout nouveau virement ; les commissions restent acquises sur son solde en attendant.
+              </p>
+              <p>
                 Avant le premier virement, Stacker demande l’identité, l’adresse et un IBAN au nom du stacker, ainsi que les informations relatives
                 à son statut prévues par le contrat d’apporteur d’affaires.
               </p>
