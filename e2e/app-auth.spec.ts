@@ -142,7 +142,7 @@ test.describe('inscription', () => {
     await expect(step4.getByText('Rookie')).toBeVisible();
     await expect(step4.getByText('25 clients actifs et plus')).toBeVisible();
     await expect(step4.getByText(/Seuils provisoires/)).toBeVisible();
-    await expect(step4.getByText('Versement hebdomadaire')).toBeVisible();
+    await expect(step4.getByText('Prélèvement du client')).toBeVisible();
     await expect(step4).toContainText('Aucun montant de gain n’est promis');
     await expect(step4).not.toContainText(/immédiat|instantané|garanti/i);
     await expectAccessible(page, 'onboarding étape 4');
