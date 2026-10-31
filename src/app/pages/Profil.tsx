@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactElement, type SyntheticEvent } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import { DELETE_CONFIRMATION, GOALS, LEGAL_STATUSES, formatPhone, profileUpdateSchema } from '@shared/account';
 import { DEPARTMENTS } from '@shared/waitlist';
 import { Icon } from '../../components/Icon';
@@ -109,9 +109,25 @@ function AdminLink(): ReactElement | null {
   );
 }
 
+/** Champ à ouvrir directement quand on arrive depuis la checklist de l'accueil. */
+const FOCUSABLE = new Set(['last_name', 'phone', 'department', 'city', 'legal_status', 'siret']);
+
 function ProfileForm({ profile }: { profile: Profile }): ReactElement {
   const update = useUpdateProfile();
   const formRef = useRef<HTMLFormElement>(null);
+  const location: { state: unknown } = useLocation();
+  const champ: unknown = location.state && typeof location.state === 'object' && 'champ' in location.state ? location.state.champ : null;
+  const target = typeof champ === 'string' && FOCUSABLE.has(champ) ? champ : null;
+  useEffect(() => {
+    if (!target) return undefined;
+    // Après le retour en haut fait par la coquille de l'app : on amène le champ au centre de l'écran, curseur dedans.
+    const t = setTimeout(() => {
+      const el = formRef.current?.querySelector<HTMLElement>(`[name="${target}"]`);
+      el?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      el?.focus({ preventScroll: true });
+    }, 60);
+    return () => clearTimeout(t);
+  }, [target]);
   const [values, setValues] = useState<FormValues>(() => toForm(profile));
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [formError, setFormError] = useState<string | null>(null);

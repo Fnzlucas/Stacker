@@ -1,5 +1,5 @@
-import type { ReactElement } from 'react';
-import { NavLink, Navigate, Outlet } from 'react-router';
+import { useEffect, type ReactElement } from 'react';
+import { NavLink, Navigate, Outlet, useLocation } from 'react-router';
 import { Icon, type IconName } from '../../components/Icon';
 import { useProfile } from '../lib/queries';
 import { PATHS } from '../paths';
@@ -31,6 +31,11 @@ export function TabBar(): ReactElement {
 /** Coquille de l'app : profil chargé, onboarding fait, barre basse. */
 export function AppShell(): ReactElement {
   const profile = useProfile();
+  const { pathname } = useLocation();
+  // Chaque nouvel écran s'ouvre en haut (sinon il garde le défilement de l'écran précédent).
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [pathname]);
   if (profile.isPending) return <Splash />;
   if (profile.isError) return <LoadError onRetry={() => void profile.refetch()} />;
   if (!profile.data.onboarding_completed_at) return <Navigate to={PATHS.onboarding} replace />;

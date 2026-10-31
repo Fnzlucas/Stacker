@@ -147,7 +147,7 @@ export function AccueilPage(): ReactElement {
         <ul className="list">
           {checklist.map((item) => (
             <li key={item.key}>
-              <Link className={`list-row mission${item.done ? ' is-done' : ''}`} to={PATHS.profile}>
+              <Link className={`list-row mission${item.done ? ' is-done' : ''}`} to={PATHS.profile} state={{ champ: fieldFor(item.key, p) }}>
                 <span className={`avatar ${item.done ? 'avatar-green' : 'avatar-violet'}`} aria-hidden="true">
                   <Icon name={item.key === 'identity' ? 'user' : item.key === 'zone' ? 'map-pin' : 'building'} />
                 </span>
@@ -169,6 +169,13 @@ export function AccueilPage(): ReactElement {
       {notice ? <Toast onClose={() => setNotice(null)}>{notice}</Toast> : null}
     </div>
   );
+}
+
+/** Premier champ à remplir pour cocher l'étape de la checklist. */
+function fieldFor(key: 'identity' | 'zone' | 'status', p: { last_name: string | null; department: string | null }): string {
+  if (key === 'identity') return p.last_name ? 'phone' : 'last_name';
+  if (key === 'zone') return p.department ? 'city' : 'department';
+  return 'legal_status';
 }
 
 function TrainingMission(): ReactElement {
