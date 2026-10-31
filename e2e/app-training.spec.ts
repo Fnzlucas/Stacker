@@ -43,10 +43,17 @@ test.describe('entraînement', () => {
     await expect(page.getByText('Obligatoire avant ta première signature')).toBeVisible();
     await expect(page.getByText(/Réussite à partir de 70\/100, avec au moins 5 répliques · 8 simulations restantes/)).toBeVisible();
     await expect(page.getByRole('listitem').filter({ hasText: 'Boulangerie Martin' })).toContainText('Aucune photo du magasin sur la fiche.');
+    // Accord avant le premier appel : ce qui est dit part chez le prestataire d'IA.
+    const consent = page.getByRole('region', { name: 'Avant ton premier appel' });
+    await expect(consent).toContainText('Anthropic');
+    await expect(page.getByRole('button', { name: 'Appeler Sophie' })).toBeDisabled();
     await expectAccessible(page, 'entraînement');
     await expectNoHorizontalOverflow(page, 'entraînement');
     if (process.env['DEMO']) await page.evaluate(() => window.scrollTo(0, 0)).then(() => page.waitForTimeout(900));
     if (process.env['DEMO']) await page.screenshot({ path: `qa/entrainement-choix-${test.info().project.name}.png` });
+
+    await consent.getByRole('button', { name: 'J’accepte et je m’entraîne' }).click();
+    await expect(consent).toHaveCount(0);
 
     // Un premier appel trop court : pas réussi.
     await page.getByRole('button', { name: 'Appeler Sophie' }).click();

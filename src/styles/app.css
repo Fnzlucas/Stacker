@@ -1007,3 +1007,15 @@
 
 /* Démo navigateur (src/demo) : bandeau discret. */
 .demo-ribbon { position: fixed; z-index: 1000; top: calc(env(safe-area-inset-top, 0px) + 6px); left: 50%; transform: translateX(-50%); padding: 3px 10px; border-radius: 999px; background: #f7a21b; color: #1c1c1e; font: 600 11px/1.4 var(--st-font-text, sans-serif); pointer-events: none; }
+
+@layer components {
+  .training-consent { display: grid; gap: var(--st-space-3); margin-bottom: var(--st-space-4); }
+  .training-consent p { margin: 0; }
+  .training-consent-link { justify-self: start; }
+  .install-hint { display: grid; gap: var(--st-space-3); }
+  .install-hint-head { display: flex; align-items: center; justify-content: space-between; gap: var(--st-space-3); }
+  .install-hint-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .install-hint-steps li { display: flex; gap: 10px; align-items: center; font-size: var(--st-text-sm); }
+  .install-hint-steps .icon { vertical-align: -3px; }
+  .install-hint-num { flex-shrink: 0; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--st-ink); color: #fff; font-weight: 800; font-size: 13px; }
+}

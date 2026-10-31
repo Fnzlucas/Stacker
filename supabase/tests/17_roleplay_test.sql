@@ -4,7 +4,7 @@
 begin;
 do $$ begin create extension if not exists pgtap with schema extensions; exception when others then null; end $$;
 
-select plan(36);
+select plan(40);
 
 insert into auth.users (id, email, email_confirmed_at, raw_user_meta_data) values
   ('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 'alice@exemple.fr', now(), '{"adult_declared": true, "terms_version": "v1", "first_name": "Alice"}'),
@@ -38,7 +38,16 @@ select throws_ok($$select public.roleplay_finish('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaa
 select ok(not (public.my_roleplay() ->> 'required')::boolean and not (public.my_roleplay() ->> 'passed')::boolean
           and (public.my_roleplay() -> 'today' ->> 'used')::int = 0 and jsonb_array_length(public.my_roleplay() -> 'history') = 0,
   'my_roleplay : pas exigé par défaut, rien de fait');
+select is((public.my_roleplay() ->> 'consented')::boolean, false, 'accord IA : pas encore donné');
 reset role;
+select throws_ok($$select public.roleplay_start('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 'boulangerie', 'Allô ?')$$, '42501', 'consent_required',
+  'sans accord pour l''IA : pas d''appel');
+set local role authenticated;
+set local request.jwt.claims = '{"sub": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", "role": "authenticated"}';
+select lives_ok($$select public.roleplay_consent(true)$$, 'le stacker donne son accord');
+select is((public.my_roleplay() ->> 'consented')::boolean, true, '... enregistré');
+reset role;
+update public.profiles set ai_consent_at = now() where id <> 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
 
 -- ---------------------------------------------------------------- démarrage
 -- (en propriétaire : les droits de service_role sur ces fonctions sont vérifiés par 00_structure)
@@ -101,6 +110,8 @@ select is((select status from public.roleplay_sessions where id = (select id fro
 update public.roleplay_sessions set started_at = now() - interval '2 hours' where id = (select id from t_s where k = 'a5');
 select throws_ok($$select public.roleplay_get('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', (select id from t_s where k = 'a5'))$$, '55000', 'session_closed',
   'session trop ancienne : fermée');
+-- Remise à aujourd'hui (fermée) : le décompte du jour ne dépend pas de l'heure à laquelle tourne le test.
+update public.roleplay_sessions set started_at = now() where id = (select id from t_s where k = 'a5');
 
 -- Quota du jour (5 sessions démarrées ; limite abaissée à 5).
 update public.roleplay_settings set sessions_per_day = 5;

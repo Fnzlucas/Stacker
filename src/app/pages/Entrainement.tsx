@@ -19,7 +19,7 @@ import {
   type Feedback,
   type RoleplayScenario,
 } from '../lib/roleplay';
-import { ROLEPLAY_KEY, useRoleplay, useRoleplayDetail } from '../lib/roleplayQueries';
+import { ROLEPLAY_KEY, useRoleplay, useRoleplayConsent, useRoleplayDetail } from '../lib/roleplayQueries';
 import { buzz, createCallSounds, type CallSounds } from '../lib/sounds';
 import { canListen, listen, speak, stopSpeaking, unlockSpeech, type Listener } from '../lib/speech';
 import { PATHS } from '../paths';
@@ -104,6 +104,34 @@ export function EntrainementPage(): ReactElement {
 }
 
 // -----------------------------------------------------------------------------
+// Accord avant le premier appel (données envoyées à l'IA)
+// -----------------------------------------------------------------------------
+
+function ConsentCard(): ReactElement {
+  const consent = useRoleplayConsent();
+  return (
+    <section className="card training-consent" aria-labelledby="training-consent-title">
+      <h2 id="training-consent-title" className="h3">
+        Avant ton premier appel
+      </h2>
+      <p className="text-sm">
+        Pour jouer le commerçant et noter ton appel, ce que tu dis pendant l’entraînement (transcrit en texte) est envoyé à notre prestataire d’intelligence
+        artificielle, <b>Anthropic</b>. Il ne s’en sert pas pour entraîner ses modèles. Stacker ne reçoit pas ta voix, seulement le texte : la dictée est faite par ton
+        téléphone (Apple ou Google selon l’appareil). Les conversations sont gardées dans ton historique pour que tu puisses les relire, et supprimées avec ton compte.
+      </p>
+      <a className="btn btn-glass btn-sm training-consent-link" href="/confidentialite#destinataires">
+        En savoir plus sur tes données
+      </a>
+      {consent.isError ? <FormAlert>Ton accord n’a pas pu être enregistré. Réessaie.</FormAlert> : null}
+      <button type="button" className={`btn btn-primary btn-block${consent.isPending ? ' is-loading' : ''}`} disabled={consent.isPending} onClick={() => consent.mutate()}>
+        <Icon name="check" />
+        J’accepte et je m’entraîne
+      </button>
+    </section>
+  );
+}
+
+// -----------------------------------------------------------------------------
 // Choix du commerçant
 // -----------------------------------------------------------------------------
 
@@ -151,6 +179,7 @@ function Choose({ error, starting, onStart }: { error: string | null; starting: 
         ) : null}
       </section>
 
+      {s && !s.consented ? <ConsentCard /> : null}
       {error ? <FormAlert>{error}</FormAlert> : null}
       {state.isError ? <LoadError onRetry={() => void state.refetch()} /> : null}
 
@@ -194,7 +223,7 @@ function Choose({ error, starting, onStart }: { error: string | null; starting: 
                     <Icon name="briefcase" /> {sc.offers}
                   </p>
                 </div>
-                <button type="button" className="btn btn-accent training-call-btn" onClick={() => onStart(sc)} disabled={starting !== null || left === 0} aria-busy={starting === sc.id}>
+                <button type="button" className="btn btn-accent training-call-btn" onClick={() => onStart(sc)} disabled={starting !== null || left === 0 || !s?.consented} aria-busy={starting === sc.id}>
                   <Icon name="phone" />
                   {starting === sc.id ? 'Connexion…' : `Appeler ${sc.contact.split(' ')[0] ?? ''}`}
                 </button>

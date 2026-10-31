@@ -67,6 +67,9 @@ export class FakeRoleplay {
     return this.isRequired();
   }
 
+  /** Stackers ayant donné leur accord pour l'IA. */
+  consents = new Set<string>();
+
   passed(stacker: string): boolean {
     return this.sessions.some((s) => s.stacker === stacker && s.passed);
   }
@@ -77,8 +80,13 @@ export class FakeRoleplay {
   }
 
   rpc(fn: string, b: Record<string, unknown>, st: StackerInfo | null): Reply | null {
-    if (fn !== 'my_roleplay' && fn !== 'roleplay_detail') return null;
+    if (fn !== 'my_roleplay' && fn !== 'roleplay_detail' && fn !== 'roleplay_consent') return null;
     if (!st) return [401, { code: '42501', message: 'unauthorized' }];
+    if (fn === 'roleplay_consent') {
+      if (b['p_accept'] === true) this.consents.add(st.id);
+      else this.consents.delete(st.id);
+      return [200, null];
+    }
     if (fn === 'my_roleplay') {
       const mine = this.sessions.filter((s) => s.stacker === st.id);
       return [
@@ -86,6 +94,7 @@ export class FakeRoleplay {
         {
           required: this.required,
           passed: this.passed(st.id),
+          consented: this.consents.has(st.id),
           pass_score: PASS_SCORE,
           min_stacker_turns: MIN_TURNS,
           today: { used: mine.length, limit: this.dailyLimit },
@@ -110,6 +119,7 @@ export class FakeRoleplay {
       const scenario = typeof b['scenario'] === 'string' ? b['scenario'] : '';
       const opening = OPENINGS[scenario];
       if (!opening) return [404, { ok: false, error: 'not_found' }];
+      if (!this.consents.has(st.id)) return [403, { ok: false, error: 'consent_required' }];
       if (this.sessions.filter((s) => s.stacker === st.id).length >= this.dailyLimit) return [429, { ok: false, error: 'daily_quota' }];
       for (const s of this.sessions) if (s.stacker === st.id && s.status === 'en_cours') s.status = 'abandonnee';
       const s: Session = { id: this.id(), stacker: st.id, scenario, status: 'en_cours', turns: [{ role: 'prospect', text: opening }], score: null, passed: false, feedback: null, started_at: new Date().toISOString() };

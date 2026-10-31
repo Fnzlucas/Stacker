@@ -100,9 +100,9 @@ select is(
         'export_my_data', 'formation_set_done', 'is_admin', 'mail_disconnect', 'my_billing', 'my_campaign', 'my_deals', 'my_earnings', 'my_formation', 'my_prospect_quotas', 'my_prospects', 'my_roleplay', 'payout_request', 'payout_set_account',
         'prospect_add_note', 'prospect_claim',
         'prospect_delete_note', 'prospect_detail', 'prospect_extend', 'prospect_log_call', 'prospect_mark_email_sent',
-        'prospect_prepare_email', 'prospect_release', 'prospect_set_contact', 'prospect_set_status', 'roleplay_detail', 'siret_is_valid',
+        'prospect_prepare_email', 'prospect_release', 'prospect_set_contact', 'prospect_set_status', 'roleplay_consent', 'roleplay_detail', 'siret_is_valid',
         'waitlist_count']::text[],
-  'authenticated n''exécute que les 46 fonctions prévues'
+  'authenticated n''exécute que les 47 fonctions prévues'
 );
 
 select is(

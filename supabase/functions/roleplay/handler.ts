@@ -56,6 +56,7 @@ const finishSchema = z.object({ score: z.number().int(), passed: z.boolean(), st
 /** Erreurs métier renvoyées par la base, et leur statut HTTP. */
 const KNOWN: Record<string, number> = {
   onboarding_required: 403,
+  consent_required: 403,
   invalid_request: 400,
   daily_quota: 429,
   unavailable: 503,

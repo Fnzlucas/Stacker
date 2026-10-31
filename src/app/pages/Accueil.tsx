@@ -2,6 +2,7 @@ import { useState, type ReactElement } from 'react';
 import { Link, useLocation } from 'react-router';
 import { Icon } from '../../components/Icon';
 import { Logo } from '../../components/Logo';
+import { InstallHint } from '../components/InstallHint';
 import { PageHeading, usePageTitle } from '../components/Layouts';
 import { LevelPill, ProgressBar, Toast } from '../components/Ui';
 import { profileChecklist } from '../lib/api';
@@ -41,6 +42,8 @@ export function AccueilPage(): ReactElement {
           <PageHeading className="home-title">Bonjour {p.first_name ?? ''}</PageHeading>
         </div>
       </header>
+
+      <InstallHint />
 
       {p.launch_priority ? (
         <p className="chip chip-green home-priority">

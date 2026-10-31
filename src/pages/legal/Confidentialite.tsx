@@ -132,6 +132,11 @@ export function ConfidentialitePage(): ReactElement {
                   <strong>Cloudflare Inc.</strong> (États-Unis) : protection anti-robot Turnstile, lorsqu’elle est activée.
                 </li>
                 <li>
+                  <strong>Anthropic PBC</strong> (États-Unis) : intelligence artificielle de l’entraînement à l’appel. Seul le texte de ce que le
+                  stacker dit pendant une simulation est envoyé, après son accord donné dans l’app ; Anthropic ne l’utilise pas pour entraîner ses
+                  modèles. La dictée vocale est faite par le téléphone (Apple ou Google selon l’appareil) : Stacker ne reçoit pas la voix.
+                </li>
+                <li>
                   <strong>Mollie B.V.</strong> (Pays-Bas) : paiement de l’abonnement, à l’ouverture des paiements. Mollie agit aussi comme
                   responsable de traitement distinct pour ses propres obligations légales (lutte contre la fraude et le blanchiment).
                 </li>
@@ -146,7 +151,7 @@ export function ConfidentialitePage(): ReactElement {
           body: (
             <p>
               Certains prestataires sont établis aux États-Unis ou peuvent y accéder aux données pour assurer leur service (Supabase, Vercel,
-              Cloudflare). Ces transferts sont encadrés par la décision d’adéquation de la Commission européenne du 10 juillet 2023 (Data Privacy
+              Cloudflare, Anthropic). Ces transferts sont encadrés par la décision d’adéquation de la Commission européenne du 10 juillet 2023 (Data Privacy
               Framework) pour les entreprises certifiées et, à défaut, par les clauses contractuelles types de la Commission européenne. Tu peux en
               obtenir une copie en écrivant à <Fill value={ENTITY.email} />.
             </p>

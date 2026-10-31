@@ -38,6 +38,7 @@ const backend = (rpcResult: { data: unknown; error: { code?: string; message: st
 const state: RoleplayState = {
   required: true,
   passed: false,
+      consented: true,
   pass_score: 70,
   min_stacker_turns: 5,
   today: { used: 1, limit: 8 },

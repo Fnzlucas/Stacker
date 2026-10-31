@@ -133,6 +133,8 @@ const historySchema = z.object({
 export const roleplayStateSchema = z.object({
   required: z.boolean(),
   passed: z.boolean(),
+  /** Accord donné pour l'envoi de l'appel à l'IA (obligatoire avant le premier appel). */
+  consented: z.boolean(),
   pass_score: z.number().int(),
   min_stacker_turns: z.number().int(),
   today: z.object({ used: z.number().int(), limit: z.number().int() }),
@@ -179,6 +181,7 @@ async function rpc<T>(b: Backend, fn: string, args: Record<string, unknown>, sch
 }
 
 export const fetchRoleplay = (b: Backend) => rpc(b, 'my_roleplay', {}, roleplayStateSchema);
+export const giveRoleplayConsent = (b: Backend) => rpc(b, 'roleplay_consent', { p_accept: true }, z.null());
 export const fetchRoleplayDetail = (b: Backend, id: string) => rpc(b, 'roleplay_detail', { p_session: id }, detailSchema);
 
 /** L'entraînement est exigé et pas encore réussi : la signature est bloquée. */
@@ -203,6 +206,7 @@ const MESSAGES: Record<string, string> = {
   too_long: 'L’appel a atteint sa durée maximale. Raccroche pour voir ton bilan.',
   not_found: 'Cet appel est introuvable. Lance une nouvelle simulation.',
   onboarding_required: 'Termine ton inscription pour t’entraîner.',
+  consent_required: 'Donne ton accord (en haut de l’écran) avant ton premier appel.',
   invalid_request: 'Ta phrase est vide ou trop longue.',
 };
 
