@@ -147,7 +147,8 @@ export function CguPage(): ReactElement {
                 </li>
                 <li>
                   pour un abonnement, la commission est récurrente : elle est due chaque mois tant que l’entreprise cliente reste abonnée. Pour une
-                  prestation payée en une fois, elle porte sur le prix total et est due une seule fois ;
+                  prestation sur mesure, elle porte sur le prix total, payé en une fois ou en plusieurs prélèvements mensuels, et suit chaque
+                  prélèvement encaissé ;
                 </li>
                 <li>présenter des clients et toucher ses commissions ne nécessite aucun abonnement (formule gratuite) ;</li>
                 <li>

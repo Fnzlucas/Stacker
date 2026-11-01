@@ -16,6 +16,7 @@ import {
   formatEuros,
   formatIban,
   groupByBrand,
+  installmentCents,
   perLabel,
   stepErrors,
   termsLabel,
@@ -205,6 +206,7 @@ function OfferStep({ offers, rateBps, v, set, errors }: { offers: Offer[]; rateB
                   onClick={() => {
                     set('offer_id', o.id);
                     set('quantity', o.qty_min);
+                    set('installments', 1);
                   }}
                 >
                   <span className="deal-formula-head">
@@ -234,6 +236,34 @@ function OfferStep({ offers, rateBps, v, set, errors }: { offers: Offer[]; rateB
           </div>
         </section>
       ))}
+      {selected?.billing === 'unique' && selected.installments.length > 1 ? (
+        <div className="card deal-qty">
+          <h2 className="h3">Facilités de paiement</h2>
+          <p className="text-small text-2">Sans frais pour le client. Ta commission tombe à chaque prélèvement.</p>
+          <div className="deal-installments" role="radiogroup" aria-label="Paiement du client">
+            {selected.installments.map((n) => {
+              const each = installmentCents(selected.price_cents, n);
+              return (
+                <button
+                  key={n}
+                  type="button"
+                  role="radio"
+                  aria-checked={v.installments === n}
+                  className={`deal-installment${v.installments === n ? ' is-on' : ''}`}
+                  onClick={() => set('installments', n)}
+                >
+                  <b>{n === 1 ? 'En une fois' : `En ${String(n)} fois`}</b>
+                  <span className="num">{n === 1 ? formatEuros(selected.price_cents) : `${formatEuros(each)} / mois`}</span>
+                  <small>
+                    Ta com : {formatEuros(commissionCents(each, rateBps))}
+                    {n > 1 ? ` × ${String(n)}` : ''}
+                  </small>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      ) : null}
       {selected?.unit_label ? (
         <div className="card deal-qty">
           <TextField
@@ -288,9 +318,11 @@ function PaymentStep({ v, set, errors, oneTime }: { v: DealInput; set: Setter; e
   return (
     <div className="card card-hero deal-form">
       <p className="text-2 text-sm">
-        {oneTime
-          ? 'Le client paie en une fois par prélèvement : il suffit de son IBAN. Le prélèvement a lieu après les 14 jours de rétractation.'
-          : 'Le client paie chaque mois par prélèvement : il suffit de son IBAN. Le premier prélèvement a lieu après les 14 jours de rétractation.'}
+        {oneTime && v.installments > 1
+          ? `Le client paie en ${String(v.installments)} prélèvements mensuels sans frais : il suffit de son IBAN. Le premier a lieu après les 14 jours de rétractation.`
+          : oneTime
+            ? 'Le client paie en une fois par prélèvement : il suffit de son IBAN. Le prélèvement a lieu après les 14 jours de rétractation.'
+            : 'Le client paie chaque mois par prélèvement : il suffit de son IBAN. Le premier prélèvement a lieu après les 14 jours de rétractation.'}
       </p>
       <TextField label="Titulaire du compte" autoComplete="off" value={v.iban_holder} onChange={(e) => set('iban_holder', e.target.value)} error={errors['iban_holder']} />
       <TextField
@@ -306,7 +338,7 @@ function PaymentStep({ v, set, errors, oneTime }: { v: DealInput; set: Setter; e
         icon="bank"
       />
       <CheckField checked={v.accept_mandate} onChange={(e) => set('accept_mandate', e.target.checked)} error={errors['accept_mandate']}>
-        Le client autorise Stacker (via son prestataire de paiement Mollie) à prélever ce compte {oneTime ? 'une fois, du prix total' : 'chaque mois'}, selon le mandat SEPA
+        Le client autorise Stacker (via son prestataire de paiement Mollie) à prélever ce compte {oneTime ? (v.installments > 1 ? `en ${String(v.installments)} fois, chaque mois` : 'une fois, du prix total') : 'chaque mois'}, selon le mandat SEPA
         présenté avec le contrat.
       </CheckField>
     </div>
@@ -364,18 +396,19 @@ function SignatureStep({ v, set, offer, onSigned, onEdit }: { v: DealInput; set:
         </p>
         <p className="deal-summary-price">
           {formatEuros(p.monthly_price_cents)}
-          <small> {perLabel(p.billing)}</small>
+          <small> {perLabel(p.billing, p.installments)}</small>
         </p>
         <p className="text-small text-2">
-          {termsLabel(p.billing, offer.engagement_months)} · Réf. {p.reference}
+          {termsLabel(p.billing, offer.engagement_months, p.installments)} · Réf. {p.reference}
         </p>
         <p className="deal-summary-com">
           <Icon name="euro" />
           <span>
             Ta commission : <b>
-              {formatEuros(p.commission_cents)} {perLabel(p.billing)}
+              {formatEuros(p.commission_cents)} {p.installments > 1 ? 'par prélèvement' : perLabel(p.billing)}
             </b>{' '}
-            ({formatRate(p.rate_bps)}), dès que le client paie.
+            ({formatRate(p.rate_bps)}){p.installments > 1 && p.commission_total_cents ? `, soit ${formatEuros(p.commission_total_cents)} sur ${String(p.installments)} mois` : ''}, dès
+            que le client paie.
           </span>
         </p>
       </section>
@@ -437,7 +470,8 @@ function useCountUp(target: number, ms = 1400): number {
 
 function Celebration({ deal, company }: { deal: SignedDeal; company: string }): ReactElement {
   const navigate = useNavigate();
-  const shown = useCountUp(deal.commission_cents);
+  const split = deal.billing === 'unique' && deal.installments > 1;
+  const shown = useCountUp(split ? (deal.commission_total_cents ?? deal.commission_cents * deal.installments) : deal.commission_cents);
   const heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => heading.current?.focus(), []);
   return (
@@ -452,12 +486,14 @@ function Celebration({ deal, company }: { deal: SignedDeal; company: string }): 
           <Ransom text="SIGNÉ !" animated />
         </h1>
         <p className="deal-win-company">{company}</p>
-        <p className="deal-win-amount num" aria-label={`${formatEuros(deal.commission_cents)} ${deal.billing === 'unique' ? 'en une fois' : 'par mois'}`}>
+        <p className="deal-win-amount num" aria-label={`${formatEuros(shown)} ${split ? `en ${String(deal.installments)} fois` : deal.billing === 'unique' ? 'en une fois' : 'par mois'}`}>
           + {formatEuros(shown, { always: true })}
-          <small> {perLabel(deal.billing)}</small>
+          <small> {split ? `en ${String(deal.installments)} fois` : perLabel(deal.billing)}</small>
         </p>
         <p className="deal-win-text">
-          {deal.billing === 'unique'
+          {split
+            ? `Ta commission (${formatRate(deal.rate_bps)}) tombe à chacun des ${String(deal.installments)} prélèvements mensuels du client, le premier après les 14 jours de rétractation.`
+            : deal.billing === 'unique'
             ? `Ta commission (${formatRate(deal.rate_bps)}) est débloquée le jour où le client est prélevé, après les 14 jours de rétractation.`
             : `Ta commission (${formatRate(deal.rate_bps)}) tombe chaque mois où le client paie, à partir du premier prélèvement, après les 14 jours de rétractation.`}
         </p>

@@ -23,6 +23,13 @@ alter table public.offers add constraint offers_unique_shape check (billing = 'm
 comment on column public.offers.billing is
   'mensuel : abonnement prélevé chaque mois ; unique : prestation payée en une fois (price_cents = prix total).';
 
+-- Facilités de paiement des offres uniques : nombres d'échéances mensuelles proposés au client (1 = en une fois).
+alter table public.offers add column installments integer[] not null default '{1}';
+alter table public.offers add constraint offers_installments check (
+  1 = any (installments) and installments <@ array[1, 2, 3, 4, 6, 10, 12] and (billing = 'unique' or installments = '{1}'));
+comment on column public.offers.installments is
+  'Offre unique : paiements en plusieurs fois proposés (prélèvements mensuels sans frais). La commission suit chaque prélèvement.';
+
 alter table public.deal_settings add column contract_template_unique text;
 
 update public.deal_settings set contract_version = '2026-11-01', contract_template_unique = $tpl$CONTRAT DE PRESTATION ET MANDAT DE PRÉLÈVEMENT SEPA
@@ -38,18 +45,18 @@ Stacker réalise pour le Client la prestation suivante : {{offre}}.
 Contenu : {{offre_details}}.
 
 2. PRIX
-Prix : {{prix_total}}, payable en une seule fois. TVA non applicable, art. 293 B du CGI.
-Le prix est payé par un prélèvement SEPA unique, effectué à l'issue du délai de rétractation. Aucun autre prélèvement n'est prévu au titre de ce contrat.
+Prix : {{prix_total}}, {{echeancier}}. TVA non applicable, art. 293 B du CGI.
+Le prix est payé par {{echeancier_detail}}. Aucun autre prélèvement n'est prévu au titre de ce contrat.
 
 3. RÉALISATION
-Stacker contacte le Client dans les 5 jours ouvrés suivant le prélèvement pour recueillir ses contenus (textes, photos, logo, accès) et ses souhaits. Le délai de livraison indiqué dans le contenu de l'offre court à compter de la réception de ces éléments. Deux séries de corrections sont incluses. La livraison est réputée acceptée à la mise en ligne, ou 15 jours après sa présentation au Client sans réserve écrite de sa part.
+Stacker contacte le Client dans les 5 jours ouvrés suivant le prélèvement pour recueillir ses contenus (textes, photos, logo, accès) et ses souhaits. Le délai de livraison indiqué dans le contenu de l'offre court à compter de la réception de ces éléments. Deux séries de corrections sont incluses. En cas de paiement en plusieurs fois, la mise en ligne ou la publication finale intervient une fois la moitié du prix payée. La livraison est réputée acceptée à la mise en ligne, ou 15 jours après sa présentation au Client sans réserve écrite de sa part.
 Une fois le prix payé, le Client est propriétaire des contenus et du design créés pour lui. L'hébergement inclus est fourni pendant la durée indiquée dans l'offre ; au-delà, il peut être prolongé par un contrat distinct, sans aucune obligation.
 
 4. DROIT DE RÉTRACTATION
 Le Client dispose de {{retractation}} jours à compter de la signature pour se rétracter, sans motif ni frais, par email à stacker-contact@outlook.com. Aucun prélèvement n'intervient avant la fin de ce délai.
 
 5. INEXÉCUTION
-Si Stacker ne livre pas la prestation dans un délai raisonnable après mise en demeure restée sans effet pendant 30 jours, le Client peut résilier le contrat par écrit et obtenir le remboursement des sommes versées pour la part non réalisée. Si le prélèvement est rejeté et non régularisé sous 15 jours, Stacker peut suspendre la réalisation.
+Si Stacker ne livre pas la prestation dans un délai raisonnable après mise en demeure restée sans effet pendant 30 jours, le Client peut résilier le contrat par écrit et obtenir le remboursement des sommes versées pour la part non réalisée. Si un prélèvement est rejeté et non régularisé sous 15 jours, Stacker peut suspendre la réalisation et les services livrés jusqu'à régularisation.
 
 6. DONNÉES PERSONNELLES
 Les données du Client sont traitées par Stacker pour l'exécution du contrat et la facturation, conservées pendant la durée légale, et ne sont jamais revendues. Le Client peut exercer ses droits à stacker-contact@outlook.com.
@@ -64,8 +71,8 @@ MANDAT DE PRÉLÈVEMENT SEPA
 Référence unique du mandat (RUM) : {{rum}}
 Créancier : Stacker, via son prestataire de paiement Mollie B.V.
 Débiteur : {{titulaire}} · IBAN {{iban_masque}}
-Type de paiement : récurrent ; un seul prélèvement est prévu au titre de ce contrat, d'un montant de {{prix_total}}.
-Pré-notification : le présent contrat vaut information préalable du montant prélevé. Le Client est en outre prévenu par email au moins 2 jours avant le prélèvement, avec son montant et sa date.
+Type de paiement : récurrent ; {{mandat_echeancier}}.
+Pré-notification : le présent contrat vaut information préalable des montants prélevés. Le Client est en outre prévenu par email au moins 2 jours avant chaque prélèvement, avec son montant et sa date.
 En signant ce mandat, le Client autorise Stacker (via Mollie) à envoyer des instructions à sa banque pour débiter son compte, et sa banque à débiter son compte conformément à ces instructions. Le Client bénéficie du droit d'être remboursé par sa banque selon les conditions décrites dans la convention passée avec elle ; une demande de remboursement doit être présentée dans les 8 semaines suivant la date de débit de son compte pour un prélèvement autorisé.
 
 Signé électroniquement le {{date}} par {{client_representant}}, pour {{client_raison_sociale}}.$tpl$;
@@ -73,52 +80,141 @@ Signé électroniquement le {{date}} par {{client_representant}}, pour {{client_
 alter table public.deal_settings alter column contract_template_unique set not null;
 
 -- Catalogue gros ticket, en tête du catalogue. Prix modifiables dans la table offers.
-insert into public.offers (id, brand, category, description, name, price_cents, unit_label, qty_min, qty_max, engagement_months, features, recommended, active, sort_order, billing) values
+insert into public.offers (id, brand, category, description, name, price_cents, unit_label, qty_min, qty_max, engagement_months, features, recommended, active, sort_order, billing, installments) values
 ('studio-site-vitrine', 'Stacker Studio', 'Sur mesure · paiement unique',
  'Un site créé de zéro pour l''entreprise, à son image : pas un modèle rempli à la va-vite. Le commerçant paie une seule fois, sans abonnement, et le site lui appartient.',
  'Site vitrine sur mesure', 149000, null, 1, 1, 0,
  array['Design unique, créé pour l''entreprise', 'Jusqu''à 8 pages', 'Textes rédigés et optimisés pour Google', 'Formulaire de contact et fiche Google reliée', 'Livré en 3 semaines', '2 séries de corrections', 'Hébergement inclus 12 mois']::text[],
- true, true, 5, 'unique'),
+ true, true, 5, 'unique', '{1,3}'),
 ('studio-site-ecommerce', 'Stacker Studio', 'Sur mesure · paiement unique',
  'Une boutique en ligne complète pour vendre en ligne ce que le commerçant vend déjà en magasin : produits, paiement, commandes. Payée une fois, sans commission sur les ventes.',
  'Site e-commerce sur mesure', 349000, null, 1, 1, 0,
  array['Design unique', 'Jusqu''à 100 produits mis en ligne', 'Paiement en ligne par carte', 'Gestion des stocks et des commandes', 'Livré en 5 semaines', '2 séries de corrections', 'Prise en main d''une heure', 'Hébergement inclus 12 mois']::text[],
- false, true, 6, 'unique'),
+ false, true, 6, 'unique', '{1,3,6}'),
 ('studio-reservation', 'Stacker Studio', 'Sur mesure · paiement unique',
  'Pour les restaurants, salons, instituts et artisans : un site sur mesure avec réservation ou commande en ligne, rappels automatiques aux clients et acompte en ligne. Moins de rendez-vous oubliés, plus de commandes.',
  'Site + réservation ou commande en ligne', 499000, null, 1, 1, 0,
  array['Site vitrine sur mesure inclus', 'Réservation ou click & collect en ligne', 'Rappels SMS et emails aux clients', 'Acompte payé en ligne', 'Livré en 6 semaines', '2 séries de corrections', 'Hébergement inclus 12 mois']::text[],
- false, true, 7, 'unique'),
+ false, true, 7, 'unique', '{1,3,6}'),
 ('studio-transformation', 'Stacker Studio', 'Sur mesure · paiement unique',
  'Tout le digital de l''entreprise refait d''un coup, par une seule équipe : identité visuelle, site avec réservation ou boutique, fiche Google, lancement sur les réseaux, puis 3 mois d''accompagnement.',
  'Pack transformation digitale', 990000, null, 1, 1, 0,
  array['Identité visuelle : logo, couleurs, cartes de visite', 'Site sur mesure avec réservation ou boutique', 'Fiche Google optimisée et QR code avis', 'Campagne de lancement sur les réseaux sociaux', '3 mois d''accompagnement', 'Livré en 8 semaines', 'Hébergement inclus 12 mois']::text[],
- false, true, 13, 'unique'),
+ false, true, 13, 'unique', '{1,6,12}'),
 ('studio-image-de-marque', 'Stacker Studio', 'Sur mesure · paiement unique',
  'Tout ce qu''il faut pour donner envie : un logo et une identité visuelle propres, puis un shooting photo et vidéo dans l''établissement. Le commerçant repart avec des visuels pro pour sa vitrine, son site, Google et ses réseaux.',
  'Image de marque : logo, photos et vidéos', 199000, null, 1, 1, 0,
  array['Logo, couleurs et cartes de visite', 'Une demi-journée de shooting dans l''établissement', '30 photos retouchées', '3 vidéos courtes pour les réseaux', 'Livré en 4 semaines', 'Droits d''utilisation inclus']::text[],
- false, true, 9, 'unique'),
+ false, true, 9, 'unique', '{1,3}'),
 ('studio-assistant-ia', 'Stacker Studio', 'Sur mesure · paiement unique',
  'Un assistant qui répond au téléphone et aux messages 24 h/24 quand le commerçant est occupé : il renseigne les clients, prend les rendez-vous ou les commandes et envoie un résumé. Plus aucun appel perdu.',
  'Assistant IA : appels et messages 24 h/24', 249000, null, 1, 1, 0,
  array['Répond au téléphone, sur WhatsApp et sur le site', 'Prend les rendez-vous ou les commandes', 'Résumé de chaque échange par SMS ou email', 'Paramétré avec les infos du commerce', 'Mis en place en 3 semaines', '12 mois d''utilisation inclus']::text[],
- false, true, 10, 'unique'),
+ false, true, 10, 'unique', '{1,3}'),
 ('studio-campagne-pub', 'Stacker Studio', 'Sur mesure · paiement unique',
  'Une campagne de publicité Google et Facebook/Instagram montée de A à Z pour faire venir de nouveaux clients dans la zone du commerce, puis pilotée pendant 3 mois avec un point chaque mois.',
  'Campagne publicitaire Google + réseaux', 299000, null, 1, 1, 0,
  array['Stratégie et ciblage local', 'Annonces Google et Facebook/Instagram créées', 'Visuels et textes des publicités', 'Pilotage et optimisation pendant 3 mois', 'Bilan chaque mois', 'Budget publicitaire payé à part par le client']::text[],
- false, true, 11, 'unique'),
+ false, true, 11, 'unique', '{1,3}'),
 ('studio-application', 'Stacker Studio', 'Sur mesure · paiement unique',
  'Une application iPhone et Android aux couleurs du commerce : commande ou réservation, carte de fidélité, notifications pour faire revenir les clients. Publiée sur l''App Store et Google Play.',
  'Application mobile sur mesure', 599000, null, 1, 1, 0,
  array['Application iPhone et Android', 'Commande, réservation ou prise de rendez-vous', 'Carte de fidélité intégrée', 'Notifications aux clients', 'Publication sur les stores', 'Livrée en 8 semaines', 'Hébergement inclus 12 mois']::text[],
- false, true, 12, 'unique'),
+ false, true, 12, 'unique', '{1,3,6}'),
 ('studio-pack-complet', 'Stacker Studio', 'Sur mesure · paiement unique',
  'Le pack le plus complet : une image de marque créée de zéro, un site sur mesure et une application mobile iPhone et Android, le tout cohérent et livré par une seule équipe. Le commerçant n''a plus rien à faire côté digital.',
  'Pack complet : site + application + image de marque', 1240000, null, 1, 1, 0,
  array['Branding complet : logo, couleurs, typographies, supports', 'Shooting photo et vidéo dans l''établissement', 'Site sur mesure (vitrine, réservation ou boutique)', 'Application iPhone et Android avec fidélité et notifications', 'Publication sur l''App Store et Google Play', 'Fiche Google optimisée', 'Livré en 10 semaines', 'Hébergement inclus 12 mois']::text[],
- false, true, 14, 'unique');
+ false, true, 14, 'unique', '{1,6,12}');
+
+create or replace function public.deal_validate(p_input jsonb, p_require_consent boolean)
+returns jsonb
+language plpgsql
+stable
+security definer
+set search_path = ''
+as $$
+declare
+  o public.offers%rowtype;
+  v_qty integer;
+  v_n integer;
+  v_siret text := regexp_replace(coalesce(p_input ->> 'siret', ''), '\s', '', 'g');
+  v_email text := lower(btrim(coalesce(p_input ->> 'email', '')));
+  v_phone text := btrim(coalesce(p_input ->> 'phone', ''));
+  v_iban text := public.iban_normalize(p_input ->> 'iban');
+  v_name text := btrim(coalesce(p_input ->> 'company_name', ''));
+  v_addr text := btrim(coalesce(p_input ->> 'company_address', ''));
+  v_first text := btrim(coalesce(p_input ->> 'first_name', ''));
+  v_last text := btrim(coalesce(p_input ->> 'last_name', ''));
+  v_role text := btrim(coalesce(p_input ->> 'role', ''));
+  v_holder text := btrim(coalesce(p_input ->> 'iban_holder', ''));
+begin
+  if jsonb_typeof(p_input) is distinct from 'object' then
+    raise exception 'invalid_input' using errcode = '22023';
+  end if;
+  select * into o from public.offers x where x.id = p_input ->> 'offer_id' and x.active;
+  if not found then
+    raise exception 'offer_unavailable' using errcode = 'P0002';
+  end if;
+  begin
+    v_qty := coalesce((p_input ->> 'quantity')::integer, 1);
+  exception when others then
+    raise exception 'invalid_quantity' using errcode = '22023';
+  end;
+  if v_qty < o.qty_min or v_qty > o.qty_max then
+    raise exception 'invalid_quantity' using errcode = '22023';
+  end if;
+  -- Paiement en plusieurs fois : uniquement pour les offres à paiement unique, parmi les choix de l'offre.
+  begin
+    v_n := coalesce(nullif(p_input ->> 'installments', '')::integer, 1);
+  exception when others then
+    raise exception 'invalid_installments' using errcode = '22023';
+  end;
+  if (o.billing = 'mensuel' and v_n <> 1) or (o.billing = 'unique' and not (v_n = any (o.installments))) then
+    raise exception 'invalid_installments' using errcode = '22023';
+  end if;
+  if not public.siret_is_valid(v_siret) then
+    raise exception 'invalid_siret' using errcode = '22023';
+  end if;
+  if char_length(v_name) not between 2 and 120 then
+    raise exception 'invalid_company' using errcode = '22023';
+  end if;
+  if char_length(v_addr) not between 5 and 200 then
+    raise exception 'invalid_address' using errcode = '22023';
+  end if;
+  if char_length(v_first) not between 1 and 50 or char_length(v_last) not between 1 and 80 then
+    raise exception 'invalid_contact' using errcode = '22023';
+  end if;
+  if char_length(v_role) not between 2 and 60 then
+    raise exception 'invalid_role' using errcode = '22023';
+  end if;
+  if v_email !~ '^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$' or char_length(v_email) > 254 then
+    raise exception 'invalid_email' using errcode = '22023';
+  end if;
+  if v_phone !~ '^\+[1-9][0-9]{7,14}$' then
+    raise exception 'invalid_phone' using errcode = '22023';
+  end if;
+  if char_length(v_holder) not between 2 and 120 then
+    raise exception 'invalid_holder' using errcode = '22023';
+  end if;
+  if not public.iban_is_valid(v_iban) then
+    raise exception 'invalid_iban' using errcode = '22023';
+  end if;
+  if p_require_consent and (coalesce((p_input ->> 'accept_terms')::boolean, false) is not true
+     or coalesce((p_input ->> 'accept_mandate')::boolean, false) is not true) then
+    raise exception 'consent_required' using errcode = '22023';
+  end if;
+  return jsonb_build_object(
+    -- Nombre d'échéances choisi gardé avec l'offre (instantané du deal) ; montant par prélèvement arrondi au centime inférieur (jamais plus que le prix).
+    'offer', to_jsonb(o) || jsonb_build_object('installments_chosen', v_n), 'quantity', v_qty,
+    'monthly_price_cents', (o.price_cents * v_qty) / v_n,
+    'siret', v_siret, 'company_name', v_name, 'company_address', v_addr,
+    'first_name', v_first, 'last_name', v_last, 'role', v_role, 'email', v_email, 'phone', v_phone,
+    'iban', v_iban, 'iban_holder', v_holder,
+    'claim_id', nullif(p_input ->> 'claim_id', '')
+  );
+end;
+$$;
 
 create or replace function public.deal_preview(p_input jsonb)
 returns jsonb
@@ -139,6 +235,8 @@ begin
     'contract_text', v_text, 'contract_sha256', encode(extensions.digest(v_text, 'sha256'), 'hex'),
     'monthly_price_cents', (v ->> 'monthly_price_cents')::integer,
     'billing', v -> 'offer' ->> 'billing',
+    'installments', coalesce((v -> 'offer' ->> 'installments_chosen')::integer, 1),
+    'commission_total_cents', (((v ->> 'monthly_price_cents')::integer * v_rate) / 10000) * coalesce((v -> 'offer' ->> 'installments_chosen')::integer, 1),
     'rate_bps', v_rate,
     'commission_cents', ((v ->> 'monthly_price_cents')::integer * v_rate) / 10000
   );
@@ -216,6 +314,8 @@ begin
     'id', v_id, 'reference', v_refs[1],
     'monthly_price_cents', (v ->> 'monthly_price_cents')::integer,
     'billing', v -> 'offer' ->> 'billing',
+    'installments', coalesce((v -> 'offer' ->> 'installments_chosen')::integer, 1),
+    'commission_total_cents', (((v ->> 'monthly_price_cents')::integer * v_rate) / 10000) * coalesce((v -> 'offer' ->> 'installments_chosen')::integer, 1),
     'rate_bps', v_rate,
     'commission_cents', ((v ->> 'monthly_price_cents')::integer * v_rate) / 10000
   );
@@ -235,6 +335,7 @@ declare
   v_offer jsonb := p_v -> 'offer';
   v_eng integer := (v_offer ->> 'engagement_months')::integer;
   v_qty integer := (p_v ->> 'quantity')::integer;
+  v_n integer := coalesce((v_offer ->> 'installments_chosen')::integer, 1);
   v_apporteur text;
   v_vars jsonb;
   k text;
@@ -260,7 +361,13 @@ begin
                            else 'Quantité : ' || v_qty || ' ' || (v_offer ->> 'unit_label') || case when v_qty > 1 then 's' else '' end
                                 || ' à ' || public.eur((v_offer ->> 'price_cents')::integer) || ' par ' || (v_offer ->> 'unit_label') || ' et par mois.' || chr(10) end,
     'prix_mensuel', public.eur((p_v ->> 'monthly_price_cents')::integer),
-    'prix_total', public.eur((p_v ->> 'monthly_price_cents')::integer),
+    'prix_total', public.eur((v_offer ->> 'price_cents')::integer * v_qty),
+    'echeancier', case when v_n = 1 then 'payable en une seule fois' else 'payable en ' || v_n || ' fois sans frais' end,
+    'echeancier_detail', case when v_n = 1 then 'un prélèvement SEPA unique, effectué à l''issue du délai de rétractation'
+                              else v_n || ' prélèvements SEPA mensuels de ' || public.eur((p_v ->> 'monthly_price_cents')::integer)
+                                   || ', le premier à l''issue du délai de rétractation' end,
+    'mandat_echeancier', case when v_n = 1 then 'un seul prélèvement est prévu au titre de ce contrat, d''un montant de ' || public.eur((p_v ->> 'monthly_price_cents')::integer)
+                              else v_n || ' prélèvements mensuels de ' || public.eur((p_v ->> 'monthly_price_cents')::integer) || ' sont prévus au titre de ce contrat' end,
     'engagement', case when v_eng = 0 then 'Sans engagement : le contrat est conclu pour une durée indéterminée, résiliable à tout moment.'
                        else 'Engagement de ' || v_eng || ' mois à compter du premier prélèvement, puis reconduction tacite de mois en mois.' end,
     'retractation', s.withdrawal_days::text,
@@ -293,7 +400,7 @@ begin
       select jsonb_agg(jsonb_build_object(
         'id', o.id, 'brand', o.brand, 'category', o.category, 'description', o.description, 'name', o.name,
         'price_cents', o.price_cents, 'unit_label', o.unit_label, 'qty_min', o.qty_min, 'qty_max', o.qty_max,
-        'engagement_months', o.engagement_months, 'features', to_jsonb(o.features), 'recommended', o.recommended, 'billing', o.billing) order by o.sort_order)
+        'engagement_months', o.engagement_months, 'features', to_jsonb(o.features), 'recommended', o.recommended, 'billing', o.billing, 'installments', to_jsonb(o.installments)) order by o.sort_order)
       from public.offers o where o.active), '[]'::jsonb)
   );
 end;
@@ -313,7 +420,7 @@ begin
     select jsonb_agg(jsonb_build_object(
       'id', d.id, 'reference', d.reference, 'status', d.status, 'company_name', d.company_name,
       'offer_label', (d.offer_snapshot ->> 'brand') || ' · ' || (d.offer_snapshot ->> 'name'),
-      'monthly_price_cents', d.monthly_price_cents, 'billing', coalesce(d.offer_snapshot ->> 'billing', 'mensuel'), 'signed_at', d.signed_at, 'activated_at', d.activated_at,
+      'monthly_price_cents', d.monthly_price_cents, 'billing', coalesce(d.offer_snapshot ->> 'billing', 'mensuel'), 'installments', coalesce((d.offer_snapshot ->> 'installments_chosen')::integer, 1), 'signed_at', d.signed_at, 'activated_at', d.activated_at,
       'withdrawal_until', d.withdrawal_until,
       'earned_cents', coalesce((select sum(e.amount_cents) from public.commission_entries e where e.deal_id = d.id), 0)
     ) order by d.signed_at desc)
@@ -358,7 +465,7 @@ as $$
     'mandate_ref', b.mandate_ref, 'signed_on', (b.signed_at at time zone 'Europe/Paris')::date,
     'first_debit_on', greatest((b.withdrawal_until at time zone 'Europe/Paris')::date + 1, public.paris_today() + 3),
     'amount_cents', b.monthly_price_cents,
-    'times', case when b.offer_snapshot ->> 'billing' = 'unique' then 1 end)), '[]'::jsonb)
+    'times', case when b.offer_snapshot ->> 'billing' = 'unique' then coalesce((b.offer_snapshot ->> 'installments_chosen')::integer, 1) end)), '[]'::jsonb)
   from bumped b;
 $$;
 
@@ -386,7 +493,7 @@ begin
     'pending_cents', coalesce((select sum(d.monthly_price_cents * v_rate / 10000) from public.deals d where d.stacker_id = v_uid and d.status = 'signe'), 0),
     'pending_deals', coalesce((
       select jsonb_agg(jsonb_build_object('deal_id', d.id, 'company_name', d.company_name, 'expected_cents', d.monthly_price_cents * v_rate / 10000,
-                                          'one_time', d.offer_snapshot ->> 'billing' = 'unique',
+                                          'one_time', d.offer_snapshot ->> 'billing' = 'unique', 'installments', coalesce((d.offer_snapshot ->> 'installments_chosen')::integer, 1),
                                           'first_debit_on', (d.withdrawal_until at time zone 'Europe/Paris')::date + 1, 'signed_at', d.signed_at)
                        order by d.signed_at desc)
       from public.deals d where d.stacker_id = v_uid and d.status = 'signe'), '[]'::jsonb),
@@ -512,7 +619,7 @@ begin
     from public.deals d
     cross join lateral (
       select (d.first_debit_on + make_interval(months => n))::date as debit_on
-      from generate_series(0, case when d.offer_snapshot ->> 'billing' = 'unique' then 0 else 240 end) n
+      from generate_series(0, case when d.offer_snapshot ->> 'billing' = 'unique' then coalesce((d.offer_snapshot ->> 'installments_chosen')::integer, 1) - 1 else 240 end) n
       where (d.first_debit_on + make_interval(months => n))::date between v_today + 3 and v_today + 6
     ) x
     where d.mollie_status = 'fait' and d.status in ('signe', 'actif', 'suspendu') and d.first_debit_on is not null
@@ -576,6 +683,7 @@ begin
       'offer_label', (d.offer_snapshot ->> 'brand') || ' · ' || (d.offer_snapshot ->> 'name'),
       'monthly_price_cents', d.monthly_price_cents, 'mandate_ref', d.mandate_ref,
       'one_time', coalesce(d.offer_snapshot ->> 'billing', 'mensuel') = 'unique',
+      'installments', coalesce((d.offer_snapshot ->> 'installments_chosen')::integer, 1),
       'iban_masked', d.iban_country || '•• •••• ' || d.iban_last4,
       'signed_at', d.signed_at, 'withdrawal_until', d.withdrawal_until,
       'first_debit_on', coalesce(d.first_debit_on, greatest((d.withdrawal_until at time zone 'Europe/Paris')::date + 1, public.paris_today() + 3)),

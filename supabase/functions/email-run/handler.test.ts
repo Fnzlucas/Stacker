@@ -38,6 +38,7 @@ const DEAL: NonNullable<EmailItem['deal']> = {
   offer_label: 'Alma Company · Pro',
   monthly_price_cents: 6999,
   one_time: false,
+  installments: 1,
   mandate_ref: 'STKM12345678',
   iban_masked: 'FR•• •••• 0189',
   signed_at: '2026-10-12T08:30:00Z',
@@ -99,6 +100,9 @@ describe('modèles', () => {
     expect(m.text).toContain('prélevé en une seule fois');
     expect(m.text).not.toContain('par mois');
     expect(render(item({ kind: 'contrat_stacker', deal: one }), CTX).text).toContain('le jour où le client est prélevé');
+    const three = render(item({ kind: 'contrat_client', to: 'contact@boulangerie-test.fr', deal: { ...one, monthly_price_cents: 49666, installments: 3 } }), CTX);
+    expect(three.text).toContain('en 3 fois : 3 prélèvements mensuels de 496,66 €');
+    expect(three.text).toContain('prélevé en 3 fois');
   });
   it('contrat au stacker, pré-notification, bienvenue, abonnement, prélèvement refusé', () => {
     expect(render(item({ kind: 'contrat_stacker', deal: DEAL }), CTX)).toMatchObject({ subject: 'Deal signé : Boulangerie Test (STK-12345678)', contract: true });

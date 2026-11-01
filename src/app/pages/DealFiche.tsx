@@ -67,7 +67,7 @@ function Fiche({ d }: { d: DealDetail }): ReactElement {
         </p>
         <p className="deal-summary-price mt-4">
           {formatEuros(d.monthly_price_cents)}
-          <small> {perLabel(d.offer.billing)}</small>
+          <small> {perLabel(d.offer.billing, d.offer.installments_chosen)}</small>
         </p>
         <p className="form-note mt-3">
           <Icon name="info" />
@@ -79,7 +79,7 @@ function Fiche({ d }: { d: DealDetail }): ReactElement {
           </Fact>
           <Fact label="Signé le">{formatLongDate(d.signed_at)}</Fact>
           <Fact label="Rétractation">jusqu’au {formatLongDate(d.withdrawal_until)}</Fact>
-          <Fact label="Durée">{termsLabel(d.offer.billing, d.offer.engagement_months)}</Fact>
+          <Fact label="Durée">{termsLabel(d.offer.billing, d.offer.engagement_months, d.offer.installments_chosen)}</Fact>
           {d.offer.unit_label ? <Fact label="Quantité">{`${String(d.quantity)} ${d.offer.unit_label}${d.quantity > 1 ? 's' : ''}`}</Fact> : null}
         </dl>
       </section>

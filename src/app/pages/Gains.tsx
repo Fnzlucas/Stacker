@@ -87,7 +87,7 @@ function Balance({ e }: { e: Earnings }): ReactElement {
             <li key={d.deal_id}>
               <Icon name="clock" />
               <span>
-                <b>{d.company_name}</b> · {formatEuros(d.expected_cents, { always: true })}{d.one_time ? ' (paiement unique)' : ''} débloqués dès le prélèvement du client, prévu vers le {formatLongDate(d.first_debit_on)}
+                <b>{d.company_name}</b> · {formatEuros(d.expected_cents, { always: true })}{d.one_time ? (d.installments > 1 ? ` (1er de ${String(d.installments)} prélèvements)` : ' (paiement unique)') : ''} débloqués dès le prélèvement du client, prévu vers le {formatLongDate(d.first_debit_on)}
               </span>
             </li>
           ))}

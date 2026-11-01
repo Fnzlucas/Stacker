@@ -164,6 +164,13 @@ test.describe('deals', () => {
     await expect(site).toContainText('Paiement unique, sans abonnement');
     await expect(site).toContainText('223,50');
     await site.click();
+    // Facilités de paiement : 3 fois sans frais, commission à chaque prélèvement.
+    const pay = page.getByRole('radiogroup', { name: 'Paiement du client' });
+    await expect(pay.getByRole('radio', { name: /En une fois/ })).toHaveAttribute('aria-checked', 'true');
+    await pay.getByRole('radio', { name: /En 3 fois/ }).click();
+    await expect(pay.getByRole('radio', { name: /En 3 fois/ })).toContainText('496,66');
+    await expect(pay.getByRole('radio', { name: /En 3 fois/ })).toContainText('74,49');
+    await pay.getByRole('radio', { name: /En une fois/ }).click();
     await page.getByRole('button', { name: 'Continuer' }).click();
 
     await page.getByLabel('SIRET').fill(SIRET);

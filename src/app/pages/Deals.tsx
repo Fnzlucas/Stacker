@@ -85,7 +85,7 @@ export function DealsPage(): ReactElement {
                   </div>
                   <div className="deals-row-amount">
                     <span className="num">{formatEuros(d.monthly_price_cents)}</span>
-                    <small>{perLabel(d.billing)}</small>
+                    <small>{perLabel(d.billing, d.installments)}</small>
                   </div>
                   <Icon name="chevron-right" />
                 </Link>

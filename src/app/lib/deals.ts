@@ -32,6 +32,8 @@ export const offerSchema = z.object({
   features: z.array(z.string()),
   recommended: z.boolean(),
   billing,
+  /** Offre unique : paiements en plusieurs fois proposés (1 = en une fois). */
+  installments: z.array(z.number().int().positive()).default([1]),
 });
 export type Offer = z.infer<typeof offerSchema>;
 
@@ -45,8 +47,10 @@ export const previewSchema = z.object({
   contract_sha256: z.string().regex(/^[0-9a-f]{64}$/),
   monthly_price_cents: z.number().int(),
   billing,
+  installments: z.number().int().positive().default(1),
   rate_bps: z.number().int(),
   commission_cents: z.number().int(),
+  commission_total_cents: z.number().int().optional(),
 });
 export type DealPreview = z.infer<typeof previewSchema>;
 
@@ -55,8 +59,10 @@ export const signedSchema = z.object({
   reference: z.string(),
   monthly_price_cents: z.number().int(),
   billing,
+  installments: z.number().int().positive().default(1),
   rate_bps: z.number().int(),
   commission_cents: z.number().int(),
+  commission_total_cents: z.number().int().optional(),
 });
 export type SignedDeal = z.infer<typeof signedSchema>;
 
@@ -87,6 +93,7 @@ export const dealRowSchema = z.object({
   offer_label: z.string(),
   monthly_price_cents: z.number().int(),
   billing,
+  installments: z.number().int().positive().default(1),
   signed_at: z.string(),
   activated_at: z.string().nullable(),
   withdrawal_until: z.string(),
@@ -99,7 +106,7 @@ export const dealDetailSchema = z.object({
   reference: z.string(),
   status: z.enum(DEAL_STATUSES),
   claim_id: z.uuid().nullable(),
-  offer: z.object({ brand: z.string(), name: z.string(), engagement_months: z.number().int(), unit_label: z.string().nullable(), billing }).loose(),
+  offer: z.object({ brand: z.string(), name: z.string(), engagement_months: z.number().int(), unit_label: z.string().nullable(), billing, installments_chosen: z.number().int().positive().default(1) }).loose(),
   quantity: z.number().int(),
   monthly_price_cents: z.number().int(),
   company_name: z.string(),
@@ -146,7 +153,7 @@ export const earningsSchema = z.object({
   /** Commission du premier mois des contrats signés, débloquée au premier prélèvement. */
   pending_cents: z.number().int(),
   pending_deals: z.array(
-    z.object({ deal_id: z.uuid(), company_name: z.string(), expected_cents: z.number().int(), first_debit_on: z.string(), signed_at: z.string(), one_time: z.boolean().default(false) }),
+    z.object({ deal_id: z.uuid(), company_name: z.string(), expected_cents: z.number().int(), first_debit_on: z.string(), signed_at: z.string(), one_time: z.boolean().default(false), installments: z.number().int().positive().default(1) }),
   ),
   signed_count: z.number().int(),
   active_count: z.number().int(),
@@ -205,6 +212,8 @@ export interface DealInput {
   accept_terms: boolean;
   accept_mandate: boolean;
   claim_id: string | null;
+  /** Offre unique : nombre de prélèvements mensuels choisi (1 = en une fois). */
+  installments: number;
 }
 
 export const emptyDealInput = (): DealInput => ({
@@ -223,6 +232,7 @@ export const emptyDealInput = (): DealInput => ({
   accept_terms: false,
   accept_mandate: false,
   claim_id: null,
+  installments: 1,
 });
 
 export const normalizeIban = (iban: string): string => iban.replace(/[\s.-]/g, '').toUpperCase();
@@ -312,9 +322,13 @@ export const commissionCents = (priceCents: number, rateBps: number): number => 
 export const engagementLabel = (months: number): string => (months === 0 ? 'Sans engagement' : `Engagement ${String(months)} mois`);
 
 /** Suffixe d'un prix : « / mois » pour un abonnement, « en une fois » pour une prestation sur mesure. */
-export const perLabel = (b: BillingKind): string => (b === 'unique' ? 'en une fois' : '/ mois');
+export const perLabel = (b: BillingKind, installments = 1): string =>
+  b === 'unique' ? (installments > 1 ? `/ mois, ${String(installments)} fois` : 'en une fois') : '/ mois';
 /** Durée affichée sous le prix. */
-export const termsLabel = (b: BillingKind, engagementMonths: number): string => (b === 'unique' ? 'Paiement unique, sans abonnement' : engagementLabel(engagementMonths));
+export const termsLabel = (b: BillingKind, engagementMonths: number, installments = 1): string =>
+  b === 'unique' ? (installments > 1 ? `Paiement en ${String(installments)} fois sans frais` : 'Paiement unique, sans abonnement') : engagementLabel(engagementMonths);
+/** Montant d'un prélèvement, arrondi au centime inférieur comme le serveur. */
+export const installmentCents = (totalCents: number, installments: number): number => Math.floor(totalCents / installments);
 
 export function groupByBrand(offers: readonly Offer[]): { brand: string; category: string; description: string; offers: Offer[] }[] {
   const out: { brand: string; category: string; description: string; offers: Offer[] }[] = [];

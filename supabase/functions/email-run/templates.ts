@@ -24,6 +24,8 @@ export const itemSchema = z.object({
       monthly_price_cents: z.number().int(),
       /** Offre payée en une fois (un seul prélèvement). */
       one_time: z.boolean().default(false),
+      /** Offre unique payée en plusieurs fois : nombre de prélèvements mensuels. */
+      installments: z.number().int().positive().default(1),
       mandate_ref: z.string(),
       iban_masked: z.string(),
       signed_at: date,
@@ -60,8 +62,12 @@ export class RenderError extends Error {
 const esc = (s: string): string => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c] ?? c);
 
 /** Prix affiché au client : « 49 € par mois » ou « 1 490 € en une fois ». */
-const priceLabel = (deal: { monthly_price_cents: number; one_time: boolean }): string =>
-  `${euros(deal.monthly_price_cents)} ${deal.one_time ? 'en une fois' : 'par mois'}`;
+const priceLabel = (deal: { monthly_price_cents: number; one_time: boolean; installments: number }): string =>
+  !deal.one_time
+    ? `${euros(deal.monthly_price_cents)} par mois`
+    : deal.installments > 1
+      ? `en ${String(deal.installments)} fois : ${String(deal.installments)} prélèvements mensuels de ${euros(deal.monthly_price_cents)}`
+      : `${euros(deal.monthly_price_cents)} en une fois`;
 
 export const euros = (cents: number): string =>
   new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', minimumFractionDigits: cents % 100 === 0 ? 0 : 2 }).format(cents / 100).replace(/[\u202f\u00a0]/g, ' ');
@@ -140,7 +146,9 @@ export function render(item: EmailItem, ctx: RenderContext): RenderedEmail {
           `Merci pour votre confiance. Vous trouverez en pièce jointe l’exemplaire de votre contrat${advisor ? `, signé avec ${advisor}, apporteur d’affaires Stacker` : ''}.`,
           `Vous pouvez vous rétracter sans motif ni frais jusqu’au ${longDate(deal.withdrawal_until)}, par email à ${ctx.contactEmail}. Aucun prélèvement n’a lieu avant la fin de ce délai.`,
           deal.one_time
-            ? 'Le prix est prélevé en une seule fois. Vous serez prévenu par email au moins 2 jours avant, avec son montant et sa date.'
+            ? deal.installments > 1
+              ? `Le prix est prélevé en ${String(deal.installments)} fois, chaque mois. Vous serez prévenu par email au moins 2 jours avant chaque prélèvement, avec son montant et sa date.`
+              : 'Le prix est prélevé en une seule fois. Vous serez prévenu par email au moins 2 jours avant, avec son montant et sa date.'
             : 'Vous serez prévenu par email au moins 2 jours avant chaque prélèvement, avec son montant et sa date.',
         ],
         facts: [
@@ -164,7 +172,7 @@ export function render(item: EmailItem, ctx: RenderContext): RenderedEmail {
           hi,
           'Bravo ! Le contrat signé est en pièce jointe, et le client a reçu son exemplaire.',
           deal.one_time
-            ? `Le client peut se rétracter jusqu’au ${longDate(deal.withdrawal_until)}. Ta commission est créée le jour où le client est prélevé, au taux de ton niveau ce jour-là, et disponible tout de suite.`
+            ? `Le client peut se rétracter jusqu’au ${longDate(deal.withdrawal_until)}. Ta commission est créée ${deal.installments > 1 ? 'à chacun de ses prélèvements' : 'le jour où le client est prélevé'}, au taux de ton niveau ce jour-là, et disponible tout de suite.`
             : `Le client peut se rétracter jusqu’au ${longDate(deal.withdrawal_until)}. Ta commission est créée à chaque paiement du client, au taux de ton niveau ce jour-là, et disponible tout de suite.`,
         ],
         facts: [
@@ -198,7 +206,7 @@ export function render(item: EmailItem, ctx: RenderContext): RenderedEmail {
           ['Compte prélevé', deal.iban_masked],
           ['Référence du mandat (RUM)', deal.mandate_ref],
         ],
-        footer: `Vous recevez cet avis car ${deal.company_name} a signé un mandat de prélèvement SEPA au profit de Stacker. Il vous est envoyé avant ${deal.one_time ? 'le' : 'chaque'} prélèvement.`,
+        footer: `Vous recevez cet avis car ${deal.company_name} a signé un mandat de prélèvement SEPA au profit de Stacker. Il vous est envoyé avant ${deal.one_time && deal.installments === 1 ? 'le' : 'chaque'} prélèvement.`,
       });
       return { subject: `Avis de prélèvement : ${euros(amount.data)} le ${longDate(on.data)}`, html, text, contract: false };
     }
@@ -329,7 +337,7 @@ export function render(item: EmailItem, ctx: RenderContext): RenderedEmail {
         ],
         facts: [
           ['Référence', deal.reference],
-          [deal.one_time ? 'Montant' : 'Montant mensuel', euros(deal.monthly_price_cents)],
+          [deal.one_time && deal.installments === 1 ? 'Montant' : 'Montant mensuel', euros(deal.monthly_price_cents)],
         ],
         button: { label: 'Voir le deal', url: `${app}/deals` },
         footer: stackerFooter,

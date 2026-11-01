@@ -31,6 +31,10 @@ export interface FakeOffer {
   active: boolean;
   /** Paiement unique (gros ticket) ; absent : abonnement mensuel. */
   billing?: 'mensuel' | 'unique';
+  /** Offre unique : paiements en plusieurs fois proposés. */
+  installments?: number[];
+  /** Instantané d'un deal : nombre de prélèvements choisi. */
+  installments_chosen?: number;
 }
 
 const oneTime = (o: Pick<FakeOffer, 'billing'>): boolean => o.billing === 'unique';
@@ -41,7 +45,7 @@ export const TEST_OFFERS: FakeOffer[] = [
   { id: 'alma-pro', brand: 'Alma Company', category: 'Création de Sites Web', description: '', name: 'Pro', price_cents: 6999, unit_label: null, qty_min: 1, qty_max: 1, engagement_months: 12, features: ['Max 15 pages', 'Blog intégré'], recommended: true, active: true },
   { id: 'inroom-hotel-moyen', brand: 'InRoom', category: 'Conciergerie Hôtelière', description: '', name: 'Hôtel moyen', price_cents: 500, unit_label: 'chambre', qty_min: 21, qty_max: 80, engagement_months: 12, features: ['21 à 80 chambres'], recommended: true, active: true },
   { id: 'rh-pme-pro', brand: 'RH PME', category: 'Ressources Humaines', description: '', name: 'Pro', price_cents: 29900, unit_label: null, qty_min: 1, qty_max: 1, engagement_months: 12, features: [], recommended: false, active: false },
-  { id: 'studio-site-vitrine', brand: 'Stacker Studio', category: 'Sur mesure · paiement unique', description: 'Un site créé de zéro pour l’entreprise, payé une fois.', name: 'Site vitrine sur mesure', price_cents: 149000, unit_label: null, qty_min: 1, qty_max: 1, engagement_months: 0, features: ['Design unique', 'Jusqu’à 8 pages', 'Livré en 3 semaines'], recommended: true, active: true, billing: 'unique' },
+  { id: 'studio-site-vitrine', brand: 'Stacker Studio', category: 'Sur mesure · paiement unique', description: 'Un site créé de zéro pour l’entreprise, payé une fois.', name: 'Site vitrine sur mesure', price_cents: 149000, unit_label: null, qty_min: 1, qty_max: 1, engagement_months: 0, features: ['Design unique', 'Jusqu’à 8 pages', 'Livré en 3 semaines'], recommended: true, active: true, billing: 'unique', installments: [1, 3] },
 ];
 
 export interface FakeDeal {
@@ -158,13 +162,15 @@ export class FakeDeals {
     }
   }
 
-  private validate(input: unknown, requireConsent: boolean): Reply | { offer: FakeOffer; qty: number; v: Record<string, string> } {
+  private validate(input: unknown, requireConsent: boolean): Reply | { offer: FakeOffer; qty: number; n: number; v: Record<string, string> } {
     if (!input || typeof input !== 'object') return pg(400, '22023', 'invalid_input');
     const i = input as Record<string, unknown>;
     const offer = this.offers.find((o) => o.id === i['offer_id'] && o.active);
     if (!offer) return pg(404, 'P0002', 'offer_unavailable');
     const qty = typeof i['quantity'] === 'number' ? i['quantity'] : 1;
     if (!Number.isInteger(qty) || qty < offer.qty_min || qty > offer.qty_max) return pg(400, '22023', 'invalid_quantity');
+    const n = typeof i['installments'] === 'number' ? i['installments'] : 1;
+    if (!(offer.installments ?? [1]).includes(n)) return pg(400, '22023', 'invalid_installments');
     const v = {
       siret: s(i['siret']).replace(/\s/g, ''),
       company_name: s(i['company_name']),
@@ -188,7 +194,7 @@ export class FakeDeals {
     if (v.iban_holder.length < 2) return pg(400, '22023', 'invalid_holder');
     if (!ibanOk(v.iban)) return pg(400, '22023', 'invalid_iban');
     if (requireConsent && (i['accept_terms'] !== true || i['accept_mandate'] !== true)) return pg(400, '22023', 'consent_required');
-    return { offer, qty, v };
+    return { offer: n > 1 ? { ...offer, installments_chosen: n } : offer, qty, n, v };
   }
 
   private refs(st: StackerInfo, v: Record<string, string>, offer: FakeOffer): [string, string] {
@@ -203,7 +209,7 @@ export class FakeDeals {
       `Référence : ${ref}`,
       `Le client : ${v['company_name'] ?? ''}, SIRET ${v['siret'] ?? ''}, ${v['company_address'] ?? ''}, représenté par ${v['first_name'] ?? ''} ${v['last_name'] ?? ''} (${v['role'] ?? ''}).`,
       `Service : ${offer.brand} — ${offer.name}${offer.unit_label ? ` · ${String(qty)} ${offer.unit_label}s` : ''}.`,
-      `Prix : ${eur(offer.price_cents * qty)} ${oneTime(offer) ? 'payable en une seule fois' : 'par mois'}. TVA non applicable, art. 293 B du CGI.`,
+      `Prix : ${eur(offer.price_cents * qty)} ${oneTime(offer) ? ((offer.installments_chosen ?? 1) > 1 ? `payable en ${String(offer.installments_chosen)} fois sans frais` : 'payable en une seule fois') : 'par mois'}. TVA non applicable, art. 293 B du CGI.`,
       'Droit de rétractation : 14 jours. Le premier prélèvement intervient à l’issue de ce délai.',
       `Apporteur d’affaires : ${[st.firstName, st.lastName].filter(Boolean).join(' ') || 'un stacker'}.`,
       `Mandat SEPA — RUM ${rum} — IBAN ${iban.slice(0, 4)} •••• •••• ${iban.slice(-4)}.`,
@@ -232,8 +238,8 @@ export class FakeDeals {
         if (Array.isArray(r)) return r;
         const [ref, rum] = this.refs(st, r.v, r.offer);
         const text = this.contract(st, ref, rum, r.offer, r.qty, r.v);
-        const price = r.offer.price_cents * r.qty;
-        return [200, { reference: ref, mandate_ref: rum, contract_text: text, contract_sha256: sha(text), monthly_price_cents: price, billing: billingOf(r.offer), rate_bps: rate, commission_cents: Math.floor((price * rate) / 10000) }];
+        const price = Math.floor((r.offer.price_cents * r.qty) / r.n);
+        return [200, { reference: ref, mandate_ref: rum, contract_text: text, contract_sha256: sha(text), monthly_price_cents: price, billing: billingOf(r.offer), installments: r.n, rate_bps: rate, commission_cents: Math.floor((price * rate) / 10000), commission_total_cents: Math.floor((price * rate) / 10000) * r.n }];
       }
       case 'deal_sign': {
         const r = this.validate(b['p_input'], true);
@@ -249,7 +255,7 @@ export class FakeDeals {
           claim = this.claims().find((c) => c.id === r.v['claim_id'] && c.stacker === st.id && c.released_at === null && c.status !== 'signe');
           if (!claim) return pg(404, 'P0002', 'not_found');
         }
-        const price = r.offer.price_cents * r.qty;
+        const price = Math.floor((r.offer.price_cents * r.qty) / r.n);
         const deal: FakeDeal = {
           id: this.newId(),
           reference: ref,
@@ -275,7 +281,7 @@ export class FakeDeals {
           claim.expires_at = null;
           claim.next_action_at = null;
         }
-        return [200, { id: deal.id, reference: ref, monthly_price_cents: price, billing: billingOf(r.offer), rate_bps: rate, commission_cents: Math.floor((price * rate) / 10000) }];
+        return [200, { id: deal.id, reference: ref, monthly_price_cents: price, billing: billingOf(r.offer), installments: r.n, rate_bps: rate, commission_cents: Math.floor((price * rate) / 10000), commission_total_cents: Math.floor((price * rate) / 10000) * r.n }];
       }
       case 'my_deals':
         return [
@@ -291,6 +297,7 @@ export class FakeDeals {
               offer_label: `${d.offer.brand} · ${d.offer.name}`,
               monthly_price_cents: d.monthly_price_cents,
               billing: billingOf(d.offer),
+              installments: d.offer.installments_chosen ?? 1,
               signed_at: d.signed_at,
               activated_at: d.activated_at,
               withdrawal_until: d.withdrawal_until,
@@ -359,6 +366,7 @@ export class FakeDeals {
                 first_debit_on: new Date(Date.parse(d.withdrawal_until) + 86_400_000).toISOString().slice(0, 10),
                 signed_at: d.signed_at,
                 one_time: oneTime(d.offer),
+                installments: d.offer.installments_chosen ?? 1,
               })),
             signed_count: deals.filter((d) => ['signe', 'actif', 'suspendu'].includes(d.status)).length,
             active_count: deals.filter((d) => d.status === 'actif').length,
