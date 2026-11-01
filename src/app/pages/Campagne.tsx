@@ -3,6 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import { DEPARTMENTS } from '@shared/waitlist';
 import { PRESETS, PRESET_KEYS, type PresetKey } from '@shared/prospects';
 import { Icon } from '../../components/Icon';
+import { openExternal } from '../lib/native';
 import { useSignedIn } from '../auth/AuthProvider';
 import { FormAlert, SelectField } from '../components/Form';
 import { ProgressBar } from '../components/Ui';
@@ -45,7 +46,7 @@ function MailboxCard({ s }: { s: CampaignState }): ReactElement {
   const disconnect = useDisconnectMailbox();
   const connect = useMutation({
     mutationFn: (provider: 'gmail' | 'outlook') => connectMailbox(backend, provider),
-    onSuccess: (url) => window.location.assign(url),
+    onSuccess: (url) => void openExternal(url),
   });
   const m = s.mailbox;
 

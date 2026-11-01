@@ -8,6 +8,7 @@ import { z } from 'zod';
 import { searchResponseSchema, type SearchItem, type SearchRequest } from '@shared/prospects';
 import { ApiError } from './apiError';
 import type { Backend } from './supabase';
+import { isNativeApp } from './platform';
 
 export const PROSPECTING_RULES_VERSION = '2026-10-09';
 
@@ -143,7 +144,9 @@ const MESSAGES: Record<string, string> = {
   quota_exceeded: 'Tu as atteint ta limite de recherches pour aujourd’hui. Elle se réinitialise demain matin.',
   disabled: 'La prospection est momentanément suspendue. Réessaie un peu plus tard.',
   onboarding_required: 'Termine ton inscription pour accéder à la prospection.',
-  subscription_required: 'Active ton abonnement Stacker pour prospecter.',
+  get subscription_required() {
+    return isNativeApp() ? 'Ton compte n’est pas actif : la prospection est indisponible pour l’instant.' : 'Active ton abonnement Stacker pour prospecter.';
+  },
   not_found: 'Ce prospect n’est plus dans ta liste (libéré ou expiré).',
   invalid_transition: 'Ce changement de statut n’est pas possible.',
   forbidden_status: 'Ce statut est posé automatiquement par Stacker.',

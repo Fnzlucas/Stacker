@@ -1,6 +1,9 @@
 import { useEffect, type ReactElement } from 'react';
 import { NavLink, Navigate, Outlet, useLocation } from 'react-router';
 import { Icon, type IconName } from '../../components/Icon';
+import { useQueryClient } from '@tanstack/react-query';
+import { useSignedIn } from '../auth/AuthProvider';
+import { initNative } from '../lib/native';
 import { useProfile } from '../lib/queries';
 import { PATHS } from '../paths';
 import { LoadError, Splash } from './Layouts';
@@ -32,6 +35,12 @@ export function TabBar(): ReactElement {
 export function AppShell(): ReactElement {
   const profile = useProfile();
   const { pathname } = useLocation();
+  const { backend } = useSignedIn();
+  const queryClient = useQueryClient();
+  // Application iPhone : retour au premier plan, dictée native, notifications (rien dans le navigateur).
+  useEffect(() => {
+    void initNative(queryClient, () => backend);
+  }, [queryClient, backend]);
   // Chaque nouvel écran s'ouvre en haut (sinon il garde le défilement de l'écran précédent).
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });

@@ -211,3 +211,9 @@ enabled = true
 verify_jwt = true
 import_map = "./functions/roleplay/deno.json"
 entrypoint = "./functions/roleplay/index.ts"
+
+[functions.push-run]
+enabled = true
+verify_jwt = false
+import_map = "./functions/push-run/deno.json"
+entrypoint = "./functions/push-run/index.ts"

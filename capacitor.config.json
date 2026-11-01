@@ -1,0 +1,19 @@
+{
+  "appId": "fr.stacker.app",
+  "appName": "Stacker",
+  "webDir": "ios-shell",
+  "server": {
+    "url": "https://stacker-topaz.vercel.app/app",
+    "errorPath": "index.html"
+  },
+  "ios": {
+    "contentInset": "never",
+    "limitsNavigationsToAppBoundDomains": false,
+    "backgroundColor": "#ececf0"
+  },
+  "plugins": {
+    "PushNotifications": {
+      "presentationOptions": ["badge", "sound", "alert"]
+    }
+  }
+}

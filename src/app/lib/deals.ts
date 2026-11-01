@@ -7,6 +7,7 @@ import { z } from 'zod';
 import { isValidSiret, normalizePhone } from '@shared/account';
 import { ApiError } from './apiError';
 import type { Backend } from './supabase';
+import { isNativeApp } from './platform';
 
 // ---------------------------------------------------------------------------
 // Schémas
@@ -329,7 +330,9 @@ export class DealError extends Error {
 
 const MESSAGES: Record<string, string> = {
   onboarding_required: 'Termine ton inscription pour faire signer un client.',
-  subscription_required: 'Active ton abonnement Stacker pour faire signer un client.',
+  get subscription_required() {
+    return isNativeApp() ? 'Ton compte n’est pas actif : la signature est indisponible pour l’instant.' : 'Active ton abonnement Stacker pour faire signer un client.';
+  },
   training_required: 'Réussis d’abord une simulation d’appel dans Entraînement pour faire signer un client.',
   offer_unavailable: 'Cette offre n’est plus disponible. Choisis-en une autre.',
   invalid_quantity: 'Quantité invalide pour cette offre.',

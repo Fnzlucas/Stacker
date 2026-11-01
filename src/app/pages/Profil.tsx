@@ -15,6 +15,7 @@ import { BILLING_STATUS_LABELS } from '../lib/billing';
 import { useIsAdmin } from '../lib/adminQueries';
 import { useBilling } from '../lib/billingQueries';
 import { useProfile, useTiers, useUpdateProfile } from '../lib/queries';
+import { isNativeApp } from '../lib/platform';
 import { PATHS } from '../paths';
 
 type FormValues = Record<'first_name' | 'last_name' | 'phone' | 'department' | 'city' | 'legal_status' | 'siret' | 'goal', string>;
@@ -70,8 +71,10 @@ export function ProfilPage(): ReactElement {
   );
 }
 
-function BillingLink(): ReactElement {
+function BillingLink(): ReactElement | null {
   const billing = useBilling();
+  // Application iPhone : l'abonnement se gère sur le site (règles de l'App Store).
+  if (isNativeApp()) return null;
   const b = billing.data;
   const label = !b ? '…' : b.status === 'actif' && b.cancel_at_period_end ? 'Résilié' : BILLING_STATUS_LABELS[b.status];
   return (

@@ -19,6 +19,7 @@ import {
 } from '../lib/deals';
 import { useProfile, useTiers } from '../lib/queries';
 import { formatRate, tierProgress } from '../lib/tiers';
+import { isNativeApp } from '../lib/platform';
 import { PATHS, dealPath } from '../paths';
 
 /** Onglet « Gains » : solde, virements, commissions mois par mois, niveau. */
@@ -307,7 +308,7 @@ function History({ e }: { e: Earnings }): ReactElement {
               return (
                 <li key={x.id} className="list-row deals-row">
                   <div className="min-w-0 flex-1">
-                    <p className="list-title">Abonnement Stacker</p>
+                    <p className="list-title">{isNativeApp() ? 'Compte Stacker' : 'Abonnement Stacker'}</p>
                     <p className="list-sub">
                       <span>Payé avec tes gains · {formatLongDate(x.created_at)}</span>
                     </p>

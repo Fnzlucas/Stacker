@@ -8,12 +8,42 @@ import { formatLongDate } from '../lib/dates';
 import { BILLING_STATUS_LABELS, billingErrorMessage, billingView, type Billing } from '../lib/billing';
 import { useBilling, useSetAutoRenew, useStartCheckout } from '../lib/billingQueries';
 import { formatEuros } from '../lib/deals';
+import { isNativeApp } from '../lib/platform';
 
 /** Délai d'attente de la confirmation Mollie au retour de la page de paiement. */
 const CONFIRM_WAIT_MS = 45_000;
 
 /** Abonnement stacker : offre de lancement, paiement Mollie, état, historique, résiliation. */
 export function AbonnementPage(): ReactElement {
+  // Application iPhone : ni prix, ni paiement, ni lien vers le site (règles de l'App Store).
+  if (isNativeApp()) return <NativeAccountPage />;
+  return <WebAbonnementPage />;
+}
+
+function NativeAccountPage(): ReactElement {
+  usePageTitle('Mon compte');
+  const billing = useBilling();
+  const b = billing.data;
+  const active = b ? !b.required || b.has_access : null;
+  return (
+    <div className="app-container billing">
+      <AppBar title="Mon compte" />
+      {billing.isError ? <FormAlert>{billingErrorMessage(billing.error)}</FormAlert> : null}
+      {active === null ? (
+        <div className="card" aria-busy="true">
+          <span className="skeleton skeleton-title w-2/3" />
+        </div>
+      ) : (
+        <section className="card" aria-live="polite">
+          <p className="list-title">{active ? 'Ton compte est actif.' : 'Ton compte n’est pas actif.'}</p>
+          <p className="text-2 text-sm mt-2">{active ? 'Tu as accès à toutes les fonctions de Stacker.' : 'La prospection et la signature sont indisponibles sur ce compte pour l’instant.'}</p>
+        </section>
+      )}
+    </div>
+  );
+}
+
+function WebAbonnementPage(): ReactElement {
   usePageTitle('Abonnement');
   const [params] = useSearchParams();
   const returning = params.get('retour') === '1';

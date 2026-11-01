@@ -10,7 +10,7 @@ const ROOT = import.meta.dirname;
 
 export default tseslint.config(
   {
-    ignores: ['dist/**', 'dist-demo/**', '.ssr/**', '.e2e/**', 'coverage/**', 'node_modules/**', 'design/**', 'test-results/**', 'playwright-report/**', '*.html'],
+    ignores: ['dist/**', 'dist-demo/**', 'ios/**', 'ios-shell/**', '.ssr/**', '.e2e/**', 'coverage/**', 'node_modules/**', 'design/**', 'test-results/**', 'playwright-report/**', '*.html'],
   },
   js.configs.recommended,
   {
