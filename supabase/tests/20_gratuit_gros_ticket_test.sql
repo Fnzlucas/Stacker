@@ -45,8 +45,8 @@ select throws_ok($$select public.roleplay_start('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaa
 -- ---------------------------------------------------------------- gros ticket
 set local role authenticated;
 set local request.jwt.claims = '{"sub": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", "role": "authenticated"}';
-select is((select count(*)::int from jsonb_array_elements(public.deal_catalog() -> 'offers') o where o ->> 'billing' = 'unique'), 4,
-  'catalogue : 4 offres sur mesure à paiement unique');
+select is((select count(*)::int from jsonb_array_elements(public.deal_catalog() -> 'offers') o where o ->> 'billing' = 'unique'), 8,
+  'catalogue : 8 offres sur mesure à paiement unique');
 select is(public.deal_catalog() -> 'offers' -> 0 ->> 'id', 'studio-site-vitrine', '... en tête du catalogue');
 select is(public.deal_preview((select j from t_in)) ->> 'billing', 'unique', 'aperçu : paiement unique');
 select is((public.deal_preview((select j from t_in)) ->> 'commission_cents')::int, 22350, '... commission : 15 % de 1 490 €, soit 223,50 €');

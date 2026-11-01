@@ -64,7 +64,7 @@ export const FREE_PLAN = {
 
 /** Offres sur mesure payées en une fois (gros tickets) : commission sur le prix total. */
 export const BIG_TICKET = {
-  text: 'Des offres sur mesure payées en une fois par le client (site vitrine ou e-commerce, réservation en ligne, transformation digitale complète) : ta commission porte alors sur le prix total.',
+  text: 'Des offres sur mesure payées en une fois par le client (site sur mesure, application mobile, assistant IA qui répond aux appels, campagne publicitaire, image de marque, transformation digitale complète) : ta commission porte alors sur le prix total.',
 } as const;
 
 /** Les trois formules payantes, en option (prix par mois, finals, franchise en base de TVA). */

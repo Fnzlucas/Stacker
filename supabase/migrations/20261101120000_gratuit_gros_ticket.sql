@@ -93,7 +93,27 @@ insert into public.offers (id, brand, category, description, name, price_cents, 
  'Tout le digital de l''entreprise refait d''un coup, par une seule équipe : identité visuelle, site avec réservation ou boutique, fiche Google, lancement sur les réseaux, puis 3 mois d''accompagnement.',
  'Pack transformation digitale', 990000, null, 1, 1, 0,
  array['Identité visuelle : logo, couleurs, cartes de visite', 'Site sur mesure avec réservation ou boutique', 'Fiche Google optimisée et QR code avis', 'Campagne de lancement sur les réseaux sociaux', '3 mois d''accompagnement', 'Livré en 8 semaines', 'Hébergement inclus 12 mois']::text[],
- false, true, 8, 'unique');
+ false, true, 13, 'unique'),
+('studio-image-de-marque', 'Stacker Studio', 'Sur mesure · paiement unique',
+ 'Tout ce qu''il faut pour donner envie : un logo et une identité visuelle propres, puis un shooting photo et vidéo dans l''établissement. Le commerçant repart avec des visuels pro pour sa vitrine, son site, Google et ses réseaux.',
+ 'Image de marque : logo, photos et vidéos', 199000, null, 1, 1, 0,
+ array['Logo, couleurs et cartes de visite', 'Une demi-journée de shooting dans l''établissement', '30 photos retouchées', '3 vidéos courtes pour les réseaux', 'Livré en 4 semaines', 'Droits d''utilisation inclus']::text[],
+ false, true, 9, 'unique'),
+('studio-assistant-ia', 'Stacker Studio', 'Sur mesure · paiement unique',
+ 'Un assistant qui répond au téléphone et aux messages 24 h/24 quand le commerçant est occupé : il renseigne les clients, prend les rendez-vous ou les commandes et envoie un résumé. Plus aucun appel perdu.',
+ 'Assistant IA : appels et messages 24 h/24', 249000, null, 1, 1, 0,
+ array['Répond au téléphone, sur WhatsApp et sur le site', 'Prend les rendez-vous ou les commandes', 'Résumé de chaque échange par SMS ou email', 'Paramétré avec les infos du commerce', 'Mis en place en 3 semaines', '12 mois d''utilisation inclus']::text[],
+ false, true, 10, 'unique'),
+('studio-campagne-pub', 'Stacker Studio', 'Sur mesure · paiement unique',
+ 'Une campagne de publicité Google et Facebook/Instagram montée de A à Z pour faire venir de nouveaux clients dans la zone du commerce, puis pilotée pendant 3 mois avec un point chaque mois.',
+ 'Campagne publicitaire Google + réseaux', 299000, null, 1, 1, 0,
+ array['Stratégie et ciblage local', 'Annonces Google et Facebook/Instagram créées', 'Visuels et textes des publicités', 'Pilotage et optimisation pendant 3 mois', 'Bilan chaque mois', 'Budget publicitaire payé à part par le client']::text[],
+ false, true, 11, 'unique'),
+('studio-application', 'Stacker Studio', 'Sur mesure · paiement unique',
+ 'Une application iPhone et Android aux couleurs du commerce : commande ou réservation, carte de fidélité, notifications pour faire revenir les clients. Publiée sur l''App Store et Google Play.',
+ 'Application mobile sur mesure', 599000, null, 1, 1, 0,
+ array['Application iPhone et Android', 'Commande, réservation ou prise de rendez-vous', 'Carte de fidélité intégrée', 'Notifications aux clients', 'Publication sur les stores', 'Livrée en 8 semaines', 'Hébergement inclus 12 mois']::text[],
+ false, true, 12, 'unique');
 
 create or replace function public.deal_preview(p_input jsonb)
 returns jsonb
