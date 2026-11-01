@@ -18,23 +18,8 @@ async function fillSignup(page: Page, opts: { email: string; firstName?: string;
   return form;
 }
 
-async function completeOnboarding(page: Page, opts: { firstName?: string; watchIntro?: boolean } = {}) {
+async function completeOnboarding(page: Page, opts: { firstName?: string } = {}) {
   await expect(page).toHaveURL(/\/app\/bienvenue$/);
-  // Présentation de Stacker (5 écrans), puis les questions.
-  const intro = page.getByRole('region', { name: 'Comment fonctionne Stacker' });
-  await expect(intro).toBeVisible();
-  if (opts.watchIntro) {
-    await expect(intro).toContainText('C’EST QUOI STACKER ?');
-    await expectAccessible(page, 'présentation');
-    for (const t of ['APPRENDS À CONVAINCRE', 'APPELLE POUR DE VRAI', 'ENCAISSE CHAQUE MOIS', 'CHOISIS TON RYTHME']) {
-      await intro.getByRole('button', { name: 'Suivant' }).click();
-      await expect(page.getByRole('heading', { level: 1 })).toContainText(t);
-    }
-    await expect(intro).toContainText('Academy + Pro');
-    await intro.getByRole('button', { name: 'C’est parti' }).click();
-  } else {
-    await intro.getByRole('button', { name: 'Passer' }).click();
-  }
   await expect(page.getByRole('heading', { level: 1, name: 'Comment veux-tu qu’on t’appelle ?' })).toBeVisible();
   if (opts.firstName !== undefined) await page.getByLabel('Prénom').fill(opts.firstName);
   await page.getByRole('button', { name: 'Continuer' }).click();
@@ -46,8 +31,13 @@ async function completeOnboarding(page: Page, opts: { firstName?: string; watchI
   await page.getByRole('button', { name: 'Continuer' }).click();
   await expect(page.getByRole('heading', { level: 1, name: 'Tes niveaux et tes commissions' })).toBeVisible();
   await page.getByRole('button', { name: 'C’est parti' }).click();
+  // Premier pas, puis l'accueil.
+  await expect(page.getByRole('heading', { level: 1, name: /Ton premier pas/ })).toBeVisible();
+  await page.getByRole('link', { name: 'Plus tard' }).click();
   await expect(page).toHaveURL(/\/app$/);
 }
+
+const INTRO_TITLES = ['DES SERVICES QUI MARCHENT', 'APPRENDS À CONVAINCRE', 'APPELLE POUR DE VRAI', 'ENCAISSE CHAQUE MOIS', 'À TON RYTHME', 'CHOISIS TON RYTHME'];
 
 test.describe('accès protégé', () => {
   test('sans session, /app ouvre l’écran d’accueil (créer un compte / se connecter)', async ({ page, supabase }) => {
@@ -62,6 +52,33 @@ test.describe('accès protégé', () => {
     await page.goBack();
     await page.getByRole('link', { name: 'Créer mon compte' }).click();
     await expect(page).toHaveURL(/\/app\/inscription$/);
+  });
+
+  test.describe('premier lancement', () => {
+    test.use({ introSeen: false });
+    test('présentation complète avant l’inscription, puis créer un compte ; « Comment ça marche ? » la rouvre', async ({ page }) => {
+      await page.goto('/app');
+      const intro = page.getByRole('region', { name: 'Comment fonctionne Stacker' });
+      await expect(intro).toContainText('C’EST QUOI STACKER ?');
+      await expectAccessible(page, 'présentation');
+      await expectNoHorizontalOverflow(page, 'présentation');
+      for (const t of INTRO_TITLES) {
+        await intro.getByRole('button', { name: 'Suivant' }).click();
+        await expect(page.getByRole('heading', { level: 1 })).toContainText(t);
+        await expectNoHorizontalOverflow(page, t);
+      }
+      await expect(intro).toContainText('Academy + Pro');
+      await expectAccessible(page, 'présentation fin');
+      await intro.getByRole('link', { name: 'Créer mon compte' }).click();
+      await expect(page).toHaveURL(/\/app\/inscription$/);
+      // Déjà vue : l'écran d'accueil s'affiche directement, avec un lien pour la revoir.
+      await page.goto('/app');
+      await expect(page.getByRole('heading', { level: 1, name: 'Stack tes clients.' })).toBeVisible();
+      await page.getByRole('button', { name: 'Comment ça marche ?' }).click();
+      await expect(page.getByRole('region', { name: 'Comment fonctionne Stacker' })).toBeVisible();
+      await page.getByRole('button', { name: 'Passer' }).click();
+      await expect(page.getByRole('heading', { level: 1, name: 'Stack tes clients.' })).toBeVisible();
+    });
   });
 
   for (const path of ['/app/prospects', '/app/deals', '/app/gains', '/app/profil', '/app/bienvenue']) {
@@ -101,6 +118,8 @@ test.describe('accès protégé', () => {
 
 test.describe('inscription', () => {
   test('inscription → confirmation par lien → onboarding → accueil', async ({ page, supabase }) => {
+    // Inscrit directement (sans passer par l'écran d'accueil) : la présentation s'affiche après la confirmation.
+    await page.addInitScript(() => window.localStorage.removeItem('stk-intro-seen'));
     const { fake } = supabase;
     await page.goto('/app/inscription');
     await expect(page.getByRole('heading', { level: 1, name: 'Crée ton compte' })).toBeVisible();
@@ -136,10 +155,9 @@ test.describe('inscription', () => {
     await expect(intro).toContainText('C’EST QUOI STACKER ?');
     await expectAccessible(page, 'présentation');
     await expectNoHorizontalOverflow(page, 'présentation');
-    for (const t of ['APPRENDS À CONVAINCRE', 'APPELLE POUR DE VRAI', 'ENCAISSE CHAQUE MOIS', 'CHOISIS TON RYTHME']) {
+    for (const t of INTRO_TITLES) {
       await intro.getByRole('button', { name: 'Suivant' }).click();
       await expect(page.getByRole('heading', { level: 1 })).toContainText(t);
-      await expectNoHorizontalOverflow(page, t);
     }
     await expect(intro).toContainText('Academy + Pro');
     await intro.getByRole('button', { name: 'C’est parti' }).click();
@@ -175,6 +193,11 @@ test.describe('inscription', () => {
     await expectAccessible(page, 'onboarding étape 4');
     await page.getByRole('button', { name: 'C’est parti' }).click();
 
+    // Premier pas : l'appel d'entraînement (abonnement pas encore exigé).
+    await expect(page.getByRole('heading', { level: 1, name: 'Ton premier pas, Inès' })).toBeVisible();
+    await expectAccessible(page, 'premier pas');
+    await expect(page.getByRole('link', { name: 'Faire mon premier appel' })).toHaveAttribute('href', '/app/entrainement');
+    await page.getByRole('link', { name: 'Plus tard' }).click();
     await expect(page).toHaveURL(/\/app$/);
     await expect(page.getByRole('heading', { level: 1, name: 'Bonjour Inès' })).toBeVisible();
     const rpc = fake.calls.find((c) => c.path === '/rest/v1/rpc/complete_onboarding')!;
@@ -313,7 +336,8 @@ test.describe('connexion', () => {
     await page.reload();
     await expect(page.getByRole('heading', { level: 1, name: 'Bonjour Tom' })).toBeVisible();
     // Aucune donnée métier dans le stockage du navigateur.
-    const keys = await page.evaluate(() => [...Object.keys(window.localStorage), ...Object.keys(window.sessionStorage)]);
+    // Hors préférences d'affichage (présentation déjà vue), seule la session est stockée.
+    const keys = await page.evaluate(() => [...Object.keys(window.localStorage), ...Object.keys(window.sessionStorage)].filter((k) => k !== 'stk-intro-seen'));
     expect(keys).toEqual(['stacker-auth']);
   });
 

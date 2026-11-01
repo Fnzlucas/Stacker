@@ -1,7 +1,8 @@
 /**
- * Présentation de Stacker, avant les questions de l'inscription : ce que
- * c'est, et comment ça marche en 3 temps (apprendre, appeler, encaisser),
- * puis les formules. Écrans plein format, à faire défiler (boutons, glisser
+ * Présentation de Stacker, au premier lancement (avant l'inscription) et, si
+ * elle n'a pas été vue, avant les questions de l'inscription : ce que c'est,
+ * ce qu'on propose aux commerçants, comment ça marche en 3 temps (apprendre,
+ * appeler, encaisser), les règles, puis les formules. Écrans plein format, à faire défiler (boutons, glisser
  * du doigt, flèches du clavier). Aucun gain promis : l'exemple est signalé.
  */
 import { useEffect, useRef, useState, type ReactElement, type ReactNode } from 'react';
@@ -37,6 +38,14 @@ function Step({ icon, tone, title, text }: { icon: IconName; tone: string; title
   );
 }
 
+/** Services les plus simples à proposer (prix pour le commerçant, catalogue de l'app). */
+const OFFERS: { name: string; what: string; price: string; icon: IconName; tone: string }[] = [
+  { name: 'QR Avis Google', what: 'Plus d’avis, sans effort', price: '9\u00a0€', icon: 'star', tone: 'green' },
+  { name: 'Fiche Google', what: 'Bien visible sur Google Maps', price: '39\u00a0€', icon: 'map-pin', tone: 'violet' },
+  { name: 'Site web', what: 'Un site pro, livré et hébergé', price: '39,99\u00a0€', icon: 'building', tone: 'orange' },
+  { name: 'Réseaux sociaux', what: 'Des posts chaque semaine', price: '49\u00a0€', icon: 'send', tone: 'green' },
+];
+
 function slides(native: boolean): Slide[] {
   const list: Slide[] = [
     {
@@ -51,6 +60,31 @@ function slides(native: boolean): Slide[] {
           <Step icon="signature" tone="orange" title="Il signe sur ton téléphone" text="Stacker réalise le service pour lui." />
           <Step icon="euro" tone="green" title="Tu touches ta commission" text="Chaque mois, tant qu’il reste client." />
         </ol>
+      ),
+    },
+    {
+      id: 'offres',
+      kicker: 'Ce que tu proposes',
+      title: 'DES SERVICES QUI MARCHENT',
+      text: 'Des services simples, que les commerçants comprennent tout de suite et paient chaque mois. C’est Stacker qui les réalise : toi, tu n’as rien à produire ni à livrer.',
+      visual: (
+        <ul className="intro-offers" aria-hidden="true">
+          {OFFERS.map((o) => (
+            <li key={o.name}>
+              <span className={`intro-flow-icon is-${o.tone}`}>
+                <Icon name={o.icon} />
+              </span>
+              <span className="intro-offer-name">
+                <b>{o.name}</b>
+                <span>{o.what}</span>
+              </span>
+              <span className="intro-offer-price">
+                dès <b className="num">{o.price}</b>
+                <span>/ mois</span>
+              </span>
+            </li>
+          ))}
+        </ul>
       ),
     },
     {
@@ -139,6 +173,37 @@ function slides(native: boolean): Slide[] {
       ),
     },
   ];
+  list.push({
+    id: 'regles',
+    kicker: 'Les règles du jeu',
+    title: 'À TON RYTHME',
+    text: 'Tu es indépendant : tu choisis tes horaires et ta zone, partout en France. Il faut juste être majeur. Pas besoin de statut pour démarrer.',
+    visual: (
+      <ul className="intro-rules" aria-hidden="true">
+        <li>
+          <Icon name="clock" />
+          <span>
+            <b>Quand tu veux</b>
+            <span>Quelques appels par jour ou un vrai complément : c’est toi qui décides.</span>
+          </span>
+        </li>
+        <li>
+          <Icon name="briefcase" />
+          <span>
+            <b>Sans statut au départ</b>
+            <span>Au-delà de 1 000 € de commissions par an, il te faudra une micro-entreprise (gratuite, en ligne).</span>
+          </span>
+        </li>
+        <li>
+          <Icon name="shield" />
+          <span>
+            <b>Rien de caché</b>
+            <span>Sans engagement, aucun gain promis : tu gagnes seulement sur les clients qui paient.</span>
+          </span>
+        </li>
+      </ul>
+    ),
+  });
   // Dans l'application iPhone : ni prix ni formules (règles de l'App Store).
   if (!native) {
     list.push({
@@ -166,7 +231,11 @@ function slides(native: boolean): Slide[] {
   return list;
 }
 
-export function OnboardingIntro({ onDone }: { onDone: () => void }): ReactElement {
+/**
+ * `onDone` : fin ou « Passer ». `end` : boutons du dernier écran à la place de
+ * « C’est parti » (avant l'inscription : créer un compte / se connecter).
+ */
+export function OnboardingIntro({ onDone, end }: { onDone: () => void; end?: ReactNode }): ReactElement {
   const list = slides(isNativeApp());
   const count = list.length;
   const [i, setI] = useState(0);
@@ -260,12 +329,35 @@ export function OnboardingIntro({ onDone }: { onDone: () => void }): ReactElemen
               <Icon name="arrow-left" />
             </button>
           ) : null}
-          <button type="button" className="btn btn-accent btn-lg intro-next" onClick={() => go(i + 1)}>
-            {last ? 'C’est parti' : 'Suivant'}
-            <Icon name="arrow-right" />
-          </button>
+          {last && end ? (
+            <div className="intro-end">{end}</div>
+          ) : (
+            <button type="button" className="btn btn-accent btn-lg intro-next" onClick={() => go(i + 1)}>
+              {last ? 'C’est parti' : 'Suivant'}
+              <Icon name="arrow-right" />
+            </button>
+          )}
         </div>
       </footer>
     </div>
   );
+}
+
+const SEEN_KEY = 'stk-intro-seen';
+
+/** Présentation déjà vue sur cet appareil (sinon : affichée au premier lancement). */
+export function introSeen(): boolean {
+  try {
+    return window.localStorage.getItem(SEEN_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
+
+export function markIntroSeen(): void {
+  try {
+    window.localStorage.setItem(SEEN_KEY, '1');
+  } catch {
+    /* stockage indisponible : la présentation pourra réapparaître */
+  }
 }

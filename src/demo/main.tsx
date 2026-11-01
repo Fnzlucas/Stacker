@@ -76,14 +76,15 @@ function seed(fake: FakeSupabase): void {
 }
 
 /** Menu de la démo : tous les écrans, connecté ou non. */
-const SCREENS: { group: string; items: { label: string; path: string; as?: 'out' | 'new' | 'ines' }[] }[] = [
+const SCREENS: { group: string; items: { label: string; path: string; as?: 'out' | 'new' | 'ines'; intro?: boolean }[] }[] = [
   {
     group: 'Avant connexion',
     items: [
+      { label: 'Présentation (premier lancement)', path: '/app/demarrer', as: 'out', intro: true },
       { label: 'Écran de démarrage', path: '/app/demarrer', as: 'out' },
       { label: 'Créer un compte', path: '/app/inscription', as: 'out' },
       { label: 'Se connecter', path: '/app/connexion', as: 'out' },
-      { label: 'Inscription : présentation et questions', path: '/app/bienvenue', as: 'new' },
+      { label: 'Inscription : questions et premier pas', path: '/app/bienvenue', as: 'new' },
     ],
   },
   {
@@ -115,7 +116,7 @@ const SCREENS: { group: string; items: { label: string; path: string; as?: 'out'
   },
 ];
 
-function installScreensMenu(go: (path: string, as: 'out' | 'new' | 'ines') => Promise<void>): void {
+function installScreensMenu(go: (path: string, as: 'out' | 'new' | 'ines', intro: boolean) => Promise<void>): void {
   const button = document.createElement('button');
   button.type = 'button';
   button.className = 'demo-menu-btn';
@@ -135,7 +136,7 @@ function installScreensMenu(go: (path: string, as: 'out' | 'new' | 'ines') => Pr
       a.textContent = item.label;
       a.addEventListener('click', () => {
         panel.hidden = true;
-        void go(item.path, item.as ?? 'ines');
+        void go(item.path, item.as ?? 'ines', item.intro === true);
       });
       panel.append(a);
     }
@@ -205,7 +206,18 @@ async function start(): Promise<void> {
   document.body.append(ribbon);
   const router = createMemoryRouter(routes, { initialEntries: ['/app/academy'] });
   let who: 'out' | 'new' | 'ines' = 'ines';
-  installScreensMenu(async (path, as) => {
+  installScreensMenu(async (path, as, intro) => {
+    try {
+      if (intro) window.localStorage.removeItem('stk-intro-seen');
+      else window.localStorage.setItem('stk-intro-seen', '1');
+    } catch {
+      /* stockage indisponible */
+    }
+    // Repasser par une autre page : l'écran d'accueil relit l'état de la présentation.
+    if (path === '/app/demarrer') {
+      await router.navigate('/app/connexion');
+      await new Promise((r) => setTimeout(r, 300));
+    }
     if (backend && as !== who) {
       await backend.auth.signOut();
       if (as !== 'out') await backend.auth.signInWithPassword({ email: as === 'new' ? NEW_EMAIL : EMAIL, password: PASSWORD });

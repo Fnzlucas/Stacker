@@ -27,10 +27,21 @@ interface Fixtures {
   problems: string[];
   /** Statuts HTTP tolérés pour ce test (ex. 404 sur la page introuvable). */
   allowStatus: number[];
+  /** Présentation de Stacker déjà vue sur l'appareil (vrai par défaut : la plupart des tests vont droit au but). */
+  introSeen: boolean;
+  introSetup: null;
 }
 
 export const test = base.extend<Fixtures>({
   allowStatus: [[], { option: true }],
+  introSeen: [true, { option: true }],
+  introSetup: [
+    async ({ page, introSeen }, use) => {
+      if (introSeen) await page.addInitScript(() => window.localStorage.setItem('stk-intro-seen', '1'));
+      await use(null);
+    },
+    { auto: true },
+  ],
 
   supabase: [
     async ({ page }, use) => {

@@ -1,10 +1,11 @@
-import type { ReactElement } from 'react';
+import { useState, type ReactElement } from 'react';
 import { Link, useLocation } from 'react-router';
 import { Icon } from '../../components/Icon';
 import { Logo, LogoLockup } from '../../components/Logo';
 import { Ransom } from '../../components/Ransom';
 import { useAuth } from '../auth/AuthProvider';
 import { PageHeading, usePageTitle } from '../components/Layouts';
+import { OnboardingIntro, introSeen, markIntroSeen } from '../components/OnboardingIntro';
 import { PATHS } from '../paths';
 
 /**
@@ -19,6 +20,31 @@ export function DemarrerPage(): ReactElement {
   const location = useLocation();
   // La page demandée avant la connexion suit jusqu'à la connexion ou l'inscription.
   const state: unknown = location.state;
+  // Premier lancement : la présentation complète de Stacker, avant tout.
+  const [intro, setIntro] = useState(() => Boolean(backend) && !introSeen());
+  const closeIntro = () => {
+    markIntroSeen();
+    setIntro(false);
+  };
+
+  if (intro) {
+    return (
+      <OnboardingIntro
+        onDone={closeIntro}
+        end={
+          <>
+            <Link className="btn btn-accent btn-lg intro-next" to={PATHS.signup} state={state} onClick={markIntroSeen}>
+              Créer mon compte
+              <Icon name="arrow-right" />
+            </Link>
+            <Link className="btn btn-glass intro-login" to={PATHS.login} state={state} onClick={markIntroSeen}>
+              J’ai déjà un compte
+            </Link>
+          </>
+        }
+      />
+    );
+  }
 
   return (
     <div className="welcome">
@@ -57,6 +83,12 @@ export function DemarrerPage(): ReactElement {
         <PageHeading className="welcome-title">
           <Ransom text="Stack tes clients." animated className="welcome-ransom" />
         </PageHeading>
+        {backend ? (
+          <button type="button" className="btn btn-secondary btn-sm welcome-how wi wi-10" onClick={() => setIntro(true)}>
+            <Icon name="play" />
+            Comment ça marche ?
+          </button>
+        ) : null}
       </main>
 
       <div className="welcome-actions wi wi-11">

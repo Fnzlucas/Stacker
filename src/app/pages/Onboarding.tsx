@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactElement, type SyntheticEvent } from 'react';
-import { Navigate, useNavigate } from 'react-router';
+import { Link, Navigate } from 'react-router';
 import { GOALS, onboardingSchema, type Goal } from '@shared/account';
 import { DEPARTMENTS } from '@shared/waitlist';
 import { Icon } from '../../components/Icon';
@@ -8,9 +8,11 @@ import { Ransom } from '../../components/Ransom';
 import { AVAILABILITY_STEPS } from '../../components/Sections';
 import { FieldError, FormAlert, SelectField, SubmitButton, TextField } from '../components/Form';
 import { LoadError, Splash, usePageTitle } from '../components/Layouts';
-import { OnboardingIntro } from '../components/OnboardingIntro';
+import { OnboardingIntro, introSeen, markIntroSeen } from '../components/OnboardingIntro';
 import { LevelPill } from '../components/Ui';
 import { apiErrorMessage } from '../lib/api';
+import { useBilling } from '../lib/billingQueries';
+import { isNativeApp } from '../lib/platform';
 import { useCompleteOnboarding, useProfile, useTiers } from '../lib/queries';
 import { PATHS } from '../paths';
 
@@ -19,18 +21,20 @@ const STEPS = ['Prénom', 'Zone', 'Objectif', 'Niveaux'] as const;
 export function OnboardingPage(): ReactElement {
   usePageTitle('Bienvenue');
   const profile = useProfile();
+  // Inscription terminée à l'instant : on montre le premier pas (et non l'accueil directement).
+  const [finishedAs, setFinishedAs] = useState<string | null>(null);
+  if (finishedAs !== null) return <FirstStep firstName={finishedAs} />;
   if (profile.isPending) return <Splash />;
   if (profile.isError) return <LoadError onRetry={() => void profile.refetch()} />;
   if (profile.data.onboarding_completed_at) return <Navigate to={PATHS.home} replace />;
-  return <OnboardingFlow initialFirstName={profile.data.first_name ?? ''} initialDepartment={profile.data.department ?? ''} />;
+  return <OnboardingFlow initialFirstName={profile.data.first_name ?? ''} initialDepartment={profile.data.department ?? ''} onFinished={setFinishedAs} />;
 }
 
-function OnboardingFlow({ initialFirstName, initialDepartment }: { initialFirstName: string; initialDepartment: string }): ReactElement {
-  const navigate = useNavigate();
+function OnboardingFlow({ initialFirstName, initialDepartment, onFinished }: { initialFirstName: string; initialDepartment: string; onFinished: (firstName: string) => void }): ReactElement {
   const tiers = useTiers();
   const complete = useCompleteOnboarding();
   // D'abord la présentation de Stacker, puis les questions.
-  const [intro, setIntro] = useState(true);
+  const [intro, setIntro] = useState(() => !introSeen());
   const [step, setStep] = useState(0);
   const [firstName, setFirstName] = useState(initialFirstName);
   const [department, setDepartment] = useState(initialDepartment);
@@ -71,12 +75,20 @@ function OnboardingFlow({ initialFirstName, initialDepartment }: { initialFirstN
       return;
     }
     complete.mutate(parsed.data, {
-      onSuccess: () => void navigate(PATHS.home, { replace: true }),
+      onSuccess: () => onFinished(parsed.data.firstName),
       onError: (e) => setFormError(apiErrorMessage(e)),
     });
   }
 
-  if (intro) return <OnboardingIntro onDone={() => setIntro(false)} />;
+  if (intro)
+    return (
+      <OnboardingIntro
+        onDone={() => {
+          markIntroSeen();
+          setIntro(false);
+        }}
+      />
+    );
 
   const titles = ['Comment veux-tu qu’on t’appelle ?', 'Où habites-tu ?', 'Quel est ton objectif ?', 'Tes niveaux et tes commissions'];
 
@@ -224,6 +236,77 @@ function OnboardingFlow({ initialFirstName, initialDepartment }: { initialFirstN
             </SubmitButton>
           </div>
         </form>
+      </main>
+    </div>
+  );
+}
+
+/** Fin de l'inscription : le premier pas, évident. */
+function FirstStep({ firstName }: { firstName: string }): ReactElement {
+  usePageTitle('Ton premier pas');
+  const billing = useBilling();
+  const b = billing.data;
+  const native = isNativeApp();
+  // Abonnement exigé et aucune formule : on commence par la choisir (sur le web).
+  const needsPlan = Boolean(b?.required && !b.has_academy && !b.has_access);
+  return (
+    <div className="onboarding first-step">
+      <header className="onboarding-top">
+        <LogoLockup size={28} />
+      </header>
+      <main id="contenu" className="onboarding-main">
+        <p className="onboarding-ransom" aria-hidden="true">
+          <Ransom text="C’est parti" className="ransom-sm justify-start" animated />
+        </p>
+        <h1 className="h1 page-heading" tabIndex={-1}>
+          Ton premier pas, {firstName}
+        </h1>
+        <p className="lead mt-2">Le plus rapide pour progresser : un appel d’entraînement de 2 minutes face à un commerçant joué par une IA. Ta note sur 100 te dira quoi travailler.</p>
+        <ol className="first-step-list mt-6">
+          <li className={needsPlan ? undefined : 'is-next'}>
+            <span className="first-step-num" aria-hidden="true">
+              1
+            </span>
+            <span>
+              <b>{needsPlan && !native ? 'Choisis ta formule' : 'Fais ton premier appel d’entraînement'}</b>
+              <span>{needsPlan && !native ? 'Academy pour apprendre, Pro pour prospecter, ou les deux.' : '2 minutes, à voix haute ou à l’écrit.'}</span>
+            </span>
+          </li>
+          <li>
+            <span className="first-step-num" aria-hidden="true">
+              2
+            </span>
+            <span>
+              <b>Suis la formation</b>
+              <span>Les scripts, les objections, comment obtenir le oui.</span>
+            </span>
+          </li>
+          <li>
+            <span className="first-step-num" aria-hidden="true">
+              3
+            </span>
+            <span>
+              <b>Passe aux vrais appels</b>
+              <span>Trouve tes premières entreprises et lance ta campagne.</span>
+            </span>
+          </li>
+        </ol>
+        <div className="onboarding-actions first-step-actions">
+          {needsPlan && !native ? (
+            <Link className="btn btn-accent btn-lg btn-block" to={PATHS.billing}>
+              Choisir ma formule
+              <Icon name="arrow-right" />
+            </Link>
+          ) : (
+            <Link className="btn btn-accent btn-lg btn-block" to={needsPlan ? PATHS.home : PATHS.training}>
+              {needsPlan ? 'Découvrir l’app' : 'Faire mon premier appel'}
+              <Icon name="arrow-right" />
+            </Link>
+          )}
+          <Link className="btn btn-secondary btn-block" to={PATHS.home}>
+            Plus tard
+          </Link>
+        </div>
       </main>
     </div>
   );
