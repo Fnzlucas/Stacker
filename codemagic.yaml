@@ -1,0 +1,35 @@
+# Compilation et envoi de l'app iPhone sur App Store Connect sans Mac.
+# Prérequis (codemagic.io) : intégration App Store Connect nommée « stacker-asc »
+# (clé API d'App Store Connect), signature automatique activée.
+workflows:
+  ios-appstore:
+    name: Stacker iOS → App Store Connect
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    integrations:
+      app_store_connect: stacker-asc
+    environment:
+      node: 22
+      xcode: latest
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: fr.stacker.app
+    scripts:
+      - name: Dépendances
+        script: corepack enable && pnpm install --frozen-lockfile
+      - name: Synchronisation Capacitor
+        script: pnpm exec cap sync ios
+      - name: Signature
+        script: xcode-project use-profiles
+      - name: Numéro de build
+        script: |
+          cd ios/App
+          agvtool new-version -all $(($(app-store-connect get-latest-app-store-build-number "$APP_STORE_APPLE_ID" 2>/dev/null || echo 0) + 1))
+      - name: Compilation
+        script: xcode-project build-ipa --project "ios/App/App.xcodeproj" --scheme "App"
+    artifacts:
+      - build/ios/ipa/*.ipa
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true

@@ -48,15 +48,16 @@ Envoie-moi le médiateur choisi et la région, et je les intègre.
 | `BREVO_API_KEY`, `BREVO_SENDER_EMAIL`, `BREVO_SENDER_NAME`, `CONTACT_EMAIL` | emails automatiques |
 | `MOLLIE_API_KEY` | `test_…` pour les essais, `live_…` le jour J |
 | `ANTHROPIC_API_KEY` | l'IA de l'entraînement à l'appel (console.anthropic.com → API Keys) |
+| `APNS_KEY_ID`, `APNS_TEAM_ID`, `APNS_PRIVATE_KEY`, `APNS_BUNDLE_ID` | notifications de l'app iPhone (voir `APP_STORE.md`) ; sans elles, rien n'est envoyé et rien ne casse |
 | `ROLEPLAY_MODEL` | facultatif : modèle utilisé (par défaut `claude-haiku-5-5`, rapide et économique) |
 
 - [ ] Déployer toutes les fonctions :
 
 ```bash
-supabase functions deploy waitlist-join account-delete prospects-search opposition-register leads-enrich mail-connect mail-callback campaign-run billing-checkout mollie-webhook mollie-run email-run roleplay
+supabase functions deploy waitlist-join account-delete prospects-search opposition-register leads-enrich mail-connect mail-callback campaign-run billing-checkout mollie-webhook mollie-run email-run roleplay push-run
 ```
 
-- [ ] Tâches planifiées. 4 sont à créer à la main (SQL dans les deux docs) : `campaign-run`, `leads-enrich`, `mollie-run`, `email-run`. Les autres sont créées par les migrations.
+- [ ] Tâches planifiées. 5 sont à créer à la main (SQL dans les docs) : `campaign-run`, `leads-enrich`, `mollie-run`, `email-run`, et `push-run` (notifications iPhone, voir `APP_STORE.md`). Les autres sont créées par les migrations.
 - [ ] Te donner le rôle admin (une ligne SQL, voir `MISE_EN_ROUTE_PAIEMENTS.md` §7).
 - [ ] Si le domaine final n'est pas `stacker-topaz.vercel.app`, mets-le à jour en SQL : `update public.prospect_settings set site_url = 'https://…';`. C'est utilisé dans les liens d'opposition des emails.
 

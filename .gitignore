@@ -39,3 +39,4 @@ blob-report/
 .vercel
 qa/demo/.raw/
 dist-demo/
+qa/appstore/.raw/
