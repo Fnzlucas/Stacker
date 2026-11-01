@@ -53,7 +53,7 @@ test('navigation : en-tête, pied de page et URLs propres', async ({ page, isMob
   if (!isMobile) {
     await page.getByRole('navigation', { name: 'Navigation principale' }).getByRole('link', { name: 'Tarifs' }).click();
     await expect(page).toHaveURL(/\/tarifs$/);
-    await expect(page.getByRole('heading', { level: 1 })).toContainText('Dès 9,99 €');
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Gratuit pour vendre');
   }
   await page.goto('/');
   await page.getByRole('contentinfo').getByRole('link', { name: 'Conditions de vente' }).click();
