@@ -27,7 +27,7 @@ Envoie-moi le médiateur choisi et la région, et je les intègre.
 
 ### 3. Offres gros ticket (Stacker Studio) : à vérifier avant la première vente
 
-Huit offres sur mesure payées en une fois sont actives en tête du catalogue : site vitrine 1 490 €, image de marque (logo, photos, vidéos) 1 990 €, assistant IA appels et messages 2 490 €, campagne publicitaire Google + réseaux 2 990 €, site e-commerce 3 490 €, site + réservation 4 990 €, application mobile 5 990 €, pack transformation digitale 9 900 €. La commission du stacker est son taux (15 à 25 %) sur le prix total, débloquée le jour du prélèvement.
+Neuf offres sur mesure payées en une fois sont actives en tête du catalogue : site vitrine 1 490 €, image de marque (logo, photos, vidéos) 1 990 €, assistant IA appels et messages 2 490 €, campagne publicitaire Google + réseaux 2 990 €, site e-commerce 3 490 €, site + réservation 4 990 €, application mobile 5 990 €, pack transformation digitale 9 900 €, pack complet site + application + image de marque 12 400 €. La commission du stacker est son taux (15 à 25 %) sur le prix total, débloquée le jour du prélèvement.
 
 - [ ] **Capacité de livraison** : tu (ou ton prestataire) peux livrer chaque offre dans le délai écrit (3 à 8 semaines). L'assistant IA et l'hébergement ont un coût mensuel pour toi pendant les 12 mois inclus : intègre-le dans le prix. Sinon, désactive-la depuis l'admin (catalogue) avant l'ouverture.
 - [ ] **Prix et contenu** : modifiables dans la table `offers` (`price_cents`, `features`). Les contrats déjà signés gardent leur version.

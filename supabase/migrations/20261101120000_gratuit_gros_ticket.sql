@@ -113,7 +113,12 @@ insert into public.offers (id, brand, category, description, name, price_cents, 
  'Une application iPhone et Android aux couleurs du commerce : commande ou réservation, carte de fidélité, notifications pour faire revenir les clients. Publiée sur l''App Store et Google Play.',
  'Application mobile sur mesure', 599000, null, 1, 1, 0,
  array['Application iPhone et Android', 'Commande, réservation ou prise de rendez-vous', 'Carte de fidélité intégrée', 'Notifications aux clients', 'Publication sur les stores', 'Livrée en 8 semaines', 'Hébergement inclus 12 mois']::text[],
- false, true, 12, 'unique');
+ false, true, 12, 'unique'),
+('studio-pack-complet', 'Stacker Studio', 'Sur mesure · paiement unique',
+ 'Le pack le plus complet : une image de marque créée de zéro, un site sur mesure et une application mobile iPhone et Android, le tout cohérent et livré par une seule équipe. Le commerçant n''a plus rien à faire côté digital.',
+ 'Pack complet : site + application + image de marque', 1240000, null, 1, 1, 0,
+ array['Branding complet : logo, couleurs, typographies, supports', 'Shooting photo et vidéo dans l''établissement', 'Site sur mesure (vitrine, réservation ou boutique)', 'Application iPhone et Android avec fidélité et notifications', 'Publication sur l''App Store et Google Play', 'Fiche Google optimisée', 'Livré en 10 semaines', 'Hébergement inclus 12 mois']::text[],
+ false, true, 14, 'unique');
 
 create or replace function public.deal_preview(p_input jsonb)
 returns jsonb
