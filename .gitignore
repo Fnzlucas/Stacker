@@ -18,6 +18,9 @@ coverage/
 /remboursement.html
 /404.html
 /app.html
+/devenir-apporteur-affaires.html
+/gagner-argent-telephone.html
+/opposition.html
 .e2e/
 
 # Variables d'environnement : seul .env.example est versionné
