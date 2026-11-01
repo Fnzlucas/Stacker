@@ -135,9 +135,12 @@ export class FakeSupabase {
   /** Formation (lot 9) : modules terminés par stacker. */
   formation = new Map<string, string[]>();
   /** Entraînement à l'appel (lot 10). */
-  roleplay = new FakeRoleplay(
-    () => this.id(),
-    () => this.admin.flags['roleplay_required'] === true,
+  roleplay = Object.assign(
+    new FakeRoleplay(
+      () => this.id(),
+      () => this.admin.flags['roleplay_required'] === true,
+    ),
+    { hasAcademy: (id: string) => this.billing.hasAcademy(id) },
   );
   /** Espace admin (lot 8). */
   admin = new FakeAdmin(this.deals, this.billing, {

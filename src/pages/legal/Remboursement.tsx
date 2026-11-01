@@ -6,7 +6,7 @@
 import type { ReactElement } from 'react';
 import { Fill } from '../../components/Fill';
 import { LegalPage } from '../../components/LegalPage';
-import { ENTITY, MEDIATOR, PRODUCT } from '../../config/site';
+import { ENTITY, MEDIATOR } from '../../config/site';
 
 export function RemboursementPage(): ReactElement {
   return (
@@ -44,8 +44,8 @@ export function RemboursementPage(): ReactElement {
                 </li>
               </ul>
               <p className="callout">
-                <strong>Exemple illustratif</strong> : abonnement de {PRODUCT.priceMonthlyLabel} pour une période de 30 jours, rétractation
-                le 6e jour après 5 jours d’accès. Montant conservé : 6,99 € × 5 / 30 = 1,17 €. Montant remboursé : 5,82 €.
+                <strong>Exemple illustratif</strong> : formule Academy + Pro à 14,99 € pour une période de 30 jours, rétractation le 6e jour
+                après 5 jours d’accès. Montant conservé : 14,99 € × 5 / 30 = 2,50 €. Montant remboursé : 12,49 €.
               </p>
             </>
           ),

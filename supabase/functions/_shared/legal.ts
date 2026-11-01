@@ -5,4 +5,4 @@
  */
 
 /** Conditions générales de vente de l'abonnement stacker (src/pages/legal/Cgv.tsx). */
-export const CGV_VERSION = '2026-10-12';
+export const CGV_VERSION = '2026-11-01';

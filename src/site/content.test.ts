@@ -44,11 +44,11 @@ describe('pages pré-rendues', () => {
     }
   });
 
-  it('aucun montant en euros hors abonnement, sauf exemple marqué « Exemple illustratif »', () => {
+  it('aucun montant en euros hors prix des formules, sauf exemple marqué « Exemple illustratif »', () => {
     for (const id of PAGE_IDS) {
       const t = text(html[id] ?? '');
       for (const m of t.matchAll(/(\d[\d ]*(?:,\d+)?) ?€/g)) {
-        if (m[1] === '6,99') continue;
+        if (['9,99', '12,99', '14,99'].includes(m[1] ?? '')) continue;
         // Seuil légal de SIRET (pas une promesse de revenu).
         if (t.slice(m.index, m.index + 120).includes('de commissions versées dans l’année civile, un numéro')) continue;
         const before = t.slice(Math.max(0, m.index - 300), m.index);
@@ -86,13 +86,13 @@ describe('faits produit', () => {
     expect(steps[2]).toContain('Stacker réalise, tu touches ta commission');
   });
 
-  it('abonnement 6,99 € et son contenu, offre des 100 premiers, tarif futur non chiffré', () => {
+  it('trois formules (Pro 9,99 €, Academy 12,99 €, Academy + Pro 14,99 €), offre des 100 premiers, tarif futur non chiffré', () => {
     for (const id of ['landing', 'tarifs']) {
       const t = text(html[id] ?? '');
-      expect(t, id).toContain('6,99 €');
-      expect(t, id).toContain('Logiciel de prospection intégré');
-      expect(t, id).toContain('Scripts et aide pour les appels');
-      expect(t, id).toContain('Formation complète');
+      expect(t, id).toContain('Pro · 9,99 € par mois');
+      expect(t, id).toContain('Academy · 12,99 € par mois');
+      expect(t, id).toContain('Academy + Pro · 14,99 € par mois');
+      expect(t, id).toContain('Le logiciel de prospection');
       expect(t, id).toContain('0 % prélevé sur ton chiffre d’affaires');
       expect(t, id).toContain('Le tarif évoluera après les 100 premiers');
       expect(t, id).toContain('Priorité aux inscrits');
@@ -151,6 +151,6 @@ describe('pages légales', () => {
     expect(t).toContain('payé en priorité par compensation avec ce solde');
     expect(t).toContain('maintenu pendant 3 jours');
     expect(t).toContain('Mollie B.V.');
-    expect(t).toContain('Dernière mise à jour : 12 octobre 2026');
+    expect(t).toContain('Dernière mise à jour : 1er novembre 2026');
   });
 });

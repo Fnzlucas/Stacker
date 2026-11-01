@@ -5,8 +5,8 @@ import { Logo } from '../../components/Logo';
 import { CheckField, FormAlert } from '../components/Form';
 import { AppBar, usePageTitle } from '../components/Layouts';
 import { formatLongDate } from '../lib/dates';
-import { BILLING_STATUS_LABELS, billingErrorMessage, billingView, type Billing } from '../lib/billing';
-import { useBilling, useSetAutoRenew, useStartCheckout } from '../lib/billingQueries';
+import { BILLING_STATUS_LABELS, PLANS, PLAN_INFO, billingErrorMessage, billingView, type Billing, type Plan } from '../lib/billing';
+import { useBilling, useSetAutoRenew, useSetPlan, useStartCheckout } from '../lib/billingQueries';
 import { formatEuros } from '../lib/deals';
 import { isNativeApp } from '../lib/platform';
 
@@ -24,7 +24,7 @@ function NativeAccountPage(): ReactElement {
   usePageTitle('Mon compte');
   const billing = useBilling();
   const b = billing.data;
-  const active = b ? !b.required || b.has_access : null;
+  const active = b ? !b.required || b.has_access || b.has_academy : null;
   return (
     <div className="app-container billing">
       <AppBar title="Mon compte" />
@@ -36,7 +36,13 @@ function NativeAccountPage(): ReactElement {
       ) : (
         <section className="card" aria-live="polite">
           <p className="list-title">{active ? 'Ton compte est actif.' : 'Ton compte n’est pas actif.'}</p>
-          <p className="text-2 text-sm mt-2">{active ? 'Tu as accès à toutes les fonctions de Stacker.' : 'La prospection et la signature sont indisponibles sur ce compte pour l’instant.'}</p>
+          <p className="text-2 text-sm mt-2">
+            {!active
+              ? 'La prospection, la signature et l’entraînement sont indisponibles sur ce compte pour l’instant.'
+              : b?.required
+                ? `Formule ${PLAN_INFO[b.plan].name}.`
+                : 'Tu as accès à toutes les fonctions de Stacker.'}
+          </p>
         </section>
       )}
     </div>
@@ -87,6 +93,8 @@ function Status({ b }: { b: Billing }): ReactElement {
   const view = billingView(b);
   const checkout = useStartCheckout();
   const renew = useSetAutoRenew();
+  const [plan, setPlanChoice] = useState<Plan>(b.plan);
+  const price = b.prices[plan];
   const [confirmStop, setConfirmStop] = useState(false);
   const [terms, setTerms] = useState(false);
   const [immediate, setImmediate] = useState(false);
@@ -94,7 +102,7 @@ function Status({ b }: { b: Billing }): ReactElement {
   const pay = () => {
     setTried(true);
     if (!terms || !immediate) return;
-    checkout.mutate(undefined, {
+    checkout.mutate(plan, {
       onSuccess: (url) => {
         window.location.assign(url);
       },
@@ -112,7 +120,7 @@ function Status({ b }: { b: Billing }): ReactElement {
           {b.launch_member ? <span className="chip chip-violet">Membre du lancement</span> : null}
         </p>
         <h2 id="billing-title" className="h2 billing-title">
-          Stacker · {formatEuros(b.price_cents, { always: true })} / mois
+          {PLAN_INFO[b.plan].name} · {formatEuros(b.prices[b.plan], { always: true })} / mois
         </h2>
         <dl className="billing-facts">
           <div>
@@ -164,6 +172,7 @@ function Status({ b }: { b: Billing }): ReactElement {
           </button>
         )}
         {renew.isError ? <FormAlert>{billingErrorMessage(renew.error)}</FormAlert> : null}
+        {view === 'active' ? <ChangePlan b={b} /> : null}
       </section>
     );
   }
@@ -192,13 +201,10 @@ function Status({ b }: { b: Billing }): ReactElement {
         {b.launch_priority ? <span className="chip chip-green">Place réservée (liste d’attente)</span> : null}
       </p>
       <h2 id="billing-title" className="h2 billing-title">
-        <span className="num">{formatEuros(b.price_cents, { always: true })}</span> / mois
+        Choisis ta formule
       </h2>
+      <PlanPicker b={b} value={plan} onChange={setPlanChoice} />
       <ul className="billing-perks">
-        <li>
-          <Icon name="check" />
-          <span>Prospection, campagnes et signature des clients en illimité</span>
-        </li>
         <li>
           <Icon name="check" />
           <span>{launch ? '0 % prélevé sur tes commissions pendant 12 mois' : 'Tu gardes 100 % de tes commissions'}</span>
@@ -223,7 +229,7 @@ function Status({ b }: { b: Billing }): ReactElement {
           <a href="/cgv" target="_blank" rel="noopener">
             conditions générales de vente
           </a>{' '}
-          de l’abonnement ({formatEuros(b.price_cents, { always: true })} par mois, sans engagement, renouvelé chaque mois).
+          de l’abonnement {PLAN_INFO[plan].name} ({formatEuros(price, { always: true })} par mois, sans engagement, renouvelé chaque mois).
         </CheckField>
         <CheckField checked={immediate} onChange={(e) => setImmediate(e.target.checked)} error={tried && !immediate ? 'Coche cette case pour accéder aux outils dès maintenant.' : undefined}>
           Je demande l’accès aux outils dès maintenant, avant la fin du délai de rétractation de 14 jours. Si je me rétracte, je paierai
@@ -232,12 +238,74 @@ function Status({ b }: { b: Billing }): ReactElement {
       </div>
       <button type="button" className={`btn btn-accent btn-lg btn-block${checkout.isPending ? ' is-loading' : ''}`} disabled={checkout.isPending} onClick={pay}>
         <Icon name="lock" />
-        {view === 'unpaid' ? 'Mettre à jour et payer' : `Payer ${formatEuros(b.price_cents, { always: true })} et activer`}
+        {view === 'unpaid' ? 'Mettre à jour et payer' : `Payer ${formatEuros(price, { always: true })} et activer`}
       </button>
       <p className="billing-secure">Paiement sécurisé par Mollie. Stacker ne voit jamais ton numéro de carte.</p>
       {!b.required ? <p className="billing-text">L’abonnement n’est pas encore demandé : tu peux tout utiliser librement en attendant.</p> : null}
       {checkout.isError ? <FormAlert>{billingErrorMessage(checkout.error)}</FormAlert> : null}
     </section>
+  );
+}
+
+/** Les trois formules (Academy + Pro mise en avant). */
+function PlanPicker({ b, value, onChange }: { b: Billing; value: Plan; onChange: (p: Plan) => void }): ReactElement {
+  return (
+    <div className="plan-picker" role="radiogroup" aria-label="Formule">
+      {PLANS.map((p) => (
+        <button key={p} type="button" role="radio" aria-checked={value === p} className={`plan-card${value === p ? ' is-selected' : ''}`} onClick={() => onChange(p)}>
+          <span className="plan-head">
+            <span className="plan-name">{PLAN_INFO[p].name}</span>
+            {p === 'duo' ? <span className="chip chip-green plan-badge">Recommandé</span> : null}
+          </span>
+          <span className="plan-price num">
+            {formatEuros(b.prices[p], { always: true })}
+            <small> / mois</small>
+          </span>
+          <span className="plan-tagline">{PLAN_INFO[p].tagline}</span>
+          <span className="plan-perks">
+            {PLAN_INFO[p].perks.map((perk) => (
+              <span key={perk}>
+                <Icon name="check" size={14} /> {perk}
+              </span>
+            ))}
+          </span>
+        </button>
+      ))}
+    </div>
+  );
+}
+
+/** Changer de formule : appliqué au prochain renouvellement. */
+function ChangePlan({ b }: { b: Billing }): ReactElement {
+  const change = useSetPlan();
+  const [open, setOpen] = useState(false);
+  const [choice, setChoice] = useState<Plan>(b.pending_plan ?? b.plan);
+  return (
+    <div className="billing-change">
+      {b.pending_plan ? (
+        <p className="billing-text">
+          Passage à <b>{PLAN_INFO[b.pending_plan].name}</b> ({formatEuros(b.prices[b.pending_plan], { always: true })} / mois) le {formatLongDate(b.current_period_end ?? '')}.
+        </p>
+      ) : null}
+      {open ? (
+        <>
+          <PlanPicker b={b} value={choice} onChange={setChoice} />
+          <button
+            type="button"
+            className={`btn btn-accent btn-block${change.isPending ? ' is-loading' : ''}`}
+            disabled={change.isPending}
+            onClick={() => change.mutate(choice, { onSuccess: () => setOpen(false) })}
+          >
+            {choice === b.plan ? `Garder ${PLAN_INFO[b.plan].name}` : `Passer à ${PLAN_INFO[choice].name} au prochain renouvellement`}
+          </button>
+        </>
+      ) : (
+        <button type="button" className="btn btn-glass btn-sm" onClick={() => setOpen(true)}>
+          Changer de formule
+        </button>
+      )}
+      {change.isError ? <FormAlert>{billingErrorMessage(change.error)}</FormAlert> : null}
+    </div>
   );
 }
 

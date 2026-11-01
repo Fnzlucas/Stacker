@@ -1041,4 +1041,22 @@
   .academy-item .progress { margin-top: 8px; }
   .academy-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--st-space-3); }
   .academy-note { text-align: center; color: var(--st-text-2); }
+  .academy-lock { display: flex; gap: 12px; align-items: flex-start; border: 2px solid var(--st-orange); }
+  .academy-lock .list-sub { display: block; white-space: normal; }
+}
+
+@layer components {
+  .plan-picker { display: grid; gap: 10px; margin: var(--st-space-3) 0; }
+  .plan-card { display: grid; gap: 4px; text-align: left; padding: 14px 16px; border-radius: var(--st-r-md, 18px); border: 2px solid rgba(255, 255, 255, .14); background: rgba(255, 255, 255, .06); color: var(--st-on-dark); font: inherit; cursor: pointer; }
+  .plan-card.is-selected { border-color: var(--st-green); background: rgba(61, 208, 104, .12); }
+  .plan-card:focus-visible { box-shadow: var(--st-focus); outline: none; }
+  .plan-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .plan-name { font-weight: 800; font-size: var(--st-text-base); }
+  .plan-badge { height: 22px; font-size: var(--st-text-2xs); }
+  .plan-price { font-size: var(--st-text-xl); font-weight: 800; }
+  .plan-price small { font-size: var(--st-text-sm); font-weight: 600; color: var(--st-on-dark-2); }
+  .plan-tagline { font-size: var(--st-text-sm); color: var(--st-on-dark-2); }
+  .plan-perks { display: grid; gap: 2px; margin-top: 4px; font-size: var(--st-text-xs); color: var(--st-on-dark-2); }
+  .plan-perks .icon { color: var(--st-green); vertical-align: -2px; }
+  .billing-change { display: grid; gap: var(--st-space-2); margin-top: var(--st-space-3); }
 }

@@ -8,6 +8,8 @@ import { ProgressBar } from '../components/Ui';
 import { FORMATION, formationProgress, type FormationModule, type FormationSection } from '../lib/formation';
 import { useFormation, useSetModuleDone } from '../lib/formationQueries';
 import { PATHS } from '../paths';
+import { useRoleplay } from '../lib/roleplayQueries';
+import { AcademyLock } from './Academy';
 
 /** Formation : 13 modules, scripts d’appel, objections et exercices. */
 export function FormationPage(): ReactElement {
@@ -17,6 +19,17 @@ export function FormationPage(): ReactElement {
   const formation = useFormation();
   const done = formation.data ?? [];
   const progress = formationProgress(done);
+  const access = useRoleplay();
+
+  // La formation fait partie de l'Academy (formules Academy et Academy + Pro).
+  if (access.data && !access.data.academy) {
+    return (
+      <div className="app-container formation">
+        <AppBar title="Formation" />
+        <AcademyLock qualification={false} />
+      </div>
+    );
+  }
 
   return (
     <div className="app-container formation">

@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { LAUNCH_OFFER, PAYOUT, PRODUCT } from '../config/site';
+import { LAUNCH_OFFER, PAYOUT, PLANS, PRODUCT } from '../config/site';
 
 export interface FaqItem {
   id: string;
@@ -65,8 +65,9 @@ export const FAQ_GENERAL: FaqItem[] = [
     q: 'Combien coûte l’abonnement ?',
     a: (
       <p>
-        {PRODUCT.priceMonthlyLabel} par mois. Il comprend le logiciel de prospection intégré, les scripts et l’aide pour les appels, et la
-        formation complète. Il est sans engagement et résiliable à tout moment.
+        Trois formules, sans engagement et résiliables à tout moment : {PLANS.map((p) => `${p.name} à ${p.price}`).join(', ')} par mois. Pro
+        comprend le logiciel de prospection, les scripts et la signature des clients ; Academy, l’entraînement face à une IA et la formation
+        complète.
       </p>
     ),
   },
@@ -76,7 +77,7 @@ export const FAQ_GENERAL: FaqItem[] = [
     a: (
       <>
         <p>
-          Les {LAUNCH_OFFER.seats} premiers stackers paient {PRODUCT.priceMonthlyLabel} par mois et Stacker ne prélève rien sur leur chiffre
+          Les {LAUNCH_OFFER.seats} premiers stackers paient le prix de leur formule (dès {PRODUCT.priceFromLabel} par mois) et Stacker ne prélève rien sur leur chiffre
           d’affaires : 0 %. Les inscrits de la liste d’attente ont priorité sur ces {LAUNCH_OFFER.seats} places.
         </p>
         <p>

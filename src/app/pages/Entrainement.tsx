@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState, type ReactElement, type Synth
 import { Link, useSearchParams } from 'react-router';
 import { Icon } from '../../components/Icon';
 import { Ransom } from '../../components/Ransom';
+import { AcademyLock } from './Academy';
 import { useSignedIn } from '../auth/AuthProvider';
 import { FormAlert } from '../components/Form';
 import { AppBar, LoadError, usePageTitle } from '../components/Layouts';
@@ -179,7 +180,8 @@ function Choose({ error, starting, onStart }: { error: string | null; starting: 
         ) : null}
       </section>
 
-      {s && !s.consented ? <ConsentCard /> : null}
+      {s && !s.academy ? <AcademyLock qualification={s.qualification} /> : null}
+      {s && !s.consented && (s.academy || s.qualification) ? <ConsentCard /> : null}
       {error ? <FormAlert>{error}</FormAlert> : null}
       {state.isError ? <LoadError onRetry={() => void state.refetch()} /> : null}
 
@@ -223,7 +225,7 @@ function Choose({ error, starting, onStart }: { error: string | null; starting: 
                     <Icon name="briefcase" /> {sc.offers}
                   </p>
                 </div>
-                <button type="button" className="btn btn-accent training-call-btn" onClick={() => onStart(sc)} disabled={starting !== null || left === 0 || !s?.consented} aria-busy={starting === sc.id}>
+                <button type="button" className="btn btn-accent training-call-btn" onClick={() => onStart(sc)} disabled={starting !== null || left === 0 || !s?.consented || !(s.academy || s.qualification)} aria-busy={starting === sc.id}>
                   <Icon name="phone" />
                   {starting === sc.id ? 'Connexion…' : `Appeler ${sc.contact.split(' ')[0] ?? ''}`}
                 </button>

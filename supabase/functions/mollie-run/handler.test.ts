@@ -53,8 +53,8 @@ function world(w: World) {
 const PAYMENT = { id: 'tr_abcd1', status: 'open', amount: { value: '6.99', currency: 'EUR' }, _links: { checkout: { href: 'https://www.mollie.com/checkout/select-method/abcd' } } };
 
 describe('billing-checkout', () => {
-  const prep = (customer: string | null = null) => () => json(200, { customer_id: customer, name: 'Inès Martin', email: 'ines@exemple.fr', amount_cents: 699, period_start: '2026-10-20' });
-  const CONSENT = { accept_terms: true, immediate_start: true, terms_version: CGV_VERSION };
+  const prep = (customer: string | null = null) => () => json(200, { customer_id: customer, name: 'Inès Martin', email: 'ines@exemple.fr', amount_cents: 1499, period_start: '2026-10-20', plan: 'duo' });
+  const CONSENT = { accept_terms: true, immediate_start: true, terms_version: CGV_VERSION, plan: 'duo' };
   const call = (w: ReturnType<typeof world>, opts: { origin?: string; auth?: string | null; method?: string; env?: Record<string, string | undefined>; body?: unknown } = {}) => {
     const handle = createCheckout({ ...w.deps, config: loadBillingConfig(opts.env ?? ENV) });
     const headers = new Headers({ origin: opts.origin ?? ORIGIN, 'content-type': 'application/json' });
@@ -69,16 +69,17 @@ describe('billing-checkout', () => {
     expect(r.status).toBe(200);
     expect(await r.json()).toEqual({ ok: true, url: PAYMENT._links.checkout.href });
     expect(w.rpcCalls.map((c) => c.fn)).toEqual(['billing_checkout_prepare', 'billing_set_customer', 'billing_charge_created']);
-    expect(w.rpcCalls[0]?.args).toEqual({ p_stacker: USER, p_terms_version: CGV_VERSION, p_immediate_start: true });
-    expect(w.rpcCalls[2]?.args).toEqual({ p_stacker: USER, p_kind: 'premier', p_period: '2026-10-20', p_amount: 699, p_payment: 'tr_abcd1' });
+    expect(w.rpcCalls[0]?.args).toEqual({ p_stacker: USER, p_terms_version: CGV_VERSION, p_immediate_start: true, p_plan: 'duo' });
+    expect(w.rpcCalls[2]?.args).toEqual({ p_stacker: USER, p_kind: 'premier', p_period: '2026-10-20', p_amount: 1499, p_payment: 'tr_abcd1' });
     expect(w.mollieCalls[0]?.key).toBe(`stacker-${USER}-customer`);
     expect(w.mollieCalls[1]?.body).toMatchObject({
-      amount: { currency: 'EUR', value: '6.99' },
+      amount: { currency: 'EUR', value: '14.99' },
+      description: 'Stacker Academy + Pro — 1er mois',
       sequenceType: 'first',
       customerId: 'cst_1',
       redirectUrl: 'https://stacker.example/app/abonnement?retour=1',
       webhookUrl: `${SB}/functions/v1/mollie-webhook`,
-      metadata: { kind: 'stacker', charge: 'premier', stacker_id: USER, period: '2026-10-20' },
+      metadata: { kind: 'stacker', charge: 'premier', stacker_id: USER, period: '2026-10-20', plan: 'duo' },
     });
   });
 
@@ -99,6 +100,7 @@ describe('billing-checkout', () => {
     expect(await (await call(ok, { body: { ...CONSENT, immediate_start: false } })).json()).toEqual({ ok: false, error: 'consent_required' });
     expect((await call(ok, { body: { accept_terms: true, terms_version: CGV_VERSION } })).status).toBe(400);
     expect((await call(ok, { body: { ...CONSENT, extra: 1 } })).status).toBe(400);
+    expect((await call(ok, { body: { ...CONSENT, plan: 'gold' } })).status).toBe(400);
     expect(await (await call(ok, { body: { ...CONSENT, terms_version: '2020-01-01' } })).json()).toEqual({ ok: false, error: 'terms_outdated' });
     expect((await call(world({ rpc: { billing_checkout_prepare: () => json(400, { code: '22023', message: 'consent_required' }) } }))).status).toBe(400);
     expect((await call(world({ user: json(401, {}) }))).status).toBe(401);

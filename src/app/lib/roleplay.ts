@@ -135,6 +135,10 @@ export const roleplayStateSchema = z.object({
   passed: z.boolean(),
   /** Accord donné pour l'envoi de l'appel à l'IA (obligatoire avant le premier appel). */
   consented: z.boolean(),
+  /** Formule Academy (ou Academy + Pro) : entraînement libre. */
+  academy: z.boolean(),
+  /** Stacker Pro sans Academy : seul l'appel d'habilitation (avant la première signature) est ouvert. */
+  qualification: z.boolean(),
   pass_score: z.number().int(),
   min_stacker_turns: z.number().int(),
   today: z.object({ used: z.number().int(), limit: z.number().int() }),
@@ -207,6 +211,7 @@ const MESSAGES: Record<string, string> = {
   not_found: 'Cet appel est introuvable. Lance une nouvelle simulation.',
   onboarding_required: 'Termine ton inscription pour t’entraîner.',
   consent_required: 'Donne ton accord (en haut de l’écran) avant ton premier appel.',
+  academy_required: 'L’entraînement fait partie des formules Academy et Academy + Pro.',
   invalid_request: 'Ta phrase est vide ou trop longue.',
 };
 

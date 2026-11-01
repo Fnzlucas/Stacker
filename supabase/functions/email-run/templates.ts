@@ -265,17 +265,24 @@ export function render(item: EmailItem, ctx: RenderContext): RenderedEmail {
       const until = z.string().regex(/^\d{4}-\d{2}-\d{2}$/).safeParse(item.data['launch_until']);
       const next = z.string().regex(/^\d{4}-\d{2}-\d{2}$/).safeParse(item.data['period_end']);
       const terms = z.string().safeParse(item.data['terms_version']);
+      const plan = z.enum(['academy', 'pro', 'duo']).catch('duo').parse(item.data['plan']);
+      const PLAN = {
+        academy: { name: 'Academy', access: 'l’entraînement face à l’IA et la formation' },
+        pro: { name: 'Pro', access: 'la prospection, les campagnes, les scripts et la signature des clients' },
+        duo: { name: 'Academy + Pro', access: 'l’entraînement face à l’IA, la formation, la prospection, les campagnes et la signature des clients' },
+      }[plan];
       if (!price.success) throw new RenderError('invalid_data');
       const { html, text } = layout({
         eyebrow: 'Confirmation de souscription',
         title: 'Ton abonnement Stacker est actif',
         paragraphs: [
           hi,
-          'Merci ! Ton paiement est confirmé et tu as accès à tous les outils : prospection, campagnes, scripts et formation, signature des clients.',
+          `Merci ! Ton paiement est confirmé : tu as accès à ${PLAN.access}.`,
           `Abonnement sans engagement, renouvelé chaque mois. Chaque mois, il est payé avec tes gains disponibles s’ils suffisent, sinon avec ton moyen de paiement. Tu peux le résilier à tout moment depuis ton profil (Abonnement) : il s’arrête à la fin du mois déjà payé.`,
           `Rétractation : tu as demandé l’accès immédiat. Tu peux encore te rétracter pendant 14 jours en écrivant à ${ctx.contactEmail} ; tu paieras seulement la part du mois déjà utilisée.`,
         ],
         facts: [
+          ['Formule', PLAN.name],
           ['Prix', `${euros(price.data)} par mois`],
           ...(launch ? ([['Offre de lancement', until.success ? `0 % prélevé sur tes gains jusqu’au ${longDate(until.data)}` : '0 % prélevé sur tes gains']] as [string, string][]) : []),
           ...(next.success ? ([['Prochain renouvellement', longDate(next.data)]] as [string, string][]) : []),

@@ -9,8 +9,13 @@ import type { StackerInfo } from './fake-prospects';
 type Reply = [number, unknown];
 const pg = (status: number, code: string, message: string): Reply => [status, { code, message, details: null, hint: null }];
 
+export type Plan = 'academy' | 'pro' | 'duo';
+export const PRICES: Record<Plan, number> = { academy: 1299, pro: 999, duo: 1499 };
+
 interface Sub {
   status: 'aucun' | 'en_attente' | 'actif' | 'impaye' | 'resilie';
+  plan: Plan;
+  pending_plan: Plan | null;
   launch_member: boolean;
   launch_until: string | null;
   current_period_end: string | null;
@@ -32,7 +37,6 @@ export const CHECKOUT_URL = 'https://www.mollie.com/checkout/select-method/e2e-t
 
 export class FakeBilling {
   required = false;
-  priceCents = 699;
   launchSeats = 100;
   private subs = new Map<string, Sub>();
   private seq = 0;
@@ -40,17 +44,30 @@ export class FakeBilling {
   private sub(id: string): Sub {
     let s = this.subs.get(id);
     if (!s) {
-      s = { status: 'aucun', launch_member: false, launch_until: null, current_period_end: null, method_label: null, cancel_at_period_end: false, charges: [] };
+      s = { status: 'aucun', plan: 'duo', pending_plan: null, launch_member: false, launch_until: null, current_period_end: null, method_label: null, cancel_at_period_end: false, charges: [] };
       this.subs.set(id, s);
     }
     return s;
   }
 
+  private current(id: string): Sub | null {
+    const s = this.subs.get(id);
+    if (!s || !['actif', 'impaye'].includes(s.status) || !s.current_period_end) return null;
+    return (s.cancel_at_period_end ? s.current_period_end > today() : s.current_period_end >= today()) ? s : null;
+  }
+
+  /** Accès Pro : prospection, campagnes, signature. */
   hasAccess(id: string): boolean {
     if (!this.required) return true;
-    const s = this.subs.get(id);
-    if (!s || !['actif', 'impaye'].includes(s.status) || !s.current_period_end) return false;
-    return s.cancel_at_period_end ? s.current_period_end > today() : s.current_period_end >= today();
+    const s = this.current(id);
+    return s !== null && s.plan !== 'academy';
+  }
+
+  /** Accès Academy : entraînement face à l'IA. */
+  hasAcademy(id: string): boolean {
+    if (!this.required) return true;
+    const s = this.current(id);
+    return s !== null && s.plan !== 'pro';
   }
 
   private view(id: string): unknown {
@@ -59,8 +76,12 @@ export class FakeBilling {
     return {
       required: this.required,
       has_access: this.hasAccess(id),
+      has_academy: this.hasAcademy(id),
       status: s.status,
-      price_cents: this.priceCents,
+      plan: s.plan,
+      pending_plan: s.pending_plan,
+      prices: PRICES,
+      price_cents: PRICES[s.plan],
       launch_member: s.launch_member,
       launch_until: s.launch_until,
       launch_seats_left: Math.max(this.launchSeats - taken, 0),
@@ -84,6 +105,15 @@ export class FakeBilling {
       s.cancel_at_period_end = b['p_on'] === false;
       return [200, this.view(st.id)];
     }
+    if (fn === 'billing_set_plan') {
+      if (!st) return pg(401, '42501', 'unauthorized');
+      const plan = b['p_plan'] as Plan;
+      if (!(plan in PRICES)) return pg(400, '22023', 'invalid_plan');
+      const s = this.sub(st.id);
+      if (['actif', 'impaye'].includes(s.status)) s.pending_plan = plan === s.plan ? null : plan;
+      else s.plan = plan;
+      return [200, this.view(st.id)];
+    }
     if (st && GATED_RPC.has(fn) && !this.hasAccess(st.id)) return pg(400, 'P0001', 'subscription_required');
     return null;
   }
@@ -91,13 +121,17 @@ export class FakeBilling {
   /** Edge Function billing-checkout : page de paiement Mollie (simulée). */
   checkout(st: StackerInfo | null, body: Record<string, unknown> = {}): Reply {
     if (body['accept_terms'] !== true || body['immediate_start'] !== true || typeof body['terms_version'] !== 'string') return [400, { ok: false, error: 'consent_required' }];
+    const plan = body['plan'] as Plan;
+    if (!(plan in PRICES)) return [400, { ok: false, error: 'invalid_plan' }];
     if (!st) return [401, { ok: false, error: 'unauthorized' }];
     if (!st.onboarded) return [403, { ok: false, error: 'onboarding_required' }];
     const s = this.sub(st.id);
     if (s.status === 'actif' && (s.current_period_end ?? '') >= today()) return [409, { ok: false, error: 'already_active' }];
     if (s.status === 'aucun' || s.status === 'resilie') s.status = 'en_attente';
+    s.plan = plan;
+    s.pending_plan = null;
     for (const c of s.charges) if (c.status === 'en_attente') c.status = 'echoue';
-    s.charges.push({ period_start: today(), amount_cents: this.priceCents, method: 'mollie', status: 'en_attente', created_at: new Date().toISOString(), payment: `tr_e2e${String(++this.seq)}` });
+    s.charges.push({ period_start: today(), amount_cents: PRICES[plan], method: 'mollie', status: 'en_attente', created_at: new Date().toISOString(), payment: `tr_e2e${String(++this.seq)}` });
     return [200, { ok: true, url: CHECKOUT_URL }];
   }
 

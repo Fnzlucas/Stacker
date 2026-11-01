@@ -113,7 +113,7 @@ export function CguPage(): ReactElement {
           title: `5. Offre de lancement des ${String(LAUNCH_OFFER.seats)} premiers`,
           body: (
             <p>
-              Les {LAUNCH_OFFER.seats} premiers stackers bénéficient d’un abonnement à {PRODUCT.priceMonthlyLabel} par mois et d’un prélèvement de
+              Les {LAUNCH_OFFER.seats} premiers stackers bénéficient du prix de leur formule (dès {PRODUCT.priceFromLabel} par mois) et d’un prélèvement de
               0 % sur leur chiffre d’affaires. Les inscrits de la liste d’attente ont priorité sur ces places. Le tarif évoluera après les{' '}
               {LAUNCH_OFFER.seats} premiers. Les conditions complètes figurent à l’
               <a href="/cgv#offre-lancement">article 4 des conditions générales de vente</a>.

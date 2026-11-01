@@ -12,9 +12,9 @@ update public.profiles set onboarding_completed_at = now(), department = '30', l
 
 -- ---------------------------------------------------------------- consentements
 set local role service_role;
-select throws_ok($$select public.billing_checkout_prepare('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', '2026-10-12', false)$$, '22023', 'consent_required', 'sans demande d''accès immédiat : pas de paiement');
-select throws_ok($$select public.billing_checkout_prepare('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', null, true)$$, '22023', 'consent_required', 'sans CGV acceptées : pas de paiement');
-select lives_ok($$select public.billing_checkout_prepare('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', '2026-10-12', true)$$, 'CGV et accès immédiat acceptés');
+select throws_ok($$select public.billing_checkout_prepare('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', '2026-10-12', false, 'duo')$$, '22023', 'consent_required', 'sans demande d''accès immédiat : pas de paiement');
+select throws_ok($$select public.billing_checkout_prepare('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', null, true, 'duo')$$, '22023', 'consent_required', 'sans CGV acceptées : pas de paiement');
+select lives_ok($$select public.billing_checkout_prepare('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', '2026-10-12', true, 'duo')$$, 'CGV et accès immédiat acceptés');
 reset role;
 select ok((select terms_version = '2026-10-12' and terms_accepted_at is not null and immediate_start_at is not null from public.stacker_billing where stacker_id = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'),
   '... version des CGV et dates enregistrées');
@@ -22,9 +22,9 @@ select ok((select terms_version = '2026-10-12' and terms_accepted_at is not null
 -- ---------------------------------------------------------------- confirmation de souscription
 select public.billing_charge_created('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 'premier', public.paris_today(), 699, 'tr_a1');
 select public.billing_payment_paid('tr_a1', 'mdt_a', 'Carte •••• 4242');
-select ok((select (data ->> 'price_cents')::int = 699 and (data ->> 'launch_member')::boolean and data ->> 'terms_version' = '2026-10-12'
+select ok((select (data ->> 'price_cents')::int = 1499 and data ->> 'plan' = 'duo' and (data ->> 'launch_member')::boolean and data ->> 'terms_version' = '2026-10-12'
            from public.email_outbox where kind = 'abonnement_confirme' and stacker_id = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'),
-  'abonnement activé : email de confirmation (prix, offre de lancement, CGV)');
+  'abonnement activé : email de confirmation (formule, prix, offre de lancement, CGV)');
 update public.stacker_billing set current_period_end = current_period_end + 30 where stacker_id = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
 select is((select count(*)::int from public.email_outbox where kind = 'abonnement_confirme'), 1, '... pas à chaque renouvellement');
 

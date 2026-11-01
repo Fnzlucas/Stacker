@@ -1,5 +1,5 @@
 import type { ReactElement, ReactNode } from 'react';
-import { LAUNCH_OFFER, PAYOUT, PRODUCT, TIERS } from '../config/site';
+import { LAUNCH_OFFER, PAYOUT, PLANS, PRODUCT, TIERS } from '../config/site';
 import { Island } from '../islands/Island';
 import { frenchSpaces } from '../lib/format';
 import { Icon, type IconName } from './Icon';
@@ -105,17 +105,21 @@ export function PricingCard({ headingLevel = 'h3' }: { headingLevel?: 'h2' | 'h3
         <span className="chip chip-green">Sans engagement</span>
       </div>
       <Heading id="pricing-title" className="mt-4 flex flex-wrap items-baseline gap-x-2">
-        <span className="price-amount num">{PRODUCT.priceMonthlyLabel}</span>
+        <span className="text-md text-ink-2">Dès</span>
+        <span className="price-amount num">{PRODUCT.priceFromLabel}</span>
         <span className="text-md text-ink-2">par mois</span>
       </Heading>
       <ul className="tick-list mt-6">
-        {INCLUDED.map((item) => (
-          <li key={item.title}>
+        {PLANS.map((plan) => (
+          <li key={plan.id}>
             <span className="tick">
               <Icon name="check" />
             </span>
             <span>
-              <b className="font-semibold">{item.title}.</b> <span className="text-ink-2">{item.text}</span>
+              <b className="font-semibold">
+                {plan.name} · {plan.price} par mois.
+              </b>{' '}
+              <span className="text-ink-2">{plan.text}</span>
             </span>
           </li>
         ))}
@@ -149,7 +153,7 @@ export function LaunchOfferCard({ headingLevel = 'h3' }: { headingLevel?: 'h2' |
             <Icon name="check" />
           </span>
           <span>
-            <b className="font-semibold">{PRODUCT.priceMonthlyLabel} par mois</b>
+            <b className="font-semibold">Ta formule dès {PRODUCT.priceFromLabel} par mois</b>
           </span>
         </li>
         <li>

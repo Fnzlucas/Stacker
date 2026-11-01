@@ -67,6 +67,9 @@ export class FakeRoleplay {
     return this.isRequired();
   }
 
+  /** Formule Academy du stacker (branchée sur la fausse facturation). */
+  hasAcademy: (stacker: string) => boolean = () => true;
+
   /** Stackers ayant donné leur accord pour l'IA. */
   consents = new Set<string>();
 
@@ -95,6 +98,8 @@ export class FakeRoleplay {
           required: this.required,
           passed: this.passed(st.id),
           consented: this.consents.has(st.id),
+          academy: this.hasAcademy(st.id),
+          qualification: this.required && !this.passed(st.id) && !this.hasAcademy(st.id),
           pass_score: PASS_SCORE,
           min_stacker_turns: MIN_TURNS,
           today: { used: mine.length, limit: this.dailyLimit },
@@ -120,6 +125,7 @@ export class FakeRoleplay {
       const opening = OPENINGS[scenario];
       if (!opening) return [404, { ok: false, error: 'not_found' }];
       if (!this.consents.has(st.id)) return [403, { ok: false, error: 'consent_required' }];
+      if (!this.hasAcademy(st.id) && !(this.required && !this.passed(st.id))) return [403, { ok: false, error: 'academy_required' }];
       if (this.sessions.filter((s) => s.stacker === st.id).length >= this.dailyLimit) return [429, { ok: false, error: 'daily_quota' }];
       for (const s of this.sessions) if (s.stacker === st.id && s.status === 'en_cours') s.status = 'abandonnee';
       const s: Session = { id: this.id(), stacker: st.id, scenario, status: 'en_cours', turns: [{ role: 'prospect', text: opening }], score: null, passed: false, feedback: null, started_at: new Date().toISOString() };

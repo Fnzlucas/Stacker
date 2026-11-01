@@ -23,12 +23,20 @@ const prepareSchema = z.object({
   email: z.string().nullable(),
   amount_cents: z.number().int().positive(),
   period_start: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  plan: z.enum(['academy', 'pro', 'duo']),
 });
 
-const KNOWN: Record<string, number> = { already_active: 409, onboarding_required: 403, consent_required: 400 };
+export const PLAN_NAMES = { academy: 'Academy', pro: 'Pro', duo: 'Academy + Pro' } as const;
+
+const KNOWN: Record<string, number> = { already_active: 409, onboarding_required: 403, consent_required: 400, invalid_plan: 400 };
 
 /** Le stacker accepte les CGV (version affichée) et demande l'accès immédiat (rétractation : articles L221-25 et suivants). */
-const bodySchema = z.strictObject({ accept_terms: z.literal(true), immediate_start: z.literal(true), terms_version: z.string().max(20) });
+const bodySchema = z.strictObject({
+  accept_terms: z.literal(true),
+  immediate_start: z.literal(true),
+  terms_version: z.string().max(20),
+  plan: z.enum(['academy', 'pro', 'duo']),
+});
 
 export function createHandler(deps: HandlerDeps): (req: Request) => Promise<Response> {
   if (!deps.config.ok) deps.log('config_invalid', { variables: deps.config.missing });
@@ -55,7 +63,7 @@ export function createHandler(deps: HandlerDeps): (req: Request) => Promise<Resp
       if (!user) return jsonResponse(401, { ok: false, error: 'unauthorized' }, cors);
       let prep: z.infer<typeof prepareSchema>;
       try {
-        prep = prepareSchema.parse(await rpc('billing_checkout_prepare', { p_stacker: user.id, p_terms_version: CGV_VERSION, p_immediate_start: true }));
+        prep = prepareSchema.parse(await rpc('billing_checkout_prepare', { p_stacker: user.id, p_terms_version: CGV_VERSION, p_immediate_start: true, p_plan: consent.data.plan }));
       } catch (error) {
         const code = error instanceof RpcError ? error.message : '';
         const status = KNOWN[code];
@@ -70,13 +78,13 @@ export function createHandler(deps: HandlerDeps): (req: Request) => Promise<Resp
       const payment = await mollie.createPayment(
         {
           amount: mollieAmount(prep.amount_cents),
-          description: 'Abonnement Stacker — 1er mois',
+          description: `Stacker ${PLAN_NAMES[prep.plan]} — 1er mois`,
           sequenceType: 'first',
           customerId: customer,
           redirectUrl: `${config.siteUrl}/app/abonnement?retour=1`,
           webhookUrl: config.webhookUrl,
           locale: 'fr_FR',
-          metadata: { kind: 'stacker', charge: 'premier', stacker_id: user.id, period: prep.period_start },
+          metadata: { kind: 'stacker', charge: 'premier', stacker_id: user.id, period: prep.period_start, plan: prep.plan },
         },
         crypto.randomUUID(),
       );

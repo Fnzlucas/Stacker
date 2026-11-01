@@ -31,7 +31,7 @@ export interface Guide {
   faq: FaqItem[];
 }
 
-const PRICE = PRODUCT.priceMonthlyLabel;
+const PRICE = `dès ${PRODUCT.priceFromLabel}`;
 
 export const GUIDES: Guide[] = [
   {
@@ -180,7 +180,7 @@ export const GUIDES: Guide[] = [
         q: 'Stacker est-il gratuit ?',
         a: (
           <p>
-            Non. L’abonnement coûte {PRICE} par mois, sans engagement. Les {LAUNCH_OFFER.seats} premiers stackers gardent ce prix et Stacker ne prélève
+            Non. L’abonnement coûte {PRICE} par mois, sans engagement. Les {LAUNCH_OFFER.seats} premiers stackers gardent leur prix et Stacker ne prélève
             aucun pourcentage sur leurs commissions pendant 12 mois.
           </p>
         ),

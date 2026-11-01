@@ -27,7 +27,7 @@ export function ListeAttentePage(): ReactElement {
                   <Icon name="trophy" />
                 </span>
                 <span>
-                  <b className="font-semibold">Offre de lancement des {LAUNCH_OFFER.seats} premiers</b> : {PRODUCT.priceMonthlyLabel} par mois et 0 %
+                  <b className="font-semibold">Offre de lancement des {LAUNCH_OFFER.seats} premiers</b> : formules dès {PRODUCT.priceFromLabel} par mois et 0 %
                   prélevé sur ton chiffre d’affaires. Le tarif évoluera après les {LAUNCH_OFFER.seats} premiers.{' '}
                   <a className="font-semibold text-ink underline" href="/cgv#offre-lancement">
                     Conditions

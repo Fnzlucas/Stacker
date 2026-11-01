@@ -39,6 +39,8 @@ const state: RoleplayState = {
   required: true,
   passed: false,
       consented: true,
+      academy: true,
+      qualification: false,
   pass_score: 70,
   min_stacker_turns: 5,
   today: { used: 1, limit: 8 },

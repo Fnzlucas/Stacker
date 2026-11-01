@@ -13,6 +13,9 @@ import { formationProgress } from '../lib/formation';
 import { useFormation } from '../lib/formationQueries';
 import { useRoleplay } from '../lib/roleplayQueries';
 import { PATHS } from '../paths';
+import { useBilling } from '../lib/billingQueries';
+import { formatEuros } from '../lib/deals';
+import { isNativeApp } from '../lib/platform';
 
 /** Statistiques de l'Academy (pures, testées). */
 export function academyStats(history: readonly { score: number | null; passed: boolean }[]): { calls: number; best: number | null; passedCount: number } {
@@ -29,6 +32,7 @@ export function AcademyPage(): ReactElement {
   const stats = academyStats(r?.history ?? []);
   const left = r ? Math.max(0, r.today.limit - r.today.used) : null;
   const ready = Boolean(r?.passed);
+  const locked = r ? !r.academy : false;
 
   return (
     <div className="app-container academy">
@@ -56,6 +60,8 @@ export function AcademyPage(): ReactElement {
           </div>
         </dl>
       </section>
+
+      {locked ? <AcademyLock qualification={Boolean(r?.qualification)} /> : null}
 
       {ready ? (
         <Link className="card academy-ready" to={PATHS.prospects}>
@@ -101,7 +107,39 @@ export function AcademyPage(): ReactElement {
         </li>
       </ul>
 
-      <p className="text-small academy-note">L’Academy est gratuite et reste ouverte : entraîne-toi avant chaque vrai appel.</p>
+      <p className="text-small academy-note">Entraîne-toi avant chaque vrai appel : c’est comme ça qu’on décroche ses premiers oui.</p>
     </div>
+  );
+}
+
+/** Academy non incluse dans la formule du stacker. */
+export function AcademyLock({ qualification }: { qualification: boolean }): ReactElement {
+  const billing = useBilling();
+  const native = isNativeApp();
+  const p = billing.data?.prices;
+  return (
+    <section className="card academy-lock" role="status" aria-labelledby="academy-lock-title">
+      <span className="academy-item-icon" aria-hidden="true">
+        <Icon name="lock" />
+      </span>
+      <div className="min-w-0 flex-1">
+        <h2 id="academy-lock-title" className="list-title">
+          {native ? 'L’Academy n’est pas active sur ce compte' : 'L’Academy n’est pas dans ta formule'}
+        </h2>
+        <p className="list-sub">
+          {qualification
+            ? 'Ton appel d’habilitation reste ouvert : réussis-le avant ta première signature. '
+            : ''}
+          {native
+            ? 'Entraînement libre et formation ne sont pas disponibles pour l’instant.'
+            : `Entraînement libre et formation sont inclus dans Academy${p ? ` (${formatEuros(p.academy, { always: true })} / mois)` : ''} et Academy + Pro${p ? ` (${formatEuros(p.duo, { always: true })} / mois)` : ''}.`}
+        </p>
+        {native ? null : (
+          <Link className="btn btn-accent btn-sm mt-3" to={PATHS.billing}>
+            Voir les formules
+          </Link>
+        )}
+      </div>
+    </section>
   );
 }

@@ -7,14 +7,14 @@ import type { ReactElement } from 'react';
 import { Fill } from '../../components/Fill';
 import { LegalPage } from '../../components/LegalPage';
 import { CGV_VERSION } from '@shared/legal';
-import { ENTITY, LAUNCH_OFFER, MEDIATOR, PRODUCT } from '../../config/site';
+import { ENTITY, LAUNCH_OFFER, MEDIATOR, PLANS } from '../../config/site';
 
 export function CgvPage(): ReactElement {
   return (
     <LegalPage
       title="Conditions générales de vente de l’abonnement stacker"
       version={CGV_VERSION}
-      updatedLabel="12 octobre 2026"
+      updatedLabel="1er novembre 2026"
       intro={
         <p>
           Ces conditions s’appliquent à l’abonnement Stacker souscrit par une personne (le « stacker ») pour utiliser l’application. Elles ne
@@ -59,8 +59,21 @@ export function CgvPage(): ReactElement {
           body: (
             <>
               <p>
-                Le prix de l’abonnement est de <strong>{PRODUCT.priceMonthlyLabel} par mois</strong>. <Fill value={ENTITY.vat} />. Aucun frais
-                d’inscription ni de résiliation n’est facturé.
+                L’abonnement est proposé en trois formules, au choix du stacker :
+              </p>
+              <ul>
+                {PLANS.map((p) => (
+                  <li key={p.id}>
+                    <strong>
+                      {p.name} : {p.price} par mois
+                    </strong>{' '}
+                    — {p.text}
+                  </li>
+                ))}
+              </ul>
+              <p>
+                <Fill value={ENTITY.vat} />. Aucun frais d’inscription ni de résiliation n’est facturé. Le stacker peut changer de formule depuis
+                son espace : le changement prend effet au renouvellement suivant, au prix de la nouvelle formule.
               </p>
               <p>
                 Le prix applicable est celui affiché au moment de la souscription. Toute évolution du prix est notifiée par email au moins 30 jours
@@ -79,7 +92,7 @@ export function CgvPage(): ReactElement {
                 la liste d’attente avant l’ouverture ont priorité sur ces {LAUNCH_OFFER.seats} places.
               </p>
               <p>
-                <strong>Conditions.</strong> Les bénéficiaires paient l’abonnement {PRODUCT.priceMonthlyLabel} par mois, et Stacker ne
+                <strong>Conditions.</strong> Les bénéficiaires paient le prix de la formule choisie, et Stacker ne
                 prélève aucun pourcentage sur leur chiffre d’affaires (0 %).
               </p>
               <p>

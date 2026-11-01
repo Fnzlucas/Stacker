@@ -10,10 +10,35 @@ import type { Backend } from './supabase';
 export const BILLING_STATUSES = ['aucun', 'en_attente', 'actif', 'impaye', 'resilie'] as const;
 export type BillingStatus = (typeof BILLING_STATUSES)[number];
 
+/** Les trois formules. Pro = prospection et signature ; Academy = entraînement face à l'IA et formation. */
+export const PLANS = ['duo', 'pro', 'academy'] as const;
+export type Plan = (typeof PLANS)[number];
+export const PLAN_INFO: Record<Plan, { name: string; tagline: string; perks: string[] }> = {
+  duo: {
+    name: 'Academy + Pro',
+    tagline: 'Entraîne-toi en continu et prospecte pour de vrai',
+    perks: ['Tout Academy et tout Pro', 'Entraîne-toi avant chaque vrai appel'],
+  },
+  pro: {
+    name: 'Pro',
+    tagline: 'Le logiciel de prospection',
+    perks: ['Recherche d’entreprises et campagnes d’emails', 'Scripts, signature des clients sur ton téléphone', 'Commissions et virements'],
+  },
+  academy: {
+    name: 'Academy',
+    tagline: 'Apprends à convaincre face à une IA',
+    perks: ['Appels d’entraînement face à des commerçants joués par une IA', 'Note sur 100 et conseils précis', 'Formation complète en 13 modules'],
+  },
+};
+
 export const billingSchema = z.object({
   required: z.boolean(),
   has_access: z.boolean(),
+  has_academy: z.boolean(),
   status: z.enum(BILLING_STATUSES),
+  plan: z.enum(PLANS),
+  pending_plan: z.enum(PLANS).nullable(),
+  prices: z.object({ academy: z.number().int(), pro: z.number().int(), duo: z.number().int() }),
   price_cents: z.number().int(),
   launch_member: z.boolean(),
   launch_until: z.string().nullable(),
@@ -48,6 +73,7 @@ const MESSAGES: Record<string, string> = {
   terms_outdated: 'Les conditions ont été mises à jour : recharge la page pour lire la nouvelle version.',
   onboarding_required: 'Termine ton inscription avant de t’abonner.',
   no_subscription: 'Tu n’as pas d’abonnement en cours.',
+  invalid_plan: 'Choisis une formule.',
   payment_unavailable: 'Le paiement est momentanément indisponible. Réessaie dans quelques minutes.',
   unavailable: 'Le paiement n’est pas encore ouvert. Réessaie un peu plus tard.',
   unauthorized: 'Ta session a expiré. Reconnecte-toi.',
@@ -103,11 +129,12 @@ async function rpc<T>(b: Backend, fn: string, args: Record<string, unknown>, sch
 
 export const fetchBilling = (b: Backend) => rpc(b, 'my_billing', {}, billingSchema);
 export const setAutoRenew = (b: Backend, on: boolean) => rpc(b, 'billing_set_auto_renew', { p_on: on }, billingSchema);
+export const setPlan = (b: Backend, plan: Plan) => rpc(b, 'billing_set_plan', { p_plan: plan }, billingSchema);
 
 const checkoutSchema = z.union([z.object({ ok: z.literal(true), url: z.url() }), z.object({ ok: z.literal(false), error: z.string() })]);
 
 /** URL de la page de paiement Mollie (identité = jeton). Seule une page mollie.com est acceptée. */
-export async function startCheckout(b: Backend, fetchFn: typeof fetch = fetch): Promise<string> {
+export async function startCheckout(b: Backend, plan: Plan, fetchFn: typeof fetch = fetch): Promise<string> {
   const token = await b.accessToken();
   if (!token) throw new ApiError('unauthorized');
   let res: Response;
@@ -116,7 +143,7 @@ export async function startCheckout(b: Backend, fetchFn: typeof fetch = fetch): 
       method: 'POST',
       headers: { apikey: b.anonKey, Authorization: `Bearer ${token}`, 'content-type': 'application/json' },
       // Consentements cochés sur la page Abonnement (le bouton est bloqué sans eux), avec la version des CGV affichée.
-      body: JSON.stringify({ accept_terms: true, immediate_start: true, terms_version: CGV_VERSION }),
+      body: JSON.stringify({ accept_terms: true, immediate_start: true, terms_version: CGV_VERSION, plan }),
       signal: AbortSignal.timeout(20000),
     });
   } catch {

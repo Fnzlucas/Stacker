@@ -125,7 +125,7 @@ Crée d'abord un **compte de démonstration** sur le site : prénom « Apple »,
 > 2. *Accueil → Réussir un appel d'entraînement*: a voice role-play where an AI plays a shop owner. Tap "J'accepte" (consent to send the transcript to our AI provider, Anthropic), then call. The microphone and Apple speech recognition are used; you can also type.
 > 3. *Gains*: commissions per client; a push notification is sent when a client payment is collected.
 >
-> **Payments:** the app contains no purchases and no payment links. The agent subscription is sold only on our website (multiplatform service, guideline 3.1.3(b)). Commissions are paid to agents by bank transfer for real-world B2B services (website, Google reviews, local visibility) sold to businesses; these are not digital goods.
+> **Payments:** the app contains no purchases and no payment links. Commissions are paid to agents by bank transfer for real-world B2B services (website, Google reviews, local visibility) sold to businesses; these are not digital goods.
 >
 > **Emails:** campaigns are B2B emails sent from the agent's own Gmail/Outlook account (send-only OAuth scope), only to generic business addresses published on the company's own website, capped at 50 per day, each with an unsubscribe link honoured immediately.
 >
@@ -138,3 +138,16 @@ Crée d'abord un **compte de démonstration** sur le site : prénom « Apple »,
 - Validation Apple : souvent 24 à 48 h. En cas de refus, Apple dit pourquoi. On corrige et on renvoie, ce n'est pas définitif.
 - **Turnstile** (anti-robot de l'inscription) : rien à faire, l'app charge le vrai domaine.
 - **Google (Gmail)** : la connexion s'ouvre dans Safari, comme l'exige Google. En revenant dans l'app, l'état se met à jour tout seul.
+
+## 8. Point à surveiller : les abonnements et Apple
+
+Les formules (Academy 12,99 €, Pro 9,99 €, Academy + Pro 14,99 €) donnent accès à du contenu et à des fonctions **utilisés dans l'app**. Pour Apple, un abonnement de ce type doit en principe pouvoir s'acheter **aussi dans l'app** (règle 3.1.3(b)). Dans l'app, on ne vend rien et on ne renvoie pas vers le site : c'est la version la plus simple, mais Apple peut la refuser.
+
+Si Apple refuse pour cette raison, deux solutions :
+
+| Solution | Commission Apple (Europe, depuis le 1er octobre 2026) | Travail |
+|---|---|---|
+| Lien vers le site depuis l'app (« Choisir ma formule ») | 15 %, ou 10 % avec le *Small Business Program* | Petit : un lien et la déclaration du lien chez Apple |
+| Achat intégré Apple (In-App Purchase) | 26 %, ou 15 % avec le *Small Business Program* | Plus lourd : produits dans App Store Connect, achat via StoreKit, synchronisation avec Stacker |
+
+Inscris-toi au **Small Business Program** dès l'ouverture du compte (gratuit, pour moins d'un million de dollars de revenus par an sur l'App Store) : toutes les commissions sont réduites.

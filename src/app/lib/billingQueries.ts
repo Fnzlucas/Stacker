@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient, type UseQueryResult } from '@tanstack/react-query';
 import { useSignedIn } from '../auth/AuthProvider';
-import { fetchBilling, setAutoRenew, startCheckout, type Billing } from './billing';
+import { fetchBilling, setAutoRenew, setPlan, startCheckout, type Billing, type Plan } from './billing';
 
 export const BILLING_KEY = ['billing'] as const;
 
@@ -12,7 +12,13 @@ export function useBilling(poll = false): UseQueryResult<Billing> {
 
 export function useStartCheckout() {
   const { backend } = useSignedIn();
-  return useMutation({ mutationFn: () => startCheckout(backend) });
+  return useMutation({ mutationFn: (plan: Plan) => startCheckout(backend, plan) });
+}
+
+export function useSetPlan() {
+  const { backend } = useSignedIn();
+  const qc = useQueryClient();
+  return useMutation({ mutationFn: (plan: Plan) => setPlan(backend, plan), onSuccess: (data) => qc.setQueryData(BILLING_KEY, data) });
 }
 
 export function useSetAutoRenew() {

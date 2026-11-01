@@ -1,14 +1,18 @@
 import { describe, expect, it } from 'vitest';
 import { CGV_VERSION } from '@shared/legal';
 import { ApiError } from './apiError';
-import { BillingError, billingErrorMessage, billingView, fetchBilling, needsSubscription, setAutoRenew, startCheckout, type Billing } from './billing';
+import { BillingError, billingErrorMessage, billingView, fetchBilling, needsSubscription, setAutoRenew, setPlan, startCheckout, type Billing } from './billing';
 import type { Backend } from './supabase';
 
 const BASE: Billing = {
   required: true,
   has_access: false,
+  has_academy: false,
   status: 'aucun',
-  price_cents: 699,
+  plan: 'duo',
+  pending_plan: null,
+  prices: { academy: 1299, pro: 999, duo: 1499 },
+  price_cents: 1499,
   launch_member: false,
   launch_until: null,
   launch_seats_left: 100,
@@ -63,9 +67,11 @@ describe('appels serveur', () => {
   it('my_billing et résiliation', async () => {
     await expect(fetchBilling(b(BASE))).resolves.toEqual(BASE);
     await expect(setAutoRenew(b({ ...BASE, cancel_at_period_end: true }), false)).resolves.toMatchObject({ cancel_at_period_end: true });
-    expect(calls.slice(-2)).toEqual([
+    await expect(setPlan(b({ ...BASE, pending_plan: 'pro' }), 'pro')).resolves.toMatchObject({ pending_plan: 'pro' });
+    expect(calls.slice(-3)).toEqual([
       { fn: 'my_billing', args: {} },
       { fn: 'billing_set_auto_renew', args: { p_on: false } },
+      { fn: 'billing_set_plan', args: { p_plan: 'pro' } },
     ]);
     await expect(fetchBilling(b({ nope: 1 }))).rejects.toMatchObject({ kind: 'server' });
     await expect(setAutoRenew(b(null, { code: 'P0002', message: 'no_subscription' }, 404), false)).rejects.toMatchObject({ code: 'no_subscription' });
@@ -77,21 +83,21 @@ describe('appels serveur', () => {
   it('page de paiement : uniquement mollie.com en https', async () => {
     const reply = (status: number, body: unknown) => async () => new Response(JSON.stringify(body), { status });
     const seen: RequestInit[] = [];
-    const ok = await startCheckout(b(null), async (_u, init) => {
+    const ok = await startCheckout(b(null), 'duo', async (_u, init) => {
       seen.push(init ?? {});
       return new Response(JSON.stringify({ ok: true, url: 'https://www.mollie.com/checkout/abc' }));
     });
     expect(ok).toBe('https://www.mollie.com/checkout/abc');
     expect(seen[0]?.headers).toMatchObject({ Authorization: 'Bearer jwt', apikey: 'anon' });
-    expect(JSON.parse(seen[0]?.body as string)).toEqual({ accept_terms: true, immediate_start: true, terms_version: CGV_VERSION });
-    await expect(startCheckout(b(null), reply(200, { ok: true, url: 'https://evil.example/pay' }))).rejects.toMatchObject({ kind: 'server' });
-    await expect(startCheckout(b(null), reply(200, { ok: true, url: 'http://www.mollie.com/x' }))).rejects.toMatchObject({ kind: 'server' });
-    await expect(startCheckout(b(null), reply(409, { ok: false, error: 'already_active' }))).rejects.toMatchObject({ code: 'already_active' });
-    await expect(startCheckout(b(null), reply(401, { ok: false, error: 'unauthorized' }))).rejects.toMatchObject({ kind: 'unauthorized' });
-    await expect(startCheckout(b(null), reply(500, 'oups'))).rejects.toMatchObject({ kind: 'server' });
-    await expect(startCheckout(b(null, null, 200, null))).rejects.toMatchObject({ kind: 'unauthorized' });
+    expect(JSON.parse(seen[0]?.body as string)).toEqual({ accept_terms: true, immediate_start: true, terms_version: CGV_VERSION, plan: 'duo' });
+    await expect(startCheckout(b(null), 'duo', reply(200, { ok: true, url: 'https://evil.example/pay' }))).rejects.toMatchObject({ kind: 'server' });
+    await expect(startCheckout(b(null), 'duo', reply(200, { ok: true, url: 'http://www.mollie.com/x' }))).rejects.toMatchObject({ kind: 'server' });
+    await expect(startCheckout(b(null), 'duo', reply(409, { ok: false, error: 'already_active' }))).rejects.toMatchObject({ code: 'already_active' });
+    await expect(startCheckout(b(null), 'duo', reply(401, { ok: false, error: 'unauthorized' }))).rejects.toMatchObject({ kind: 'unauthorized' });
+    await expect(startCheckout(b(null), 'duo', reply(500, 'oups'))).rejects.toMatchObject({ kind: 'server' });
+    await expect(startCheckout(b(null, null, 200, null), 'duo')).rejects.toMatchObject({ kind: 'unauthorized' });
     await expect(
-      startCheckout(b(null), async () => {
+      startCheckout(b(null), 'duo', async () => {
         throw new TypeError('Failed to fetch');
       }),
     ).rejects.toMatchObject({ kind: 'network' });

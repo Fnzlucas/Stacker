@@ -48,12 +48,34 @@ export const PRODUCT = {
   name: 'Stacker',
   launchDateLabel: '20\u00a0octobre\u00a02026',
   launchDateISO: '2026-10-20',
-  /** Abonnement stacker, prix final (franchise en base de TVA). */
-  priceMonthlyLabel: '6,99\u00a0€',
+  /** Prix d'entrée (formule Pro), prix finals (franchise en base de TVA). */
+  priceFromLabel: '9,99\u00a0€',
   /** Version des CGU / CGV / politique de confidentialité (horodatée dans `consents`). */
   legalVersion: '2026-10-05',
   legalUpdatedLabel: '5 octobre 2026',
 } as const;
+
+/** Les trois formules (prix par mois, finals, franchise en base de TVA). */
+export const PLANS = [
+  {
+    id: 'pro',
+    name: 'Pro',
+    price: '9,99\u00a0€',
+    text: 'Le logiciel de prospection : recherche d’entreprises, campagnes d’emails depuis ta boîte, scripts, signature des clients sur ton téléphone, commissions.',
+  },
+  {
+    id: 'academy',
+    name: 'Academy',
+    price: '12,99\u00a0€',
+    text: 'Apprends à convaincre : appels d’entraînement face à des commerçants joués par une IA, note sur 100 et conseils, formation complète en 13 modules.',
+  },
+  {
+    id: 'duo',
+    name: 'Academy + Pro',
+    price: '14,99\u00a0€',
+    text: 'Les deux : entraîne-toi en continu et prospecte pour de vrai.',
+  },
+] as const;
 
 /** Niveaux et taux de commission. Les critères de passage figurent dans le contrat d'apporteur. */
 export const TIERS = [
