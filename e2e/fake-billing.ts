@@ -32,7 +32,7 @@ const plusMonths = (d: string, n: number) => {
 };
 
 /** Actions réservées aux abonnés quand l'abonnement est exigé. */
-export const GATED_RPC = new Set(['prospect_claim', 'campaign_start', 'deal_preview', 'deal_sign']);
+export const GATED_RPC = new Set(['prospect_claim', 'campaign_start']);
 export const CHECKOUT_URL = 'https://www.mollie.com/checkout/select-method/e2e-test';
 
 export class FakeBilling {

@@ -58,16 +58,21 @@ export const FAQ_GENERAL: FaqItem[] = [
   {
     id: 'resiliation-client',
     q: 'Que se passe-t-il si mon client arrête son abonnement ?',
-    a: <p>Ta commission s’arrête avec son abonnement : elle n’est due que sur les paiements réellement encaissés par Stacker.</p>,
+    a: (
+      <p>
+        Ta commission s’arrête avec son abonnement : elle n’est due que sur les paiements réellement encaissés par Stacker. Pour une offre sur
+        mesure payée en une fois, ta commission porte sur le prix total, encaissé en une fois.
+      </p>
+    ),
   },
   {
     id: 'prix',
-    q: 'Combien coûte l’abonnement ?',
+    q: 'Combien coûte Stacker ?',
     a: (
       <p>
-        Trois formules, sans engagement et résiliables à tout moment : {PLANS.map((p) => `${p.name} à ${p.price}`).join(', ')} par mois. Pro
-        comprend le logiciel de prospection, les scripts et la signature des clients ; Academy, l’entraînement face à une IA et la formation
-        complète.
+        Vendre est gratuit : tu fais signer tes clients sur ton téléphone et tu touches tes commissions, aux mêmes taux. En option, trois
+        formules sans engagement et résiliables à tout moment : {PLANS.map((p) => `${p.name} à ${p.price}`).join(', ')} par mois. Pro comprend le
+        logiciel de prospection et les scripts ; Academy, l’entraînement face à une IA et la formation complète.
       </p>
     ),
   },

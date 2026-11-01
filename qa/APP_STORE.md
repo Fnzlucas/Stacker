@@ -77,18 +77,21 @@ Connecte le dépôt GitHub `Fnzlucas/Stacker` sur codemagic.io, ajoute l'intégr
 
 **Description** :
 
-> Apprends à convaincre, gratuitement, puis passe aux vrais appels.
+> Apporte des clients aux commerçants et touche une commission, gratuitement.
 >
-> STACKER ACADEMY (gratuit)
+> GRATUIT
+> • Un catalogue de services pour les commerces : fiche Google, avis, réseaux sociaux, et des sites sur mesure payés en une fois.
+> • Signature du contrat client sur ton téléphone.
+> • Suivi de tes commissions client par client, notifications quand elles sont débloquées.
+>
+> STACKER ACADEMY
 > • Appels d'entraînement : un commerçant joué par une IA décroche, hésite, objecte… et peut raccrocher. Tu parles comme au téléphone.
 > • Ta note sur 100 et des conseils précis : présentation, accroche, questions, offre, conclusion.
 > • Une formation complète en 13 modules : cibler, appeler, répondre aux objections, obtenir le oui.
 >
-> STACKER, POUR LES VRAIS APPELS
+> STACKER PRO
 > • Recherche d'entreprises par département et par secteur (registre officiel SIRENE).
 > • Campagnes d'emails envoyées depuis ta propre boîte Gmail ou Outlook, au bon rythme, avec lien de désinscription.
-> • Signature du contrat client sur ton téléphone.
-> • Suivi de tes commissions client par client, notifications quand elles sont débloquées.
 >
 > Les commissions dépendent uniquement des clients que tu apportes et qui paient : aucun revenu n'est garanti. Réservé aux personnes majeures.
 
@@ -141,7 +144,7 @@ Crée d'abord un **compte de démonstration** sur le site : prénom « Apple »,
 
 ## 8. Point à surveiller : les abonnements et Apple
 
-Les formules (Academy 12,99 €, Pro 9,99 €, Academy + Pro 14,99 €) donnent accès à du contenu et à des fonctions **utilisés dans l'app**. Pour Apple, un abonnement de ce type doit en principe pouvoir s'acheter **aussi dans l'app** (règle 3.1.3(b)). Dans l'app, on ne vend rien et on ne renvoie pas vers le site : c'est la version la plus simple, mais Apple peut la refuser.
+La formule gratuite (faire signer des clients, toucher ses commissions) fonctionne entièrement dans l'app : c'est elle que verra un testeur sans abonnement, ce qui renforce le dossier. Les formules payantes (Academy 12,99 €, Pro 9,99 €, Academy + Pro 14,99 €) donnent accès à du contenu et à des fonctions **utilisés dans l'app**. Pour Apple, un abonnement de ce type doit en principe pouvoir s'acheter **aussi dans l'app** (règle 3.1.3(b)). Dans l'app, on ne vend rien et on ne renvoie pas vers le site : c'est la version la plus simple, mais Apple peut la refuser.
 
 Si Apple refuse pour cette raison, deux solutions :
 

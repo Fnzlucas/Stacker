@@ -6,6 +6,8 @@ import {
   dealErrorMessage,
   emptyDealInput,
   engagementLabel,
+  perLabel,
+  termsLabel,
   fetchCatalog,
   fetchDeal,
   fetchEarnings,
@@ -40,6 +42,7 @@ const OFFER: Offer = {
   engagement_months: 12,
   features: ['Max 15 pages'],
   recommended: true,
+  billing: 'mensuel',
 };
 const ROOMS: Offer = { ...OFFER, id: 'inroom-hotel-moyen', brand: 'InRoom', name: 'Hôtel moyen', price_cents: 500, unit_label: 'chambre', qty_min: 21, qty_max: 80, engagement_months: 0 };
 
@@ -111,6 +114,10 @@ describe('montants et libellés', () => {
   it('engagement, regroupement par marque, période', () => {
     expect(engagementLabel(0)).toBe('Sans engagement');
     expect(engagementLabel(12)).toBe('Engagement 12 mois');
+    expect(perLabel('mensuel')).toBe('/ mois');
+    expect(perLabel('unique')).toBe('en une fois');
+    expect(termsLabel('unique', 0)).toBe('Paiement unique, sans abonnement');
+    expect(termsLabel('mensuel', 12)).toBe('Engagement 12 mois');
     const groups = groupByBrand([OFFER, { ...OFFER, id: 'alma-premium', name: 'Premium' }, ROOMS]);
     expect(groups.map((g) => [g.brand, g.offers.length])).toEqual([
       ['Alma Company', 2],

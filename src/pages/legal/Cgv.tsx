@@ -17,7 +17,9 @@ export function CgvPage(): ReactElement {
       updatedLabel="1er novembre 2026"
       intro={
         <p>
-          Ces conditions s’appliquent à l’abonnement Stacker souscrit par une personne (le « stacker ») pour utiliser l’application. Elles ne
+          Ces conditions s’appliquent aux formules payantes Stacker (Academy, Pro, Academy + Pro) souscrites par une personne (le « stacker »).
+          L’utilisation de l’application en formule gratuite, qui permet de présenter des clients et de toucher ses commissions, est régie par
+          les conditions générales d’utilisation. Elles ne
           concernent pas les services vendus aux entreprises clientes, qui font l’objet de conditions de vente distinctes acceptées par chaque
           entreprise avant sa commande.
         </p>
@@ -39,12 +41,16 @@ export function CgvPage(): ReactElement {
           title: '2. Contenu de l’abonnement',
           body: (
             <>
-              <p>L’abonnement donne accès, pendant toute sa durée, à :</p>
+              <p>Selon la formule choisie, l’abonnement donne accès, pendant toute sa durée, à :</p>
               <ul>
-                <li>un logiciel de prospection intégré, qui trouve des entreprises et aide à les contacter ;</li>
-                <li>des scripts et une aide pour les appels ;</li>
-                <li>une formation complète.</li>
+                <li>Pro : un logiciel de prospection intégré, qui trouve des entreprises et aide à les contacter, avec des scripts et une aide pour les appels ;</li>
+                <li>Academy : des appels d’entraînement face à une intelligence artificielle et une formation complète ;</li>
+                <li>Academy + Pro : l’ensemble.</li>
               </ul>
+              <p>
+                La signature des contrats clients dans l’application et le suivi des commissions sont accessibles sans abonnement (formule
+                gratuite). À la fin d’un abonnement, le stacker conserve donc ces fonctions.
+              </p>
               <p>
                 L’abonnement ne promet aucun revenu. Les commissions éventuelles relèvent du contrat d’apporteur d’affaires conclu séparément et
                 dépendent uniquement des ventes réellement conclues et encaissées. Les caractéristiques essentielles du service sont présentées
@@ -138,8 +144,8 @@ export function CgvPage(): ReactElement {
               </p>
               <p>
                 <strong>Échec de paiement.</strong> Stacker en informe le stacker par email. L’accès aux outils est maintenu pendant 3 jours à
-                compter de l’échéance ; à défaut de régularisation dans ce délai, l’abonnement prend fin et l’accès aux outils de prospection, de
-                campagne et de signature est suspendu. Les commissions déjà acquises ne sont pas affectées et restent consultables et virables.
+                compter de l’échéance ; à défaut de régularisation dans ce délai, l’abonnement prend fin et le stacker repasse en formule gratuite :
+                l’accès aux outils de prospection, de campagne et d’entraînement est suspendu. Les commissions déjà acquises ne sont pas affectées et restent consultables et virables.
               </p>
             </>
           ),

@@ -145,7 +145,7 @@ const MESSAGES: Record<string, string> = {
   disabled: 'La prospection est momentanément suspendue. Réessaie un peu plus tard.',
   onboarding_required: 'Termine ton inscription pour accéder à la prospection.',
   get subscription_required() {
-    return isNativeApp() ? 'Ton compte n’est pas actif : la prospection est indisponible pour l’instant.' : 'Active ton abonnement Stacker pour prospecter.';
+    return isNativeApp() ? 'La prospection n’est pas activée sur ton compte pour l’instant.' : 'Active ton abonnement Stacker pour prospecter.';
   },
   not_found: 'Ce prospect n’est plus dans ta liste (libéré ou expiré).',
   invalid_transition: 'Ce changement de statut n’est pas possible.',

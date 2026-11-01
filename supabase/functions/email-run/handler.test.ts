@@ -37,6 +37,7 @@ const DEAL: NonNullable<EmailItem['deal']> = {
   contact_name: 'Jean Dupont',
   offer_label: 'Alma Company · Pro',
   monthly_price_cents: 6999,
+  one_time: false,
   mandate_ref: 'STKM12345678',
   iban_masked: 'FR•• •••• 0189',
   signed_at: '2026-10-12T08:30:00Z',
@@ -90,6 +91,14 @@ describe('modèles', () => {
     expect(m.text).toContain('signé avec Inès Martin');
     expect(m.text).not.toContain('30006000');
     expect(m.html).toContain('69,99 € par mois');
+  });
+  it('offre à paiement unique : prix en une fois, un seul prélèvement annoncé', () => {
+    const one = { ...DEAL, monthly_price_cents: 149000, one_time: true };
+    const m = render(item({ kind: 'contrat_client', to: 'contact@boulangerie-test.fr', to_name: 'Jean Dupont', deal: one }), CTX);
+    expect(m.text).toContain('1 490 € en une fois');
+    expect(m.text).toContain('prélevé en une seule fois');
+    expect(m.text).not.toContain('par mois');
+    expect(render(item({ kind: 'contrat_stacker', deal: one }), CTX).text).toContain('le jour où le client est prélevé');
   });
   it('contrat au stacker, pré-notification, bienvenue, abonnement, prélèvement refusé', () => {
     expect(render(item({ kind: 'contrat_stacker', deal: DEAL }), CTX)).toMatchObject({ subject: 'Deal signé : Boulangerie Test (STK-12345678)', contract: true });

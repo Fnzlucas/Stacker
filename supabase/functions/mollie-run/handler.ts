@@ -2,7 +2,8 @@
  * Tâche planifiée Mollie (toutes les heures, protégée par CRON_SECRET) :
  *   1. clients signés : client Mollie, mandat SEPA (IBAN, RUM, date de
  *      signature du contrat) puis abonnement mensuel, premier prélèvement le
- *      lendemain de la fin du délai de rétractation ;
+ *      lendemain de la fin du délai de rétractation (offre à paiement unique :
+ *      abonnement limité à un seul prélèvement, `times: 1`) ;
  *   2. contrats résiliés ou annulés : abonnement Mollie arrêté ;
  *   3. abonnements stackers arrivés à échéance : payés sur les gains en base,
  *      sinon prélevés sur le mandat Mollie (paiement récurrent).
@@ -38,6 +39,8 @@ const pendingSchema = z.array(
     signed_on: date,
     first_debit_on: date,
     amount_cents: z.number().int().positive(),
+    /** Offre à paiement unique : 1 (abonnement Mollie limité à un prélèvement). Absent ou null : chaque mois, sans fin. */
+    times: z.number().int().positive().nullish(),
   }),
 );
 const cancelSchema = z.array(z.object({ deal_id: z.uuid(), customer_id: z.string().nullable(), subscription_id: z.string().nullable() }));
@@ -91,6 +94,7 @@ export function createHandler(deps: HandlerDeps): (req: Request) => Promise<Resp
             {
               amount: mollieAmount(d.amount_cents),
               interval: '1 month',
+              ...(d.times ? { times: d.times } : {}),
               startDate: d.first_debit_on,
               description: `Stacker ${d.reference}`,
               mandateId: mandate,

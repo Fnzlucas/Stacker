@@ -152,7 +152,7 @@ export const GUIDES: Guide[] = [
         body: (
           <ol>
             <li>Crée ton compte Stacker (réservé aux majeurs) et suis la formation intégrée.</li>
-            <li>Active l’abonnement ({PRICE} par mois, sans engagement).</li>
+            <li>Choisis ta formule : gratuite pour faire signer tes clients, ou Academy et Pro en option ({PRICE} par mois, sans engagement).</li>
             <li>Réserve tes premières entreprises, dans ta région ou ailleurs en France, et appelle avec les scripts.</li>
             <li>Fais signer le client sur ton téléphone : ta commission tombe à chacun de ses paiements.</li>
           </ol>
@@ -180,8 +180,9 @@ export const GUIDES: Guide[] = [
         q: 'Stacker est-il gratuit ?',
         a: (
           <p>
-            Non. L’abonnement coûte {PRICE} par mois, sans engagement. Les {LAUNCH_OFFER.seats} premiers stackers gardent leur prix et Stacker ne prélève
-            aucun pourcentage sur leurs commissions pendant 12 mois.
+            Oui pour vendre : tu fais signer tes clients et tu touches tes commissions sans abonnement. Academy (entraînement) et Pro (logiciel de
+            prospection) sont en option, {PRICE} par mois, sans engagement. Les {LAUNCH_OFFER.seats} premiers abonnés gardent leur prix et Stacker
+            ne prélève aucun pourcentage sur leurs commissions pendant 12 mois.
           </p>
         ),
       },
@@ -218,7 +219,8 @@ export const GUIDES: Guide[] = [
           <>
             <p>
               Souvent, la commission est un pourcentage de la vente, versé une seule fois. Sur Stacker, elle porte sur des abonnements mensuels :
-              tu touches un pourcentage de chaque paiement du client, tant qu’il reste abonné.
+              tu touches un pourcentage de chaque paiement du client, tant qu’il reste abonné. Pour les offres sur mesure payées en une fois
+              (création de site, par exemple), le même pourcentage s’applique au prix total.
             </p>
             <ul>
               <li>Rookie : 15 % ;</li>
@@ -273,7 +275,7 @@ export const GUIDES: Guide[] = [
               Google, visibilité locale, réseaux sociaux) et te verse ta commission chaque mois.
             </p>
             <p>
-              L’abonnement coûte {PRICE} par mois, sans engagement. Ouverture le {PRODUCT.launchDateLabel}.
+              Vendre est gratuit ; les formules Academy et Pro coûtent {PRICE} par mois, sans engagement. Ouverture le {PRODUCT.launchDateLabel}.
             </p>
           </>
         ),

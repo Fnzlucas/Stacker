@@ -409,7 +409,8 @@ function OffersTab(): ReactElement {
                   <p className="list-sub">
                     <span>
                       {formatEuros(o.price_cents)}
-                      {o.unit_label ? ` / ${o.unit_label}` : ''} par mois · {o.engagement_months ? `${String(o.engagement_months)} mois` : 'sans engagement'} · {o.deals} deal(s)
+                      {o.unit_label ? ` / ${o.unit_label}` : ''} {o.billing === 'unique' ? 'en une fois' : 'par mois'} ·{' '}
+                      {o.billing === 'unique' ? 'paiement unique' : o.engagement_months ? `${String(o.engagement_months)} mois` : 'sans engagement'} · {o.deals} deal(s)
                     </span>
                   </p>
                 </div>

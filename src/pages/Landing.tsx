@@ -3,7 +3,7 @@ import { Icon, type IconName } from '../components/Icon';
 import { PageShell } from '../components/Layout';
 import { Ransom } from '../components/Ransom';
 import { AVAILABILITY_STEPS, Faq, LaunchOfferCard, PricingCard, SectionHeading, TierList } from '../components/Sections';
-import { LAUNCH_OFFER, PRODUCT } from '../config/site';
+import { BIG_TICKET, LAUNCH_OFFER, PRODUCT } from '../config/site';
 import { Island } from '../islands/Island';
 import { FAQ_GENERAL } from '../site/faq';
 
@@ -78,7 +78,7 @@ function Hero(): ReactElement {
           <p className="mt-4 max-w-xl">
             <span className="chip chip-green">
               <Icon name="graduation" />
-              Nouveau : Stacker Academy, entraîne-toi gratuitement face à une IA
+              Gratuit pour vendre · Stacker Academy en option pour t’entraîner face à une IA
             </span>
           </p>
           <div className="mt-8 flex flex-col gap-3 md:flex-row">
@@ -275,6 +275,10 @@ function Services(): ReactElement {
           title="Des services simples à présenter à un commerce."
           lead="C’est Stacker qui vend, réalise et suit le service. Tu n’as aucune compétence technique à avoir."
         />
+        <p className="card card-hero mt-8 flex gap-3" data-reveal>
+          <span className="chip chip-violet shrink-0">Gros tickets</span>
+          <span className="text-2">{BIG_TICKET.text}</span>
+        </p>
         <ul className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-2">
           {SERVICES.map((s) => (
             <li key={s.title} className="card flex gap-4" data-reveal>

@@ -2,7 +2,8 @@
  * Présentation de Stacker, au premier lancement (avant l'inscription) et, si
  * elle n'a pas été vue, avant les questions de l'inscription : ce que c'est,
  * ce qu'on propose aux commerçants, comment ça marche en 3 temps (apprendre,
- * appeler, encaisser), les règles, puis les formules. Écrans plein format, à faire défiler (boutons, glisser
+ * appeler, encaisser), les règles, puis les formules (gratuit pour vendre,
+ * Academy et Pro en option). Écrans plein format, à faire défiler (boutons, glisser
  * du doigt, flèches du clavier). Aucun gain promis : l'exemple est signalé.
  */
 import { useEffect, useRef, useState, type ReactElement, type ReactNode } from 'react';
@@ -39,11 +40,11 @@ function Step({ icon, tone, title, text }: { icon: IconName; tone: string; title
 }
 
 /** Services les plus simples à proposer (prix pour le commerçant, catalogue de l'app). */
-const OFFERS: { name: string; what: string; price: string; icon: IconName; tone: string }[] = [
-  { name: 'QR Avis Google', what: 'Plus d’avis, sans effort', price: '9\u00a0€', icon: 'star', tone: 'green' },
-  { name: 'Fiche Google', what: 'Bien visible sur Google Maps', price: '39\u00a0€', icon: 'map-pin', tone: 'violet' },
-  { name: 'Site web', what: 'Un site pro, livré et hébergé', price: '39,99\u00a0€', icon: 'building', tone: 'orange' },
-  { name: 'Réseaux sociaux', what: 'Des posts chaque semaine', price: '49\u00a0€', icon: 'send', tone: 'green' },
+const OFFERS: { name: string; what: string; price: string; per: string; icon: IconName; tone: string; big?: boolean }[] = [
+  { name: 'QR Avis Google', what: 'Plus d’avis, sans effort', price: '9\u00a0€', per: '/ mois', icon: 'star', tone: 'green' },
+  { name: 'Fiche Google', what: 'Bien visible sur Google Maps', price: '39\u00a0€', per: '/ mois', icon: 'map-pin', tone: 'violet' },
+  { name: 'Réseaux sociaux', what: 'Des posts chaque semaine', price: '49\u00a0€', per: '/ mois', icon: 'send', tone: 'green' },
+  { name: 'Site sur mesure', what: 'Gros ticket, payé en une fois', price: '1\u00a0490\u00a0€', per: 'une fois', icon: 'building', tone: 'orange', big: true },
 ];
 
 function slides(native: boolean): Slide[] {
@@ -52,13 +53,13 @@ function slides(native: boolean): Slide[] {
       id: 'quoi',
       kicker: 'Bienvenue',
       title: 'C’EST QUOI STACKER ?',
-      text: 'Stacker propose aux commerçants des services qui les font gagner des clients : fiche Google, avis, site web, réseaux sociaux. Toi, tu trouves les commerçants intéressés. Stacker fait tout le travail.',
+      text: 'Stacker propose aux commerçants des services qui les font gagner des clients : fiche Google, avis, sites sur mesure, réseaux sociaux. Toi, tu trouves les commerçants intéressés. Stacker fait tout le travail. Et c’est gratuit pour démarrer.',
       visual: (
         <ol className="intro-flow">
           <Step icon="search" tone="green" title="Tu trouves un commerçant" text="L’app te donne les entreprises à contacter." />
           <Step icon="phone" tone="violet" title="Tu le convaincs" text="Au téléphone, avec les scripts de l’app." />
           <Step icon="signature" tone="orange" title="Il signe sur ton téléphone" text="Stacker réalise le service pour lui." />
-          <Step icon="euro" tone="green" title="Tu touches ta commission" text="Chaque mois, tant qu’il reste client." />
+          <Step icon="euro" tone="green" title="Tu touches ta commission" text="Chaque mois, ou d’un coup sur les gros tickets." />
         </ol>
       ),
     },
@@ -66,11 +67,11 @@ function slides(native: boolean): Slide[] {
       id: 'offres',
       kicker: 'Ce que tu proposes',
       title: 'DES SERVICES QUI MARCHENT',
-      text: 'Des services simples, que les commerçants comprennent tout de suite et paient chaque mois. C’est Stacker qui les réalise : toi, tu n’as rien à produire ni à livrer.',
+      text: 'Des abonnements simples, que les commerçants comprennent tout de suite, et des gros tickets sur mesure payés en une fois. C’est Stacker qui les réalise : toi, tu n’as rien à produire ni à livrer.',
       visual: (
         <ul className="intro-offers" aria-hidden="true">
           {OFFERS.map((o) => (
-            <li key={o.name}>
+            <li key={o.name} className={o.big ? 'is-big' : undefined}>
               <span className={`intro-flow-icon is-${o.tone}`}>
                 <Icon name={o.icon} />
               </span>
@@ -79,8 +80,9 @@ function slides(native: boolean): Slide[] {
                 <span>{o.what}</span>
               </span>
               <span className="intro-offer-price">
-                dès <b className="num">{o.price}</b>
-                <span>/ mois</span>
+                {o.big ? null : 'dès '}
+                <b className="num">{o.price}</b>
+                <span>{o.per}</span>
               </span>
             </li>
           ))}
@@ -89,9 +91,9 @@ function slides(native: boolean): Slide[] {
     },
     {
       id: 'apprends',
-      kicker: '1 · Academy',
+      kicker: 'En option · Academy',
       title: 'APPRENDS À CONVAINCRE',
-      text: 'Jamais vendu de ta vie ? Entraîne-toi d’abord : un commerçant joué par une IA décroche, hésite, objecte… et peut raccrocher. Tu parles comme au téléphone, et tu reçois une note sur 100 avec des conseils précis.',
+      text: 'Jamais vendu de ta vie ? Entraîne-toi : un commerçant joué par une IA décroche, hésite, objecte… et peut raccrocher. Tu parles comme au téléphone, et tu reçois une note sur 100 avec des conseils précis.',
       visual: (
         <div className="intro-phone" aria-hidden="true">
           <p className="intro-phone-head">
@@ -112,9 +114,9 @@ function slides(native: boolean): Slide[] {
     },
     {
       id: 'appelle',
-      kicker: '2 · Pro',
-      title: 'APPELLE POUR DE VRAI',
-      text: 'L’app trouve les entreprises de ta zone et leur envoie un premier email depuis ta boîte, au bon rythme. Tu rappelles celles qui répondent, avec les scripts. Quand c’est oui, le client signe directement sur ton téléphone.',
+      kicker: 'En option · Pro',
+      title: 'TROUVE TES CLIENTS',
+      text: 'Avec Pro, l’app trouve les entreprises de ta zone et leur envoie un premier email depuis ta boîte, au bon rythme : tu rappelles celles qui répondent. Sans Pro, tu prospectes à ta façon. Dans tous les cas, le client signe sur ton téléphone.',
       visual: (
         <div className="intro-stack" aria-hidden="true">
           <p className="intro-card">
@@ -144,15 +146,20 @@ function slides(native: boolean): Slide[] {
     },
     {
       id: 'encaisse',
-      kicker: '3 · Tes commissions',
-      title: 'ENCAISSE CHAQUE MOIS',
-      text: 'Tu touches 15 à 25 % de ce que paie ton client, chaque mois tant qu’il reste abonné. Ta commission apparaît dès la signature, se débloque le jour où le client est prélevé, et tu demandes ton virement quand tu veux.',
+      kicker: 'Tes commissions',
+      title: 'ENCAISSE',
+      text: '15 à 25 % de ce que paie ton client : chaque mois s’il est abonné, ou d’un coup sur le prix total d’un gros ticket. Débloqué le jour où le client est prélevé, viré quand tu veux.',
       visual: (
         <div className="intro-stack" aria-hidden="true">
           <p className="intro-money">
             <span className="intro-money-label">Exemple illustratif</span>
             <span className="intro-money-amount num">+ 10,49 €</span>
             <span>par mois · client à 69,99 € · taux 15 %</span>
+          </p>
+          <p className="intro-money is-big">
+            <span className="intro-money-label">Exemple illustratif</span>
+            <span className="intro-money-amount num">+ 223,50 €</span>
+            <span>en une fois · site sur mesure à 1 490 € · taux 15 %</span>
           </p>
           <ol className="intro-levels">
             <li>
@@ -209,15 +216,24 @@ function slides(native: boolean): Slide[] {
     list.push({
       id: 'formules',
       kicker: 'Tes formules',
-      title: 'CHOISIS TON RYTHME',
-      text: 'Commence par l’Academy pour apprendre, passe en Pro pour prospecter, ou prends les deux. Sans engagement : tu changes ou tu arrêtes quand tu veux.',
+      title: 'GRATUIT POUR VENDRE',
+      text: 'Tu fais signer tes clients et tu touches tes commissions gratuitement, aux mêmes taux. En option : Academy pour t’entraîner, Pro pour le logiciel de prospection. Sans engagement.',
       visual: (
         <ul className="intro-plans" aria-hidden="true">
+          <li className="is-free">
+            <span className="intro-plan-name">
+              <b>Gratuit</b>
+              <span className="intro-chip">Pour démarrer</span>
+            </span>
+            <span className="intro-plan-price">
+              <b className="num">0 €</b>
+            </span>
+          </li>
           {[...PLANS].reverse().map((p) => (
             <li key={p.id} className={p.id === 'duo' ? 'is-best' : undefined}>
               <span className="intro-plan-name">
                 <b>{p.name}</b>
-                {p.id === 'duo' ? <span className="intro-chip">Recommandé</span> : null}
+                {p.id === 'duo' ? <span className="intro-chip">Le plus complet</span> : null}
               </span>
               <span className="intro-plan-price">
                 <b className="num">{p.price}</b> / mois

@@ -145,7 +145,11 @@ export function CguPage(): ReactElement {
                   {TIERS.map((t) => `${t.name} ${String(t.rate)} %`).join(', ')}. Les critères de passage d’un niveau à l’autre sont fixés par le
                   contrat d’apporteur d’affaires ;
                 </li>
-                <li>la commission est récurrente : elle est due chaque mois tant que l’entreprise cliente reste abonnée ;</li>
+                <li>
+                  pour un abonnement, la commission est récurrente : elle est due chaque mois tant que l’entreprise cliente reste abonnée. Pour une
+                  prestation payée en une fois, elle porte sur le prix total et est due une seule fois ;
+                </li>
+                <li>présenter des clients et toucher ses commissions ne nécessite aucun abonnement (formule gratuite) ;</li>
                 <li>
                   une commission est visible « en attente » dès la signature du client et devient disponible dès l’encaissement effectif du
                   paiement correspondant. Le stacker peut alors en demander le virement, envoyé sous {PAYOUT.transferBusinessDays} jours ouvrés ;
@@ -154,7 +158,7 @@ export function CguPage(): ReactElement {
                   en cas d’impayé, de remboursement, de contestation de prélèvement ou de rétractation du client, la commission correspondante est
                   annulée et, si elle a déjà été versée, déduite des commissions suivantes ;
                 </li>
-                <li>aucun revenu n’est promis : les commissions dépendent uniquement des ventes conclues et du maintien des abonnements des clients.</li>
+                <li>aucun revenu n’est promis : les commissions dépendent uniquement des ventes conclues, des paiements encaissés et du maintien des abonnements des clients.</li>
               </ul>
               <p>
                 Les missions, points d’expérience et badges de l’application sont des outils de motivation. Ils sont facultatifs, ne

@@ -28,12 +28,12 @@ test.describe('application iPhone', () => {
     });
   });
 
-  test('compte non actif : ni prix, ni paiement, ni lien vers le site', async ({ page, supabase }) => {
+  test('formule gratuite : ni prix, ni paiement, ni lien vers le site', async ({ page, supabase }) => {
     supabase.fake.billing.required = true;
     await login(page, supabase.fake);
 
-    await page.goto('/app/deals');
-    const banner = page.getByRole('status').filter({ hasText: 'Ton compte n’est pas actif' });
+    await page.goto('/app/prospects');
+    const banner = page.getByRole('status').filter({ hasText: 'Cette fonction n’est pas activée sur ton compte' });
     await expect(banner).toBeVisible();
     await expect(banner.getByRole('link')).toHaveCount(0);
 
@@ -43,7 +43,8 @@ test.describe('application iPhone', () => {
 
     await page.goto('/app/abonnement');
     await expect(page.getByRole('heading', { level: 1, name: 'Mon compte' })).toBeVisible();
-    await expect(page.getByText('Ton compte n’est pas actif.')).toBeVisible();
+    await expect(page.getByText('Ton compte est actif.')).toBeVisible();
+    await expect(page.getByText(/Formule gratuite : tu fais signer tes clients/)).toBeVisible();
     const main = page.locator('main');
     await expect(main).not.toContainText(/€|payer|abonne|mollie|stacker-topaz|site/i);
     await expect(main.getByRole('button')).toHaveCount(0);

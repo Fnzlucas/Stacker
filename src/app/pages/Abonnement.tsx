@@ -5,7 +5,7 @@ import { Logo } from '../../components/Logo';
 import { CheckField, FormAlert } from '../components/Form';
 import { AppBar, usePageTitle } from '../components/Layouts';
 import { formatLongDate } from '../lib/dates';
-import { BILLING_STATUS_LABELS, PLANS, PLAN_INFO, billingErrorMessage, billingView, type Billing, type Plan } from '../lib/billing';
+import { BILLING_STATUS_LABELS, FREE_PLAN, PLANS, PLAN_INFO, billingErrorMessage, billingView, type Billing, type Plan } from '../lib/billing';
 import { useBilling, useSetAutoRenew, useSetPlan, useStartCheckout } from '../lib/billingQueries';
 import { formatEuros } from '../lib/deals';
 import { isNativeApp } from '../lib/platform';
@@ -24,21 +24,21 @@ function NativeAccountPage(): ReactElement {
   usePageTitle('Mon compte');
   const billing = useBilling();
   const b = billing.data;
-  const active = b ? !b.required || b.has_access || b.has_academy : null;
+  const paid = b ? !b.required || b.has_access || b.has_academy : null;
   return (
     <div className="app-container billing">
       <AppBar title="Mon compte" />
       {billing.isError ? <FormAlert>{billingErrorMessage(billing.error)}</FormAlert> : null}
-      {active === null ? (
+      {paid === null ? (
         <div className="card" aria-busy="true">
           <span className="skeleton skeleton-title w-2/3" />
         </div>
       ) : (
         <section className="card" aria-live="polite">
-          <p className="list-title">{active ? 'Ton compte est actif.' : 'Ton compte n’est pas actif.'}</p>
+          <p className="list-title">Ton compte est actif.</p>
           <p className="text-2 text-sm mt-2">
-            {!active
-              ? 'La prospection, la signature et l’entraînement sont indisponibles sur ce compte pour l’instant.'
+            {!paid
+              ? 'Formule gratuite : tu fais signer tes clients et tu touches tes commissions. Recherche d’entreprises, campagnes et entraînement libre ne sont pas activés sur ce compte.'
               : b?.required
                 ? `Formule ${PLAN_INFO[b.plan].name}.`
                 : 'Tu as accès à toutes les fonctions de Stacker.'}
@@ -151,7 +151,11 @@ function Status({ b }: { b: Billing }): ReactElement {
           </button>
         ) : confirmStop ? (
           <div className="billing-stop" role="group" aria-label="Confirmer la résiliation">
-            <p className="billing-text">Résilier ? Tu ne pourras plus réserver de prospects ni faire signer de clients après le {formatLongDate(b.current_period_end ?? '')}. Tes commissions restent à toi.</p>
+            <p className="billing-text">
+              Résilier ? Tu repasseras en formule gratuite le {formatLongDate(b.current_period_end ?? '')} : tu pourras toujours faire signer des clients, mais plus
+              {b.plan === 'academy' ? ' t’entraîner librement' : b.plan === 'pro' ? ' réserver de prospects ni lancer de campagne' : ' prospecter ni t’entraîner librement'}. Tes
+              commissions restent à toi.
+            </p>
             <div className="billing-stop-actions">
               <button
                 type="button"
@@ -201,8 +205,18 @@ function Status({ b }: { b: Billing }): ReactElement {
         {b.launch_priority ? <span className="chip chip-green">Place réservée (liste d’attente)</span> : null}
       </p>
       <h2 id="billing-title" className="h2 billing-title">
-        Choisis ta formule
+        Ta formule
       </h2>
+      <div className="plan-free" aria-label="Formule gratuite">
+        <span className="plan-head">
+          <span className="plan-name">{FREE_PLAN.name}</span>
+          <span className="chip chip-green">{b.required ? 'Ta formule actuelle' : 'Toujours incluse'}</span>
+        </span>
+        <p>
+          {FREE_PLAN.tagline} : {FREE_PLAN.perks.join(' · ')}.
+        </p>
+      </div>
+      <p className="billing-upgrade">Va plus loin, sans engagement :</p>
       <PlanPicker b={b} value={plan} onChange={setPlanChoice} />
       <ul className="billing-perks">
         <li>

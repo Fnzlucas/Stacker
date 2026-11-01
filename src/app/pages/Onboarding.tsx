@@ -11,7 +11,7 @@ import { LoadError, Splash, usePageTitle } from '../components/Layouts';
 import { OnboardingIntro, introSeen, markIntroSeen } from '../components/OnboardingIntro';
 import { LevelPill } from '../components/Ui';
 import { apiErrorMessage } from '../lib/api';
-import { useBilling } from '../lib/billingQueries';
+import { useRoleplay } from '../lib/roleplayQueries';
 import { isNativeApp } from '../lib/platform';
 import { useCompleteOnboarding, useProfile, useTiers } from '../lib/queries';
 import { PATHS } from '../paths';
@@ -241,14 +241,14 @@ function OnboardingFlow({ initialFirstName, initialDepartment, onFinished }: { i
   );
 }
 
-/** Fin de l'inscription : le premier pas, évident. */
+/** Fin de l'inscription : le premier pas, évident. Gratuit pour vendre ; Academy et Pro en option. */
 function FirstStep({ firstName }: { firstName: string }): ReactElement {
   usePageTitle('Ton premier pas');
-  const billing = useBilling();
-  const b = billing.data;
+  const roleplay = useRoleplay();
   const native = isNativeApp();
-  // Abonnement exigé et aucune formule : on commence par la choisir (sur le web).
-  const needsPlan = Boolean(b?.required && !b.has_academy && !b.has_access);
+  const r = roleplay.data;
+  // L'appel d'entraînement est ouvert avec Academy, ou pour l'habilitation exigée avant la première signature.
+  const canTrain = !r || r.academy || r.qualification;
   return (
     <div className="onboarding first-step">
       <header className="onboarding-top">
@@ -261,15 +261,19 @@ function FirstStep({ firstName }: { firstName: string }): ReactElement {
         <h1 className="h1 page-heading" tabIndex={-1}>
           Ton premier pas, {firstName}
         </h1>
-        <p className="lead mt-2">Le plus rapide pour progresser : un appel d’entraînement de 2 minutes face à un commerçant joué par une IA. Ta note sur 100 te dira quoi travailler.</p>
+        <p className="lead mt-2">
+          {canTrain
+            ? 'Le plus rapide pour progresser : un appel d’entraînement de 2 minutes face à un commerçant joué par une IA. Ta note sur 100 te dira quoi travailler.'
+            : 'Ton compte est gratuit : tu peux faire signer tes clients et toucher tes commissions dès maintenant.'}
+        </p>
         <ol className="first-step-list mt-6">
-          <li className={needsPlan ? undefined : 'is-next'}>
+          <li className="is-next">
             <span className="first-step-num" aria-hidden="true">
               1
             </span>
             <span>
-              <b>{needsPlan && !native ? 'Choisis ta formule' : 'Fais ton premier appel d’entraînement'}</b>
-              <span>{needsPlan && !native ? 'Academy pour apprendre, Pro pour prospecter, ou les deux.' : '2 minutes, à voix haute ou à l’écrit.'}</span>
+              <b>{canTrain ? 'Fais ton premier appel d’entraînement' : 'Découvre ce que tu proposes'}</b>
+              <span>{canTrain ? '2 minutes, à voix haute ou à l’écrit.' : 'Abonnements simples et gros tickets sur mesure, avec ta commission affichée.'}</span>
             </span>
           </li>
           <li>
@@ -277,8 +281,8 @@ function FirstStep({ firstName }: { firstName: string }): ReactElement {
               2
             </span>
             <span>
-              <b>Suis la formation</b>
-              <span>Les scripts, les objections, comment obtenir le oui.</span>
+              <b>Fais signer ton premier client</b>
+              <span>Sur ton téléphone, gratuitement. Ta commission apparaît dès la signature.</span>
             </span>
           </li>
           <li>
@@ -286,23 +290,16 @@ function FirstStep({ firstName }: { firstName: string }): ReactElement {
               3
             </span>
             <span>
-              <b>Passe aux vrais appels</b>
-              <span>Trouve tes premières entreprises et lance ta campagne.</span>
+              <b>Va plus loin, si tu veux</b>
+              <span>{native ? 'Entraînement libre, formation et logiciel de prospection.' : 'Academy pour t’entraîner, Pro pour le logiciel de prospection.'}</span>
             </span>
           </li>
         </ol>
         <div className="onboarding-actions first-step-actions">
-          {needsPlan && !native ? (
-            <Link className="btn btn-accent btn-lg btn-block" to={PATHS.billing}>
-              Choisir ma formule
-              <Icon name="arrow-right" />
-            </Link>
-          ) : (
-            <Link className="btn btn-accent btn-lg btn-block" to={needsPlan ? PATHS.home : PATHS.training}>
-              {needsPlan ? 'Découvrir l’app' : 'Faire mon premier appel'}
-              <Icon name="arrow-right" />
-            </Link>
-          )}
+          <Link className="btn btn-accent btn-lg btn-block" to={canTrain ? PATHS.training : PATHS.dealNew}>
+            {canTrain ? 'Faire mon premier appel' : 'Voir les offres'}
+            <Icon name="arrow-right" />
+          </Link>
           <Link className="btn btn-secondary btn-block" to={PATHS.home}>
             Plus tard
           </Link>

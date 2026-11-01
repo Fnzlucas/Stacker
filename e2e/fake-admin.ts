@@ -155,6 +155,7 @@ export class FakeAdmin {
             unit_label: o.unit_label,
             engagement_months: o.engagement_months,
             active: o.active,
+            billing: o.billing ?? 'mensuel',
             deals: this.deals.deals.filter((d) => d.offer.id === o.id).length,
           })),
         ];

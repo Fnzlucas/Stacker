@@ -1,5 +1,5 @@
 import type { ReactElement, ReactNode } from 'react';
-import { LAUNCH_OFFER, PAYOUT, PLANS, PRODUCT, TIERS } from '../config/site';
+import { FREE_PLAN, LAUNCH_OFFER, PAYOUT, PLANS, PRODUCT, TIERS } from '../config/site';
 import { Island } from '../islands/Island';
 import { frenchSpaces } from '../lib/format';
 import { Icon, type IconName } from './Icon';
@@ -101,15 +101,23 @@ export function PricingCard({ headingLevel = 'h3' }: { headingLevel?: 'h2' | 'h3
   return (
     <article className="card card-hero h-full" aria-labelledby="pricing-title">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <span className="eyebrow">Abonnement stacker</span>
+        <span className="eyebrow">Formules stacker</span>
         <span className="chip chip-green">Sans engagement</span>
       </div>
       <Heading id="pricing-title" className="mt-4 flex flex-wrap items-baseline gap-x-2">
-        <span className="text-md text-ink-2">Dès</span>
-        <span className="price-amount num">{PRODUCT.priceFromLabel}</span>
-        <span className="text-md text-ink-2">par mois</span>
+        <span className="price-amount">Gratuit</span>
+        <span className="text-md text-ink-2">pour vendre</span>
       </Heading>
+      <p className="text-ink-2 mt-2">Options dès {PRODUCT.priceFromLabel} par mois.</p>
       <ul className="tick-list mt-6">
+        <li>
+          <span className="tick">
+            <Icon name="check" />
+          </span>
+          <span>
+            <b className="font-semibold">{FREE_PLAN.name} · sans abonnement.</b> <span className="text-ink-2">{FREE_PLAN.text}</span>
+          </span>
+        </li>
         {PLANS.map((plan) => (
           <li key={plan.id}>
             <span className="tick">

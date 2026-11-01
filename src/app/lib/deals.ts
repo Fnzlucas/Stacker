@@ -13,6 +13,11 @@ import { isNativeApp } from './platform';
 // Schémas
 // ---------------------------------------------------------------------------
 
+/** mensuel : abonnement prélevé chaque mois ; unique : prestation sur mesure payée en une fois. */
+export const BILLINGS = ['mensuel', 'unique'] as const;
+export type BillingKind = (typeof BILLINGS)[number];
+const billing = z.enum(BILLINGS).default('mensuel');
+
 export const offerSchema = z.object({
   id: z.string(),
   brand: z.string(),
@@ -26,6 +31,7 @@ export const offerSchema = z.object({
   engagement_months: z.number().int(),
   features: z.array(z.string()),
   recommended: z.boolean(),
+  billing,
 });
 export type Offer = z.infer<typeof offerSchema>;
 
@@ -38,6 +44,7 @@ export const previewSchema = z.object({
   contract_text: z.string(),
   contract_sha256: z.string().regex(/^[0-9a-f]{64}$/),
   monthly_price_cents: z.number().int(),
+  billing,
   rate_bps: z.number().int(),
   commission_cents: z.number().int(),
 });
@@ -47,6 +54,7 @@ export const signedSchema = z.object({
   id: z.uuid(),
   reference: z.string(),
   monthly_price_cents: z.number().int(),
+  billing,
   rate_bps: z.number().int(),
   commission_cents: z.number().int(),
 });
@@ -78,6 +86,7 @@ export const dealRowSchema = z.object({
   company_name: z.string(),
   offer_label: z.string(),
   monthly_price_cents: z.number().int(),
+  billing,
   signed_at: z.string(),
   activated_at: z.string().nullable(),
   withdrawal_until: z.string(),
@@ -90,7 +99,7 @@ export const dealDetailSchema = z.object({
   reference: z.string(),
   status: z.enum(DEAL_STATUSES),
   claim_id: z.uuid().nullable(),
-  offer: z.object({ brand: z.string(), name: z.string(), engagement_months: z.number().int(), unit_label: z.string().nullable() }).loose(),
+  offer: z.object({ brand: z.string(), name: z.string(), engagement_months: z.number().int(), unit_label: z.string().nullable(), billing }).loose(),
   quantity: z.number().int(),
   monthly_price_cents: z.number().int(),
   company_name: z.string(),
@@ -136,7 +145,9 @@ export const earningsSchema = z.object({
   pending_monthly_cents: z.number().int(),
   /** Commission du premier mois des contrats signés, débloquée au premier prélèvement. */
   pending_cents: z.number().int(),
-  pending_deals: z.array(z.object({ deal_id: z.uuid(), company_name: z.string(), expected_cents: z.number().int(), first_debit_on: z.string(), signed_at: z.string() })),
+  pending_deals: z.array(
+    z.object({ deal_id: z.uuid(), company_name: z.string(), expected_cents: z.number().int(), first_debit_on: z.string(), signed_at: z.string(), one_time: z.boolean().default(false) }),
+  ),
   signed_count: z.number().int(),
   active_count: z.number().int(),
   min_payout_cents: z.number().int(),
@@ -300,6 +311,11 @@ export const commissionCents = (priceCents: number, rateBps: number): number => 
 
 export const engagementLabel = (months: number): string => (months === 0 ? 'Sans engagement' : `Engagement ${String(months)} mois`);
 
+/** Suffixe d'un prix : « / mois » pour un abonnement, « en une fois » pour une prestation sur mesure. */
+export const perLabel = (b: BillingKind): string => (b === 'unique' ? 'en une fois' : '/ mois');
+/** Durée affichée sous le prix. */
+export const termsLabel = (b: BillingKind, engagementMonths: number): string => (b === 'unique' ? 'Paiement unique, sans abonnement' : engagementLabel(engagementMonths));
+
 export function groupByBrand(offers: readonly Offer[]): { brand: string; category: string; description: string; offers: Offer[] }[] {
   const out: { brand: string; category: string; description: string; offers: Offer[] }[] = [];
   for (const o of offers) {
@@ -331,7 +347,7 @@ export class DealError extends Error {
 const MESSAGES: Record<string, string> = {
   onboarding_required: 'Termine ton inscription pour faire signer un client.',
   get subscription_required() {
-    return isNativeApp() ? 'Ton compte n’est pas actif : la signature est indisponible pour l’instant.' : 'Active ton abonnement Stacker pour faire signer un client.';
+    return isNativeApp() ? 'La signature n’est pas disponible sur ton compte pour l’instant.' : 'Active ton abonnement Stacker pour faire signer un client.';
   },
   training_required: 'Réussis d’abord une simulation d’appel dans Entraînement pour faire signer un client.',
   offer_unavailable: 'Cette offre n’est plus disponible. Choisis-en une autre.',

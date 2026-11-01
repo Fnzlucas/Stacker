@@ -23,6 +23,16 @@ Envoie-moi le médiateur choisi et la région, et je les intègre.
 
 - [ ] Contrat client et mandat SEPA : le modèle est dans la base, table `deal_settings`.
 - [ ] CGV et CGU (pages `/cgv` et `/cgu`). Les CGV ont été mises à jour le 12 octobre avec les vraies règles : paiement par les gains, 3 jours de grâce, Mollie.
+- [ ] Contrat de prestation des offres sur mesure (`deal_settings.contract_template_unique`) : délais, corrections incluses, propriété du site, hébergement 12 mois.
+
+### 3. Offres gros ticket (Stacker Studio) : à vérifier avant la première vente
+
+Quatre offres sur mesure payées en une fois sont actives en tête du catalogue : site vitrine 1 490 €, e-commerce 3 490 €, site + réservation 4 990 €, pack transformation digitale 9 900 €. La commission du stacker est son taux (15 à 25 %) sur le prix total, débloquée le jour du prélèvement.
+
+- [ ] **Capacité de livraison** : tu (ou ton prestataire) peux livrer chaque offre dans le délai écrit (3 à 8 semaines). Sinon, désactive-la depuis l'admin (catalogue) avant l'ouverture.
+- [ ] **Prix et contenu** : modifiables dans la table `offers` (`price_cents`, `features`). Les contrats déjà signés gardent leur version.
+- [ ] **Plafond de prélèvement SEPA chez Mollie** : un prélèvement de plusieurs milliers d'euros peut dépasser la limite par défaut d'un compte récent. Vérifie-la dans le tableau de bord Mollie (ou demande au support de la relever) avant la première vente à 3 490 € ou plus.
+- [ ] **TVA** : avec des tickets à 1 490 € et plus, ton chiffre d'affaires peut vite dépasser le seuil de la franchise en base. Les contrats affichent « TVA non applicable, art. 293 B du CGI » : fais valider le moment où il faudra passer à la TVA avec ton comptable.
 
 ---
 
@@ -31,7 +41,7 @@ Envoie-moi le médiateur choisi et la région, et je les intègre.
 ### 3. Supabase (projet de production)
 
 - [ ] Extensions **pg_cron** et **pg_net** activées.
-- [ ] Base à jour : `supabase db push`. Toutes les migrations jusqu'à `20261030090000_roleplay.sql`.
+- [ ] Base à jour : `supabase db push`. Toutes les migrations jusqu'à `20261101120000_gratuit_gros_ticket.sql`.
 - [ ] Secrets des Edge Functions (Project Settings → Edge Functions → Secrets) :
 
 | Secret | Pour quoi |

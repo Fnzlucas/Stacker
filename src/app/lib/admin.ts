@@ -78,6 +78,7 @@ export const adminOfferSchema = z.object({
   price_cents: n,
   unit_label: z.string().nullable(),
   engagement_months: n,
+  billing: z.enum(['mensuel', 'unique']).default('mensuel'),
   active: z.boolean(),
   deals: n,
 });

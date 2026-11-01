@@ -2,11 +2,10 @@ import type { ReactElement } from 'react';
 import { Link } from 'react-router';
 import { Icon } from '../../components/Icon';
 import { FormAlert } from '../components/Form';
-import { SubscriptionBanner } from '../components/SubscriptionBanner';
 import { AppBar, usePageTitle } from '../components/Layouts';
 import { formatLongDate } from '../lib/dates';
 import { useEarnings, useMyDeals } from '../lib/dealQueries';
-import { DEAL_STATUS_CHIP, DEAL_STATUS_LABELS, dealErrorMessage, formatEuros } from '../lib/deals';
+import { DEAL_STATUS_CHIP, DEAL_STATUS_LABELS, dealErrorMessage, formatEuros, perLabel } from '../lib/deals';
 import { formatRate } from '../lib/tiers';
 import { PATHS, dealPath } from '../paths';
 
@@ -19,7 +18,6 @@ export function DealsPage(): ReactElement {
   return (
     <div className="app-container deals">
       <AppBar title="Deals" />
-      <SubscriptionBanner what="faire signer tes clients" />
 
       <section className="card card-dark deals-hero" aria-labelledby="deals-cta">
         <h2 id="deals-cta" className="h2">
@@ -87,7 +85,7 @@ export function DealsPage(): ReactElement {
                   </div>
                   <div className="deals-row-amount">
                     <span className="num">{formatEuros(d.monthly_price_cents)}</span>
-                    <small>/ mois</small>
+                    <small>{perLabel(d.billing)}</small>
                   </div>
                   <Icon name="chevron-right" />
                 </Link>

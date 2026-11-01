@@ -6,7 +6,7 @@ import { useBilling } from '../lib/billingQueries';
 import { isNativeApp } from '../lib/platform';
 import { PATHS } from '../paths';
 
-/** Bandeau des écrans de prospection et de vente quand l'abonnement est exigé et pas à jour. */
+/** Bandeau des écrans de prospection (formule Pro) quand l'abonnement est exigé et pas à jour. */
 export function SubscriptionBanner({ what }: { what: string }): ReactElement | null {
   const billing = useBilling();
   if (!needsSubscription(billing.data)) return null;
@@ -15,7 +15,7 @@ export function SubscriptionBanner({ what }: { what: string }): ReactElement | n
     return (
       <div className="card card-hero sub-banner" role="status">
         <Icon name="lock" />
-        <p>Ton compte n’est pas actif : tu ne peux pas {what} pour l’instant.</p>
+        <p>Cette fonction n’est pas activée sur ton compte : tu ne peux pas {what} pour l’instant.</p>
       </div>
     );
   }

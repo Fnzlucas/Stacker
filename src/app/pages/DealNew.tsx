@@ -1,4 +1,3 @@
-import { SubscriptionBanner } from '../components/SubscriptionBanner';
 import { TrainingBanner } from '../components/TrainingBanner';
 import { useEffect, useMemo, useRef, useState, type ReactElement } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router';
@@ -14,11 +13,12 @@ import {
   commissionCents,
   dealErrorMessage,
   emptyDealInput,
-  engagementLabel,
   formatEuros,
   formatIban,
   groupByBrand,
+  perLabel,
   stepErrors,
+  termsLabel,
   type DealInput,
   type DealPreview,
   type Offer,
@@ -126,7 +126,6 @@ function Wizard({ initial }: { initial: DealInput }): ReactElement {
           Étape {index + 1} / {STEPS.length}
         </span>
       </header>
-      <SubscriptionBanner what="faire signer ce client" />
       <TrainingBanner />
       <ol className="deal-steps" aria-label="Étapes">
         {STEPS.map((s, i) => (
@@ -146,7 +145,7 @@ function Wizard({ initial }: { initial: DealInput }): ReactElement {
       ) : step === 'client' ? (
         <ClientStep v={v} set={set} errors={errors} />
       ) : step === 'paiement' ? (
-        <PaymentStep v={v} set={set} errors={errors} />
+        <PaymentStep v={v} set={set} errors={errors} oneTime={offer?.billing === 'unique'} />
       ) : offer ? (
         <SignatureStep v={v} set={set} offer={offer} onSigned={setSigned} onEdit={setStep} />
       ) : null}
@@ -176,7 +175,8 @@ function OfferStep({ offers, rateBps, v, set, errors }: { offers: Offer[]; rateB
   return (
     <div className="deal-offers">
       <p className="text-2">
-        Choisis ce que ton client prend. Ta commission : <b className="text-ink">{formatRate(rateBps)}</b> du prix, chaque mois où il paie.
+        Choisis ce que ton client prend. Ta commission : <b className="text-ink">{formatRate(rateBps)}</b> du prix, chaque mois où il paie, ou sur le prix total pour
+        les offres sur mesure payées en une fois.
       </p>
       {errors['offer_id'] ? <FormAlert>{errors['offer_id']}</FormAlert> : null}
       {groups.map((g) => (
@@ -185,6 +185,12 @@ function OfferStep({ offers, rateBps, v, set, errors }: { offers: Offer[]; rateB
             {g.brand}
           </h2>
           <p className="text-small text-2">{g.category}</p>
+          {g.offers.some((o) => o.billing === 'unique') ? (
+            <p className="deal-bigticket">
+              <span className="chip chip-violet">Gros ticket</span>
+              <span className="text-small">Le client paie une fois, ta commission porte sur le prix total.</span>
+            </p>
+          ) : null}
           <div className="deal-formulas" role="radiogroup" aria-label={`Formules ${g.brand}`}>
             {g.offers.map((o) => {
               const on = o.id === v.offer_id;
@@ -207,9 +213,9 @@ function OfferStep({ offers, rateBps, v, set, errors }: { offers: Offer[]; rateB
                   </span>
                   <span className="deal-formula-price">
                     {o.unit_label ? `${formatEuros(o.price_cents)} / ${o.unit_label}` : formatEuros(o.price_cents)}
-                    <small> par mois</small>
+                    <small> {o.billing === 'unique' ? 'en une fois' : 'par mois'}</small>
                   </span>
-                  <span className="text-small text-2">{engagementLabel(o.engagement_months)}</span>
+                  <span className="text-small text-2">{termsLabel(o.billing, o.engagement_months)}</span>
                   <ul className="deal-formula-features">
                     {o.features.slice(0, 4).map((f) => (
                       <li key={f}>
@@ -219,7 +225,8 @@ function OfferStep({ offers, rateBps, v, set, errors }: { offers: Offer[]; rateB
                     ))}
                   </ul>
                   <span className="deal-formula-com">
-                    Ta commission : <b>{formatEuros(commissionCents(price, rateBps))}</b> / mois{o.unit_label && !on ? ' (minimum)' : ''}
+                    Ta commission : <b>{formatEuros(commissionCents(price, rateBps))}</b> {perLabel(o.billing)}
+                    {o.unit_label && !on ? ' (minimum)' : ''}
                   </span>
                 </button>
               );
@@ -277,11 +284,13 @@ function ClientStep({ v, set, errors }: { v: DealInput; set: Setter; errors: Rec
 // 3. Paiement
 // ---------------------------------------------------------------------------
 
-function PaymentStep({ v, set, errors }: { v: DealInput; set: Setter; errors: Record<string, string> }): ReactElement {
+function PaymentStep({ v, set, errors, oneTime }: { v: DealInput; set: Setter; errors: Record<string, string>; oneTime: boolean }): ReactElement {
   return (
     <div className="card card-hero deal-form">
       <p className="text-2 text-sm">
-        Le client paie chaque mois par prélèvement : il suffit de son IBAN. Le premier prélèvement a lieu après les 14 jours de rétractation.
+        {oneTime
+          ? 'Le client paie en une fois par prélèvement : il suffit de son IBAN. Le prélèvement a lieu après les 14 jours de rétractation.'
+          : 'Le client paie chaque mois par prélèvement : il suffit de son IBAN. Le premier prélèvement a lieu après les 14 jours de rétractation.'}
       </p>
       <TextField label="Titulaire du compte" autoComplete="off" value={v.iban_holder} onChange={(e) => set('iban_holder', e.target.value)} error={errors['iban_holder']} />
       <TextField
@@ -297,7 +306,8 @@ function PaymentStep({ v, set, errors }: { v: DealInput; set: Setter; errors: Re
         icon="bank"
       />
       <CheckField checked={v.accept_mandate} onChange={(e) => set('accept_mandate', e.target.checked)} error={errors['accept_mandate']}>
-        Le client autorise Stacker (via son prestataire de paiement Mollie) à prélever ce compte chaque mois, selon le mandat SEPA présenté avec le contrat.
+        Le client autorise Stacker (via son prestataire de paiement Mollie) à prélever ce compte {oneTime ? 'une fois, du prix total' : 'chaque mois'}, selon le mandat SEPA
+        présenté avec le contrat.
       </CheckField>
     </div>
   );
@@ -354,15 +364,18 @@ function SignatureStep({ v, set, offer, onSigned, onEdit }: { v: DealInput; set:
         </p>
         <p className="deal-summary-price">
           {formatEuros(p.monthly_price_cents)}
-          <small> / mois</small>
+          <small> {perLabel(p.billing)}</small>
         </p>
         <p className="text-small text-2">
-          {engagementLabel(offer.engagement_months)} · Réf. {p.reference}
+          {termsLabel(p.billing, offer.engagement_months)} · Réf. {p.reference}
         </p>
         <p className="deal-summary-com">
           <Icon name="euro" />
           <span>
-            Ta commission : <b>{formatEuros(p.commission_cents)} / mois</b> ({formatRate(p.rate_bps)}), dès que le client paie.
+            Ta commission : <b>
+              {formatEuros(p.commission_cents)} {perLabel(p.billing)}
+            </b>{' '}
+            ({formatRate(p.rate_bps)}), dès que le client paie.
           </span>
         </p>
       </section>
@@ -439,12 +452,14 @@ function Celebration({ deal, company }: { deal: SignedDeal; company: string }): 
           <Ransom text="SIGNÉ !" animated />
         </h1>
         <p className="deal-win-company">{company}</p>
-        <p className="deal-win-amount num" aria-label={`${formatEuros(deal.commission_cents)} par mois`}>
+        <p className="deal-win-amount num" aria-label={`${formatEuros(deal.commission_cents)} ${deal.billing === 'unique' ? 'en une fois' : 'par mois'}`}>
           + {formatEuros(shown, { always: true })}
-          <small> / mois</small>
+          <small> {perLabel(deal.billing)}</small>
         </p>
         <p className="deal-win-text">
-          Ta commission ({formatRate(deal.rate_bps)}) tombe chaque mois où le client paie, à partir du premier prélèvement, après les 14 jours de rétractation.
+          {deal.billing === 'unique'
+            ? `Ta commission (${formatRate(deal.rate_bps)}) est débloquée le jour où le client est prélevé, après les 14 jours de rétractation.`
+            : `Ta commission (${formatRate(deal.rate_bps)}) tombe chaque mois où le client paie, à partir du premier prélèvement, après les 14 jours de rétractation.`}
         </p>
         <div className="deal-win-actions">
           <button type="button" className="btn btn-accent btn-lg btn-block" onClick={() => void navigate(dealPath(deal.id), { replace: true })}>

@@ -37,7 +37,7 @@ async function completeOnboarding(page: Page, opts: { firstName?: string } = {})
   await expect(page).toHaveURL(/\/app$/);
 }
 
-const INTRO_TITLES = ['DES SERVICES QUI MARCHENT', 'APPRENDS À CONVAINCRE', 'APPELLE POUR DE VRAI', 'ENCAISSE CHAQUE MOIS', 'À TON RYTHME', 'CHOISIS TON RYTHME'];
+const INTRO_TITLES = ['DES SERVICES QUI MARCHENT', 'APPRENDS À CONVAINCRE', 'TROUVE TES CLIENTS', 'ENCAISSE', 'À TON RYTHME', 'GRATUIT POUR VENDRE'];
 
 test.describe('accès protégé', () => {
   test('sans session, /app ouvre l’écran d’accueil (créer un compte / se connecter)', async ({ page, supabase }) => {
@@ -118,6 +118,8 @@ test.describe('accès protégé', () => {
 
 test.describe('inscription', () => {
   test('inscription → confirmation par lien → onboarding → accueil', async ({ page, supabase }) => {
+    // Parcours complet (inscription, présentation, questions, premier pas) : long sous charge.
+    test.slow();
     // Inscrit directement (sans passer par l'écran d'accueil) : la présentation s'affiche après la confirmation.
     await page.addInitScript(() => window.localStorage.removeItem('stk-intro-seen'));
     const { fake } = supabase;

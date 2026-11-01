@@ -55,13 +55,25 @@ export const PRODUCT = {
   legalUpdatedLabel: '5 octobre 2026',
 } as const;
 
-/** Les trois formules (prix par mois, finals, franchise en base de TVA). */
+/** Formule gratuite : faire signer ses clients et toucher ses commissions, sans abonnement. */
+export const FREE_PLAN = {
+  id: 'gratuit',
+  name: 'Gratuit',
+  text: 'Tu fais signer tes clients sur ton téléphone et tu touches tes commissions, aux mêmes taux. Sans Academy ni logiciel de prospection.',
+} as const;
+
+/** Offres sur mesure payées en une fois (gros tickets) : commission sur le prix total. */
+export const BIG_TICKET = {
+  text: 'Des offres sur mesure payées en une fois par le client (site vitrine ou e-commerce, réservation en ligne, transformation digitale complète) : ta commission porte alors sur le prix total.',
+} as const;
+
+/** Les trois formules payantes, en option (prix par mois, finals, franchise en base de TVA). */
 export const PLANS = [
   {
     id: 'pro',
     name: 'Pro',
     price: '9,99\u00a0€',
-    text: 'Le logiciel de prospection : recherche d’entreprises, campagnes d’emails depuis ta boîte, scripts, signature des clients sur ton téléphone, commissions.',
+    text: 'Le logiciel de prospection : recherche d’entreprises de ta zone, campagnes d’emails depuis ta boîte, fiches prospects et scripts.',
   },
   {
     id: 'academy',

@@ -17,10 +17,10 @@ export function TarifsPage(): ReactElement {
             eyebrow="Tarifs"
             title={
               <>
-                Trois formules. <span className="serif-accent">Dès {PRODUCT.priceFromLabel}</span> par mois.
+                Gratuit pour vendre. <span className="serif-accent">Options dès {PRODUCT.priceFromLabel}</span> par mois.
               </>
             }
-            lead="Prix finals, TVA non applicable (art. 293 B du CGI), sans engagement. Pro pour prospecter, Academy pour apprendre à convaincre face à une IA, ou les deux."
+            lead="Faire signer tes clients et toucher tes commissions ne coûte rien. En option, sans engagement : Pro pour prospecter, Academy pour apprendre à convaincre face à une IA, ou les deux. Prix finals, TVA non applicable (art. 293 B du CGI)."
           />
           <div className="mt-6 min-h-9">
             <Island name="waitlist-count" props={{ variant: 'pill' }} as="span" />

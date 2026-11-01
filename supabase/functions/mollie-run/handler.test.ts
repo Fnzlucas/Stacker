@@ -240,6 +240,21 @@ describe('mollie-run', () => {
     ]);
   });
 
+  it('offre à paiement unique : un seul prélèvement du montant total ; abonnement mensuel : sans fin', async () => {
+    const w = world({
+      rpc: {
+        deal_mollie_pending: () => json(200, [pending({ amount_cents: 149000, times: 1 }), pending({ deal_id: '33333333-3333-4333-8333-333333333333', times: null })]),
+        deal_mollie_cancels: () => json(200, []),
+        billing_renew_due: () => json(200, []),
+      },
+      mollie: (path) => (path === '/customers' ? json(201, { id: 'cst_d' }) : path.endsWith('/mandates') ? json(201, { id: 'mdt_d' }) : json(201, { id: 'sub_d' })),
+    });
+    expect(await (await run(w)).json()).toMatchObject({ ok: true, setup: 2 });
+    const subs = w.mollieCalls.filter((c) => c.path.endsWith('/subscriptions')).map((c) => c.body!);
+    expect(subs[0]).toMatchObject({ amount: { value: '1490.00', currency: 'EUR' }, times: 1, interval: '1 month', startDate: '2026-10-27' });
+    expect(subs[1]).not.toHaveProperty('times');
+  });
+
   it('reprise après une étape réussie ; IBAN refusé : erreur définitive ; panne : réessai', async () => {
     const resume = world({
       rpc: { deal_mollie_pending: () => json(200, [pending({ customer_id: 'cst_d', mandate_id: 'mdt_d' })]), deal_mollie_cancels: () => json(200, []), billing_renew_due: () => json(200, []) },

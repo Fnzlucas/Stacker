@@ -10,7 +10,11 @@ import type { Backend } from './supabase';
 export const BILLING_STATUSES = ['aucun', 'en_attente', 'actif', 'impaye', 'resilie'] as const;
 export type BillingStatus = (typeof BILLING_STATUSES)[number];
 
-/** Les trois formules. Pro = prospection et signature ; Academy = entraînement face à l'IA et formation. */
+/**
+ * Les trois formules payantes. Sans formule : gratuit (faire signer des clients
+ * et toucher ses commissions). Pro = logiciel de prospection ; Academy =
+ * entraînement face à l'IA et formation.
+ */
 export const PLANS = ['duo', 'pro', 'academy'] as const;
 export type Plan = (typeof PLANS)[number];
 export const PLAN_INFO: Record<Plan, { name: string; tagline: string; perks: string[] }> = {
@@ -22,7 +26,7 @@ export const PLAN_INFO: Record<Plan, { name: string; tagline: string; perks: str
   pro: {
     name: 'Pro',
     tagline: 'Le logiciel de prospection',
-    perks: ['Recherche d’entreprises et campagnes d’emails', 'Scripts, signature des clients sur ton téléphone', 'Commissions et virements'],
+    perks: ['Recherche d’entreprises de ta zone', 'Campagnes d’emails depuis ta boîte', 'Fiches prospects, scripts et relances'],
   },
   academy: {
     name: 'Academy',
@@ -30,6 +34,13 @@ export const PLAN_INFO: Record<Plan, { name: string; tagline: string; perks: str
     perks: ['Appels d’entraînement face à des commerçants joués par une IA', 'Note sur 100 et conseils précis', 'Formation complète en 13 modules'],
   },
 };
+
+/** Formule gratuite : aucun abonnement. */
+export const FREE_PLAN = {
+  name: 'Gratuit',
+  tagline: 'Tu vends, tu touches tes commissions',
+  perks: ['signature des clients sur ton téléphone', 'mêmes taux de commission, 15 à 25 %', 'abonnements et gros tickets sur mesure'],
+} as const;
 
 export const billingSchema = z.object({
   required: z.boolean(),

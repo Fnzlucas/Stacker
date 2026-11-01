@@ -13,6 +13,7 @@ import { formationProgress } from '../lib/formation';
 import { useFormation } from '../lib/formationQueries';
 import { useRoleplay } from '../lib/roleplayQueries';
 import { PATHS } from '../paths';
+import { needsSubscription } from '../lib/billing';
 import { useBilling } from '../lib/billingQueries';
 import { formatEuros } from '../lib/deals';
 import { isNativeApp } from '../lib/platform';
@@ -33,6 +34,8 @@ export function AcademyPage(): ReactElement {
   const left = r ? Math.max(0, r.today.limit - r.today.used) : null;
   const ready = Boolean(r?.passed);
   const locked = r ? !r.academy : false;
+  const billing = useBilling();
+  const pro = !needsSubscription(billing.data);
 
   return (
     <div className="app-container academy">
@@ -64,13 +67,17 @@ export function AcademyPage(): ReactElement {
       {locked ? <AcademyLock qualification={Boolean(r?.qualification)} /> : null}
 
       {ready ? (
-        <Link className="card academy-ready" to={PATHS.prospects}>
+        <Link className="card academy-ready" to={pro ? PATHS.prospects : PATHS.dealNew}>
           <span className="academy-ready-icon" aria-hidden="true">
             <Icon name="target" />
           </span>
           <span className="min-w-0 flex-1">
             <span className="list-title">Tu es prêt : passe aux vrais appels</span>
-            <span className="list-sub">Trouve tes premières entreprises et appelle-les. Continue à t’entraîner entre deux appels.</span>
+            <span className="list-sub">
+              {pro
+                ? 'Trouve tes premières entreprises et appelle-les. Continue à t’entraîner entre deux appels.'
+                : 'Choisis ton offre et fais signer ton premier client. Continue à t’entraîner entre deux appels.'}
+            </span>
           </span>
           <Icon name="chevron-right" />
         </Link>

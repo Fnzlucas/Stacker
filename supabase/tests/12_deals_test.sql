@@ -46,7 +46,7 @@ reset role;
 
 set local role authenticated;
 set local request.jwt.claims = '{"sub": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", "role": "authenticated"}';
-select is(jsonb_array_length(public.deal_catalog() -> 'offers'), 29, 'catalogue : uniquement les offres actives');
+select is(jsonb_array_length(public.deal_catalog() -> 'offers'), 33, 'catalogue : uniquement les offres actives');
 select ok(not exists (select 1 from jsonb_array_elements(public.deal_catalog() -> 'offers') o where o ->> 'id' like 'rh-pme%'), '... une offre désactivée n''apparaît pas');
 select is((public.deal_catalog() ->> 'rate_bps')::int, 1500, '... taux du niveau Rookie : 15 %');
 select throws_ok($$select * from public.deals$$, '42501', null, 'lecture directe de deals interdite');

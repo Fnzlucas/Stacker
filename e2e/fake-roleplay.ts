@@ -99,7 +99,7 @@ export class FakeRoleplay {
           passed: this.passed(st.id),
           consented: this.consents.has(st.id),
           academy: this.hasAcademy(st.id),
-          qualification: this.required && !this.passed(st.id) && !this.hasAcademy(st.id),
+          qualification: this.required && !this.passed(st.id),
           pass_score: PASS_SCORE,
           min_stacker_turns: MIN_TURNS,
           today: { used: mine.length, limit: this.dailyLimit },

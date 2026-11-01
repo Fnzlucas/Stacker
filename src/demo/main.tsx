@@ -66,6 +66,28 @@ function seed(fake: FakeSupabase): void {
     });
     if (i < 2) fake.deals.recordPayment(id, '2026-10-01', offer.price_cents, i === 0 ? -1 : 9);
   });
+  // Un gros ticket signé : site sur mesure payé en une fois, commission en attente du prélèvement.
+  const studio = TEST_OFFERS.find((o) => o.billing === 'unique');
+  if (studio)
+    fake.deals.deals.push({
+      id: '00000000-0000-4000-8000-0000000d0009',
+      reference: 'STK-DEMO0090',
+      stacker: user.id,
+      claim_id: null,
+      offer: studio,
+      quantity: 1,
+      monthly_price_cents: studio.price_cents,
+      input: { company_name: 'Institut Belle Ô', siret: '30000001200017', email: 'contact@demo.fr', phone: '+33490123456', first_name: 'Claire', last_name: 'Roux', role: 'Gérante' },
+      iban_last4: '0189',
+      mandate_ref: 'STKMDEMO0090',
+      contract_text: 'CONTRAT DE PRESTATION (DÉMONSTRATION)\n\nCe contrat est fictif : il illustre une offre sur mesure payée en une fois.',
+      contract_sha256: 'b'.repeat(64),
+      signature_png: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
+      signed_at: new Date(now - 3 * day).toISOString(),
+      withdrawal_until: new Date(now + 11 * day).toISOString(),
+      status: 'signe',
+      activated_at: null,
+    });
   fake.deals.accounts.set(user.id, { holder: 'Inès Martin', iban_last4: '7034', iban: 'BE68539007547034' });
   // Une campagne en cours, une boîte connectée, les règles acceptées.
   fake.prospects.rules.set(user.id, '2026-10-09');

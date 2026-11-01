@@ -150,6 +150,56 @@ test.describe('deals', () => {
     await page.getByRole('button', { name: 'Retour' }).click();
     await expect(page.getByRole('heading', { level: 1, name: 'L’offre' })).toBeVisible();
   });
+
+  test('gros ticket en formule gratuite : paiement unique, commission sur le prix total', async ({ page, supabase }) => {
+    test.slow();
+    supabase.fake.billing.required = true;
+    await login(page, supabase.fake);
+    await page.goto('/app/deals/nouveau');
+    // Les offres sur mesure arrivent en tête, signalées « Gros ticket ».
+    await expect(page.locator('.deal-brand').first()).toContainText('Stacker Studio');
+    await expect(page.locator('.deal-brand').first()).toContainText('Gros ticket');
+    const site = page.getByRole('radio', { name: /Site vitrine sur mesure/ });
+    await expect(site).toContainText('en une fois');
+    await expect(site).toContainText('Paiement unique, sans abonnement');
+    await expect(site).toContainText('223,50');
+    await site.click();
+    await page.getByRole('button', { name: 'Continuer' }).click();
+
+    await page.getByLabel('SIRET').fill(SIRET);
+    await page.getByLabel('Raison sociale').fill('Boulangerie Test');
+    await page.getByLabel('Adresse').fill('1 rue de la Paix, 30000 Nîmes');
+    await page.getByLabel('Prénom').fill('Jean');
+    await page.getByLabel('Nom', { exact: true }).fill('Dupont');
+    await page.getByLabel('Fonction').fill('Gérant');
+    await page.getByLabel('Email').fill('contact@boulangerie-test.fr');
+    await page.getByLabel('Téléphone').fill('06 12 34 56 78');
+    await page.getByRole('button', { name: 'Continuer' }).click();
+
+    await expect(page.getByText(/Le client paie en une fois par prélèvement/)).toBeVisible();
+    await page.getByLabel('Titulaire du compte').fill('Boulangerie Test');
+    await page.getByLabel('IBAN').fill('FR7630006000011234567890189');
+    await page.getByLabel(/autorise Stacker/).check();
+    await expect(page.getByLabel(/autorise Stacker/)).toBeChecked();
+    await page.getByRole('button', { name: 'Continuer' }).click();
+
+    await expect(page.getByLabel('Texte du contrat')).toHaveValue(/CONTRAT DE PRESTATION/);
+    await expect(page.locator('.deal-summary')).toContainText('1 490 € en une fois');
+    await expect(page.locator('.deal-summary-com')).toContainText('223,50 € en une fois');
+    await page.getByLabel(/J’ai lu le contrat/).check();
+    await sign(page);
+    await page.getByRole('button', { name: 'Signer le contrat' }).click();
+    await expect(page.getByRole('heading', { name: 'SIGNÉ !' })).toBeVisible();
+    await expect(page.locator('.deal-win-amount')).toContainText('223,50', { timeout: 5000 });
+    await expect(page.locator('.deal-win-amount')).toContainText('en une fois');
+
+    await page.getByRole('button', { name: 'Voir le deal' }).click();
+    await expect(page.locator('main')).toContainText('Le client est prélevé en une fois après les 14 jours de rétractation');
+    await expect(page.locator('main')).toContainText('Paiement unique, sans abonnement');
+    await expectAccessible(page, 'deal-gros-ticket');
+    await page.goto('/app/gains');
+    await expect(page.getByRole('list', { name: 'Commissions en attente' })).toContainText('Boulangerie Test · 223,50 € (paiement unique) débloqués');
+  });
 });
 
 test.describe('gains', () => {

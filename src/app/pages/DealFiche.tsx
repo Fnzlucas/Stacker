@@ -5,7 +5,7 @@ import { Icon } from '../../components/Icon';
 import { PageHeading, usePageTitle } from '../components/Layouts';
 import { formatLongDate } from '../lib/dates';
 import { useDeal } from '../lib/dealQueries';
-import { DEAL_STATUS_CHIP, DEAL_STATUS_LABELS, DealError, dealErrorMessage, engagementLabel, formatEuros, periodLabel, type DealDetail } from '../lib/deals';
+import { DEAL_STATUS_CHIP, DEAL_STATUS_LABELS, DealError, dealErrorMessage, formatEuros, perLabel, periodLabel, termsLabel, type DealDetail } from '../lib/deals';
 import { formatRate } from '../lib/tiers';
 import { PATHS } from '../paths';
 
@@ -41,6 +41,13 @@ export function DealFichePage(): ReactElement {
   );
 }
 
+/** Offre sur mesure payée en une fois : pas de commission mensuelle. */
+const STATUS_HELP_ONE_TIME: Partial<Record<DealDetail['status'], string>> = {
+  signe: 'Contrat signé. Le client est prélevé en une fois après les 14 jours de rétractation : ta commission est débloquée ce jour-là.',
+  actif: 'Le client a payé : ta commission sur le prix total est débloquée.',
+  suspendu: 'Le prélèvement a échoué. Un coup de fil au client peut tout débloquer.',
+};
+
 const STATUS_HELP: Record<DealDetail['status'], string> = {
   signe: 'Contrat signé. Le premier prélèvement a lieu après les 14 jours de rétractation : ta commission démarre à ce moment-là.',
   actif: 'Le client paie : tu touches ta commission chaque mois où il paie.',
@@ -60,11 +67,11 @@ function Fiche({ d }: { d: DealDetail }): ReactElement {
         </p>
         <p className="deal-summary-price mt-4">
           {formatEuros(d.monthly_price_cents)}
-          <small> / mois</small>
+          <small> {perLabel(d.offer.billing)}</small>
         </p>
         <p className="form-note mt-3">
           <Icon name="info" />
-          <span>{STATUS_HELP[d.status]}</span>
+          <span>{(d.offer.billing === 'unique' ? STATUS_HELP_ONE_TIME[d.status] : undefined) ?? STATUS_HELP[d.status]}</span>
         </p>
         <dl className="pros-facts">
           <Fact label="Référence">
@@ -72,7 +79,7 @@ function Fiche({ d }: { d: DealDetail }): ReactElement {
           </Fact>
           <Fact label="Signé le">{formatLongDate(d.signed_at)}</Fact>
           <Fact label="Rétractation">jusqu’au {formatLongDate(d.withdrawal_until)}</Fact>
-          <Fact label="Durée">{engagementLabel(d.offer.engagement_months)}</Fact>
+          <Fact label="Durée">{termsLabel(d.offer.billing, d.offer.engagement_months)}</Fact>
           {d.offer.unit_label ? <Fact label="Quantité">{`${String(d.quantity)} ${d.offer.unit_label}${d.quantity > 1 ? 's' : ''}`}</Fact> : null}
         </dl>
       </section>

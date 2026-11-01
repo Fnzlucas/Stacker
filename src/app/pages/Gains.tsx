@@ -87,7 +87,7 @@ function Balance({ e }: { e: Earnings }): ReactElement {
             <li key={d.deal_id}>
               <Icon name="clock" />
               <span>
-                <b>{d.company_name}</b> · {formatEuros(d.expected_cents, { always: true })} débloqués dès le prélèvement du client, prévu vers le {formatLongDate(d.first_debit_on)}
+                <b>{d.company_name}</b> · {formatEuros(d.expected_cents, { always: true })}{d.one_time ? ' (paiement unique)' : ''} débloqués dès le prélèvement du client, prévu vers le {formatLongDate(d.first_debit_on)}
               </span>
             </li>
           ))}
@@ -225,7 +225,7 @@ function Monthly({ e }: { e: Earnings }): ReactElement {
         <small> / mois</small>
       </p>
       <p className="text-2 text-sm">
-        Sur {e.active_count} client{e.active_count > 1 ? 's' : ''} actif{e.active_count > 1 ? 's' : ''}, à ton taux actuel ({formatRate(e.rate_bps)}), tant qu’ils restent abonnés.
+        Sur tes clients abonnés, à ton taux actuel ({formatRate(e.rate_bps)}), tant qu’ils le restent.
       </p>
       {e.pending_monthly_cents > 0 ? (
         <p className="form-note mt-3">
@@ -273,7 +273,7 @@ function Level(): ReactElement | null {
       </ul>
       <p className="form-note mt-4">
         <Icon name="info" />
-        <span>Le taux s’applique à chaque paiement client, au niveau que tu as ce jour-là. Un client est actif dès qu’il a payé une première fois.</span>
+        <span>Le taux s’applique à chaque paiement client, au niveau que tu as ce jour-là. Un client abonné est actif dès qu’il a payé une première fois ; les offres sur mesure payées en une fois ne comptent pas dans le niveau.</span>
       </p>
     </section>
   );

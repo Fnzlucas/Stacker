@@ -1,6 +1,6 @@
 /**
- * Lot 6 : abonnement stacker. Abonnement exigé → bandeau et actions
- * bloquées ; page Abonnement (offre de lancement, places restantes) ; page
+ * Lot 6 : abonnement stacker. Formule gratuite : signature ouverte, prospection
+ * réservée à Pro (bandeau) ; page Abonnement (offre de lancement, places restantes) ; page
  * de paiement Mollie (simulée) ; retour, confirmation par le webhook
  * (simulé), abonnement actif ; résiliation puis reprise.
  */
@@ -29,12 +29,14 @@ test.describe('abonnement', () => {
     // Page Mollie simulée : on ne quitte jamais le navigateur de test.
     await page.route('https://www.mollie.com/**', (route) => route.fulfill({ status: 200, contentType: 'text/html', body: '<!doctype html><title>Mollie</title><h1>Paiement de test</h1>' }));
 
-    await page.goto('/app/deals');
-    const banner = page.getByRole('status').filter({ hasText: 'Active ton abonnement pour faire signer tes clients.' });
+    await page.goto('/app/prospects');
+    const banner = page.getByRole('status').filter({ hasText: 'Active ton abonnement pour réserver des prospects et lancer ta campagne.' });
     await expect(banner).toBeVisible();
     await banner.getByRole('link', { name: 'Activer' }).click();
 
     await expect(page.getByRole('heading', { level: 1, name: 'Abonnement' })).toBeVisible();
+    // Formule gratuite en cours, les trois formules payantes en option.
+    await expect(page.getByLabel('Formule gratuite')).toContainText('Ta formule actuelle');
     // Trois formules, Academy + Pro choisie par défaut.
     const plans = page.getByRole('radiogroup', { name: 'Formule' });
     await expect(plans.getByRole('radio')).toHaveText([/Academy \+ Pro.*14,99/, /Pro.*9,99/, /Academy.*12,99/]);
@@ -84,9 +86,9 @@ test.describe('abonnement', () => {
     await page.getByRole('button', { name: 'Reprendre mon abonnement' }).click();
     await expect(page.getByRole('button', { name: 'Résilier mon abonnement' })).toBeVisible();
 
-    await page.goto('/app/deals');
-    await expect(page.getByRole('heading', { level: 2, name: 'Ton client est prêt ?' })).toBeVisible();
-    await expect(page.getByText('Active ton abonnement pour faire signer tes clients.')).toHaveCount(0);
+    await page.goto('/app/prospects');
+    await expect(page.getByRole('heading', { level: 1, name: 'Prospects' })).toBeVisible();
+    await expect(page.getByText(/Active ton abonnement/)).toHaveCount(0);
   });
 
   test('sans abonnement exigé : aucun bandeau, profil renvoie vers l’abonnement', async ({ page, supabase }) => {
@@ -100,11 +102,17 @@ test.describe('abonnement', () => {
     await expect(page.getByText('L’abonnement n’est pas encore demandé')).toBeVisible();
   });
 
-  test('exigé et absent : signature refusée avec un message clair', async ({ page, supabase }) => {
+  test('formule gratuite : signature ouverte (gros tickets compris), prospection réservée à Pro', async ({ page, supabase }) => {
     supabase.fake.billing.required = true;
     await login(page, supabase.fake);
+    await page.goto('/app/deals');
+    await expect(page.getByRole('heading', { level: 2, name: 'Ton client est prêt ?' })).toBeVisible();
+    await expect(page.getByText(/Active ton abonnement/)).toHaveCount(0);
     await page.goto('/app/deals/nouveau');
-    await expect(page.getByText('Active ton abonnement pour faire signer ce client.')).toBeVisible();
+    await expect(page.getByRole('heading', { level: 2, name: 'Stacker Studio' })).toBeVisible();
+    await expect(page.getByText(/Active ton abonnement/)).toHaveCount(0);
+    await page.goto('/app/prospects');
+    await expect(page.getByText('Active ton abonnement pour réserver des prospects et lancer ta campagne.')).toBeVisible();
   });
 
   test('formule Academy seule : entraînement ouvert, prospection fermée ; formule Pro : Academy verrouillée', async ({ page, supabase }) => {
@@ -129,8 +137,8 @@ test.describe('abonnement', () => {
     await page.goto('/app/academy');
     await expect(page.getByRole('heading', { level: 1, name: /Stacker Academy/ })).toBeVisible();
     await expect(page.getByText('L’Academy n’est pas dans ta formule')).toHaveCount(0);
-    await page.goto('/app/deals/nouveau');
-    await expect(page.getByText('Active ton abonnement pour faire signer ce client.')).toBeVisible();
+    await page.goto('/app/prospects');
+    await expect(page.getByText('Active ton abonnement pour réserver des prospects et lancer ta campagne.')).toBeVisible();
     await page.goto('/app/formation');
     await expect(page.getByRole('heading', { level: 1, name: 'Formation' })).toBeVisible();
     await expect(page.getByText('L’Academy n’est pas dans ta formule')).toHaveCount(0);
