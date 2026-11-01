@@ -83,7 +83,7 @@ const SCREENS: { group: string; items: { label: string; path: string; as?: 'out'
       { label: 'Écran de démarrage', path: '/app/demarrer', as: 'out' },
       { label: 'Créer un compte', path: '/app/inscription', as: 'out' },
       { label: 'Se connecter', path: '/app/connexion', as: 'out' },
-      { label: 'Inscription : les 4 étapes', path: '/app/bienvenue', as: 'new' },
+      { label: 'Inscription : présentation et questions', path: '/app/bienvenue', as: 'new' },
     ],
   },
   {

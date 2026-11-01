@@ -8,6 +8,7 @@ import { Ransom } from '../../components/Ransom';
 import { AVAILABILITY_STEPS } from '../../components/Sections';
 import { FieldError, FormAlert, SelectField, SubmitButton, TextField } from '../components/Form';
 import { LoadError, Splash, usePageTitle } from '../components/Layouts';
+import { OnboardingIntro } from '../components/OnboardingIntro';
 import { LevelPill } from '../components/Ui';
 import { apiErrorMessage } from '../lib/api';
 import { useCompleteOnboarding, useProfile, useTiers } from '../lib/queries';
@@ -28,6 +29,8 @@ function OnboardingFlow({ initialFirstName, initialDepartment }: { initialFirstN
   const navigate = useNavigate();
   const tiers = useTiers();
   const complete = useCompleteOnboarding();
+  // D'abord la présentation de Stacker, puis les questions.
+  const [intro, setIntro] = useState(true);
   const [step, setStep] = useState(0);
   const [firstName, setFirstName] = useState(initialFirstName);
   const [department, setDepartment] = useState(initialDepartment);
@@ -73,6 +76,8 @@ function OnboardingFlow({ initialFirstName, initialDepartment }: { initialFirstN
     });
   }
 
+  if (intro) return <OnboardingIntro onDone={() => setIntro(false)} />;
+
   const titles = ['Comment veux-tu qu’on t’appelle ?', 'Où habites-tu ?', 'Quel est ton objectif ?', 'Tes niveaux et tes commissions'];
 
   return (
@@ -107,7 +112,7 @@ function OnboardingFlow({ initialFirstName, initialDepartment }: { initialFirstN
 
           {step === 0 ? (
             <>
-              <p className="lead mt-2">Ton compte est prêt. Encore trois questions, puis on t’explique comment fonctionnent tes commissions.</p>
+              <p className="lead mt-2">Ton compte est prêt. Trois questions rapides pour adapter l’app à toi.</p>
               <div className="mt-8">
                 <TextField label="Prénom" name="firstName" autoComplete="given-name" value={firstName} onChange={(e) => setFirstName(e.target.value)} error={error ?? undefined} maxLength={50} required />
               </div>

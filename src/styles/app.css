@@ -1066,3 +1066,71 @@
   .plan-perks .icon { color: var(--st-green); vertical-align: -2px; }
   .billing-change { display: grid; gap: var(--st-space-2); margin-top: var(--st-space-3); }
 }
+
+@layer components {
+  .intro { position: relative; display: flex; flex-direction: column; min-height: 100dvh; padding: 0 var(--st-gutter) calc(var(--st-space-5) + env(safe-area-inset-bottom)); background: radial-gradient(120% 60% at 100% 0%, #2a2a35 0%, #121216 55%); color: var(--st-on-dark); overflow: hidden; touch-action: pan-y; }
+  .intro-top { display: flex; align-items: center; justify-content: space-between; padding: calc(var(--st-space-4) + env(safe-area-inset-top)) 0 var(--st-space-2); }
+  .intro-skip { border: 0; background: rgba(255, 255, 255, .1); color: #fff; font: 600 14px/1 var(--st-font-text, sans-serif); padding: 10px 14px; border-radius: 999px; min-height: 40px; cursor: pointer; }
+  .intro-main { flex: 1; display: flex; flex-direction: column; gap: var(--st-space-4); max-width: 520px; width: 100%; margin: 0 auto; padding-top: var(--st-space-4); outline: none; }
+  .intro-kicker { margin: 0; font: 800 13px/1 var(--st-font-text, sans-serif); text-transform: uppercase; letter-spacing: .08em; color: var(--st-green); }
+  .intro-title { margin: 0; outline: none; }
+  .intro-title .ransom { max-width: 100%; flex-wrap: wrap; }
+  .intro-text { margin: 0; font-size: var(--st-text-md, 17px); line-height: 1.5; color: rgba(255, 255, 255, .86); }
+  .intro-visual { animation: intro-in .45s var(--st-ease-out, ease-out) both .15s; }
+  @keyframes intro-in { from { transform: translateY(14px); opacity: 0; } to { transform: none; opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .intro-visual { animation: none; } }
+
+  .intro-flow { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; position: relative; }
+  .intro-flow-step { display: flex; gap: 12px; align-items: center; padding: 12px 14px; border-radius: 18px; background: rgba(255, 255, 255, .07); }
+  .intro-flow-step b { display: block; color: #fff; font-size: 15px; }
+  .intro-flow-step span > span { display: block; color: rgba(255, 255, 255, .7); font-size: 13px; }
+  .intro-flow-icon { flex-shrink: 0; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; color: #121216; }
+  .intro-flow-icon.is-green { background: var(--st-green); }
+  .intro-flow-icon.is-violet { background: #8b8ef5; }
+  .intro-flow-icon.is-orange { background: var(--st-orange); }
+
+  .intro-phone { display: grid; gap: 8px; padding: 14px; border-radius: 24px; background: rgba(255, 255, 255, .07); }
+  .intro-phone-head { display: flex; gap: 10px; align-items: center; margin: 0 0 4px; }
+  .intro-phone-head b { display: block; font-size: 14px; color: #fff; }
+  .intro-phone-head span > span { display: block; font-size: 12px; color: rgba(255, 255, 255, .65); }
+  .intro-avatar { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--st-green); color: #121216; font-weight: 800; font-size: 13px; }
+  .intro-bubble { margin: 0; max-width: 85%; padding: 9px 12px; border-radius: 16px; font-size: 14px; line-height: 1.35; }
+  .intro-bubble.is-them { background: rgba(255, 255, 255, .12); color: #fff; border-bottom-left-radius: 4px; }
+  .intro-bubble.is-me { justify-self: end; background: var(--st-green); color: #121216; border-bottom-right-radius: 4px; }
+  .intro-score { justify-self: center; margin: 6px 0 0; padding: 6px 14px; border-radius: 999px; background: #fff; color: #121216; font-weight: 700; font-size: 14px; }
+  .intro-score .num { font-size: 20px; font-weight: 900; }
+
+  .intro-stack { display: grid; gap: 10px; }
+  .intro-card { display: flex; gap: 12px; align-items: center; margin: 0; padding: 12px 14px; border-radius: 18px; background: rgba(255, 255, 255, .07); }
+  .intro-card > .icon { flex-shrink: 0; width: 22px; height: 22px; color: var(--st-green); }
+  .intro-card > span:not(.intro-chip) { flex: 1; min-width: 0; }
+  .intro-card b { display: block; color: #fff; font-size: 15px; }
+  .intro-card span > span { display: block; color: rgba(255, 255, 255, .7); font-size: 13px; }
+  .intro-card.is-signed { background: rgba(61, 208, 104, .16); box-shadow: inset 0 0 0 1.5px var(--st-green); }
+  .intro-chip { flex-shrink: 0; padding: 5px 10px; border-radius: 999px; background: var(--st-green); color: #121216; font-size: 12px; font-weight: 800; }
+
+  .intro-money { display: grid; gap: 2px; margin: 0; padding: 16px; border-radius: 22px; background: #fff; color: #121216; }
+  .intro-money-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: #6b6b75; }
+  .intro-money-amount { font-size: 40px; font-weight: 900; line-height: 1.1; color: #1f9d4a; }
+  .intro-money > span:last-child { font-size: 13px; color: #55555f; }
+  .intro-levels { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .intro-levels li { padding: 8px 4px; border-radius: 12px; background: rgba(255, 255, 255, .07); text-align: center; font-size: 12px; color: rgba(255, 255, 255, .75); }
+  .intro-levels b { display: block; font-size: 16px; color: #fff; }
+  .intro-fine { margin: 0; font-size: 12px; color: rgba(255, 255, 255, .6); }
+
+  .intro-plans { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .intro-plans li { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 16px; border-radius: 18px; background: rgba(255, 255, 255, .07); }
+  .intro-plan-name { display: grid; gap: 6px; justify-items: start; min-width: 0; }
+  .intro-plan-price { flex-shrink: 0; white-space: nowrap; color: rgba(255, 255, 255, .7); font-size: 13px; }
+  .intro-plans b { color: #fff; font-size: 16px; }
+  .intro-plan-price b { font-size: 20px; font-weight: 900; }
+  .intro-plans li.is-best { background: rgba(61, 208, 104, .16); box-shadow: inset 0 0 0 1.5px var(--st-green); }
+
+  .intro-bottom { display: grid; gap: var(--st-space-4); max-width: 520px; width: 100%; margin: var(--st-space-5) auto 0; }
+  .intro-dots { list-style: none; margin: 0; padding: 0; display: flex; justify-content: center; gap: 6px; }
+  .intro-dots li { width: 8px; height: 8px; border-radius: 999px; background: rgba(255, 255, 255, .25); transition: width .25s, background-color .25s; }
+  .intro-dots li.is-on { width: 24px; background: var(--st-green); }
+  .intro-actions { display: flex; gap: 10px; }
+  .intro-next { flex: 1; }
+  .intro-back { color: #fff; }
+}

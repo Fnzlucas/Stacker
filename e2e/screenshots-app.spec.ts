@@ -58,6 +58,7 @@ test.describe('captures app', () => {
 
     const mail = supabase.fake.lastEmail('ines@exemple.fr', 'signup')!;
     await page.goto(`/app/auth/confirmer?token_hash=${mail.tokenHash}&type=email`);
+    await page.getByRole('region', { name: 'Comment fonctionne Stacker' }).getByRole('button', { name: 'Passer' }).click();
     await expect(page.getByRole('heading', { level: 1, name: 'Comment veux-tu qu’on t’appelle ?' })).toBeVisible();
     await shot(page, 'onboarding-1-prenom');
     await page.getByRole('button', { name: 'Continuer' }).click();

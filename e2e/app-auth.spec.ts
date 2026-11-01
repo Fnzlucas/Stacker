@@ -18,8 +18,23 @@ async function fillSignup(page: Page, opts: { email: string; firstName?: string;
   return form;
 }
 
-async function completeOnboarding(page: Page, opts: { firstName?: string } = {}) {
+async function completeOnboarding(page: Page, opts: { firstName?: string; watchIntro?: boolean } = {}) {
   await expect(page).toHaveURL(/\/app\/bienvenue$/);
+  // Présentation de Stacker (5 écrans), puis les questions.
+  const intro = page.getByRole('region', { name: 'Comment fonctionne Stacker' });
+  await expect(intro).toBeVisible();
+  if (opts.watchIntro) {
+    await expect(intro).toContainText('C’EST QUOI STACKER ?');
+    await expectAccessible(page, 'présentation');
+    for (const t of ['APPRENDS À CONVAINCRE', 'APPELLE POUR DE VRAI', 'ENCAISSE CHAQUE MOIS', 'CHOISIS TON RYTHME']) {
+      await intro.getByRole('button', { name: 'Suivant' }).click();
+      await expect(page.getByRole('heading', { level: 1 })).toContainText(t);
+    }
+    await expect(intro).toContainText('Academy + Pro');
+    await intro.getByRole('button', { name: 'C’est parti' }).click();
+  } else {
+    await intro.getByRole('button', { name: 'Passer' }).click();
+  }
   await expect(page.getByRole('heading', { level: 1, name: 'Comment veux-tu qu’on t’appelle ?' })).toBeVisible();
   if (opts.firstName !== undefined) await page.getByLabel('Prénom').fill(opts.firstName);
   await page.getByRole('button', { name: 'Continuer' }).click();
@@ -116,6 +131,18 @@ test.describe('inscription', () => {
     const mail = fake.lastEmail('ines@exemple.fr', 'signup')!;
     await page.goto(`/app/auth/confirmer?token_hash=${mail.tokenHash}&type=email`);
     await expect(page).toHaveURL(/\/app\/bienvenue$/);
+    // Présentation de Stacker d'abord (5 écrans), lisible et sans débordement.
+    const intro = page.getByRole('region', { name: 'Comment fonctionne Stacker' });
+    await expect(intro).toContainText('C’EST QUOI STACKER ?');
+    await expectAccessible(page, 'présentation');
+    await expectNoHorizontalOverflow(page, 'présentation');
+    for (const t of ['APPRENDS À CONVAINCRE', 'APPELLE POUR DE VRAI', 'ENCAISSE CHAQUE MOIS', 'CHOISIS TON RYTHME']) {
+      await intro.getByRole('button', { name: 'Suivant' }).click();
+      await expect(page.getByRole('heading', { level: 1 })).toContainText(t);
+      await expectNoHorizontalOverflow(page, t);
+    }
+    await expect(intro).toContainText('Academy + Pro');
+    await intro.getByRole('button', { name: 'C’est parti' }).click();
     await expectAccessible(page, 'onboarding étape 1');
     await expectNoHorizontalOverflow(page, 'onboarding');
 
