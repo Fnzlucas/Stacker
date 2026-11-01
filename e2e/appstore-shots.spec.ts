@@ -4,7 +4,7 @@
  *   APPSTORE=1 pnpm exec playwright test e2e/appstore-shots.spec.ts --project=mobile-390
  * 1. écrans de l'app en mode « application iPhone » (aucun prix ni paiement),
  *    avec des données de DÉMONSTRATION du faux Supabase des tests ;
- * 2. mise en page App Store : une phrase en haut, l'écran dans un cadre.
+ * 2. mise en page App Store : fond clair de l'app, une phrase en haut, l'écran dessous.
  * Résultat dans qa/appstore/. Aucune promesse de gains dans les textes.
  */
 import { mkdirSync, readFileSync } from 'node:fs';
@@ -149,13 +149,13 @@ test('captures App Store', async ({ browser, supabase }) => {
     await frame.setContent(`<!doctype html><html><head><style>
       @font-face { font-family: Inter; src: local('Inter'), local('Helvetica Neue'), local('Arial'); }
       html, body { margin: 0; width: 1320px; height: 2868px; overflow: hidden; }
-      body { background: linear-gradient(180deg, #1d1d22 0%, #0d0d10 100%); font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif; color: #fff; }
+      body { background: #ececf0; font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif; color: #121216; }
       .top { padding: 150px 110px 0; }
       .bar { width: 120px; height: 22px; border-radius: 11px; background: ${f.tone}; margin-bottom: 54px; }
       h1 { font-size: 108px; line-height: 1.04; letter-spacing: -2px; margin: 0 0 34px; font-weight: 900; }
-      p { font-size: 50px; line-height: 1.3; margin: 0; color: #b8b8c4; font-weight: 500; }
-      .phone { position: absolute; left: 50%; top: 830px; width: 1020px; height: 2216px; transform: translateX(-50%); border-radius: 128px; background: #000; padding: 26px; box-sizing: border-box; box-shadow: 0 60px 160px rgba(0,0,0,.55), 0 0 0 6px #2c2c33; }
-      .phone img { width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 104px; display: block; }
+      p { font-size: 50px; line-height: 1.3; margin: 0; color: #55555f; font-weight: 500; }
+      .phone { position: absolute; left: 50%; top: 830px; width: 1000px; height: 2172px; transform: translateX(-50%); }
+      .phone img { width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 84px; display: block; box-shadow: 0 40px 120px rgba(18,18,22,.18), 0 0 0 2px rgba(18,18,22,.06); }
     </style></head><body>
       <div class="top"><div class="bar"></div><h1>${f.title}</h1><p>${f.sub}</p></div>
       <div class="phone"><img src="${img}" alt=""></div>
