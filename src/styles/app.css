@@ -1008,6 +1008,12 @@
 
 
 /* Démo navigateur (src/demo) : bandeau discret. */
+.demo-menu-btn { position: fixed; z-index: 1001; right: 12px; top: calc(env(safe-area-inset-top, 0px) + 8px); padding: 8px 12px; border: 0; border-radius: 999px; background: #121216; color: #fff; font: 700 13px/1 var(--st-font-text, sans-serif); box-shadow: 0 6px 20px rgba(0,0,0,.25); cursor: pointer; }
+.demo-menu { position: fixed; z-index: 1001; right: 12px; top: calc(env(safe-area-inset-top, 0px) + 50px); width: min(280px, calc(100vw - 24px)); max-height: calc(100vh - 80px); overflow: auto; padding: 8px; border-radius: 18px; background: #fff; box-shadow: 0 20px 60px rgba(0,0,0,.25); display: grid; gap: 2px; }
+.demo-menu[hidden] { display: none; }
+.demo-menu-group { margin: 8px 8px 2px; font: 700 11px/1.2 var(--st-font-text, sans-serif); text-transform: uppercase; letter-spacing: .06em; color: #6b6b75; }
+.demo-menu button { text-align: left; padding: 10px; border: 0; border-radius: 10px; background: transparent; font: 600 14px/1.2 var(--st-font-text, sans-serif); color: #121216; cursor: pointer; }
+.demo-menu button:hover { background: #f0f0f4; }
 .demo-ribbon { position: fixed; z-index: 1000; top: calc(env(safe-area-inset-top, 0px) + 6px); left: 50%; transform: translateX(-50%); padding: 3px 10px; border-radius: 999px; background: #f7a21b; color: #1c1c1e; font: 600 11px/1.4 var(--st-font-text, sans-serif); pointer-events: none; }
 
 @layer components {

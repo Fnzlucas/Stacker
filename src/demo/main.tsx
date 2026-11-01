@@ -16,6 +16,7 @@ import { getBackend } from '../app/lib/supabase';
 const DEMO_URL = 'https://demo.supabase.co';
 const EMAIL = 'ines@demo.stacker';
 const PASSWORD = 'Demo-Stacker-2026';
+const NEW_EMAIL = 'nouveau@demo.stacker';
 
 function seed(fake: FakeSupabase): void {
   const user = fake.seedUser({ email: EMAIL, password: PASSWORD, firstName: 'Inès', onboarded: true, activeClients: 2, profile: { last_name: 'Martin', phone: '+33611223344', department: '30' } });
@@ -66,6 +67,83 @@ function seed(fake: FakeSupabase): void {
     if (i < 2) fake.deals.recordPayment(id, '2026-10-01', offer.price_cents, i === 0 ? -1 : 9);
   });
   fake.deals.accounts.set(user.id, { holder: 'Inès Martin', iban_last4: '7034', iban: 'BE68539007547034' });
+  // Une campagne en cours, une boîte connectée, les règles acceptées.
+  fake.prospects.rules.set(user.id, '2026-10-09');
+  fake.prospects.mailboxes.set(user.id, { provider: 'gmail', email: 'ines.martin@gmail.com', status: 'active' });
+  fake.prospects.campaigns.set(user.id, { id: '00000000-0000-4000-8000-0000000000aa', department: '30', preset: 'batiment', daily_target: 50, template_key: 'decouverte', status: 'active', created_at: new Date(now - 6 * day).toISOString(), sent_today: 9, sent_total: 74 });
+  // Un compte tout neuf, pour voir l'inscription (onboarding).
+  fake.seedUser({ email: NEW_EMAIL, password: PASSWORD, firstName: 'Léa', onboarded: false });
+}
+
+/** Menu de la démo : tous les écrans, connecté ou non. */
+const SCREENS: { group: string; items: { label: string; path: string; as?: 'out' | 'new' | 'ines' }[] }[] = [
+  {
+    group: 'Avant connexion',
+    items: [
+      { label: 'Écran de démarrage', path: '/app/demarrer', as: 'out' },
+      { label: 'Créer un compte', path: '/app/inscription', as: 'out' },
+      { label: 'Se connecter', path: '/app/connexion', as: 'out' },
+      { label: 'Inscription : les 4 étapes', path: '/app/bienvenue', as: 'new' },
+    ],
+  },
+  {
+    group: 'Academy',
+    items: [
+      { label: 'Academy', path: '/app/academy' },
+      { label: 'Appel d’entraînement', path: '/app/entrainement' },
+      { label: 'Formation', path: '/app/formation' },
+    ],
+  },
+  {
+    group: 'Pro',
+    items: [
+      { label: 'Accueil', path: '/app' },
+      { label: 'Prospects et campagne', path: '/app/prospects' },
+      { label: 'Fiche d’un prospect', path: '/app/prospects/00000000-0000-4000-8000-0000000001a0' },
+      { label: 'Deals', path: '/app/deals' },
+      { label: 'Faire signer un client', path: '/app/deals/nouveau' },
+      { label: 'Gains', path: '/app/gains' },
+    ],
+  },
+  {
+    group: 'Compte',
+    items: [
+      { label: 'Formules et abonnement', path: '/app/abonnement' },
+      { label: 'Profil', path: '/app/profil' },
+      { label: 'Espace admin', path: '/app/admin' },
+    ],
+  },
+];
+
+function installScreensMenu(go: (path: string, as: 'out' | 'new' | 'ines') => Promise<void>): void {
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'demo-menu-btn';
+  button.textContent = '☰ Écrans';
+  const panel = document.createElement('nav');
+  panel.className = 'demo-menu';
+  panel.setAttribute('aria-label', 'Écrans de la démo');
+  panel.hidden = true;
+  for (const g of SCREENS) {
+    const h = document.createElement('p');
+    h.className = 'demo-menu-group';
+    h.textContent = g.group;
+    panel.append(h);
+    for (const item of g.items) {
+      const a = document.createElement('button');
+      a.type = 'button';
+      a.textContent = item.label;
+      a.addEventListener('click', () => {
+        panel.hidden = true;
+        void go(item.path, item.as ?? 'ines');
+      });
+      panel.append(a);
+    }
+  }
+  button.addEventListener('click', () => {
+    panel.hidden = !panel.hidden;
+  });
+  document.body.append(panel, button);
 }
 
 function headerRecord(h: HeadersInit | undefined): Record<string, string> {
@@ -125,7 +203,19 @@ async function start(): Promise<void> {
   ribbon.className = 'demo-ribbon';
   ribbon.textContent = 'Démo · données fictives';
   document.body.append(ribbon);
-  const router = createMemoryRouter(routes, { initialEntries: ['/app'] });
+  const router = createMemoryRouter(routes, { initialEntries: ['/app/academy'] });
+  let who: 'out' | 'new' | 'ines' = 'ines';
+  installScreensMenu(async (path, as) => {
+    if (backend && as !== who) {
+      await backend.auth.signOut();
+      if (as !== 'out') await backend.auth.signInWithPassword({ email: as === 'new' ? NEW_EMAIL : EMAIL, password: PASSWORD });
+      who = as;
+      // Laisse l'app prendre en compte la (dé)connexion avant d'ouvrir l'écran.
+      await new Promise((r) => setTimeout(r, 700));
+    }
+    await router.navigate(path);
+    window.scrollTo(0, 0);
+  });
   const root = document.getElementById('root');
   if (root)
     createRoot(root).render(
