@@ -68,7 +68,7 @@ Connecte le dépôt GitHub `Fnzlucas/Stacker` sur codemagic.io, ajoute l'intégr
 ## 4. La fiche App Store Connect
 
 **Nom** : Stacker
-**Sous-titre** (30 caractères max) : `Apporteur d'affaires mobile`
+**Sous-titre** (30 caractères max) : `Entraîne-toi. Puis appelle.`
 **Catégorie** : Business (secondaire : Productivité)
 **Âge** : réponds « aucun » à chaque question du questionnaire (classement 4+) ; l’inscription reste réservée aux majeurs dans l’app.
 **URL de confidentialité** : `https://stacker-topaz.vercel.app/confidentialite`
@@ -77,18 +77,22 @@ Connecte le dépôt GitHub `Fnzlucas/Stacker` sur codemagic.io, ajoute l'intégr
 
 **Description** :
 
-> Stacker est l'outil des apporteurs d'affaires indépendants : tu trouves des entreprises près de chez toi, tu leur présentes des services utiles (site web, avis Google, visibilité locale, réseaux sociaux) et tu suis tes clients jusqu'à la signature.
+> Apprends à convaincre, gratuitement, puis passe aux vrais appels.
 >
-> • Recherche d'entreprises par département et par secteur, à partir du registre officiel SIRENE.
+> STACKER ACADEMY (gratuit)
+> • Appels d'entraînement : un commerçant joué par une IA décroche, hésite, objecte… et peut raccrocher. Tu parles comme au téléphone.
+> • Ta note sur 100 et des conseils précis : présentation, accroche, questions, offre, conclusion.
+> • Une formation complète en 13 modules : cibler, appeler, répondre aux objections, obtenir le oui.
+>
+> STACKER, POUR LES VRAIS APPELS
+> • Recherche d'entreprises par département et par secteur (registre officiel SIRENE).
 > • Campagnes d'emails envoyées depuis ta propre boîte Gmail ou Outlook, au bon rythme, avec lien de désinscription.
-> • Entraînement à l'appel : un commerçant joué par une IA décroche, objecte, peut raccrocher. À la fin, ta note sur 100 et des conseils précis.
-> • Formation complète : scripts d'appel, objections, conclusion.
 > • Signature du contrat client sur ton téléphone.
-> • Suivi de tes commissions, client par client, et notifications quand elles sont débloquées.
+> • Suivi de tes commissions client par client, notifications quand elles sont débloquées.
 >
-> Les commissions dépendent uniquement des clients que tu signes et qui paient : aucun revenu n'est garanti. Réservé aux personnes majeures.
+> Les commissions dépendent uniquement des clients que tu apportes et qui paient : aucun revenu n'est garanti. Réservé aux personnes majeures.
 
-**Mots-clés** (100 caractères max) : `apporteur,affaires,prospection,commission,vente,freelance,commercial,indépendant,clients,B2B`
+**Mots-clés** (100 caractères max) : `academy,vente,entraînement,IA,appel,apporteur,affaires,commission,prospection,commercial`
 
 **Captures d'écran** (iPhone 6,9 pouces, 1320 × 2868) : `qa/appstore/1-prospects.png` à `5-gains.png`. Pour les régénérer :
 

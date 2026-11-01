@@ -34,9 +34,9 @@ export function AccueilPage(): ReactElement {
   return (
     <div className="app-container home">
       <header className="home-header">
-        <span className="avatar avatar-dark avatar-round home-avatar" aria-hidden="true">
+        <Link className="avatar avatar-dark avatar-round home-avatar" to={PATHS.profile} aria-label="Mon profil">
           {initials(p.first_name, p.last_name)}
-        </span>
+        </Link>
         <div className="min-w-0 flex-1">
           <p className="eyebrow">{todayLabel(new Date())}</p>
           <PageHeading className="home-title">Bonjour {p.first_name ?? ''}</PageHeading>

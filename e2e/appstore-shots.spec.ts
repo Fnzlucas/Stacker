@@ -20,6 +20,7 @@ const H = 956;
 const SCALE = 3;
 
 const FRAMES: { file: string; title: string; sub: string; tone: string }[] = [
+  { file: 'academy', title: 'Stacker Academy, gratuite', sub: 'Apprends à convaincre avant tes vrais appels', tone: '#f5a31e' },
   { file: 'prospects', title: 'Trouve des entreprises près de chez toi', sub: 'Par département et par secteur, avec leurs coordonnées', tone: '#3dd068' },
   { file: 'campagne', title: 'Tes emails partent tout seuls', sub: 'Depuis ta boîte, au bon rythme, en semaine', tone: '#7b7ef0' },
   { file: 'entrainement', title: 'Entraîne-toi face à l’IA', sub: 'Un commerçant décroche, objecte… et peut raccrocher', tone: '#f5a31e' },
@@ -134,6 +135,13 @@ test('captures App Store', async ({ browser, supabase }) => {
   await expect(page.getByRole('heading', { name: '80/100' })).toBeVisible();
   await page.waitForTimeout(1800);
   await shot('bilan');
+
+  // Academy, après un appel réussi (note et « passe aux vrais appels »).
+  await page.goto('/app/academy');
+  await expect(page.getByRole('heading', { level: 1, name: /Stacker Academy/ })).toBeVisible();
+  await expect(page.locator('.academy-stats')).toContainText('80/100');
+  await page.waitForTimeout(1200);
+  await shot('academy');
 
   // Gains.
   await page.goto('/app/gains');

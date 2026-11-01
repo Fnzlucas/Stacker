@@ -8,19 +8,26 @@ import { useProfile } from '../lib/queries';
 import { PATHS } from '../paths';
 import { LoadError, Splash } from './Layouts';
 
-const TABS: { to: string; label: string; icon: IconName; end?: boolean }[] = [
+/** Le profil s'ouvre depuis l'avatar de l'accueil. L'onglet Academy couvre aussi l'entraînement et la formation. */
+const TABS: { to: string; label: string; icon: IconName; end?: boolean; also?: string[] }[] = [
   { to: PATHS.home, label: 'Accueil', icon: 'home', end: true },
+  { to: PATHS.academy, label: 'Academy', icon: 'graduation', also: [PATHS.training, PATHS.formation] },
   { to: PATHS.prospects, label: 'Prospects', icon: 'users' },
   { to: PATHS.deals, label: 'Deals', icon: 'briefcase' },
   { to: PATHS.gains, label: 'Gains', icon: 'wallet' },
-  { to: PATHS.profile, label: 'Profil', icon: 'user' },
 ];
 
 export function TabBar(): ReactElement {
+  const { pathname } = useLocation();
   return (
     <nav className="tabbar app-tabbar" aria-label="Navigation de l’application">
       {TABS.map((tab) => (
-        <NavLink key={tab.to} to={tab.to} end={tab.end ?? false} className="tabbar-item">
+        <NavLink
+          key={tab.to}
+          to={tab.to}
+          end={tab.end ?? false}
+          className={({ isActive }) => (isActive || tab.also?.some((p) => pathname.startsWith(p)) ? 'tabbar-item is-active' : 'tabbar-item')}
+        >
           <span className="tabbar-icon">
             <Icon name={tab.icon} />
           </span>

@@ -107,7 +107,7 @@ test.describe('captures app', () => {
       await expect(page.getByRole('heading', { level: 1, name: tab })).toBeVisible();
       await shot(page, `${p}${name}`, isMobile);
     }
-    await page.getByRole('link', { name: 'Profil' }).click();
+    await page.goto('/app/profil');
     await expect(page.getByRole('heading', { level: 1, name: 'Profil' })).toBeVisible();
     await shot(page, `${p}profil`, isMobile);
     if (!isMobile) return;

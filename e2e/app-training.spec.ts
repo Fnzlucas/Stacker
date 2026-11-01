@@ -129,4 +129,27 @@ test.describe('entraînement', () => {
     await expect(page.getByText(/0 simulations restantes aujourd’hui/)).toBeVisible();
     await expect(page.getByRole('button', { name: 'Appeler Sophie' })).toBeDisabled();
   });
+
+  test('Academy : onglet, statistiques, accès à l’entraînement, « passe aux vrais appels » une fois prêt', async ({ page, supabase }) => {
+    const user = await login(page, supabase.fake);
+    const nav = page.getByRole('navigation', { name: 'Navigation de l’application' });
+    await nav.getByRole('link', { name: 'Academy' }).click();
+    await expect(page.getByRole('heading', { level: 1, name: /Stacker Academy/ })).toBeVisible();
+    await expect(page.locator('.academy-stats')).toContainText('Appels0');
+    await expect(page.getByRole('link', { name: /Tu es prêt : passe aux vrais appels/ })).toHaveCount(0);
+    await expectAccessible(page, 'academy');
+    await expectNoHorizontalOverflow(page, 'academy');
+
+    await page.getByRole('link', { name: /Appel d’entraînement/ }).click();
+    await expect(page.getByRole('heading', { level: 1, name: 'Entraînement' })).toBeVisible();
+    await expect(nav.getByRole('link', { name: 'Academy' })).toHaveClass(/is-active/);
+
+    // Un appel réussi (simulé) : l'Academy propose de passer au vrai.
+    supabase.fake.roleplay.consents.add(user.id);
+    supabase.fake.roleplay.sessions.push({ id: '00000000-0000-4000-8000-0000000004a1', stacker: user.id, scenario: 'boulangerie', status: 'terminee', turns: [], score: 82, passed: true, feedback: null, started_at: new Date().toISOString() });
+    await page.goto('/app/academy');
+    await expect(page.locator('.academy-stats')).toContainText('82/100');
+    await page.getByRole('link', { name: /Tu es prêt : passe aux vrais appels/ }).click();
+    await expect(page.getByRole('heading', { level: 1, name: 'Prospects' })).toBeVisible();
+  });
 });

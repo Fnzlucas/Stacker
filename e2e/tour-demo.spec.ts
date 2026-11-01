@@ -138,7 +138,6 @@ test('visite de l’app', async ({ browser, supabase }) => {
   for (const [tab, name] of [
     ['Deals', 'deals'],
     ['Gains', 'gains'],
-    ['Profil', 'profil'],
   ] as const) {
     await nav().getByRole('link', { name: tab }).click();
     await expect(page.getByRole('heading', { level: 1, name: tab })).toBeVisible();

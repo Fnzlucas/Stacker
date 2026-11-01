@@ -63,7 +63,7 @@ test.describe('navigation', () => {
   test('barre basse : 5 onglets, onglet courant signalé, écrans sans faux chiffres', async ({ page, supabase }) => {
     await login(page, supabase.fake);
     const nav = page.getByRole('navigation', { name: 'Navigation de l’application' });
-    await expect(nav.getByRole('link')).toHaveText(['Accueil', 'Prospects', 'Deals', 'Gains', 'Profil']);
+    await expect(nav.getByRole('link')).toHaveText(['Accueil', 'Academy', 'Prospects', 'Deals', 'Gains']);
     await expect(nav.getByRole('link', { name: 'Accueil' })).toHaveAttribute('aria-current', 'page');
 
     await nav.getByRole('link', { name: 'Prospects' }).click();
@@ -94,7 +94,9 @@ test.describe('navigation', () => {
     await expectAccessible(page, 'gains');
     await expectNoHorizontalOverflow(page, 'gains');
 
-    await nav.getByRole('link', { name: 'Profil' }).click();
+    // Le profil s'ouvre depuis l'avatar de l'accueil.
+    await nav.getByRole('link', { name: 'Accueil' }).click();
+    await page.getByRole('link', { name: 'Mon profil' }).click();
     await expect(page.getByRole('heading', { level: 1, name: 'Profil' })).toBeVisible();
   });
 

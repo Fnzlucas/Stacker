@@ -12,6 +12,7 @@ export function LandingPage(): ReactElement {
     <PageShell current="home" ctaHref="#rejoindre">
       <Hero />
       <HowItWorks />
+      <Academy />
       <Services />
       <Commissions />
       <Subscription />
@@ -73,6 +74,12 @@ function Hero(): ReactElement {
             Stacker propose aux entreprises des services qu’il réalise lui-même : site web, avis Google, posts Instagram, visibilité Google. L’app
             trouve les entreprises, tu les appelles et tu obtiens leur accord. Elles signent ensuite directement avec Stacker, et tu touches une
             commission chaque mois tant que ton client reste abonné.
+          </p>
+          <p className="mt-4 max-w-xl">
+            <span className="chip chip-green">
+              <Icon name="graduation" />
+              Nouveau : Stacker Academy, entraîne-toi gratuitement face à une IA
+            </span>
           </p>
           <div className="mt-8 flex flex-col gap-3 md:flex-row">
             <a className="btn btn-primary btn-lg" href="#rejoindre">
@@ -172,6 +179,48 @@ const STEPS: { icon: IconName; title: string; text: string; tone: string; sticke
     sticker: 'sticker sticker-orange',
   },
 ];
+
+function Academy(): ReactElement {
+  return (
+    <section className="site-section" id="academy" aria-labelledby="academy-title">
+      <div className="site-container">
+        <SectionHeading
+          id="academy-title"
+          eyebrow="Stacker Academy"
+          title={
+            <>
+              Jamais vendu de ta vie ? <span className="serif-accent">Entraîne-toi d’abord.</span>
+            </>
+          }
+          lead="Dans l’app, un commerçant joué par une IA décroche, hésite, objecte… et peut raccrocher. Tu parles comme au téléphone, et tu reçois une note sur 100 avec des conseils précis. C’est gratuit, et ça reste ouvert : entraîne-toi avant chaque vrai appel."
+        />
+        <ul className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
+          <li className="card" data-reveal>
+            <span className="step-icon bg-green-50 text-green-ink">
+              <Icon name="mic" />
+            </span>
+            <h3 className="h3 mt-5">Des appels d’entraînement</h3>
+            <p className="text-2 mt-2">Six commerçants, du plus facile au plus coriace : boulangerie, garage, hôtel…</p>
+          </li>
+          <li className="card" data-reveal>
+            <span className="step-icon bg-violet-50 text-violet-ink">
+              <Icon name="target" />
+            </span>
+            <h3 className="h3 mt-5">Une note et des conseils</h3>
+            <p className="text-2 mt-2">Présentation, accroche, questions, offre, conclusion : tu sais exactement quoi améliorer.</p>
+          </li>
+          <li className="card" data-reveal>
+            <span className="step-icon bg-orange-50 text-orange-ink">
+              <Icon name="graduation" />
+            </span>
+            <h3 className="h3 mt-5">Une formation complète</h3>
+            <p className="text-2 mt-2">13 modules : cibler, appeler, répondre aux objections, obtenir le oui.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+  );
+}
 
 function HowItWorks(): ReactElement {
   return (

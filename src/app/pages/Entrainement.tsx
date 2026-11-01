@@ -599,8 +599,8 @@ function ResultView({ scenario, result, onRetry, onChoose }: { scenario: Rolepla
           Choisir un autre commerçant
         </button>
         {result.passed ? (
-          <Link className="btn btn-ghost" to={PATHS.prospects}>
-            Passer à mes vrais prospects
+          <Link className="btn btn-primary btn-lg" to={PATHS.prospects}>
+            <Icon name="target" /> Tu es prêt : passe aux vrais appels
           </Link>
         ) : null}
       </div>
