@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import {
   AiError,
+  createAi,
   createAnthropic,
+  createMistral,
   evaluatorSystem,
   GRAVE_CAP,
   parseEvaluation,
@@ -161,5 +163,47 @@ describe('client Anthropic', () => {
     await expect(run(async () => json(529, {}))).rejects.toMatchObject({ status: 529 });
     await expect(run(async () => new Response('pas du json', { status: 200 }))).rejects.toBeInstanceOf(AiError);
     await expect(run(async () => json(200, { content: [], usage: { input_tokens: 1, output_tokens: 0 } }))).rejects.toMatchObject({ message: 'réponse vide' });
+  });
+});
+
+describe('client Mistral', () => {
+  it('requête Chat Completions : prompt système en premier message, clé en Bearer', async () => {
+    const calls: { url: string; init?: RequestInit }[] = [];
+    const ai = createMistral(
+      async (url, init) => {
+        calls.push({ url, init });
+        return json(200, { choices: [{ message: { role: 'assistant', content: ' Oui ? ' } }], usage: { prompt_tokens: 110, completion_tokens: 6 } });
+      },
+      'mistral-test-key-0123456789',
+      'mistral-small-latest',
+    );
+    const out = await ai.complete({ system: 'sys', messages: [{ role: 'user', content: 'Bonjour' }], maxTokens: 300, temperature: 0.8 });
+    expect(out).toEqual({ text: 'Oui ?', tokensIn: 110, tokensOut: 6 });
+    expect(calls[0]?.url).toBe('https://api.mistral.ai/v1/chat/completions');
+    expect(new Headers(calls[0]?.init?.headers).get('authorization')).toBe('Bearer mistral-test-key-0123456789');
+    expect(JSON.parse(calls[0]?.init?.body as string)).toMatchObject({
+      model: 'mistral-small-latest',
+      max_tokens: 300,
+      messages: [{ role: 'system', content: 'sys' }, { role: 'user', content: 'Bonjour' }],
+    });
+  });
+
+  it('contenu en morceaux, erreurs, choix du fournisseur', async () => {
+    const run = (fetchFn: () => Promise<Response>) =>
+      createMistral(fetchFn, 'mistral-test-key-0123456789', 'm').complete({ system: '', messages: [], maxTokens: 1, temperature: 0 });
+    expect(
+      await run(async () => json(200, { choices: [{ message: { content: [{ type: 'text', text: 'Al' }, { type: 'text', text: 'lô' }] } }], usage: { prompt_tokens: 1, completion_tokens: 1 } })),
+    ).toMatchObject({ text: 'Allô' });
+    await expect(run(() => Promise.reject(new Error('x')))).rejects.toMatchObject({ status: 0 });
+    await expect(run(async () => json(429, {}))).rejects.toMatchObject({ status: 429 });
+    await expect(run(async () => json(200, { choices: [{ message: { content: null } }], usage: { prompt_tokens: 1, completion_tokens: 0 } }))).rejects.toMatchObject({ message: 'réponse vide' });
+    const urls: string[] = [];
+    const spy = async (url: string) => {
+      urls.push(url);
+      return json(500, {});
+    };
+    await createAi(spy, 'mistral', 'k', 'm').complete({ system: '', messages: [], maxTokens: 1, temperature: 0 }).catch(() => undefined);
+    await createAi(spy, 'anthropic', 'k', 'm').complete({ system: '', messages: [], maxTokens: 1, temperature: 0 }).catch(() => undefined);
+    expect(urls).toEqual(['https://api.mistral.ai/v1/chat/completions', 'https://api.anthropic.com/v1/messages']);
   });
 });

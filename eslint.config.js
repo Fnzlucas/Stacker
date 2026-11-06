@@ -73,8 +73,9 @@ export default tseslint.config(
   },
   {
     // Point d'entrée Deno : typé par `deno check` (script typecheck), hors projet TypeScript Node.
-    files: ['supabase/functions/*/index.ts'],
+    files: ['supabase/functions/*/index.ts', 'scripts/*.ts'],
     extends: [tseslint.configs.disableTypeChecked],
+    languageOptions: { globals: { Deno: 'readonly' } },
   },
   {
     files: ['**/*.test.{ts,tsx}', 'e2e/**/*.ts'],

@@ -60,7 +60,18 @@ Neuf offres sur mesure payées en une fois sont actives en tête du catalogue : 
 | `MOLLIE_API_KEY` | `test_…` pour les essais, `live_…` le jour J |
 | `ANTHROPIC_API_KEY` | l'IA de l'entraînement à l'appel (console.anthropic.com → API Keys) |
 | `APNS_KEY_ID`, `APNS_TEAM_ID`, `APNS_PRIVATE_KEY`, `APNS_BUNDLE_ID` | notifications de l'app iPhone (voir `APP_STORE.md`) ; sans elles, rien n'est envoyé et rien ne casse |
-| `ROLEPLAY_MODEL` | facultatif : modèle utilisé (par défaut `claude-haiku-5-5`, rapide et économique) |
+| `ROLEPLAY_PROVIDER` | facultatif : `anthropic` (défaut) ou `mistral` |
+| `MISTRAL_API_KEY` | seulement si `ROLEPLAY_PROVIDER=mistral` (console.mistral.ai → API Keys) |
+| `ROLEPLAY_MODEL` | facultatif : modèle utilisé (par défaut `claude-haiku-5-5` chez Anthropic, `mistral-small-latest` chez Mistral) |
+
+**Claude ou Mistral ?** Compare-les avant de choisir, sur ta machine, avec les deux clés (elles ne quittent pas ton ordinateur) :
+
+```bash
+ANTHROPIC_API_KEY=… MISTRAL_API_KEY=… pnpm compare-ia
+# autre commerçant : SCENARIO=garage ; modèle Mistral plus fort : MISTRAL_MODEL=mistral-medium-latest
+```
+
+Le script joue un bon et un mauvais appel avec chaque IA : répliques du commerçant, temps de réponse, note et bilan. **Si tu passes à Mistral**, change aussi trois textes qui nomment Anthropic : l'accord dans l'app (`src/app/pages/Entrainement.tsx`), la politique de confidentialité (sous-traitant Mistral AI, Paris : plus de transfert hors UE pour l'IA) et la note au testeur Apple (`qa/APP_STORE.md`).
 
 - [ ] Déployer toutes les fonctions :
 

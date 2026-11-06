@@ -1,6 +1,7 @@
 /**
  * L'IA de l'entraînement : elle joue le commerçant, puis rédige le bilan.
- * Appels à l'API Messages d'Anthropic, côté serveur uniquement.
+ * Deux fournisseurs au choix (ROLEPLAY_PROVIDER) : Anthropic (Claude) ou
+ * Mistral AI. Appels côté serveur uniquement.
  *
  * Garde-fous : la conversation du stacker est traitée comme une donnée (le
  * stacker ne peut pas « donner des ordres » à l'IA), les réponses sont
@@ -67,6 +68,46 @@ export function createAnthropic(fetchFn: FetchLike, apiKey: string, model: strin
       return { text, tokensIn: parsed.data.usage.input_tokens, tokensOut: parsed.data.usage.output_tokens };
     },
   };
+}
+
+const mistralSchema = z
+  .object({
+    choices: z.array(z.object({ message: z.object({ content: z.union([z.string(), z.array(z.object({ type: z.string(), text: z.string().optional() }).loose()), z.null()]) }).loose() }).loose()).min(1),
+    usage: z.object({ prompt_tokens: z.number().int().nonnegative(), completion_tokens: z.number().int().nonnegative() }).loose(),
+  })
+  .loose();
+
+/** Mistral AI (API Chat Completions) : même contrat que createAnthropic. */
+export function createMistral(fetchFn: FetchLike, apiKey: string, model: string, base = 'https://api.mistral.ai'): AiClient {
+  return {
+    async complete({ system, messages, maxTokens, temperature }) {
+      let res: Response;
+      try {
+        res = await fetchFn(`${base}/v1/chat/completions`, {
+          method: 'POST',
+          headers: { authorization: `Bearer ${apiKey}`, 'content-type': 'application/json' },
+          body: JSON.stringify({ model, max_tokens: maxTokens, temperature, messages: [{ role: 'system', content: system }, ...messages] }),
+          signal: AbortSignal.timeout(25000),
+        });
+      } catch {
+        throw new AiError(0, 'réseau');
+      }
+      if (!res.ok) throw new AiError(res.status, `http ${String(res.status)}`);
+      const parsed = mistralSchema.safeParse(await res.json().catch(() => null));
+      if (!parsed.success) throw new AiError(502, 'réponse illisible');
+      const content = parsed.data.choices[0]?.message.content ?? null;
+      const text = (typeof content === 'string' ? content : (content ?? []).filter((c) => c.type === 'text').map((c) => c.text ?? '').join('')).trim();
+      if (!text) throw new AiError(502, 'réponse vide');
+      return { text, tokensIn: parsed.data.usage.prompt_tokens, tokensOut: parsed.data.usage.completion_tokens };
+    },
+  };
+}
+
+export type AiProvider = 'anthropic' | 'mistral';
+
+/** Client du fournisseur choisi. */
+export function createAi(fetchFn: FetchLike, provider: AiProvider, apiKey: string, model: string): AiClient {
+  return provider === 'mistral' ? createMistral(fetchFn, apiKey, model) : createAnthropic(fetchFn, apiKey, model);
 }
 
 // -----------------------------------------------------------------------------

@@ -79,8 +79,8 @@ function setup(scenario: Scenario = {}, env: Record<string, string | undefined> 
     }
     return json(404, {});
   };
-  const ai = (_key: string, model: string): AiClient => {
-    models.push(model);
+  const ai = (provider: string, _key: string, model: string): AiClient => {
+    models.push(provider === 'anthropic' ? model : `${provider}:${model}`);
     return {
       complete: async (input) => {
         aiCalls.push(input);
@@ -111,6 +111,11 @@ describe('configuration', () => {
     const custom = loadConfig({ ...ENV, ROLEPLAY_MODEL: ' claude-sonnet-5-5 ' });
     expect(custom.ok && custom.config.model).toBe('claude-sonnet-5-5');
     expect(loadConfig({ ...ENV, ANTHROPIC_API_KEY: undefined })).toEqual({ ok: false, missing: ['ANTHROPIC_API_KEY'] });
+    // Mistral : sa propre clé et son modèle par défaut.
+    expect(loadConfig({ ...ENV, ROLEPLAY_PROVIDER: 'mistral' })).toEqual({ ok: false, missing: ['MISTRAL_API_KEY'] });
+    const mistral = loadConfig({ ...ENV, ROLEPLAY_PROVIDER: ' mistral ', MISTRAL_API_KEY: 'mistral-test-key-0123456789' });
+    expect(mistral.ok && [mistral.config.provider, mistral.config.apiKey, mistral.config.model]).toEqual(['mistral', 'mistral-test-key-0123456789', 'mistral-small-latest']);
+    expect(loadConfig({ ...ENV, ROLEPLAY_PROVIDER: 'openai' }).ok).toBe(false);
     expect(loadConfig({ ...ENV, ALLOWED_ORIGINS: 'pas-une-origine' }).ok).toBe(false);
   });
 

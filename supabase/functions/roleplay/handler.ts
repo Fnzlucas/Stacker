@@ -26,13 +26,13 @@ import {
   type Evaluation,
   type Turn,
 } from './ai.ts';
-import type { ConfigResult } from './config.ts';
+import type { ConfigResult, Provider } from './config.ts';
 import { scenarioById } from './scenarios.ts';
 
 export interface HandlerDeps {
   config: ConfigResult;
   fetch: FetchLike;
-  ai: (apiKey: string, model: string) => AiClient;
+  ai: (provider: Provider, apiKey: string, model: string) => AiClient;
   log: (event: string, data?: Record<string, string | number | boolean>) => void;
 }
 
@@ -116,7 +116,7 @@ export function createHandler(deps: HandlerDeps): (req: Request) => Promise<Resp
       const session = sessionSchema.parse(await rpc('roleplay_get', { p_stacker: user.id, p_session: input.session_id }));
       const scenario = scenarioById(session.scenario);
       if (!scenario) return jsonResponse(404, { ok: false, error: 'not_found' }, cors);
-      const ai = deps.ai(config.anthropicKey, config.model);
+      const ai = deps.ai(config.provider, config.apiKey, config.model);
       const turns: Turn[] = session.turns.map((t) => ({ role: t.role, text: t.text }));
 
       if (input.action === 'say') {
